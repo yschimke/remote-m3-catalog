@@ -63,7 +63,7 @@ Compose artifacts.
 ## Published artifacts
 
 The five vendored modules publish under `ee.schimke.remotecompose` at
-`4307936-ps17-cmp07`. The version is derived from `remote-compose-upstream.json`; bump its
+`4307936-ps17-cmp08`. The version is derived from `remote-compose-upstream.json`; bump its
 `portRevision` whenever published bytes change without moving to a newer AndroidX patch set.
 
 [`publish-remote-compose.yml`](../.github/workflows/publish-remote-compose.yml) publishes to GitHub
