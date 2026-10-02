@@ -4,8 +4,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.wear.compose.material3.MaterialTheme
+import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 import ee.schimke.composeai.uibuilder.export.WearWidgetScaffoldSize
 import ee.schimke.composeai.uibuilder.export.hostSpec
+import ee.schimke.composeai.uibuilder.rememberThemeRoleFamilies
 import ee.schimke.composeai.uibuilder.renderer.sdk.canvasAdapterRegistry
 
 /**
@@ -35,7 +38,17 @@ val wearWidgetCanvasAdapters = canvasAdapterRegistry {
       background = background,
       backgroundContent = { Slot("background", Modifier.fillMaxSize().clip(it)) },
     ) {
-      Slot("content", Modifier.fillMaxSize())
+      // The widget's typefaces, drawn by the Wear port here as the device preview draws them
+      // through
+      // `RemoteMaterialTheme`'s typography.
+      val typefaces =
+        rememberThemeRoleFamilies(
+          ThemeTypefaces.families { string(it).takeIf(String::isNotEmpty) },
+          wear = true,
+        )
+      MaterialTheme(typography = MaterialTheme.typography.withRoleFamilies(typefaces)) {
+        Slot("content", Modifier.fillMaxSize())
+      }
     }
   }
 }

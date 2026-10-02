@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.Text
+import ee.schimke.composeai.uibuilder.LocalUiBuilderFontFamilies
+import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
 import ee.schimke.composeai.uibuilder.protocol.CanvasAdapterMappingV1
 import ee.schimke.composeai.uibuilder.protocol.UiBuilderRendererSurfaceModeV2
@@ -32,6 +34,7 @@ import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderInspectionCollector
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderInspectionSnapshot
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderSemanticActionController
 import ee.schimke.composeai.uibuilder.renderer.sdk.applyCanvasModifier
+import ee.schimke.composeai.uibuilder.renderer.sdk.catalogRuntimeFontRegistry
 import ee.schimke.composeai.uibuilder.renderer.sdk.startCatalogRenderer
 import ee.schimke.wearcmp.port.LocalWearDeviceConfiguration
 import ee.schimke.wearcmp.port.WearDeviceConfiguration
@@ -88,6 +91,9 @@ private val adapterMappings: Map<String, CanvasAdapterMappingV1> by lazy {
 @OptIn(InternalSkikoApi::class)
 fun main() {
   val actions = UiBuilderSemanticActionController()
+  // One registry for the page: a widget's theme typefaces, from the runtime's own `fonts/` and, for
+  // anything it does not ship, the host's Google Fonts route.
+  val fonts = catalogRuntimeFontRegistry()
   awaitSkiko.then(
     onFulfilled = {
       startCatalogRenderer(
@@ -123,6 +129,8 @@ fun main() {
               screenHeightDp = surface.heightDp.toInt(),
             ),
           LocalWearWidgetHostShape provides document.wearWidgetHostShape(),
+          LocalUiBuilderFontRegistry provides fonts,
+          LocalUiBuilderFontFamilies provides fonts.loaded,
         ) {
           MaterialTheme {
             // The viewport's canvas starts opaque white, and whatever the design leaves uncovered

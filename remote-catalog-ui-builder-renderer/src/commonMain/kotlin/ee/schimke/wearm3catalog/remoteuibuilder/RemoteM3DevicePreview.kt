@@ -96,7 +96,9 @@ import ee.schimke.composeai.rcplayer.compose.RcComposePlayer
 import ee.schimke.composeai.rcplayer.compose.RcPlayerTheme
 import ee.schimke.composeai.rcplayer.protocol.RcDocument
 import ee.schimke.composeai.rcplayer.protocol.RcDocumentCodec
+import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
 import ee.schimke.composeai.uibuilder.export.SHOW_BY_STATE
+import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
 import ee.schimke.composeai.uibuilder.export.UiBuilderNode
 import ee.schimke.composeai.uibuilder.export.WearWidgetScaffoldSize
@@ -146,6 +148,12 @@ internal fun RemoteM3DevicePreview(
   // Recorded at the density the pane plays at. A document captured at 160dpi and played on a 2x
   // screen had its dp layout scaled up and its sp text not, so every word drew at half size.
   val density = LocalDensity.current
+  // The widget's typefaces: recorded into the document by name, as the generated widget writes
+  // them, and resolved for the player from the runtime's font registry.
+  val roleNames = remember(root) { root?.let(ThemeTypefaces::families).orEmpty().remoteRoleNames() }
+  val registry = LocalUiBuilderFontRegistry.current
+  LaunchedEffect(registry, roleNames) { roleNames.values.toSet().forEach { registry?.request(it) } }
+  val fonts = remember(registry) { RegistryTypefaceLoader(registry) }
   // Kept across edits. Keyed on the document, every edit dropped the last drawing and showed a
   // placeholder until the new one was recorded; the previous frame stays up under a scrim instead.
   var captured by
@@ -153,18 +161,23 @@ internal fun RemoteM3DevicePreview(
       mutableStateOf<Result<CapturedRemoteDocuments>?>(null)
     }
   var refreshing by remember { mutableStateOf(true) }
-  LaunchedEffect(document, contentWidth, contentHeight, density) {
+  LaunchedEffect(document, contentWidth, contentHeight, density, roleNames) {
     refreshing = true
     val next = runCatching {
       val content =
-        captureDocument(contentWidth, contentHeight, density) {
+        captureDocument(contentWidth, contentHeight, density, roleNames) {
           RemoteDocumentTree(document).Render(widgetSize != null)
         }
       val background = hostSpec?.let { spec ->
         root
           ?.takeIf { it.slots["background"].orEmpty().isNotEmpty() }
           ?.let {
-            captureDocument(spec.frameWidthDp.toFloat(), spec.frameHeightDp.toFloat(), density) {
+            captureDocument(
+              spec.frameWidthDp.toFloat(),
+              spec.frameHeightDp.toFloat(),
+              density,
+              roleNames,
+            ) {
               RemoteDocumentTree(document).RenderRootSlot("background")
             }
           }
@@ -200,6 +213,7 @@ internal fun RemoteM3DevicePreview(
               RcComposePlayer(
                 document = documents.content,
                 theme = document.playerTheme(),
+                typefaces = fonts,
                 modifier = Modifier.fillMaxSize(),
               )
             } else {
@@ -217,6 +231,7 @@ internal fun RemoteM3DevicePreview(
                     RcComposePlayer(
                       document = it,
                       theme = document.playerTheme(),
+                      typefaces = fonts,
                       modifier =
                         Modifier.fillMaxSize()
                           .clip(shape)
@@ -228,6 +243,7 @@ internal fun RemoteM3DevicePreview(
                 RcComposePlayer(
                   document = documents.content,
                   theme = document.playerTheme(),
+                  typefaces = fonts,
                   modifier = Modifier.fillMaxSize().testTag(REMOTE_M3_WIDGET_CONTENT_TEST_TAG),
                 )
               }
@@ -277,6 +293,7 @@ private suspend fun captureDocument(
   widthDp: Float,
   heightDp: Float,
   density: Density,
+  roleNames: Map<String, String>,
   content: @Composable @RemoteComposable () -> Unit,
 ): RcDocument {
   val bytes =
@@ -289,7 +306,10 @@ private suspend fun captureDocument(
       // Pictures travel inside the document: without an encoder the common writer drops them.
       encodePng = ::encodeDesignAssetPng,
     ) {
-      RemoteMaterialTheme { content() }
+      RemoteMaterialTheme(
+        typography = RemoteMaterialTheme.typography.withRoleNames(roleNames),
+        content = content,
+      )
     }
   return RcDocumentCodec.decode(bytes)
 }
