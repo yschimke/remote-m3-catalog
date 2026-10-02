@@ -40,9 +40,9 @@ allprojects {
   }
 
   // Generated Kotlin is checked in to be COMPILED, not to be read, and reformatting it breaks the
-  // only thing it is for: `WidgetExportRoundTripTest` (the Remote widgets) and
-  // `WearScreenTemplateRoundTripTest` (the Wear screens) assert the exporter still produces exactly
-  // the text the compiler accepted, and ktfmt rewriting that text makes the golden disagree with
+  // only thing it is for: `WidgetExportRoundTripTest` and `WidgetTemplateRoundTripTest` assert the
+  // exporter still produces exactly the text the compiler accepted, and ktfmt rewriting that text
+  // makes the golden disagree with
   // its generator the moment anyone runs the formatter. Matched by name rather than by the
   // plugin's task type so this does not need the plugin's classes on the buildscript classpath.
   tasks
@@ -50,7 +50,6 @@ allprojects {
     .configureEach {
       if (this is SourceTask) {
         exclude("**/remote/generated/**")
-        exclude("**/uitemplate/generated/**")
       }
     }
 }
@@ -69,7 +68,6 @@ dependencies { uiBuilderRendererKtfmt(libs.ktfmt.cli) }
 
 val uiBuilderRendererKotlinSources =
   files(
-    fileTree("catalog-ui-builder-renderer") { include("src/**/*.kt") },
     fileTree("remote-catalog-ui-builder-renderer") { include("src/**/*.kt") },
     fileTree("ui-builder-foundation-adapters") { include("src/**/*.kt") },
     fileTree("ui-builder-material-adapters") { include("src/**/*.kt") },
@@ -96,13 +94,13 @@ configure(publishedRemoteComposeProjects.map(::project)) {
   extensions.configure<PublishingExtension> {
     repositories {
       // CI pushes this credential-free Maven tree to the remote-compose-cmp-maven branch of
-      // yschimke/wear-m3-catalog-out. Keeping the local
+      // yschimke/remote-m3-catalog-out. Keeping the local
       // destination identical makes publishRemoteComposeToBuildDir the exact preflight for CI.
       maven(rootProject.layout.buildDirectory.dir("remote-compose-maven")) { name = "BuildDir" }
 
       val githubToken = providers.environmentVariable("GITHUB_TOKEN").orNull
       if (githubToken != null) {
-        maven("https://maven.pkg.github.com/yschimke/wear-m3-catalog") {
+        maven("https://maven.pkg.github.com/yschimke/remote-m3-catalog") {
           name = "GitHubPackages"
           credentials {
             username = providers.environmentVariable("GITHUB_ACTOR").orNull ?: "yschimke"

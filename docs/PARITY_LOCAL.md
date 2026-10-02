@@ -7,10 +7,9 @@ component, a measurement, and another look.
 This is the same check, on your machine, for one component, with **zero Figma calls**.
 
 ```sh
-scripts/parity-local.sh FilledButton                              # :catalog
-scripts/parity-local.sh --module remote-catalog OutlinedCardRemote
-scripts/parity-local.sh --no-build Button IconButton              # catalog unchanged since last run
-scripts/parity-local.sh --no-semantics FilledButton               # pixels only; see below
+scripts/parity-local.sh OutlinedCardRemote                        # :remote-catalog, the default
+scripts/parity-local.sh --no-build FilledRemoteButton OutlinedRemoteButton  # unchanged since last run
+scripts/parity-local.sh --no-semantics FilledRemoteButton         # pixels only; see below
 ```
 
 You get the markdown verdict on stdout — pairing, semantics and the visual diff — plus a
@@ -27,19 +26,19 @@ change that genuinely did nothing.
 ## Running the CLI by hand
 
 ```sh
-# once per session — materialise the reference cache
-git fetch origin design-parity/reference --depth 1
+# once per session — materialise the reference cache from the output repository
+git fetch https://github.com/yschimke/remote-m3-catalog-out design-parity/reference --depth 1
 mkdir -p .design-parity/reference
 git archive FETCH_HEAD | tar -x -C .design-parity/reference
 
 # once per code change — the CLI at the version gradle/libs.versions.toml pins, and
 # --with-semantics, or the run silently drops half its checks (see below)
 compose-preview bundle pack --module :remote-catalog --with-semantics
-./scripts/design-map.sh remote-catalog
+./scripts/design-map.sh
 
 # per question — seconds
 npx design-parity run \
-  --components "catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogPreviews.kt#OutlinedCardRemote" \
+  --components "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogPreviews.kt#OutlinedCardRemote" \
   --candidate-bundles remote-catalog/build/compose-previews/bundle.png \
   --reference-cache .design-parity/reference --reference-cache-only \
   --out .design-parity/out
@@ -55,11 +54,11 @@ against it reports every token group as *"candidate resolved no `<group>` tokens
 evaluated"* and emits no i18n, layout or contrast findings at all. That is deliberate — an
 extraction gap must not masquerade as a token violation — but the effect is a local verdict
 **cleaner than the board's for code that has not changed**, with nothing in the diff hinting
-anything is missing. Measured on `:catalog`: 124 evaluated token checks, 42 i18n and 20 layout
-warnings all went to zero and one ❌ read as ⚠️, while the 1790 visual findings stayed
-byte-identical. `parity-local.sh` packs with semantics by default and refuses a bundle without the
-sidecars; `--no-semantics` is the deliberate way to accept the narrower verdict, and it is only ever
-right when you are looking at pixels.
+anything is missing. Measured on the Wear sheet before the split: 124 evaluated token checks, 42
+i18n and 20 layout warnings all went to zero and one ❌ read as ⚠️, while the 1790 visual findings
+stayed byte-identical. `parity-local.sh` packs with semantics by default and refuses a bundle
+without the sidecars; `--no-semantics` is the deliberate way to accept the narrower verdict, and it
+is only ever right when you are looking at pixels.
 
 **`--candidate-bundles` wants the bundle, not the renders.** It is a PNG+zip polyglot at
 `<module>/build/compose-previews/bundle.png`. Pointing it at `renders/` or `previews.json` fails
@@ -75,16 +74,19 @@ node(s) from 1 file(s), no API calls` and need no `FIGMA_TOKEN`. Without it the 
 Figma API. The daily import keeps that cache current, so a local run is only as fresh as the last
 one — check the branch date before trusting a *pass*.
 
-**`scripts/design-map.sh remote-catalog` overwrites the committed map.** `design-map.json` is
-`:catalog`'s and design-parity reads only that one path. Restore it with
-`git checkout -- design-map.json design-map-variants.json` before committing. `parity-local.sh`
+**`scripts/design-map.sh` overwrites the committed map — with whichever lane the snapshot pin
+selects.** The committed `design-map.json` describes the **released** lane, and design-parity reads
+only that one path, so a projection made with the pin on (the default) is not the file CI checks.
+Restore it with `git checkout -- design-map.json design-map-variants.json` before committing, or
+regenerate it deliberately after discovering with `-PremoteSnapshot=`. `parity-local.sh`
 copies both files aside before projecting and puts them back on exit — including on failure and on
 Ctrl-C, and by copy rather than `git checkout --`, so it cannot eat an edit you were making.
 
 ## What it costs
 
-The semantics pass is a daemon render per preview and it dominates: packing `:catalog`'s 1035
-previews measured ~14 minutes against ~2 for the pack alone. That cost is per **code change**, not
+The semantics pass is a daemon render per preview and it dominates: packing the Wear sheet's 1035
+previews measured ~14 minutes against ~2 for the pack alone, and `:remote-catalog` is the same order
+of cost. That cost is per **code change**, not
 per question — the bundle covers the whole module, so every `--no-build` run after it answers any
 component in seconds. The script fetches the pinned `compose-preview` CLI into
 `.design-parity/cli/<version>/` the first time (~213 MB, once per pin bump) unless a matching one is
@@ -92,9 +94,11 @@ already on `PATH`.
 
 ## What this does not replace
 
-It is **one component at a time**, so it does not produce the board. The published sheets on
-`design-parity/main` and `design-parity/remote-m3` are what CI writes and still the thing to read
-for coverage. Use this to work out an issue; use the board to know where the catalog stands.
+It is **one component at a time**, so it does not produce the board. The published board on
+`design-parity/remote-m3` in
+[yschimke/remote-m3-catalog-out](https://github.com/yschimke/remote-m3-catalog-out) is what CI
+writes and still the thing to read for coverage. Use this to work out an issue; use the board to
+know where the catalog stands.
 
 `.design-parity/` is gitignored — the cache is large, and both it and the report output are
 reproducible from the delivery branches.

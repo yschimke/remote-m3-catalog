@@ -19,13 +19,13 @@ ${repo_root}/gradlew
 --max-workers=4
 -Dorg.gradle.daemon.idletimeout=600000
 --non-interactive
-:catalog:composePreviewDiscover
+:remote-catalog:composePreviewDiscover
 --stacktrace
 EOF
 )
 
 actual=$(PATH="${test_root}/bin:${PATH}" \
-  "${repo_root}/scripts/agent-gradle.sh" :catalog:composePreviewDiscover --stacktrace)
+  "${repo_root}/scripts/agent-gradle.sh" :remote-catalog:composePreviewDiscover --stacktrace)
 if [ "${actual}" != "${expected}" ]; then
   echo "agent Gradle profile forwarded unexpected arguments" >&2
   diff -u <(printf '%s\n' "${expected}") <(printf '%s\n' "${actual}") >&2 || true

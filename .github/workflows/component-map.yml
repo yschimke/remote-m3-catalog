@@ -3,8 +3,13 @@ name: Refresh component map
 # Regenerate `docs/COMPONENT_MAP.md` once the delivery branches have republished, and offer the
 # result as a PR.
 #
+# The map pairs this repository's Remote sheet with the Wear sheet in yschimke/wear-m3-catalog, and
+# every `parallel` is declared here, so the map lives here. The Wear sheet's annotations are read
+# from a checkout of that repository's `main` — this is a record, not a gate, so it follows the
+# sibling's head rather than a pin.
+#
 # WHY THIS EXISTS. The map has two inputs and they move on different clocks. The pairings, kit nodes
-# and captions come from the `@CatalogComponent` annotations in this checkout, so they are current
+# and captions come from the `@CatalogComponent` annotations in the two checkouts, so they are current
 # the moment a PR lands. The THUMBNAILS come from each published sheet's `catalog.json` on its
 # `design-artifacts/*` branch, which is written by `Design Artifacts` some 20 minutes after that
 # same merge. A map regenerated in the PR that adds a component therefore names it with no render —
@@ -18,7 +23,7 @@ name: Refresh component map
 # top of the script, and it is why the record is refreshed rather than enforced.
 #
 # NO LOOP. The PR this opens touches `docs/COMPONENT_MAP.md` and nothing else, and that path is not
-# in `design-artifacts.yml`'s push filter (`catalog/**`, `catalog.spec.json`, the dependency
+# in `design-artifacts.yml`'s push filter (`remote-catalog/**`, the renderer, the dependency
 # manifests), so merging it cannot trigger another publish and another refresh.
 
 on:
@@ -29,6 +34,10 @@ on:
   workflow_run:
     workflows: ['Design Artifacts']
     types: [completed]
+  # The Wear sheet republishes from its own repository, which cannot trigger a run here. Weekly,
+  # after both repositories' Monday 06:00 republish, catches what it moved.
+  schedule:
+    - cron: '0 9 * * 1'
   # The escape hatch, for a map that needs refreshing without waiting for a publish.
   workflow_dispatch:
 
@@ -51,8 +60,8 @@ jobs:
     # name, and a publish from anywhere but main is not what this record is of. `workflow_dispatch`
     # carries no `workflow_run` payload and passes on the first clause.
     if: >-
-      github.repository == 'yschimke/wear-m3-catalog' &&
-      (github.event_name == 'workflow_dispatch' ||
+      github.repository == 'yschimke/remote-m3-catalog' &&
+      (github.event_name != 'workflow_run' ||
        (github.event.workflow_run.conclusion == 'success' &&
         github.event.workflow_run.head_branch == github.event.repository.default_branch))
     steps:

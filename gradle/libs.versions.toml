@@ -4,7 +4,8 @@ ktfmt = "0.27.0"
 ktfmt-cli = "0.64"
 agp = "9.4.1"
 
-# Wear Compose Material 3 — the library this catalog reproduces the kit against.
+# Wear Compose Material 3 — the library the sibling `:catalog` (yschimke/wear-m3-catalog) reproduces
+# the kit against. Here only the Robolectric preview harness and the UI-builder Wear frame read it.
 wear-compose = "1.7.0"
 wear-tooling-preview = "1.0.0"
 # `LocalOnBackPressedDispatcherOwner`, which the one-handed-gesture samples read. Declared by
@@ -25,9 +26,8 @@ compose-bom = "2026.09.00"
 # port lane's CI requires to INCREASE rather than merely differ (#413), so a stale pin here is
 # visible as a number rather than as a silently different artifact at the same coordinate.
 #
-# `:catalog` resolves this in `commonMain` ONLY. Every `android` configuration substitutes it back
-# to `wear-compose` below, so the Robolectric renders — the published kit rendition — are drawn by
-# the real AndroidX library, not by the port.
+# Here only the UI-builder adapters and the browser renderer link it; `:remote-catalog`, which is
+# what the published `remote-m3` stickers are drawn by, never does.
 wearcmp-port = "1.7.0-beta02-cmp09"
 
 # The published CMP Remote Compose writer. Browser Preview resolves this exact immutable version
@@ -130,7 +130,7 @@ composePreviewDaemonAnnotations = "3.11.0"
 # it, and the compiler proves that Kotlin still builds against this module's own classpath.
 composePreviewServer = "3.72.0"
 
-# Synthetic source-composite coordinates for :catalog-ui-builder-renderer. There are deliberately
+# Synthetic source-composite coordinates for :remote-catalog-ui-builder-renderer. There are deliberately
 # no Maven artifacts at these names: settings.gradle.kts substitutes both from the checkout named
 # by -PcomposeUiBuilderDir. Move to a released SDK coordinate only after the generic interpreter and
 # adapter registry have completed their release cycle.
@@ -159,14 +159,6 @@ rcPlayerComposeAndroid = "2.0.4"
 # library rather than transcribing the resolved roles, which is what stops the two drifting.
 materialkolor = "5.0.1"
 
-# Horologist — the Wear component library layered ON TOP of Wear Compose Material 3, and the only
-# published home of the things the kit draws that the library itself does not ship: the media
-# player and its parts (the kit's `Media-Player` set), the sign-in screens, and the fast-scrolling
-# list. Its `*-material3` artifacts are the Wear M3 line; the un-suffixed ones are Material 2 and
-# are deliberately not used here. Alpha, and moving — the artifacts are one release and Renovate
-# groups them (see .github/renovate.json).
-horologist = "0.8.4-alpha"
-
 # ── Remote Compose, for `:remote-catalog` only ──────────────────────────────────────────────────
 # The released Remote Compose trio. The snapshot lane replaces all three groups together, because a
 # skewed trio fails inside the player rather than at compile time (compose-ai-tools records what
@@ -174,9 +166,10 @@ horologist = "0.8.4-alpha"
 # all). The repository and substitution are selected by `.github/ci/remote-snapshot-pin`; an empty
 # `-PremoteSnapshot=` selects these released coordinates for normal CI.
 #
-# Nothing here reaches `:catalog`. That module is on the stable Compose BOM and the Wear Compose
-# beta line; this one deliberately is not, which is why the two are separate modules rather than
-# two source sets (see remote-catalog/build.gradle.kts).
+# The Wear sheet (`:catalog` in yschimke/wear-m3-catalog) is on the stable Compose BOM and the Wear
+# Compose beta line; this one deliberately is not, which is why the two were always separate
+# modules rather than two source sets and could split into two repositories (see
+# remote-catalog/build.gradle.kts).
 compose-remote = "1.0.0-alpha20"
 wear-compose-remote = "1.0.0-alpha12"
 glance-wear = "1.0.0-alpha19"
@@ -244,22 +237,6 @@ remotecompose-material3 = { module = "ee.schimke.remotecompose:remote-material3"
 compose-multiplatform-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "compose-multiplatform-material3" }
 compose-multiplatform-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-multiplatform" }
 
-# Horologist. Four artifacts, one per surface this catalog publishes, plus the model and image
-# types their APIs take as arguments:
-#   media-ui-material3        `PlayerScreen`, `MediaControlButtons`, `PlayPauseProgressButton`, …
-#   media-ui-model            `PlayerUiState`, `MediaUiModel`, `TrackPositionUiModel` — the state
-#                             the media components render, needed to seed a sticker.
-#   auth-composables-material3 `SignInButton`, `SelectAccountScreen`, `SignedInConfirmationDialog`, …
-#   compose-layout            `FastScrollingTransformingLazyColumn` (its `…layout.m3` package).
-#   images-base               `Paintable` — how every Horologist API takes an image. The catalog's
-#                             stand-in artwork implements it.
-horologist-media-ui-material3 = { module = "com.google.android.horologist:horologist-media-ui-material3", version.ref = "horologist" }
-horologist-media-ui-model = { module = "com.google.android.horologist:horologist-media-ui-model", version.ref = "horologist" }
-horologist-audio-ui-material3 = { module = "com.google.android.horologist:horologist-audio-ui-material3", version.ref = "horologist" }
-horologist-auth-composables-material3 = { module = "com.google.android.horologist:horologist-auth-composables-material3", version.ref = "horologist" }
-horologist-compose-layout = { module = "com.google.android.horologist:horologist-compose-layout", version.ref = "horologist" }
-horologist-images-base = { module = "com.google.android.horologist:horologist-images-base", version.ref = "horologist" }
-
 # ── Remote Compose (`:remote-catalog`) ─────────────────────────────────────────────────────────
 # `remote-tooling-preview` declares its creation/compose deps at RUNTIME scope, so the compile
 # classpath does not see the remote primitive types (`RemoteModifier`, `RemoteString`,
@@ -278,7 +255,7 @@ compose-ui-tooling-preview-prerelease = { module = "androidx.compose.ui:ui-tooli
 compose-ui-tooling-prerelease = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui-prerelease" }
 compose-ui-test-junit4-prerelease = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-ui-prerelease" }
 compose-ui-test-manifest-prerelease = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose-ui-prerelease" }
-# The SAME icon artifacts `:catalog` takes from the BOM, at the version the BOM maps them to — see
+# The SAME icon artifacts the Wear sheet's `:catalog` takes from the BOM, at the version the BOM maps them to — see
 # `compose-material-icons` above for why that equality is load-bearing rather than incidental.
 compose-material-icons-core-prerelease = { module = "androidx.compose.material:material-icons-core", version.ref = "compose-material-icons" }
 compose-material-icons-extended-prerelease = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-material-icons" }

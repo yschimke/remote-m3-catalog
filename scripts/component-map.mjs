@@ -2,14 +2,16 @@
 // Regenerate docs/COMPONENT_MAP.md — where the two sheets meet, where only one of them goes, and
 // which Figma node each component answers to.
 //
-//   node scripts/component-map.mjs
+//   node scripts/component-map.mjs [<wear-m3-catalog checkout>]   # default .wear-m3-catalog
 //
 // TWO INPUTS, AND THEY ARE DELIBERATELY DIFFERENT ONES.
 //
-//   1. The `@CatalogComponent` annotations in both modules, read straight from the Kotlin. That is
-//      the same source `design-map.json` and the published sheets are projected from, so the map
-//      cannot claim a pairing the catalogs do not have. Reading the annotations rather than
-//      `design-map.json` is on purpose: the committed map belongs to `:catalog` alone (see
+//   1. The `@CatalogComponent` annotations in both modules, read straight from the Kotlin — this
+//      repository's `remote-catalog/`, and `catalog/` in a checkout of yschimke/wear-m3-catalog
+//      (the Wear sheet moved out with the split, so its sources are an input, not a sibling).
+//      That is the same source `design-map.json` and the published sheets are projected from, so
+//      the map cannot claim a pairing the catalogs do not have. Reading the annotations rather than
+//      `design-map.json` is on purpose: each repository commits only its own sheet's map (see
 //      `scripts/design-map.sh`), and this doc has to speak for both.
 //
 //   2. The `catalog.json` of each published delivery branch, for the render paths. Those are
@@ -40,15 +42,20 @@ import fs from "node:fs";
 import path from "node:path";
 
 const KIT = "B24oss2tTeXAFykyeyusz0";
-// The delivery branches (`design-artifacts/<system>`) live in the OUTPUT repository that
-// `design-artifacts.yml` publishes to (`artifact-repository`), not in this one — this repository
-// only keeps `refs/design-artifacts/source/*` markers, which carry no catalog.json.
-const ARTIFACT_REPO = "yschimke/wear-m3-catalog-out";
-const RAW = `https://raw.githubusercontent.com/${ARTIFACT_REPO}`;
-const SHEETS = [
-  { module: "catalog", branch: "wear-m3-catalog" },
-  { module: "remote-catalog", branch: "remote-m3" },
-];
+// The delivery branches (`design-artifacts/<system>`) live in each sheet's OUTPUT repository —
+// the `artifact-repository` its `design-artifacts.yml` publishes to — not in either source
+// repository.
+const WEAR_DIR = process.argv[2] ?? ".wear-m3-catalog";
+const SHEETS = {
+  wear: { dir: path.join(WEAR_DIR, "catalog"), repo: "yschimke/wear-m3-catalog-out", branch: "wear-m3-catalog" },
+  // Until this repository's first publish lands, the last `remote-m3` sheet served is still the one
+  // on the Wear output repository, so that is tried second.
+  remote: {
+    dir: "remote-catalog",
+    repo: ["yschimke/remote-m3-catalog-out", "yschimke/wear-m3-catalog-out"],
+    branch: "remote-m3",
+  },
+};
 
 /**
  * The two mutually exclusive lanes `remote-catalog` builds against, and the file that picks one.
@@ -167,28 +174,39 @@ function components(module) {
   return found;
 }
 
-/** componentId → first published render path, from a delivery branch's `catalog.json`. */
-async function renders(branch) {
-  const res = await fetch(`${RAW}/design-artifacts/${branch}/catalog.json`);
-  if (!res.ok) throw new Error(`${branch}: catalog.json ${res.status} — has it published yet?`);
-  const map = new Map();
-  for (const c of (await res.json()).components ?? []) {
-    const first = (c.images ?? [])[0];
-    if (first?.path) map.set(c.componentId, first.path);
+/**
+ * componentId → first published render URL, from a delivery branch's `catalog.json` — the first of
+ * the sheet's output repositories that has published it.
+ */
+async function renders(sheet) {
+  let status = 0;
+  for (const repo of [sheet.repo].flat()) {
+    const base = `https://raw.githubusercontent.com/${repo}/design-artifacts/${sheet.branch}`;
+    const res = await fetch(`${base}/catalog.json`);
+    if (!res.ok) {
+      status = res.status;
+      continue;
+    }
+    const map = new Map();
+    for (const c of (await res.json()).components ?? []) {
+      const first = (c.images ?? [])[0];
+      if (first?.path) map.set(c.componentId, `${base}/${first.path}`);
+    }
+    return map;
   }
-  return map;
+  throw new Error(`${sheet.branch}: catalog.json ${status} — has it published yet?`);
 }
 
-const img = (id, paths, branch, alt) => {
-  const p = paths.get(id);
-  return p ? `<img src="${RAW}/design-artifacts/${branch}/${p}" width="150" alt="${alt}">` : "—";
+const img = (id, urls, _system, alt) => {
+  const u = urls.get(id);
+  return u ? `<img src="${u}" width="150" alt="${alt}">` : "—";
 };
 const node = (n) =>
   n ? `[\`${n}\`](https://www.figma.com/design/${KIT}/?node-id=${n.replace(":", "-")})` : "_stated absence_";
 
-const wear = components("catalog");
-const remote = components("remote-catalog");
-const [wearImg, remoteImg] = await Promise.all([renders("wear-m3-catalog"), renders("remote-m3")]);
+const wear = components(SHEETS.wear.dir);
+const remote = components(SHEETS.remote.dir);
+const [wearImg, remoteImg] = await Promise.all([renders(SHEETS.wear), renders(SHEETS.remote)]);
 
 // Group the Remote components under the Wear one they pair with; what is left is one-sided.
 const paired = new Map();

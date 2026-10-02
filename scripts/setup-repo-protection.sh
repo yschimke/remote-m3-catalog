@@ -12,7 +12,7 @@
 # change in the GitHub UI puts the repo back to what this file says.
 #
 # Usage:
-#   scripts/setup-repo-protection.sh            # apply to yschimke/wear-m3-catalog
+#   scripts/setup-repo-protection.sh            # apply to yschimke/remote-m3-catalog
 #   REPO=owner/name scripts/setup-repo-protection.sh
 #   DRY_RUN=1 scripts/setup-repo-protection.sh  # print what would change, write nothing
 #
@@ -21,7 +21,7 @@
 
 set -euo pipefail
 
-REPO="${REPO:-yschimke/wear-m3-catalog}"
+REPO="${REPO:-yschimke/remote-m3-catalog}"
 DRY_RUN="${DRY_RUN:-}"
 RULESET_NAME="Protect Main"
 

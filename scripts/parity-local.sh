@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # Compare ONE component against the Figma kit, locally, with no Figma API calls.
 #
-#   scripts/parity-local.sh OutlinedCard
-#   scripts/parity-local.sh --module remote-catalog OutlinedCardRemote
+#   scripts/parity-local.sh OutlinedCardRemote
 #   scripts/parity-local.sh --no-build Button IconButton
 #   scripts/parity-local.sh --no-semantics Button        # pixels only, no CLI download
 #
@@ -17,8 +16,9 @@
 #   * `--candidate-bundles` wants the PNG+zip bundle, not the render directory. Pointed at
 #     `build/compose-previews/`, design-parity reports "no candidate render available" and PASSES —
 #     a green verdict that compared nothing. This script always passes `bundle.png`.
-#   * `scripts/design-map.sh <module>` overwrites the COMMITTED map, which is `:catalog`'s
-#     (AGENTS.md, "One design map per checkout"). This script saves both map files before
+#   * `scripts/design-map.sh` overwrites the COMMITTED map — and projects whichever lane the
+#     snapshot pin selects, which is not the lane the committed map describes (AGENTS.md,
+#     "Dependencies"). This script saves both map files before
 #     projecting and restores them on exit, including on failure and on Ctrl-C — by copy rather than
 #     `git checkout --`, so it cannot eat an edit you were making to them.
 #   * The bundle `composePreviewBundle` packs carries NO semantics, and a run against it does not
@@ -33,7 +33,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-MODULE="catalog"
+MODULE="remote-catalog"
 BUILD=1
 REFRESH=0
 SEMANTICS=1
@@ -69,7 +69,8 @@ RENDER_TIMEOUT="${RENDER_TIMEOUT:-1800}"
 # a stale cache quietly agree with you.
 if [ ! -d "$CACHE" ] || [ "$REFRESH" = 1 ]; then
   echo "==> materialising the reference cache from design-parity/reference"
-  git fetch origin design-parity/reference --depth 1
+  # On the OUTPUT repository, not this one — every generated branch lives there.
+  git fetch https://github.com/yschimke/remote-m3-catalog-out.git design-parity/reference --depth 1
   rm -rf "$CACHE"
   mkdir -p "$CACHE"
   git archive FETCH_HEAD | tar -x -C "$CACHE"
@@ -257,7 +258,7 @@ for f in design-map.json design-map-variants.json; do
 done
 
 echo "==> projecting the design map for :$MODULE"
-if [ "$MODULE" = "catalog" ]; then scripts/design-map.sh; else scripts/design-map.sh "$MODULE"; fi
+scripts/design-map.sh "$MODULE"
 
 # design-parity identifies a component by its full `<source path>#<Name>`, which nobody wants to
 # type. Resolve a bare name against the map just projected — the same file the run itself reads, so
@@ -274,11 +275,7 @@ for name in "${COMPONENTS[@]}"; do
   count=$(printf '%s' "$matches" | grep -c . || true)
   if [ "$count" = 0 ]; then
     echo "no component '#$name' in :$MODULE's map." >&2
-    if [ "$MODULE" = "catalog" ]; then
-      echo "  This repo publishes two catalogs — try --module remote-catalog." >&2
-    else
-      echo "  This repo publishes two catalogs — try without --module, for :catalog." >&2
-    fi
+    echo "  Wear sheet components (no \`Remote\` suffix) are compared in yschimke/wear-m3-catalog." >&2
     exit 1
   elif [ "$count" != 1 ]; then
     echo "'$name' is ambiguous in :$MODULE — pass one of these in full:" >&2

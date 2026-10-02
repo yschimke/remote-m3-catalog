@@ -41,11 +41,10 @@ CHECK=""
 
 # `--out-dir DIR` projects into DIR and leaves the working tree alone.
 #
-# The committed map belongs to `:catalog` (see WHICH catalog, below), so anything that wants a
-# SECOND module's map alongside it — `scripts/kit-cells.sh` reads both, to count how much of each
-# kit set each sheet draws — cannot go through the root path without clobbering the one that is
-# committed. This is that door: same two pinned upstream steps, same inputs, a destination that is
-# not the repo. It never reconciles against the working tree, so `--check` means nothing with it.
+# `scripts/kit-cells.sh` projects into a temp dir through this door, so a regenerate of the cell
+# record never touches the committed map: same two pinned upstream steps, same inputs, a
+# destination that is not the repo. It never reconciles against the working tree, so `--check`
+# means nothing with it.
 OUT_DIR=""
 if [ "${1:-}" = "--out-dir" ]; then
   OUT_DIR="${2:?--out-dir needs a directory}"
@@ -56,25 +55,12 @@ if [ -n "$OUT_DIR" ] && [ -n "$CHECK" ]; then
   exit 2
 fi
 
-# WHICH catalog. This repo publishes two, and each projects its own map:
-#
-#   scripts/design-map.sh [--check]                 -> :catalog        (the kit rendition)
-#   scripts/design-map.sh remote-catalog            -> :remote-catalog (the Remote Compose one)
-#
-# The output path is NOT a parameter, because design-parity does not treat it as one: the action
-# reads `<repoRoot>/design-map.json` (packages/action/src/config.ts), and the reusable workflow
-# hashes and figma-scans that same path. One map per checkout is the contract.
-#
-# That is workable because the two parity runs are separate JOBS with separate workspaces: each
-# regenerates the root map for its own module before comparing, and neither sees the other's. What
-# it means locally is that projecting the Remote map overwrites the committed one, which belongs to
-# `:catalog` — so say so, loudly, rather than letting someone commit the wrong map.
-MODULE_DIR="${1:-catalog}"
-if [ "$MODULE_DIR" != "catalog" ] && [ -z "$OUT_DIR" ]; then
-  echo "note: projecting $MODULE_DIR into ./design-map.json, which is where design-parity reads it." >&2
-  echo "note: that file is COMMITTED for :catalog — restore it with 'git checkout -- design-map.json'" >&2
-  echo "      before committing anything else." >&2
-fi
+# WHICH catalog. This repo publishes one, `:remote-catalog`, and the committed map is its own. The
+# output path is NOT a parameter, because design-parity does not treat it as one: the action reads
+# `<repoRoot>/design-map.json` (packages/action/src/config.ts), and the reusable workflow hashes and
+# figma-scans that same path. One map per checkout is the contract. (Its Wear sibling, `:catalog`,
+# commits its own in yschimke/wear-m3-catalog.)
+MODULE_DIR="${1:-remote-catalog}"
 
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
@@ -87,10 +73,6 @@ trap 'rm -rf "$WORK"' EXIT
 # catalog's membership has two doors (AGENTS.md): a component reproducing a published kit set names
 # its node, and a component of either library here that the kit never published as a set enters with
 # `noReference = "<why>"`.
-# `ButtonGroup`, `TransformingLazyColumn`, `Scaffold` and `ArcProgressIndicator` are through door 2,
-# so plain `--strict` reddened this repo on four components that are exactly as intended. The
-# Horologist components added since (the media parts, the sign-in surfaces, the fast-scrolling list)
-# go through the same door for the same reason, so the count is sixteen now rather than four.
 #
 # `--allow-stated-absence` narrows the gate to what it is actually for: still fatal on a missing
 # reference and on captures that pair with none, permissive about a stated one. They are still
@@ -104,8 +86,8 @@ trap 'rm -rf "$WORK"' EXIT
 #
 # Gated BEFORE anything is written, so a failed run leaves the committed map intact rather than
 # replacing it with one CI would report as merely stale.
-# `--prefix` IS the module directory, and defaults to `catalog` — which is right for `:catalog` by
-# luck and silently wrong for anything else. `previews.json` records `sourceFile` module-relative
+# `--prefix` IS the module directory, and the projector defaults it to `catalog` — which is right
+# for the Wear sheet's `:catalog` by luck and silently wrong for this module. `previews.json` records `sourceFile` module-relative
 # (`src/main/kotlin/…`), so the projector prepends this to reach a repo-relative code handle. Left
 # unset, `:remote-catalog`'s map came out naming
 # `catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogPreviews.kt#AppCardRemote` — a

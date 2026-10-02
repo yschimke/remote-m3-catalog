@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/yschimke/compose-ai-tools/main/scripts/design-artifacts/catalog.spec.schema.json",
-  "$comment": "Cover-sheet spec only. The component inventory \u2014 ids, groups, captions, parallels and kit handles \u2014 lives next to the @Previews as @CatalogComponent annotations under remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/, exactly as the sibling :catalog does, and the design-artifacts export builds the catalog from those. This file carries only the fields that are not per-component code metadata: the system slug, title, libraries, primary mode, module, hero and the sibling this sheet is compared against. Every sticker is a real RemoteDocument rasterised by the Remote Compose player; the document carries explicit dark-first Material colours, hence the single dark mode and dark display surface, and leaving the surface off would let the preview server's wear/watch heuristic \u2014 which `remote-m3` does not match \u2014 pick a white stage the white stickers vanish into. `compareWith` names the SIBLING catalog in this repo (:catalog, the kit rendition) by relative spec path, so the compare page pairs the two implementations and carries the kit's own reference artwork, published by that sibling, as a third column. Moved here from :samples:design-catalog-remote-m3 in yschimke/compose-ai-tools (#4588).",
+  "$comment": "Cover-sheet spec only. The component inventory \u2014 ids, groups, captions, parallels and kit handles \u2014 lives next to the @Previews as @CatalogComponent annotations under remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/, exactly as the sibling :catalog does, and the design-artifacts export builds the catalog from those. This file carries only the fields that are not per-component code metadata: the system slug, title, libraries, primary mode, module, hero and the sibling this sheet is compared against. Every sticker is a real RemoteDocument rasterised by the Remote Compose player; the document carries explicit dark-first Material colours, hence the single dark mode and dark display surface, and leaving the surface off would let the preview server's wear/watch heuristic \u2014 which `remote-m3` does not match \u2014 pick a white stage the white stickers vanish into. `compareWith` names the SIBLING catalog (`wear-m3-catalog`, the kit rendition, published by yschimke/wear-m3-catalog) and the output repository that hosts its delivery branch, so the compare page pairs the two implementations and carries the kit's own reference artwork, published by that sibling, as a third column. There is no `spec` path: the sibling's cover sheet is not in this checkout, so its title comes from its published catalog.json. Moved from :samples:design-catalog-remote-m3 in yschimke/compose-ai-tools (#4588) into yschimke/wear-m3-catalog, then split into this repository.",
   "system": "remote-m3",
   "title": "Remote Compose Material 3",
   "library": [
@@ -26,7 +26,7 @@
   ],
   "compareWith": {
     "system": "wear-m3-catalog",
-    "spec": "../catalog.spec.json",
+    "repo": "yschimke/wear-m3-catalog-out",
     "designTitle": "M3 Wear OS kit"
   }
 }

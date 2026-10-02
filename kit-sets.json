@@ -60,10 +60,7 @@
       "node": "39083:760",
       "components": [
         "TextToggleButton"
-      ],
-      "cells": {
-        "catalog": "The three that stay out are the selected `Tonal` cells: Wear Compose ships ONE named `colors()` per toggle button — emphasis is not an argument here the way it is on `Button` — so there is no call site that draws them, and a palette written out through the raw `colors(...)` overload would be a picture of this catalog rather than of the library. The three `Fixed Width=False` cells this row used to be short of are drawn now: `RoundButton` applies no size of its own, so the 52/60/72dp came from the sticker's own `touchTargetAwareSize`, and the `fixedWidth` knob keeps the height the size names while handing the width back to the label (#178)."
-      }
+      ]
     },
     {
       "page": "Buttons",
@@ -103,10 +100,7 @@
         "CheckboxButton",
         "RadioButton",
         "SwitchButton"
-      ],
-      "cells": {
-        "catalog": "All eight are `Type=Custom - Task`, which is the kit showing that the control slot is swappable rather than publishing a fourth component — Compose spells it as the `toggleControl` slot on the same three functions. It stays out until a sticker can draw it without inventing a control the kit does not publish."
-      }
+      ]
     },
     {
       "page": "Buttons",
@@ -116,7 +110,6 @@
         "Button/Compact"
       ],
       "cells": {
-        "catalog": "All ten are the `Alignment=Icon right` column: `CompactButton` has ONE icon slot and it leads, so a trailing icon is not something the component takes, and putting a glyph in the label to fake one would publish a picture of this catalog rather than of the library — the same absence the Remote column states for the same ten. The six disabled `Filled Variant` and `Tonal` cells this row used to be short of are drawn now: Wear resolves all three filled styles' disabled colours to the same `onSurface` pair, so each is the disabled FILLED button to the byte, and they are published under `CatalogRenderTest.knownDuplicate` so the collapse is on the sheet instead of behind it (#178).",
         "remote-catalog": "All ten are the `Alignment=Icon right` column. `RemoteCompactButton` has ONE icon slot and it leads, so a trailing icon is not something the component takes, and putting a glyph in the label to fake one would publish a picture of this catalog rather than of the library — the same absence the Wear column states for the same ten. The nine `Disabled=Yes` cells this row used to be short of are now drawn, and three of them are the disabled FILLED button to the byte, because `RemoteButtonDefaults.buttonColors` leaves the disabled pair at its defaults; they are published under `knownDuplicate` so the collapse is on the sheet instead of behind it."
       }
     },
@@ -138,10 +131,7 @@
       "node": "39083:679",
       "components": [
         "IconToggleButton"
-      ],
-      "cells": {
-        "catalog": "All eight are `Style=Secondary`. Wear Compose ships ONE `colors()` per toggle button, so unlike `Button` there is no emphasis argument and no call site that draws them."
-      }
+      ]
     },
     {
       "page": "Buttons",
@@ -180,7 +170,6 @@
         "TitleCard"
       ],
       "cells": {
-        "catalog": "Nine of the eleven are `Title Card 3`, the layout that puts the timestamp UNDER the subtitle; `TitleCard` draws its `time` slot on the title's row and there is no argument that moves it, so that arrangement is published under its own name as `TitleCard/Subtitle` rather than mapped onto a node it is not a picture of. The other two are the `Background Image` cells of `App Card` and `Title Card + Icon`: Wear Compose gives `TitleCard` a second overload taking a `Painter`, and gives `AppCard` none, so there is no image-backed app card to draw.",
         "remote-catalog": "Twenty are the `Outline` column, and they are unreachable rather than undrawn: `RemoteOutlinedCard` is the TITLE-LESS container, and neither `RemoteTitleCard` nor `RemoteAppCard` takes a border or a border colour at `remote-material3-1.0.0-alpha10` — there is no argument to pass. `Title Card 1, Style=Outline, Content type=Text` was the twentieth all along: `Card/Outlined` named it while drawing the title-less outlined container, which is not a picture of a title card, so the cell counted as covered by a comparison it was not making ([#149](https://github.com/yschimke/wear-m3-catalog/issues/149)). Five are `Background Image`: the same shape one parameter over, no painter on either function ([#157](https://github.com/yschimke/wear-m3-catalog/issues/157)). The image-backed BUTTON cells beside them ARE drawn, broken, because `RemoteButton` does take a painter — the difference is an API to call, not a working one. The remaining four are `Title Card 3`, whose layout puts the timestamp under the subtitle with no body at all; neither `RemoteTitleCard` nor Wear's `TitleCard` arranges that."
       }
     },
@@ -192,10 +181,7 @@
         "ConfirmationDialog/Success",
         "ConfirmationDialog/Failure",
         "ConfirmationDialog/Generic"
-      ],
-      "cells": {
-        "catalog": "Three of the nine, and both absences are the kit's `Type=` axis rather than its `Text=` one. `Latency, Text=Yes` and `Latency, Text=No` are the overlay shown while the outcome is still unknown — an indeterminate wait, and no `*ConfirmationDialogContent` in `androidx.wear.compose:compose-material3` draws one; the library's three typed entry points are success, failure and the generic icon slot, so there is no function to call and a sticker that hand-built a spinner into the icon slot would be a picture of this catalog rather than of the library. `Long text, Text=Yes` is the same generic overlay carrying more copy than one line fits, which is a property of the STRING passed to `curvedText` and not of the call — the cell would vary the sticker's own `KitCopy` constant, and every axis the component actually exposes is already drawn beside it."
-      }
+      ]
     },
     {
       "page": "Confirmation Overlays",
@@ -211,10 +197,7 @@
       "node": "58475:87022",
       "components": [
         "AlertDialog"
-      ],
-      "cells": {
-        "catalog": "The four `Scrolling=No` absences are button ROWS under the title — an arrangement an app writes into the content slot, not one `AlertDialogContent` offers, and a sticker that hand-built one would be a picture of this catalog rather than of the library. The library publishes exactly three bottom arrangements and all three are drawn. The other ten are `Scrolling=Yes` long-scroll cells, which nothing captured at rest can be diffed against."
-      }
+      ]
     },
     {
       "page": "Edge-Hugging Buttons",
@@ -241,10 +224,7 @@
         "DatePicker",
         "Picker",
         "TimePicker"
-      ],
-      "cells": {
-        "catalog": "Two absences, and they are different kinds. Thirteen are `Focus=Two | Three` — which of the wheels the picker has advanced to, which it does as the user confirms each column; neither `TimePicker` nor `DatePicker` takes it as an argument (the selection is internal state), so there is no call site that opens a picker already focused on its second column. The other eighteen are `Larger Screen (BP)=Yes` crossed with one of those same undrawn `Focus` values, or with a `Type` that only a cell of the 192dp capture draws. The axis itself is no longer unmapped: this is the one set in the kit that publishes screen size as a variant property, and `@CatalogComponent(breakpointKit = [\"225=Larger Screen (BP)=Yes\"])` on the three picker components now says so, so the 225dp capture of each pairs with the kit's larger-screen cell instead of resolving against nothing (compose-ai-tools#4827). What stays uncovered is the product of that axis with the others: an `@OverrideVariant` cell of a non-base breakpoint is deliberately not published — it would multiply the sheet by every screen size — so the 192dp capture keeps carrying this component's matrix and 225dp carries the base of it."
-      }
+      ]
     },
     {
       "page": "Position Indicators",
@@ -254,7 +234,6 @@
         "LevelIndicator"
       ],
       "cells": {
-        "catalog": "All four are `Size = Long | Short`, which in Compose is the arc's `sweepAngle` — 72 degrees, a fifth of the circumference, by default. The API takes it; the kit does not publish the two angles its cells draw. They are bound to no variable and the cells export as flattened SVGs, so the numbers live in that path data and guessing one would put an invented angle under the kit's name — the same blocker as the progress rings' `Top Gap`/`Bottom Gap`.",
         "remote-catalog": "All four are `Size = Long | Short`, and the blocker is the kit's rather than the library's — the same one the `catalog` row states. The sweep is an argument here too (`sweepAngle` on `RemoteCurvedProgressIndicator`, which is what draws this rail at all, since `remote-material3` publishes no level indicator), so the API reaches those cells; the kit does not publish the two angles they draw. They are bound to no variable and the cells export as flattened SVGs, so the numbers live in that path data and guessing one would put an invented angle under the kit's name."
       }
     },
@@ -264,10 +243,7 @@
       "node": "44998:18342",
       "components": [
         "ScrollIndicator"
-      ],
-      "cells": {
-        "catalog": "All four are the thumb-LENGTH half of the kit's `Position` axis (`40%` to `70% (Max)`; the `Middle` and `Bottom` cells, which are a scroll offset, are drawn). The capture blocker this row used to name is gone — `@SettledPreview` settles the thumb's travel now, and the sticker's seed was re-keyed on the measured `maxValue` so the offset cells land where they claim (#178). What remains is the length itself: seeded to 2.5, 2 and 1.67 screenfuls of content — the kit's 40%, 50% and 60% — the thumb renders byte-identical to the base's five, so `ScrollIndicator` does not draw the fraction those cells name and a cell for one would be a picture under a number it is not."
-      }
+      ]
     },
     {
       "page": "Progress Indicators",
@@ -277,7 +253,6 @@
         "CircularProgressIndicator"
       ],
       "cells": {
-        "catalog": "Two whole axes, and neither is a gap in the annotations. `Segments=6..14` is the SEGMENTED ring — `SegmentedCircularProgressIndicator`, a different function, whose own cells are counted against `Progress-Indicator-Small`. `Type=Top Gap | Bottom Gap` is the pair of angles the kit does not publish: `CircularProgressIndicator` takes `startAngle`/`endAngle`, so the API is there, but the kit binds no variable for the gap, carries no component property for it, and draws each cell as a flattened SVG — the numbers exist only inside that exported path data. Reading them off it is what the cells wait on, not a library limitation. The two `Progress=Zero, Disabled=Yes` cells are drawn now. They were withheld as empty frames — a disabled ring is drawn entirely in its disabled track colour, and at zero progress that used to leave nothing lit — and that is no longer true of the library: this Wear version draws the track, so both cells publish a visible ring and stand as ordinary comparisons (#178).",
         "remote-catalog": "Fifty-four are `Segments=6..14`, the SEGMENTED ring: `remote-material3` publishes `RemoteCircularProgressIndicator` and `RemoteCurvedProgressIndicator` and no segmented function at all, so unlike the Wear column — where those cells belong to `SegmentedCircularProgressIndicator` and its own set — there is nothing here to call. Twenty-four are `Type=Top Gap | Bottom Gap`: `RemoteCircularProgressIndicator` takes the `startAngle`/`endAngle` pair, so the API is not the blocker — the kit is, publishing those angles in no variable and no property, only inside the flattened SVG each gap cell exports (the same wall the Wear column hits). Six are `Stroke Width=Small`: the parameter is there, but `RemoteProgressIndicatorDefaults` publishes no small or large stroke token and the Wear pair it would borrow resolves by screen breakpoint, so the number would be invented. The `Progress=Zero, Disabled=Yes` cell this row used to be short of is drawn now: it was withheld as an empty frame, and this player draws the disabled track, so it is an ordinary comparison (#178)."
       }
     },
@@ -287,10 +262,7 @@
       "node": "52431:56915",
       "components": [
         "SegmentedCircularProgressIndicator"
-      ],
-      "cells": {
-        "catalog": "All eighty-four are `Type=Top Gap | Bottom Gap` — the same absence the `Progress-Indicator` row states, and the same shape of blocker: `SegmentedCircularProgressIndicator` takes `startAngle`/`endAngle`, and the kit publishes the angles nowhere but inside the flattened SVG each gap cell exports."
-      }
+      ]
     },
     {
       "page": "Progress Indicators",
@@ -298,10 +270,7 @@
       "node": "45011:259051",
       "components": [
         "LinearProgressIndicator"
-      ],
-      "cells": {
-        "catalog": "All eight are the same eight again under `Context=In List`. Context is not a parameter: it is where the caller puts the indicator, and the kit draws both because the surrounding row changes what you see around it. A sticker of the component alone is the `In Component` half."
-      }
+      ]
     },
     {
       "page": "Sliders",
@@ -309,10 +278,7 @@
       "node": "34828:79081",
       "components": [
         "Slider"
-      ],
-      "cells": {
-        "catalog": "All eighteen are the `Changed=Yes` column — the kit's picture of a bar that has JUST been moved, which is a moment rather than a state. Wear Compose has no parameter for it and the sticker that could show it is a recording, which is what `Motion.kt` is for."
-      }
+      ]
     },
     {
       "page": "Steppers",
@@ -328,10 +294,7 @@
       "node": "56392:155752",
       "components": [
         "SwipeToReveal/Card"
-      ],
-      "cells": {
-        "catalog": "The two are `Full swipe (icon only)` and `Full swipe (icon + text)`, and there is no call site that tells them apart: they are two frames of ONE expansion, which `SwipeToReveal` runs off the gesture's own distance — `RevealValue.RightRevealed` is the single resting value that reaches it, and neither the composable nor `PrimaryActionButton` takes an argument that selects the icon-only frame over the icon-and-text one. Two cells seeded alike would be one picture published under two names, which is what `knownDuplicate` exists to forbid rather than excuse. Seeded with that value the still is empty anyway: at rest in the revealed position the card has travelled off screen and the expanded action has not been laid out. `Motion.kt` has the recording, which is where a gesture's own frames belong."
-      }
+      ]
     },
     {
       "page": "Swipe to Reveal",
@@ -339,10 +302,7 @@
       "node": "56392:155784",
       "components": [
         "SwipeToReveal/Button"
-      ],
-      "cells": {
-        "catalog": "The two are `Full swipe (icon only)` and `Full swipe (icon + text)`, and there is no call site that tells them apart: they are two frames of ONE expansion, which `SwipeToReveal` runs off the gesture's own distance — `RevealValue.RightRevealed` is the single resting value that reaches it, and neither the composable nor `PrimaryActionButton` takes an argument that selects the icon-only frame over the icon-and-text one. Two cells seeded alike would be one picture published under two names, which is what `knownDuplicate` exists to forbid rather than excuse. Seeded with that value the still is empty anyway: at rest in the revealed position the button has travelled off screen and the expanded action has not been laid out. `Motion.kt` has the recording, which is where a gesture's own frames belong."
-      }
+      ]
     },
     {
       "page": "Text",
@@ -352,7 +312,6 @@
         "ListHeader"
       ],
       "cells": {
-        "catalog": "The two are `Type=Page-Mid`. `ListHeader` takes a `contentPadding`, but `ListHeaderDefaults` publishes one value for it (the second, `subHeaderContentPadding`, belongs to `ListSubHeader` and its own kit set) and nothing distinguishes the first header on a screen from one further down a list. The two kit cells differ in the space ABOVE them, which is a property of where the header sits rather than of the component — and a wrap sticker is cropped tight, so that space is not in the picture either way.",
         "remote-catalog": "The two are `Type=Page-Mid`, and the reason is the kit's rather than either library's — the same one the `catalog` row states. The two cells differ in the space ABOVE the header, which is a property of where it sits in a list rather than of the header; a component sticker is cropped to what it draws, so that space is in neither picture. This sheet builds the header from `RemoteText` (there is no `RemoteListHeader`), which changes nothing about it: a content padding is what a header has, and it says nothing about what is above the header."
       }
     },

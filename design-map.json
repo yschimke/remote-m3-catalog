@@ -1,0 +1,2642 @@
+{
+  "components": [
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogPreviews.kt#AppCardRemote",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38437:5712"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38437:5728",
+          "state": "content-image"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39710:11171",
+          "state": "gallery-1"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39880:105417",
+          "state": "gallery-2"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/46048:69274",
+          "state": "icon"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/46048:69301",
+          "state": "icon-content-image"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/46048:69313",
+          "state": "icon-gallery-1"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/46048:69327",
+          "state": "icon-gallery-2"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/46048:69357",
+          "state": "icon-outlined"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/46048:69370",
+          "state": "icon-outlined-content-image"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/46048:69382",
+          "state": "icon-outlined-gallery-1"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/46048:69396",
+          "state": "icon-outlined-gallery-2"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39827:105154",
+          "state": "outlined"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39827:105142",
+          "state": "outlined-content-image"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39827:105128",
+          "state": "outlined-gallery-1"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39880:105431",
+          "state": "outlined-gallery-2"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/38437:5746",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_content-image",
+          "state": "content-image"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_gallery-1",
+          "state": "gallery-1"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_gallery-2",
+          "state": "gallery-2"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon",
+          "state": "icon"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-content-image",
+          "state": "icon-content-image"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-gallery-1",
+          "state": "icon-gallery-1"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-gallery-2",
+          "state": "icon-gallery-2"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-outlined",
+          "state": "icon-outlined"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-outlined-content-image",
+          "state": "icon-outlined-content-image"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-outlined-gallery-1",
+          "state": "icon-outlined-gallery-1"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-outlined-gallery-2",
+          "state": "icon-outlined-gallery-2"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_outlined",
+          "state": "outlined"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_outlined-content-image",
+          "state": "outlined-content-image"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_outlined-gallery-1",
+          "state": "outlined-gallery-1"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_outlined-gallery-2",
+          "state": "outlined-gallery-2"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogPreviews.kt#CircularProgressRemote",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41424:58637"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41424:58701",
+          "state": "complete"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41424:58909",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41424:58710",
+          "state": "overflow"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41424:58732",
+          "state": "small-stroke"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41424:58771",
+          "state": "small-stroke-complete"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41424:58758",
+          "state": "small-stroke-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41424:58780",
+          "state": "small-stroke-overflow"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41424:58745",
+          "state": "small-stroke-zero"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/52408:59313",
+          "state": "small-stroke-zero-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41424:58688",
+          "state": "zero"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/52408:59303",
+          "state": "zero-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/41424:58385",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_complete",
+          "state": "complete"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_overflow",
+          "state": "overflow"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_small-stroke",
+          "state": "small-stroke"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_small-stroke-complete",
+          "state": "small-stroke-complete"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_small-stroke-disabled",
+          "state": "small-stroke-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_small-stroke-overflow",
+          "state": "small-stroke-overflow"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_small-stroke-zero",
+          "state": "small-stroke-zero"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_small-stroke-zero-disabled",
+          "state": "small-stroke-zero-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_zero",
+          "state": "zero"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_zero-disabled",
+          "state": "zero-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogPreviews.kt#CompactRemoteButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:87975"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88005",
+          "state": "child"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88045",
+          "state": "child-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88009",
+          "state": "child-icon-only"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88049",
+          "state": "child-icon-only-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88002",
+          "state": "child-text-only"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88042",
+          "state": "child-text-only-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88015",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/44993:154003",
+          "state": "filled-variant"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/44993:154024",
+          "state": "filled-variant-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/44993:154009",
+          "state": "filled-variant-icon-only"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/44993:154030",
+          "state": "filled-variant-icon-only-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/44993:154001",
+          "state": "filled-variant-text-only"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/44993:154022",
+          "state": "filled-variant-text-only-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:87979",
+          "state": "icon-only"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88019",
+          "state": "icon-only-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:87995",
+          "state": "outlined"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88035",
+          "state": "outlined-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:87999",
+          "state": "outlined-icon-only"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88039",
+          "state": "outlined-icon-only-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:87992",
+          "state": "outlined-text-only"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88032",
+          "state": "outlined-text-only-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:87972",
+          "state": "text-only"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88012",
+          "state": "text-only-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:87985",
+          "state": "tonal"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88025",
+          "state": "tonal-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:87989",
+          "state": "tonal-icon-only"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88029",
+          "state": "tonal-icon-only-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:87982",
+          "state": "tonal-text-only"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35276:88022",
+          "state": "tonal-text-only-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/35276:87971",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child",
+          "state": "child"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-disabled",
+          "state": "child-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-only",
+          "state": "child-icon-only"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-only-disabled",
+          "state": "child-icon-only-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-text-only",
+          "state": "child-text-only"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-text-only-disabled",
+          "state": "child-text-only-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant",
+          "state": "filled-variant"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-disabled",
+          "state": "filled-variant-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-icon-only",
+          "state": "filled-variant-icon-only"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-icon-only-disabled",
+          "state": "filled-variant-icon-only-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-text-only",
+          "state": "filled-variant-text-only"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-text-only-disabled",
+          "state": "filled-variant-text-only-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-only",
+          "state": "icon-only"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-only-disabled",
+          "state": "icon-only-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined",
+          "state": "outlined"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-disabled",
+          "state": "outlined-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-icon-only",
+          "state": "outlined-icon-only"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-icon-only-disabled",
+          "state": "outlined-icon-only-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-text-only",
+          "state": "outlined-text-only"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-text-only-disabled",
+          "state": "outlined-text-only-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_text-only",
+          "state": "text-only"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_text-only-disabled",
+          "state": "text-only-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal",
+          "state": "tonal"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-disabled",
+          "state": "tonal-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-icon-only",
+          "state": "tonal-icon-only"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-icon-only-disabled",
+          "state": "tonal-icon-only-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-text-only",
+          "state": "tonal-text-only"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-text-only-disabled",
+          "state": "tonal-text-only-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogPreviews.kt#FilledRemoteButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93092"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93098",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93167",
+          "state": "icon"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93185",
+          "state": "icon-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:65439",
+          "state": "icon-extra-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:65474",
+          "state": "icon-extra-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:57031",
+          "state": "icon-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:57066",
+          "state": "icon-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/45529:125931",
+          "state": "left"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/45529:125956",
+          "state": "left-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/35239:93088",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon",
+          "state": "icon"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-disabled",
+          "state": "icon-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large",
+          "state": "icon-extra-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large-disabled",
+          "state": "icon-extra-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
+          "state": "icon-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
+          "state": "icon-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_left",
+          "state": "left"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_left-disabled",
+          "state": "left-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogPreviews.kt#IconRemoteButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103015"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103068",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103021",
+          "size": "extra-small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103074",
+          "state": "extra-small-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103012",
+          "size": "large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103065",
+          "state": "large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103018",
+          "size": "small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103071",
+          "state": "small-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/34732:102972",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small",
+          "size": "extra-small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small-disabled",
+          "state": "extra-small-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_large",
+          "size": "large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_large-disabled",
+          "state": "large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
+          "size": "small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
+          "state": "small-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogPreviews.kt#OutlinedRemoteButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93116"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93122",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93293",
+          "state": "icon"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93311",
+          "state": "icon-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:65460",
+          "state": "icon-extra-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:65489",
+          "state": "icon-extra-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:57052",
+          "state": "icon-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:57081",
+          "state": "icon-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/45529:125946",
+          "state": "left"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/45529:125971",
+          "state": "left-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/35239:93088",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon",
+          "state": "icon"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-disabled",
+          "state": "icon-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large",
+          "state": "icon-extra-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large-disabled",
+          "state": "icon-extra-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
+          "state": "icon-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
+          "state": "icon-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_left",
+          "state": "left"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_left-disabled",
+          "state": "left-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogPreviews.kt#RemoteCaptionSticker",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38977:66998"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38977:66996",
+          "state": "left-aligned"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/38977:66995",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.RemoteCaptionSticker_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.RemoteCaptionSticker_width=227dp,height=100dp,dpi=320_VARIANT_left-aligned",
+          "state": "left-aligned"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogPreviews.kt#RemoteTextSticker",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38977:66993"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38977:66991",
+          "state": "left-aligned"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/38977:66990",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.RemoteTextSticker_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.RemoteTextSticker_width=227dp,height=100dp,dpi=320_VARIANT_left-aligned",
+          "state": "left-aligned"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogPreviews.kt#TextRemoteButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103081"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103107",
+          "state": "child"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103143",
+          "state": "child-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103113",
+          "state": "child-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103149",
+          "state": "child-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103110",
+          "state": "child-small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103146",
+          "state": "child-small-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103116",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52255",
+          "state": "filled-variant"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52267",
+          "state": "filled-variant-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52253",
+          "state": "filled-variant-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52265",
+          "state": "filled-variant-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52257",
+          "state": "filled-variant-small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52269",
+          "state": "filled-variant-small-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103087",
+          "size": "large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103122",
+          "state": "large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103098",
+          "state": "outlined"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103134",
+          "state": "outlined-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103104",
+          "state": "outlined-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103140",
+          "state": "outlined-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103101",
+          "state": "outlined-small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103137",
+          "state": "outlined-small-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103084",
+          "size": "small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103119",
+          "state": "small-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103090",
+          "state": "tonal"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103125",
+          "state": "tonal-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103095",
+          "state": "tonal-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103131",
+          "state": "tonal-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103092",
+          "state": "tonal-small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103128",
+          "state": "tonal-small-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/34732:103080",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child",
+          "state": "child"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-disabled",
+          "state": "child-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-large",
+          "state": "child-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-large-disabled",
+          "state": "child-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-small",
+          "state": "child-small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-small-disabled",
+          "state": "child-small-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant",
+          "state": "filled-variant"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-disabled",
+          "state": "filled-variant-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-large",
+          "state": "filled-variant-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-large-disabled",
+          "state": "filled-variant-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-small",
+          "state": "filled-variant-small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-small-disabled",
+          "state": "filled-variant-small-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_large",
+          "size": "large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_large-disabled",
+          "state": "large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined",
+          "state": "outlined"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-disabled",
+          "state": "outlined-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-large",
+          "state": "outlined-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-large-disabled",
+          "state": "outlined-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-small",
+          "state": "outlined-small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-small-disabled",
+          "state": "outlined-small-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
+          "size": "small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
+          "state": "small-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal",
+          "state": "tonal"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-disabled",
+          "state": "tonal-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-large",
+          "state": "tonal-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-large-disabled",
+          "state": "tonal-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-small",
+          "state": "tonal-small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-small-disabled",
+          "state": "tonal-small-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogPreviews.kt#TitleCardRemote",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38437:5747"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38437:5761",
+          "state": "content-image"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39710:11308",
+          "state": "gallery-1"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39880:105575",
+          "state": "gallery-2"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39827:105691",
+          "state": "outlined"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39827:105716",
+          "state": "outlined-content-image"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39827:105747",
+          "state": "outlined-gallery-1"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39880:105609",
+          "state": "outlined-gallery-2"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39569:49145",
+          "state": "title-and-subtitle"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39649:36527",
+          "state": "title-and-subtitle-content-image"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39710:11329",
+          "state": "title-and-subtitle-gallery-1"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39880:105597",
+          "state": "title-and-subtitle-gallery-2"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39827:105709",
+          "state": "title-and-subtitle-outlined"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39827:105736",
+          "state": "title-and-subtitle-outlined-content-image"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39827:105769",
+          "state": "title-and-subtitle-outlined-gallery-1"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39880:105631",
+          "state": "title-and-subtitle-outlined-gallery-2"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39662:45982",
+          "state": "with-subtitle"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39662:45973",
+          "state": "with-subtitle-content-image"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39710:11317",
+          "state": "with-subtitle-gallery-1"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39880:105585",
+          "state": "with-subtitle-gallery-2"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39827:105699",
+          "state": "with-subtitle-outlined"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39827:105725",
+          "state": "with-subtitle-outlined-content-image"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39827:105757",
+          "state": "with-subtitle-outlined-gallery-1"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39880:105619",
+          "state": "with-subtitle-outlined-gallery-2"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/38437:5746",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_content-image",
+          "state": "content-image"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_gallery-1",
+          "state": "gallery-1"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_gallery-2",
+          "state": "gallery-2"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_outlined",
+          "state": "outlined"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_outlined-content-image",
+          "state": "outlined-content-image"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_outlined-gallery-1",
+          "state": "outlined-gallery-1"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_outlined-gallery-2",
+          "state": "outlined-gallery-2"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle",
+          "state": "title-and-subtitle"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle-content-image",
+          "state": "title-and-subtitle-content-image"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle-gallery-1",
+          "state": "title-and-subtitle-gallery-1"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle-gallery-2",
+          "state": "title-and-subtitle-gallery-2"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle-outlined",
+          "state": "title-and-subtitle-outlined"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle-outlined-content-image",
+          "state": "title-and-subtitle-outlined-content-image"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle-outlined-gallery-1",
+          "state": "title-and-subtitle-outlined-gallery-1"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle-outlined-gallery-2",
+          "state": "title-and-subtitle-outlined-gallery-2"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle",
+          "state": "with-subtitle"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-content-image",
+          "state": "with-subtitle-content-image"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-gallery-1",
+          "state": "with-subtitle-gallery-1"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-gallery-2",
+          "state": "with-subtitle-gallery-2"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-outlined",
+          "state": "with-subtitle-outlined"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-outlined-content-image",
+          "state": "with-subtitle-outlined-content-image"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-outlined-gallery-1",
+          "state": "with-subtitle-outlined-gallery-1"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-outlined-gallery-2",
+          "state": "with-subtitle-outlined-gallery-2"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/ComponentVariantPreviews.kt#ChildRemoteButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93128"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93134",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93329",
+          "state": "icon"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93347",
+          "state": "icon-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:65467",
+          "state": "icon-extra-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:65494",
+          "state": "icon-extra-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:57059",
+          "state": "icon-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:57086",
+          "state": "icon-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/45529:125951",
+          "state": "left"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/45529:125976",
+          "state": "left-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/35239:93088",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon",
+          "state": "icon"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-disabled",
+          "state": "icon-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large",
+          "state": "icon-extra-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large-disabled",
+          "state": "icon-extra-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
+          "state": "icon-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
+          "state": "icon-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_left",
+          "state": "left"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_left-disabled",
+          "state": "left-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/ComponentVariantPreviews.kt#FilledRemoteIconButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:102976"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103029",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:102982",
+          "size": "extra-small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103035",
+          "state": "extra-small-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:102973",
+          "size": "large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103026",
+          "state": "large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:102979",
+          "size": "small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103032",
+          "state": "small-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/34732:102972",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small",
+          "size": "extra-small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small-disabled",
+          "state": "extra-small-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_large",
+          "size": "large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_large-disabled",
+          "state": "large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
+          "size": "small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
+          "state": "small-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/ComponentVariantPreviews.kt#FilledVariantRemoteButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39577:895"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93110",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39577:897",
+          "state": "icon"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93251",
+          "state": "icon-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:65446",
+          "state": "icon-extra-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:65479",
+          "state": "icon-extra-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:57038",
+          "state": "icon-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:57071",
+          "state": "icon-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/45529:125936",
+          "state": "left"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/45529:125961",
+          "state": "left-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/35239:93088",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon",
+          "state": "icon"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-disabled",
+          "state": "icon-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large",
+          "state": "icon-extra-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large-disabled",
+          "state": "icon-extra-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
+          "state": "icon-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
+          "state": "icon-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_left",
+          "state": "left"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_left-disabled",
+          "state": "left-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/ComponentVariantPreviews.kt#FilledVariantRemoteIconButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52153"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52235",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52157",
+          "size": "extra-small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52239",
+          "state": "extra-small-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52151",
+          "size": "large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52233",
+          "state": "large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52155",
+          "size": "small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/41409:52237",
+          "state": "small-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/34732:102972",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small",
+          "size": "extra-small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small-disabled",
+          "state": "extra-small-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_large",
+          "size": "large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_large-disabled",
+          "state": "large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
+          "size": "small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
+          "state": "small-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/ComponentVariantPreviews.kt#HorizontalPageIndicatorRemote",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38684:138301"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38684:138312",
+          "state": "five-pages"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/47507:108439",
+          "state": "many-pages"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/47507:108577",
+          "state": "many-pages-end"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38684:138356",
+          "state": "many-pages-middle"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38684:138341",
+          "state": "six-pages"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38684:138390",
+          "state": "six-pages-end"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/47507:108304",
+          "state": "six-pages-middle"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38684:137918",
+          "state": "three-pages"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38682:86524",
+          "state": "two-pages"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/38684:137917",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_five-pages",
+          "state": "five-pages"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_many-pages",
+          "state": "many-pages"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_many-pages-end",
+          "state": "many-pages-end"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_many-pages-middle",
+          "state": "many-pages-middle"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_six-pages",
+          "state": "six-pages"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_six-pages-end",
+          "state": "six-pages-end"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_six-pages-middle",
+          "state": "six-pages-middle"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_three-pages",
+          "state": "three-pages"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_two-pages",
+          "state": "two-pages"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/ComponentVariantPreviews.kt#ImageBackgroundRemoteButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38425:101029"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38425:101046",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38425:101037",
+          "state": "secondary-label"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38425:101055",
+          "state": "secondary-label-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/38425:101028",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ImageBackgroundRemoteButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ImageBackgroundRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ImageBackgroundRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_secondary-label",
+          "state": "secondary-label"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ImageBackgroundRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_secondary-label-disabled",
+          "state": "secondary-label-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/ComponentVariantPreviews.kt#OutlinedRemoteIconButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103002"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103055",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103008",
+          "size": "extra-small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103061",
+          "state": "extra-small-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:102999",
+          "size": "large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103052",
+          "state": "large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103005",
+          "size": "small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103058",
+          "state": "small-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/34732:102972",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small",
+          "size": "extra-small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small-disabled",
+          "state": "extra-small-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_large",
+          "size": "large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_large-disabled",
+          "state": "large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
+          "size": "small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
+          "state": "small-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/ComponentVariantPreviews.kt#TonalRemoteButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93104"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39577:36594",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/35239:93233",
+          "state": "icon"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/39577:36596",
+          "state": "icon-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:65453",
+          "state": "icon-extra-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:65484",
+          "state": "icon-extra-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:57045",
+          "state": "icon-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48689:57076",
+          "state": "icon-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/45529:125941",
+          "state": "left"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/45529:125966",
+          "state": "left-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/35239:93088",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon",
+          "state": "icon"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-disabled",
+          "state": "icon-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large",
+          "state": "icon-extra-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large-disabled",
+          "state": "icon-extra-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
+          "state": "icon-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
+          "state": "icon-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_left",
+          "state": "left"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_left-disabled",
+          "state": "left-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/ComponentVariantPreviews.kt#TonalRemoteIconButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:102989"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103042",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:102995",
+          "size": "extra-small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103048",
+          "state": "extra-small-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:102986",
+          "size": "large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103039",
+          "state": "large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:102992",
+          "size": "small"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/34732:103045",
+          "state": "small-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/34732:102972",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small",
+          "size": "extra-small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small-disabled",
+          "state": "extra-small-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_large",
+          "size": "large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_large-disabled",
+          "state": "large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
+          "size": "small"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
+          "state": "small-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/ComponentVariantPreviews.kt#VerticalPageIndicatorRemote",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:402"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:413",
+          "state": "five-pages"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:486",
+          "state": "left"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:497",
+          "state": "left-five-pages"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/47507:108444",
+          "state": "left-many-pages"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/47507:108581",
+          "state": "left-many-pages-end"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:525",
+          "state": "left-many-pages-middle"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:540",
+          "state": "left-six-pages"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:510",
+          "state": "left-six-pages-end"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/47507:108309",
+          "state": "left-six-pages-middle"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:477",
+          "state": "left-three-pages"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:471",
+          "state": "left-two-pages"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/47507:108442",
+          "state": "many-pages"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/47507:108579",
+          "state": "many-pages-end"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:441",
+          "state": "many-pages-middle"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:456",
+          "state": "six-pages"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:426",
+          "state": "six-pages-end"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/47507:108307",
+          "state": "six-pages-middle"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:393",
+          "state": "three-pages"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38966:387",
+          "state": "two-pages"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/38684:137917",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_five-pages",
+          "state": "five-pages"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left",
+          "state": "left"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-five-pages",
+          "state": "left-five-pages"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-many-pages",
+          "state": "left-many-pages"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-many-pages-end",
+          "state": "left-many-pages-end"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-many-pages-middle",
+          "state": "left-many-pages-middle"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-six-pages",
+          "state": "left-six-pages"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-six-pages-end",
+          "state": "left-six-pages-end"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-six-pages-middle",
+          "state": "left-six-pages-middle"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-three-pages",
+          "state": "left-three-pages"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-two-pages",
+          "state": "left-two-pages"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_many-pages",
+          "state": "many-pages"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_many-pages-end",
+          "state": "many-pages-end"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_many-pages-middle",
+          "state": "many-pages-middle"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_six-pages",
+          "state": "six-pages"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_six-pages-end",
+          "state": "six-pages-end"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_six-pages-middle",
+          "state": "six-pages-middle"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_three-pages",
+          "state": "three-pages"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_two-pages",
+          "state": "two-pages"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/ListHeaderPreviews.kt#ListHeaderRemote",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38977:66978"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48563:243254",
+          "state": "left-aligned"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/38977:66977",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ListHeaderPreviewsKt.ListHeaderRemote_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ListHeaderPreviewsKt.ListHeaderRemote_width=227dp,height=100dp,dpi=320_VARIANT_left-aligned",
+          "state": "left-aligned"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/ListHeaderPreviews.kt#ListSubHeaderRemote",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38977:66983"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/48064:200804",
+          "state": "centred"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/38977:66985",
+          "state": "icon"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/38977:66982",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ListHeaderPreviewsKt.ListSubHeaderRemote_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ListHeaderPreviewsKt.ListSubHeaderRemote_width=227dp,height=100dp,dpi=320_VARIANT_centred",
+          "state": "centred"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ListHeaderPreviewsKt.ListSubHeaderRemote_width=227dp,height=100dp,dpi=320_VARIANT_icon",
+          "state": "icon"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/LoadingButtonPreviews.kt#LoadingRemoteButton",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155116"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155174",
+          "state": "child"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155286",
+          "state": "child-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155188",
+          "state": "child-icon-extra-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155296",
+          "state": "child-icon-extra-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155181",
+          "state": "child-icon-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155291",
+          "state": "child-icon-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155245",
+          "state": "disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/71581:108278",
+          "state": "icon-extra-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155255",
+          "state": "icon-extra-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/71581:108293",
+          "state": "icon-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155250",
+          "state": "icon-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155145",
+          "state": "outlined"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155266",
+          "state": "outlined-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155159",
+          "state": "outlined-icon-extra-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155276",
+          "state": "outlined-icon-extra-large-disabled"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155152",
+          "state": "outlined-icon-large"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/68333:155271",
+          "state": "outlined-icon-large-disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/68333:155055",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child",
+          "state": "child"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-disabled",
+          "state": "child-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-extra-large",
+          "state": "child-icon-extra-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-extra-large-disabled",
+          "state": "child-icon-extra-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-large",
+          "state": "child-icon-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-large-disabled",
+          "state": "child-icon-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "state": "disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large",
+          "state": "icon-extra-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large-disabled",
+          "state": "icon-extra-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
+          "state": "icon-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
+          "state": "icon-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined",
+          "state": "outlined"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-disabled",
+          "state": "outlined-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-icon-extra-large",
+          "state": "outlined-icon-extra-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-icon-extra-large-disabled",
+          "state": "outlined-icon-extra-large-disabled"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-icon-large",
+          "state": "outlined-icon-large"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-icon-large-disabled",
+          "state": "outlined-icon-large-disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/PositionIndicatorPreviews.kt#LevelRailRemote",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/46640:262811"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/46813:80262",
+          "state": "disabled"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/46619:47146",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.LevelRailRemote_192dp"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.LevelRailRemote_192dp_VARIANT_disabled",
+          "state": "disabled"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/PositionIndicatorPreviews.kt#ScrollRailRemote",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/44998:18343"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/44998:18471",
+          "state": "bottom"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/44998:18475",
+          "state": "middle"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/44998:18454",
+          "state": "size-40"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/44998:18458",
+          "state": "size-50"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/44998:18463",
+          "state": "size-60"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/44998:18467",
+          "state": "size-70"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/44998:18342",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.ScrollRailRemote_192dp"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.ScrollRailRemote_192dp_VARIANT_bottom",
+          "state": "bottom"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.ScrollRailRemote_192dp_VARIANT_middle",
+          "state": "middle"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.ScrollRailRemote_192dp_VARIANT_size-40",
+          "state": "size-40"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.ScrollRailRemote_192dp_VARIANT_size-50",
+          "state": "size-50"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.ScrollRailRemote_192dp_VARIANT_size-60",
+          "state": "size-60"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.ScrollRailRemote_192dp_VARIANT_size-70",
+          "state": "size-70"
+        }
+      ]
+    },
+    {
+      "code": "remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/ShapePreviews.kt#MaterialShapesRemote",
+      "source": "figma",
+      "ref": [
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176655"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176695",
+          "size": "12-sided cookie"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176699",
+          "size": "4-leaf clover"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176663",
+          "size": "4-sided cookie"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176689",
+          "size": "6-sided cookie"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176691",
+          "size": "7-sided cookie"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176701",
+          "size": "8-leaf clover"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176693",
+          "size": "9-sided cookie"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176661",
+          "size": "arch"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176665",
+          "size": "arrow"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176707",
+          "size": "boom"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176717",
+          "size": "bun"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176705",
+          "size": "burst"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176669",
+          "size": "diamond"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176685",
+          "size": "fan"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176711",
+          "size": "flower"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176673",
+          "size": "gem"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176683",
+          "size": "ghost-ish"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176653",
+          "size": "heart"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176675",
+          "size": "hexagon"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176677",
+          "size": "oval"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176671",
+          "size": "pantagon"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176679",
+          "size": "pill"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176651",
+          "size": "pixel circle"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176715",
+          "size": "pixel triangle"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176719",
+          "size": "puffy"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176713",
+          "size": "puffy diamond"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176667",
+          "size": "semicircle"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176659",
+          "size": "slanted"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176709",
+          "size": "soft boom"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176703",
+          "size": "soft burst"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176657",
+          "size": "square"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176687",
+          "size": "sunny"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176681",
+          "size": "triangle"
+        },
+        {
+          "ref": "figma:B24oss2tTeXAFykyeyusz0/42284:176697",
+          "size": "very sunny"
+        }
+      ],
+      "refSet": "figma:B24oss2tTeXAFykyeyusz0/42284:176650",
+      "previewId": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_12-sided-cookie",
+          "size": "12-sided cookie"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_4-leaf-clover",
+          "size": "4-leaf clover"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_4-sided-cookie",
+          "size": "4-sided cookie"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_6-sided-cookie",
+          "size": "6-sided cookie"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_7-sided-cookie",
+          "size": "7-sided cookie"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_8-leaf-clover",
+          "size": "8-leaf clover"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_9-sided-cookie",
+          "size": "9-sided cookie"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_arch",
+          "size": "arch"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_arrow",
+          "size": "arrow"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_boom",
+          "size": "boom"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_bun",
+          "size": "bun"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_burst",
+          "size": "burst"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_diamond",
+          "size": "diamond"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_fan",
+          "size": "fan"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_flower",
+          "size": "flower"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_gem",
+          "size": "gem"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_ghost-ish",
+          "size": "ghost-ish"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_heart",
+          "size": "heart"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_hexagon",
+          "size": "hexagon"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_oval",
+          "size": "oval"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_pantagon",
+          "size": "pantagon"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_pill",
+          "size": "pill"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_pixel-circle",
+          "size": "pixel circle"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_pixel-triangle",
+          "size": "pixel triangle"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_puffy",
+          "size": "puffy"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_puffy-diamond",
+          "size": "puffy diamond"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_semicircle",
+          "size": "semicircle"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_slanted",
+          "size": "slanted"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_soft-boom",
+          "size": "soft boom"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_soft-burst",
+          "size": "soft burst"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_square",
+          "size": "square"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_sunny",
+          "size": "sunny"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_triangle",
+          "size": "triangle"
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_very-sunny",
+          "size": "very sunny"
+        }
+      ]
+    }
+  ]
+}

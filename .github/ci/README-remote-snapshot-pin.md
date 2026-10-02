@@ -3,7 +3,8 @@
 One androidx.dev build ID, on one line. It is the **published** Remote sheet's artifact line: both
 `design-artifacts.yml` (the `remote-m3` sheet) and `design-parity.yml` (the `remote-m3` board) read
 it into `gradle.properties` as `remoteSnapshot`, which turns on the opt-in snapshot lane described
-in AGENTS.md → Dependencies.
+in [AGENTS.md → Dependencies](../../AGENTS.md#dependencies). It moves only `:remote-catalog`; the
+Wear Compose sheet in yschimke/wear-m3-catalog was never on this lane.
 
 ## Why the file exists rather than a literal in each workflow
 
@@ -14,8 +15,8 @@ things to remember and one commit to get wrong. One file is one edit.
 
 ## Bumping it
 
-Deliberately, in a commit of its own, and read the visual diff — the same rule Compose and
-Horologist follow. Never point it at `latest`: a floating pin redraws the sheet and moves the parity
+Deliberately, in a commit of its own, and read the visual diff — the same rule the Compose group
+follows. Never point it at `latest`: a floating pin redraws the sheet and moves the parity
 verdict several times a day with no commit to explain the change, which is the property that makes a
 published board worth reading.
 

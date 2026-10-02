@@ -21,3 +21,4 @@ __pycache__/
 # `git add -A` after a local parity run would put them in the history for good.
 # See docs/PARITY_LOCAL.md.
 .design-parity/
+.wear-m3-catalog/

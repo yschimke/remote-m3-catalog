@@ -63,13 +63,14 @@
 //   FIGMA_TOKEN=figd_... node scripts/import-figma-pages.mjs --page shape
 //   node scripts/import-figma-pages.mjs --relink [--design-map F] [--require-full-join]
 //
-// ONE CACHE, TWO SHEETS. The node -> code join is a projection of `design-map.json`, and there is
-// exactly one of those per checkout — `:catalog`'s (see `scripts/design-map.sh`). So the COMMITTED
-// join is the Wear sheet's, and the Remote sheet gets its own by relinking against its own
-// projected map inside its publish job (`design-artifacts.yml`, `design-map-command`). Until that
-// happened, `/remote-m3/pages/` carried whatever the publisher could re-derive from
-// component-level references alone: 22 linked nodes out of 1845, against the Wear sheet's 597
-// ([#316](https://github.com/yschimke/wear-m3-catalog/issues/316)).
+// ONE CACHE PER SHEET. The node -> code join is a projection of `design-map.json`, and there is
+// exactly one of those per checkout (see `scripts/design-map.sh`) — here `:remote-catalog`'s, so
+// the COMMITTED join is the Remote sheet's on the released lane. The publish job relinks against
+// the snapshot-lane map it projects (`design-artifacts.yml`, `design-map-command`). Before the
+// split from yschimke/wear-m3-catalog the committed join was the Wear sheet's, and
+// `/remote-m3/pages/` carried whatever the publisher could re-derive from component-level
+// references alone: 22 linked nodes out of 1845
+// ([wear-m3-catalog#316](https://github.com/yschimke/wear-m3-catalog/issues/316)).
 //
 // Reads `design-pages.json` (which pages, and where to write them) and `design-map.json` (the
 // node → code join, itself derived from the `@CatalogComponent(reference = …)` annotations). Writes
@@ -101,7 +102,7 @@ const MAX_NODES = 500;
  * Importing every page changes the arithmetic here. The `Shape` sheet is ~0.8 MB, but the kit's
  * `Buttons` page carries a few thousand component nodes and `Examples` fourteen whole screens, and
  * the cache is *committed* — to this repo and then, on every regeneration, to the
- * `design-artifacts/wear-m3-catalog` delivery branch, whose history is append-only by design. A page
+ * `design-artifacts/remote-m3` delivery branch, whose history is append-only by design. A page
  * nobody can open (the server caps at 500 nodes, so a 3000-node sheet is mostly undrawable anyway)
  * is not worth tens of megabytes in two histories.
  *

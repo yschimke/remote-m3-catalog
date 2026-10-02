@@ -1,59 +1,98 @@
 # Repository instructions for AI agents
 
 Read [README.md](README.md) first — what this repo is and how it is laid out. This file records the
-conventions that are easy to violate by accident. It is the Wear-side sibling of
-[yschimke/m3-catalog](https://github.com/yschimke/m3-catalog) and inherits its rules; where they
-differ, it is because Wear differs.
+conventions that are easy to violate by accident. It is the **Remote Compose** half of what used to
+be one repository: the Wear Compose sheet is [yschimke/wear-m3-catalog][wear], which is itself the
+Wear-side sibling of [yschimke/m3-catalog](https://github.com/yschimke/m3-catalog). This repo
+inherits both their rules; where they differ, it is because Remote Compose differs.
 
-## Two modules, and which one you are in
+[wear]: https://github.com/yschimke/wear-m3-catalog
 
-`:catalog` is the kit rendition (Wear Compose Material 3 + Horologist). `:remote-catalog` is the
-**Remote Compose** rendition of the same surface — every sticker a real `RemoteDocument` rasterised
-by the player. It publishes the `remote-m3` system.
+## One sheet, split from its sibling
 
-- **The alpha line stays in `:remote-catalog`**: `compileSdk 37`, the alpha Remote Compose trio,
-  prerelease Compose UI, **no Compose BOM**, all in its own `dependencies` block. `:catalog` is on the
-  stable BOM. That separation is why there are two modules rather than two source sets; do not
-  "unify" the dependency lines.
+`:remote-catalog` is the **Remote Compose** rendition of the M3 Wear OS Apps Design Kit — every
+sticker a real `RemoteDocument` rasterised by the player. It publishes the `remote-m3` system. The
+kit rendition in Wear Compose Material 3 (`:catalog`, system `wear-m3-catalog`) stayed in
+[yschimke/wear-m3-catalog][wear]; this repository was split out of it with history preserved, so
+`git log` and `git blame` reach back across the split.
+
+What lives here: `remote-catalog/` (the sheet), `remote-catalog-ui-builder-renderer/`,
+`remote-desktop/`, `remote-wasm/`, the vendored AndroidX Remote Compose CMP port under `vendor/`, and
+the three `ui-builder-*-adapters/` modules. The foundation and wear adapters are **copies** — the
+Wear sheet keeps its own for its renderer — while the material adapters moved here outright, since
+only the Remote renderer used them. A change to a copied adapter that the Wear renderer needs too is
+two PRs, one per repository.
+
+- **The Kotlin package stays `ee.schimke.wearm3catalog.remote`.** Preview ids, the committed records
+  and the UI builder's component ids are all keyed on it; renaming it to match the repository moves
+  every published URL and orphans every record. It is deliberate, not an oversight.
+- **The alpha line is the whole point of `:remote-catalog`**: `compileSdk 37`, the alpha Remote
+  Compose trio, prerelease Compose UI, **no Compose BOM**, all in its own `dependencies` block. That
+  line is why the sheets were separate modules and is now why they are separate repositories; do not
+  pull the stable BOM into this module.
 - **The Remote trio moves together.** `compose-remote`, `wear-compose-remote` and `glance-wear` share
   a `remote-creation*` base, and a skewed pair fails inside the player at render time, not compile
   time. Bump all three in one PR and read the visual diff. The snapshot lane is the one deliberate
   exception (see **Dependencies**).
-- **Both catalogs are design-led, and both are in the parity scan.** `design-parity.yml` runs a job
-  per module — `:catalog` publishing `design-parity/main`, `:remote-catalog` publishing
-  `design-parity/remote-m3`. A divergence from the kit is a defect in this code. Where the Remote
-  library genuinely cannot draw what the kit specifies, say so in the caption or KDoc rather than
-  silently rendering something else.
-- **One design map per checkout.** design-parity reads `<repoRoot>/design-map.json` and nothing else,
-  so the two modules cannot each commit one. `scripts/design-map.sh [<module-dir>]` projects the named
-  module into that path; each parity job regenerates it in its own workspace. The committed map is
-  `:catalog`'s — restore it (`git checkout -- design-map.json`) after projecting the Remote one
-  locally. Local-run traps: [docs/PARITY_LOCAL.md](docs/PARITY_LOCAL.md).
-- **Everything projected FROM that map is per-module too, including the page join.** The committed
-  `design/pages/pages.json` is `:catalog`'s; the Remote sheet gets its own via
-  `node scripts/import-figma-pages.mjs --relink` after `scripts/design-map.sh remote-catalog`, in its
-  own publish job. Without it the publisher falls back to component-level `reference`s alone — the base
-  cell of each component and nothing under it — and the sheet reads as unwritten. CI checks the Remote
-  relink reaches its whole map (`--require-full-join`).
-- **The two sheets pair through `parallel`, and `scripts/parallel-map.sh` holds them to it.** A
-  `parallel` naming an id the other sheet does not publish, a pair naming two different kit nodes, and
-  an id both sheets publish with no `parallel` behind it are all silent, and a rename is when they
-  happen. The gate needs both modules discovered; it fails on those three and only REPORTS a cell one
-  sheet draws and the other cannot — that question belongs to `kit-cells.json`.
+- **The catalog is design-led, and it is in the parity scan.** `design-parity.yml` runs one job,
+  publishing `design-parity/remote-m3`. A divergence from the kit is a defect in this code. Where the
+  Remote library genuinely cannot draw what the kit specifies, say so in the caption or KDoc rather
+  than silently rendering something else.
+- **One design map per checkout, and here it is this sheet's.** design-parity reads
+  `<repoRoot>/design-map.json` and nothing else. The committed `design-map.json`,
+  `design-map-variants.json`, `design/pages/pages.json`, `kit-cells.json` and
+  `docs/KIT_COVERAGE.md` all describe `:remote-catalog` on the **released** lane;
+  `scripts/design-map.sh` defaults to `remote-catalog`. Regenerate them only after discovering with
+  `-PremoteSnapshot=` (see **Dependencies**). Local-run traps:
+  [docs/PARITY_LOCAL.md](docs/PARITY_LOCAL.md).
+- **The page join is projected from that map.** `node scripts/import-figma-pages.mjs --relink`
+  rebuilds `design/pages/pages.json` from it. Without it the publisher falls back to component-level
+  `reference`s alone — the base cell of each component and nothing under it — and the sheet reads as
+  unwritten. CI checks the relink reaches the whole map (`--require-full-join`).
+- **Generated output goes to [yschimke/remote-m3-catalog-out](https://github.com/yschimke/remote-m3-catalog-out)**:
+  `design-artifacts/remote-m3`, `design-parity/remote-m3`, `design-parity/reference`,
+  `compose-preview/*`, `snapshot-probe/remote-m3` and `remote-compose-cmp-maven`. No generated branch
+  belongs in this repository. The one thing still read from `yschimke/wear-m3-catalog-out` is the
+  Wear Compose CMP port (`ee.schimke.wearcmp`, branch `wear-compose-cmp-maven`), which only the
+  adapters and the renderer link.
+
+### The cross-repo pairing gate
+
+**The two sheets pair through `parallel`, and every `parallel` is declared on THIS side**, so the
+gate that holds them to it lives here too. A `parallel` naming an id the Wear sheet does not
+publish, a pair naming two different kit nodes, and an id both sheets publish with no `parallel`
+behind it are all silent, and a rename is when they happen. `scripts/parallel-map.sh <wear
+previews.json>` fails on those three and only REPORTS a cell one sheet draws and the other cannot —
+that question belongs to `kit-cells.json`.
+
+The gate needs the Wear sheet discovered, so CI checks out yschimke/wear-m3-catalog at the commit
+pinned in [`.github/ci/wear-m3-catalog-ref`](.github/ci/wear-m3-catalog-ref) into `.wear-m3-catalog/`
+(gitignored), runs `./gradlew -p .wear-m3-catalog :catalog:composePreviewDiscover`, then
+`scripts/parallel-map.sh .wear-m3-catalog/catalog/build/compose-previews/previews.json`. Locally, do
+the same. **The pin is a commit SHA, never `main`**: a gate floating on the other repository's head
+turns this one red for a change nobody here made. Bump it in a commit of its own, and when a pairing
+change spans both repositories, land the Wear side first and bump the pin in the PR that needs it.
+
+[`scripts/component-map.mjs [<wear checkout>]`](scripts/component-map.mjs) draws the same pairing out
+component by component, with renders, as [docs/COMPONENT_MAP.md](docs/COMPONENT_MAP.md) (generated;
+refreshed weekly and after Design Artifacts by `component-map.yml`).
 
 ## Annotation-first is the rule, not a preference
 
-The inventory lives in annotations next to the composables, in **both** modules. **Do not** add a
-`groups` array to `catalog.spec.json` to add, rename or recaption a component — put it on the
-`@CatalogComponent` / `@CatalogVariant`. Both specs are cover-sheet only.
+The inventory lives in annotations next to the composables. **Do not** add a `groups` array to
+`remote-catalog/catalog.spec.json` to add, rename or recaption a component — put it on the
+`@CatalogComponent` (here, its `group =`) / `@OverrideVariant`. The spec is cover-sheet only: system,
+title, libraries, modes, hero, breakpoints, and `compareWith` naming the Wear sheet.
 
-**The two sheets have ONE taxonomy and ONE vocabulary, and both are the kit's and the Wear sheet's
-respectively.** The compare page reads the two columns component by component through `parallel`, so
-an axis that is an **argument** to a function is a cell on both sheets under the **same cell name**,
-and where both draw the same kit node the component id is the same string (`IconButton/Filled`, not
+**The two sheets have ONE taxonomy and ONE vocabulary: the kit's, as the Wear sheet spells it.** The
+compare page reads the two columns component by component through `parallel`, so an axis that is an
+**argument** to a function is a cell on both sheets under the **same cell name**, and where both draw
+the same kit node the component id is the same string (`IconButton/Filled`, not
 `Button/Icon-Filled`). A `parallel` that has to translate the name is a mapping table in disguise; one
 pointing a whole card at somebody else's cell is usually a fold waiting to happen. Keep authoring
-`parallel` even where the ids match — it is what the pairing walks.
+`parallel` even where the ids match — it is what the pairing walks. The taxonomy now spans two
+repositories, so a rename on either side is a coordinated change and the pairing gate is how you find
+out you missed half of it.
 
 **Cell names read `<layout>-<style>-<content/size>`**, each segment dropped when it is the default:
 `icon-outlined-gallery-1`, `with-subtitle-outlined-content-image`, `outlined-icon-only`. The order
@@ -107,7 +146,7 @@ mutating Figma tool, and do not enable design-parity's Code-to-Canvas push-back.
 
 1. **The kit's door.** A component reproducing a published kit set names one exact, renderable kit node
    in its `reference` — **the VARIANT it draws, never the set frame** — and names the set it is a cell
-   of in `referenceSet`. This is the default and the majority.
+   of in `referenceSet`.
 
    **Renderable means it EXPORTS as the component, which is not the same as looking right on the
    canvas.** Check the exported image before mapping a node: a child compositing against its backdrop
@@ -118,72 +157,53 @@ mutating Figma tool, and do not enable design-parity's Code-to-Canvas push-back.
 
    Pointing `reference` at the SET breaks three things silently: parity diffs one 52dp button against a
    1068×928 board, every `@OverrideVariant(kitAxis = …)` cell resolves to nothing for want of a base
-   vector, and the imported kit pages link 33 nodes instead of 181. `referenceSet` is the join key for
-   `kit-sets.json` and `CatalogKitCoverageTest`. See [docs/DESIGN_MAP.md](docs/DESIGN_MAP.md).
-2. **The library's door.** A component of one of the two libraries here that the kit never published as
-   a set enters with `noReference = "<why the kit has none>"`. `ButtonGroup` is the plain case: real
-   API, no kit set. This door is for a **component of a library**, not anything a screen can be built
-   from — app content (the kit's `Avatar-*`) is out, because there is no composable to invoke.
+   vector, and the imported kit pages link a fraction of the nodes they should. `referenceSet` is the
+   join key for `kit-sets.json` and `kit-cells.json`. The Wear sheet's
+   [`docs/DESIGN_MAP.md`](https://github.com/yschimke/wear-m3-catalog/blob/main/docs/DESIGN_MAP.md)
+   explains the projection both sheets share.
+2. **The library's door.** A component of one of the libraries here — `remote-material3`,
+   `remote-creation-compose`, Glance Wear — that the kit never published as a set enters with
+   `noReference = "<why the kit has none>"`. This sheet uses it more than the Wear one, on purpose:
+   document shaders, colour and typography token specimens, downloadable-font axes and the Glance
+   Wear widget host frame document what Remote Compose can do that the kit has no counterpart for. The
+   door is for a **component of a library**, not anything a screen can be built from — app content
+   (the kit's `Avatar-*`) is out, because there is no composable to invoke.
 
-What is NOT allowed is silence. A `@CatalogComponent` with neither fails
-`CatalogInventoryTest.every component is either mapped to the kit or says why not`, so "I forgot to
-look" cannot masquerade as "the kit has nothing". `scripts/design-map.sh` fails the same way before a
-render is attempted, passing `--strict --allow-stated-absence`.
+What is NOT allowed is silence. `scripts/design-map.sh` passes `--strict --allow-stated-absence`, so a
+`@CatalogComponent` with neither a reference nor a `noReference` fails before a render is attempted,
+and "I forgot to look" cannot masquerade as "the kit has nothing".
 
-## Two libraries, and which one a component comes from
-
-**Wear Compose Material 3 is the first library; Horologist is the second.** The kit does not stop at
-what `androidx.wear.compose:compose-material3` publishes — its `Media-Player` set is a whole screen,
-and Wear Compose ships no media player. [Horologist](https://github.com/google/horologist) publishes
-that screen and its parts, plus the sign-in surfaces and the fast-scrolling list. They are in, under
-three rules:
-
-- **The `*-material3` artifacts only.** Horologist still ships its Material 2 line under the
-  un-suffixed names; a sticker drawn from those compares the kit against the wrong design system,
-  silently.
-- **They live under `section = "Horologist"`.** The other sections are the kit's contents pages, and a
-  reader must be able to tell at a glance which library a card's composable comes from. Groups within
-  it: `Media controls`, `Sign-in`, `Fast scrolling`.
-- **Both doors are open, and the kit's door is preferred where the kit can be compared against.** Today
-  none go through it, for three reasons worth keeping apart: the kit has no such set; the only node
-  drawing it is one of the kit's **private** `.Base / Media / …` sets, which the kit walk does not
-  publish; or the set is published but its cell does not export as the component. A `noReference` for
-  either of the last two should name the node it is talking about.
-
-**Composition alone is not a reason to exclude** — what matters is whether *a library* publishes the
-thing as a component you call. Stateful, ViewModel-driven entry points stay out either way:
-`auth-ui-material3`'s `SignInPromptScreen` drives a real auth repository, so a sticker for it would be
-a sticker for a fake; the stateless `auth-composables-material3` half is publishable. Horologist's
-Lottie-animated media buttons stay out because the Robolectric renderer does not resolve a Lottie
-composition.
-
-**Naming is Compose's call.** Ids follow the Wear Compose API surface, because that is what a reader
-greps for. The one hard rule is not to borrow a kit word for something the kit uses differently. Where
-Compose has no name of its own, take the kit's.
+**Naming is Compose's call.** Ids follow the Wear Compose API surface the sheet pairs with, because
+that is what a reader greps for and what `parallel` matches. The one hard rule is not to borrow a kit
+word for something the kit uses differently. Where Compose has no name of its own, take the kit's.
 
 ## The coverage record
 
-[`kit-sets.json`](kit-sets.json) lists **every published set in the kit** with either the components
-that reproduce it or a stated reason it is absent, and `CatalogKitCoverageTest` fails in both
-directions: a set with neither, and an exclusion whose node something now references. The rows come
-from the kit walk in [`figma-refs.yml`](.github/workflows/figma-refs.yml) — re-run it when the kit
-moves and reconcile the file in the same commit. Private sets (names beginning `.`, and each page's
-`Base components`) and the Icons page are out of scope.
+[`kit-sets.json`](kit-sets.json) lists every published set in the kit. The set-level record — which
+components reproduce each set, and `CatalogKitCoverageTest` holding it to the annotations — is the
+Wear sheet's, in [yschimke/wear-m3-catalog][wear]. What this repository's copy carries that matters
+here is each row's `cells.remote-catalog`: **why this sheet falls short of the set's published
+cells.** The rows come from the kit walk in [`figma-refs.yml`](.github/workflows/figma-refs.yml) —
+re-run it when the kit moves and reconcile the file in the same commit. Private sets (names beginning
+`.`, and each page's `Base components`) and the Icons page are out of scope.
 
-**That record works at the level of the SET, and the level below it is where things go missing.**
-[`kit-cells.json`](kit-cells.json) is that missing number, for **both sheets**: per set, how many cells
-the kit publishes, how many each sheet draws, and the kit's own vector for every cell it does not. It
-is an OUTPUT — `scripts/kit-cells.sh` projects it from each module's resolved design map joined to the
-kit index. Do not hand-edit it, and do not re-derive the numerator from the annotations: whether a cell
-resolves is `@design-parity/kit-index`'s judgement. **WHY a sheet falls short is prose, and it goes on
-the `kit-sets.json` row** under `cells`, keyed by sheet — a written reason in a generated file is a
-merge conflict waiting to happen. `KitCellCoverageTest` fails on a gap with no reason and on a reason
-that has outlived its gap.
+**The set level is not where things go missing; the cell level is.** [`kit-cells.json`](kit-cells.json)
+is that number for this sheet: per set, how many cells the kit publishes, how many this sheet draws,
+and the kit's own vector for every cell it does not. It is an OUTPUT — `scripts/kit-cells.sh`
+projects it from the resolved design map joined to the kit index. Do not hand-edit it, and do not
+re-derive the numerator from the annotations: whether a cell resolves is `@design-parity/kit-index`'s
+judgement. **WHY the sheet falls short is prose, and it goes on the `kit-sets.json` row** under
+`cells.remote-catalog` — a written reason in a generated file is a merge conflict waiting to happen.
+`KitCellCoverageTest` fails on a gap with no reason and on a reason that has outlived its gap.
+
+Read the **overlap** figure in [docs/KIT_COVERAGE.md](docs/KIT_COVERAGE.md) rather than the
+whole-kit one: against the whole kit this sheet's percentage measures how many sets it never claimed
+rather than how much of its own work is missing.
 
 **A cell whose API exists is drawn even when the library draws it wrong.** Publishing a blank, or a
 picture identical to its neighbour, puts the defect where a reader meets it and lets a design-led scan
 score it; withdrawing it leaves the set reading as unreproduced, which looks like nobody having got to
-it. `StickerBakeCoverageTest.knownBlank` and the two `knownDuplicate` maps are how such a cell is
+it. `StickerBakeCoverageTest.knownBlank` and `RemoteRenderTest.knownDuplicate` are how such a cell is
 published rather than hidden. Each entry names the call that causes it, and each fails in the other
 direction when the library is fixed — so **re-test a gap held open by a library limitation rather than
 re-reading it.** Withdraw a cell only when there is no API to call at all (`RemoteTitleCard` takes no
@@ -194,48 +214,54 @@ painter argument), never because the result is ugly.
 - **A sticker says what the kit says.** A button the kit labels `Primary label` must not be labelled
   `Filled` — the difference is reported as a difference and, since a sticker is cropped to what it
   draws, it changes the outline too, which gets the reference squashed into the wrong frame. Take every
-  string from [`KitCopy`](catalog/src/main/kotlin/ee/schimke/wearm3catalog/CatalogCopy.kt) through
-  `kitCopy(key, kit)`, never as a literal; where a kit cell truncates its text, the constant is the
-  **full** string. Adding a component means adding its kit strings there, with the node they came from.
-  `Motion.kt` is outside this — its recordings answer to no kit node.
+  string from [`KitCopy`](remote-catalog/src/main/kotlin/ee/schimke/wearm3catalog/remote/CatalogCopy.kt),
+  never as a literal; where a kit cell truncates its text, the constant is the **full** string. Adding
+  a component means adding its kit strings there, with the node they came from.
 - **The reference must be the same SHAPE of artwork as the render.** The kit publishes three kinds of
-  cell and only sizes tell them apart: *component* (`172×52`, `192×59` — pair with `Sticker`), *display*
-  (`192×192` — `FullScreenSticker` on a round device), and *long scroll* (`192×354`…`192×500` — which
-  **nothing here can be diffed against**). Where a set publishes both, as `Dialog` does behind
-  `Scrolling=`, take the display cell.
-- **The FRAME follows the cell, and it is the half that gets forgotten.** The reference is fitted to the
-  render's frame before it is diffed, so the wrong frame lands exactly where the wrong cell does. **A
-  component "feeling" full-screen is not the test; the cell's size is.** So is the *size within* a cell:
-  the kit's four `Edge-Button` sizes are `EdgeButtonSize` plus its 3dp floor (`49=46+3` … `99=96+3`),
-  one-to-one. See [docs/DESIGN_MAP.md](docs/DESIGN_MAP.md).
-- **A full-screen sticker renders at every screen size the kit recognises, and they fold.** The kit
-  enumerates its sizes in `.WatchPuck` — 192, 204, 216, 225 (the breakpoint), 240 — and
-  `CatalogFullScreenModes` draws all five. **192 is the base**, because the kit *draws* every screen
-  cell at 192×192; the rest fold under it as `<dp>dp` cells. **Do not add `id:wearos_large_round`** — it
-  is 227dp, a size the kit does not draw, and rendering there puts a scale difference under every
-  full-screen comparison.
-- One file per component **group**, opening with `@file:CatalogGroup(name = …, section = …)`.
-- Every `@CatalogComponent` carries a `caption`; a test fails the build for one that does not.
-- **Fold variants behind defaults.** A state / content axis is an `@OverrideVariant` cell (or a
-  `@CatalogVariant(of = …)`) under its parent, not a new top-level component. A sheet this size is only
-  browsable because the card count tracks components, not renders.
-- **A cell that turns ONE knob is primary; a CROSSING is `secondary = true`.** Drawing the kit
-  exhaustively puts 89 cells on `SegmentedProgress`, and a component subtree nobody can read is the same
-  failure as a grid nobody can read. **Only the listing changes** — the cell still renders, bakes, keeps
-  its own `/p/` URL and pairs with its kit node. **Never reach for `secondary` to hide a cell that is
-  wrong**; that is a defect, and demoting it only makes it harder to find.
+  cell and only sizes tell them apart: *component* (`172×52`, `192×59`), *display* (`192×192`, the
+  round face whole), and *long scroll* (`192×354`…`192×500` — which **nothing here can be diffed
+  against**). Where a set publishes both, as `Dialog` does behind `Scrolling=`, take the display cell.
+- **The FRAME follows the cell, and it is the half that gets forgotten.** The reference is fitted to
+  the render's frame before it is diffed, so the wrong frame lands exactly where the wrong cell does.
+  A component "feeling" full-screen is not the test; the cell's size is. The frames are the
+  multipreviews in `CatalogTheme.kt`:
+  - `@CatalogRemoteModes` (227×100dp) for a component sticker, `@CatalogRemoteLarge` (227×200dp) for
+    the cards, app card, button group and specimens that need more room. A frame is a *measuring
+    bound*: a width-filling component re-wraps when it changes, so a taller frame is free but a
+    narrower one is not.
+  - `@CatalogRemoteDisplay` for a component the kit draws as a **display cell** — page indicators,
+    the circular progress rail — fanned across the kit's five round sizes (192, 204, 216, 225, 240).
+    **192 is the base**, because the kit draws every display cell at 192×192; the rest fold beneath it
+    under the same names as the Wear sheet. It is the Remote counterpart of the Wear sheet's
+    `FullScreenSticker`. A rail in a squat component frame does not merely sit in too much space, it
+    lays itself out against the wrong edge and shrinks.
+  - `@CatalogRemoteScreen` (227×227dp) for a screen template that paints its own surface. It pins one
+    canvas where the Wear sheet fans its templates across the five sizes, which is why a screen row
+    on the compare page pairs two sizes of the same screen; that is deliberate
+    ([yschimke/wear-m3-catalog#292](https://github.com/yschimke/wear-m3-catalog/issues/292)).
+  - `@CatalogRemoteCanvas` (200×200dp) for a sticker whose content IS the canvas, such as the
+    document shader fill.
+
+  Every frame pins `dpi=320` — **density 2.0**, the scale every Wear render is read at — because a
+  Remote Compose document is authored for a target density and the default is a phone's.
+- **Fold variants behind defaults.** A state / content axis is an `@OverrideVariant` cell under its
+  parent, not a new top-level component. A sheet this size is only browsable because the card count
+  tracks components, not renders.
+- Every `@CatalogComponent` carries a `caption` and a `group`.
+- **A cell that turns ONE knob is primary; a CROSSING is `secondary = true`.** **Only the listing
+  changes** — the cell still renders, bakes, keeps its own `/p/` URL and pairs with its kit node.
+  **Never reach for `secondary` to hide a cell that is wrong**; that is a defect, and demoting it only
+  makes it harder to find.
 
   The line is what a reader BROWSES BY. One knob off the base is a question somebody asks — "what does
-  the disabled one look like", "the pentagon" — so all 35 shape cells and all 14 `Segments=` cells stay
-  primary. Two or more at once is a crossing: nobody navigates to `segments-11-small-stroke-overflow` by
-  name. Count the KNOBS, not the `kitProps` entries — the kit spells one choice as several properties
-  wherever its axes are coupled, and `Button`'s `icon`, `ArcProgressIndicator`'s `overflow`, the toggle
-  buttons' `disabled` and `Date Picker`'s `year-first` are each one choice and stay primary.
+  the disabled one look like", "the pentagon" — so every shape cell stays primary. Two or more at once
+  is a crossing. Count the KNOBS, not the `kitProps` entries — the kit spells one choice as several
+  properties wherever its axes are coupled, and `Button`'s `icon` or the toggle buttons' `disabled` is
+  each one choice and stays primary.
 - **One kit component set is one catalog component — unless the axis is a different function.** A kit
-  variant property folds in as a cell: all 35 shapes are cells of one `Shape/MaterialShapes`. The
-  carve-out is an axis whose values are **separate Wear Compose functions** — `Style=` on the kit's
-  `Button` set is `Button` / `FilledTonalButton` / `OutlinedButton` / `ChildButton`, and `Type=` on
-  `Toggle+Selection-Buttons` is `CheckboxButton` / `SwitchButton` / `RadioButton`. What stays folded is
+  variant property folds in as a cell: all the shapes are cells of one `Shape/MaterialShapes`. The
+  carve-out is an axis whose values are **separate functions** on the side this sheet pairs with —
+  `Style=` on the kit's `Button` set, `Type=` on `Toggle+Selection-Buttons`. What stays folded is
   what is an **argument** to whichever function you picked: `enabled`, size, whether there is an icon,
   split vs whole. The test is the call site, not the word.
 - **A knob per parameter, named after the parameter, and a `previewOverrideChoice` wherever the values
@@ -248,121 +274,72 @@ painter argument), never because the result is ugly.
   value the component does not take.
 
   Knobs are additive — keep each default at what the sticker already rendered, so the baked captures and
-  their kit comparisons do not move. **Check the state a knob feeds is keyed on it**: `remember` and
-  `rememberSaveable` read their initial value once, so a knob wired into one moves nothing in a live
-  session while looking correct in every baked render. Use `remember(knob)` or `key(knob) { … }`.
+  their kit comparisons do not move. **Check the state a knob feeds is keyed on it**: `remember` reads
+  its initial value once, so a knob wired into one moves nothing in a live session while looking
+  correct in every baked render. Use `remember(knob)` or `key(knob) { … }`.
 - **Name the kit's word on the cell, not only in the seed.** `@OverrideVariant(kitAxis = …,
   kitValue = …)` is what lets a Compose-shaped knob (`enabled=false`) resolve against the kit's
   `Disabled=Yes`. Use it by default on a cell whose knob is not already spelled the kit's way. Without
   it the seed must spell what the kit says: `shape=pentagon` resolves to nothing against the kit's
   `Shape=Pantagon` (its own spelling) and drops that node from the comparison with no diagnostic.
-- Component ids are the published sticker's URL and the join key for `@CatalogVariant(of = …)`. Renaming
-  one moves a published URL — do it deliberately.
-- **A live click answers with the component, not with the label.** `counted` returns the label it was
-  given and a live-lane-only handler; the ripple, state layer and pressed shape are what a click is
-  supposed to show. The `(n)` tally is the `clickCount` knob, off by default. See
-  `CatalogInteractive.kt`.
+- Component ids are the published sticker's URL and the join key for `parallel`. Renaming one moves a
+  published URL **and breaks the pairing with the Wear sheet** — do it deliberately, and in both
+  repositories.
+- **A live click answers with the component, not with the label.** `countedRemote` returns a label
+  that only gains its `(n)` tally once a player dispatches a real touch, so the baked capture renders
+  the bare label it always has.
 - **A wrap sticker is cropped tight — no decorative padding in the capture.** design-parity rasterises
   the reference to the *candidate's* width, so 16dp on a 136dp frame is a 12% zoom error plus a top-left
-  offset, and components matching the kit pixel-for-pixel then report ~30% differing. A component that
-  genuinely draws outside its bounds — a shadow, a focus ring — asks with `@CaptureGutter`, which
-  extends the capture without changing what the composable measures. That is for a real gutter only.
-  **A gutter reaches the baked capture and the override-free live render, and not the live daemon render
-  behind a theme or a knob** — `?themeProvider=` and `?knob.` come back cropped to the bare frame
-  ([compose-ai-tools#4822](https://github.com/yschimke/compose-ai-tools/issues/4822)). Fix that there;
-  padding a frame to cover it reinstates the margin this rule took out.
-- **Dark-first, transparent.** A component sticker is a single dark capture on a transparent background
-  (`@CatalogModes`). A component the kit draws on a display cell — scaffolds, lists, dialogs, pickers,
-  swipe-to-reveal — takes `FullScreenSticker` and `@CatalogFullScreenModes` instead.
-- **A display cell the kit exports *transparent* takes `TransparentScreenSticker` and
-  `@CatalogTransparentScreenModes`** — the rails, page indicators, fixed clock, circular progress cell.
-  Same device, clip and fan-out; no fill. Check the reference before choosing: the kit exports most
-  display cells over black. **Both halves are load-bearing** — the black disc has two independent
-  sources, the preview's `showBackground = true, backgroundColor = 0xFF000000` and the
-  `background(colorScheme.background)` the frame paints over it, so changing either alone leaves the
-  render pixel-for-pixel identical.
-- **A control the kit draws across its content column takes `Modifier.kitRowWidth()`.** Wear's `Button`
-  applies no `fillMaxWidth` of its own — `Card`, `Slider` and `Stepper` do — so a button given no width
-  hugs its label and publishes at 120dp against a 172dp kit cell, rescaling the whole comparison.
-  `fillMaxWidth()` is not the fix either: the sandbox is bounded at 227dp, so it resolves to 211dp.
-  Components *supposed* to size to their content — icon buttons, the compact button, the text specimens
-  — must NOT take it.
-- Renders must be **deterministic**: a `TimeText` is pinned to a fixed instant, never the system clock.
-- Every published comparison must invoke the actual named composable. Rebuilding a component from `Box`
-  and its `*Defaults` can make a replica line up, but it cannot test the library. The shape specimens
-  are the documented exception in the other direction: they draw mobile `MaterialShapes` because Wear
-  publishes no shape library of its own (see README).
+  offset, and components matching the kit pixel-for-pixel then report ~30% differing.
+- **Dark-first, transparent.** A component sticker is a single dark capture on a transparent background;
+  the document carries explicit dark-first Material colours. A screen template is the exception: it
+  paints its own surface from the document, not from the preview frame.
+- Renders must be **deterministic**: a clock is pinned to a fixed instant, never the system clock.
+- Every published comparison must invoke the actual named Remote composable. Rebuilding a component
+  from `RemoteBox` and its `*Defaults` can make a replica line up, but it cannot test the library. The
+  shape specimens are the documented exception: they draw mobile `MaterialShapes` because Wear
+  publishes no shape library of its own.
 
 ## Themes
 
-The declared themes in `CatalogThemes.kt` are **not inventory** — no `@CatalogComponent`, no kit node,
-no `kit-sets.json` row. A theme is a re-skin of an existing member.
+The declared themes in `RemoteThemeCatalogs.kt` are **not inventory** — no `@CatalogComponent`, no kit
+node, no `kit-sets.json` row. A theme is a re-skin of an existing member.
 
-- **A sticker frame installs its theme through `CatalogMaterialTheme`, never a bare
-  `MaterialTheme { … }`.** A `@WearThemeCatalog` provider wraps the sticker from the outside and an
-  inner theme silently shadows it: every entry in the switcher then renders identical pixels.
+- **Both sheets declare the SAME theme set.** `RemoteThemeCatalogs.kt` here and `CatalogThemes.kt` in
+  yschimke/wear-m3-catalog publish the same six names in the same two groups, from the same four seeds
+  through the same `materialkolor` recipe — the compare page reads the two columns theme by theme
+  ([yschimke/wear-m3-catalog#99](https://github.com/yschimke/wear-m3-catalog/issues/99)). Add, rename
+  or reseed in **both repositories**. The seeds are duplicated (different dependency lines, no shared
+  constant) and `RemoteCatalogThemeTest` pins the literals, so a one-sided edit fails.
 - **`@WearThemeCatalog`, not the mobile `@ThemeCatalog`.** The mobile one's specimen reads
-  `androidx.compose.material3.MaterialTheme`, which these providers never install, so the sheet reports
-  the mobile baseline instead of the theme. Enforced by `CatalogInventoryTest`.
-- **A theme carries a type scale, not only a palette.** Re-point every role explicitly:
-  `Typography(defaultFontFamily = …)` is a no-op on Wear, since every stock role already declares a
-  family.
+  `androidx.compose.material3.MaterialTheme`, which these providers never install.
 - **Reproduce a borrowed theme by its recipe, not its output.** The Confetti palettes run the same seed
   through the same library Confetti uses; a transcribed role table drifts the first time either side
   moves.
-- **Both modules declare the SAME theme set.** `CatalogThemes.kt` and
-  `remote-catalog/…/RemoteThemeCatalogs.kt` publish the same six names in the same two groups, from the
-  same four seeds through the same `materialkolor` recipe — the compare page reads the two columns theme
-  by theme. Add, rename or reseed in **both**, in one PR. The seeds are duplicated (different dependency
-  lines, no shared constant) and each side's test pins the literals, so a one-sided edit fails the
-  other.
 - **What a Remote theme can carry is narrower, and that is not a licence to diverge.** A recorded
-  document is re-themed by overriding named colour state (`USER:WearM3.<role>`), so the Remote side
+  document is re-themed by overriding named colour state (`USER:WearM3.<role>`), so this sheet
   publishes a theme's *colours* mapped onto those 29 roles and its *faces* as data for a player lane to
   resolve — never a `Typography`. Same names, same palettes; only the mechanism differs.
 
 ## Motion
 
-`Motion.kt` carries the recordings, and they are **outside the component inventory** on purpose — no
-`@CatalogComponent`, so they answer to no kit node and change no taxonomy.
-
 - **Do not put `@AnimatedPreview` on a component that has cells.** It rides every `@OverrideVariant`
   too, and the animated path does not apply a cell's knobs — the cells come out as byte-identical copies
   of the base recording under different names.
-- **Pin the canvas.** A motion capture needs `widthDp` AND `heightDp`; an unpinned capture fails with
+- **Pin the canvas.** A motion capture needs a fixed width AND height; an unpinned capture fails with
   "produced no GIF".
-- **`@InteractionPreview` is the right tool when the motion IS the press.** It dispatches a real pointer
-  at nodes resolved from the live semantics tree, and the Android backend advances the **main looper**
-  per frame — the only way a platform `RippleDrawable` moves at all. A `LaunchedEffect` is still correct
-  where there is no finger: a spinner, a shimmer, a switch shown resolving both ways.
-- **A press is not automatically recordable — measure before claiming it is.** Two Horologist transport
-  rows, same annotation, same targets: `PodcastControlButtons` opts its side buttons into
-  `ButtonGroupScope.animateWidth` and gives 111 pixel-distinct frames of 178; `MediaControlButtons`
-  never calls it and gives **1 of 178**.
-- **A STILL of a time-driven reveal takes `@SettledPreview`, and nothing else does.** A component whose
-  content arrives on a `LaunchedEffect` or a tween captures as its FIRST frame without one. The
-  annotation advances the paused clock until the composition stops changing, then captures. Not for a
-  **spinner** (an `InfiniteTransition` never quiesces, so it burns the budget and captures an arbitrary
-  phase — those keep their `still_changing` warning;
-  [compose-ai-tools#4829](https://github.com/yschimke/compose-ai-tools/issues/4829)), and not for a
-  **scroll** (`@ScrollingPreview(END)` is for a component a scroll actually moves).
-- **A placeholder only animates under an `AppScaffold`.** `PlaceholderState` reads its frame clock from
-  the library's internal `AnimationCoordinator`, and `AppScaffold` is the one thing in Wear Compose
-  composing that coordinator's looper. `AnimatedSticker` is that scaffold and nothing else.
-
-A recording must actually move: `CatalogRenderTest` fails a GIF with fewer than six distinct frames. If
-a component does not animate under this renderer, publish no recording rather than one that implies
-motion nobody would see — but rule out a missing wrapper first.
+- A recording must actually move. If a component does not animate under this renderer, publish no
+  recording rather than one that implies motion nobody would see.
 
 ## The catalog over MCP
 
 `.mcp.json` registers the hosted catalog server (`compose-preview-catalog`,
 `POST https://preview.coo.ee/mcp`) for every agent that reads project-scoped MCP config.
 
-- **Default to this repository's own catalogs**, and pick the one matching the module you are in:
-  `wear-m3-catalog` is `:catalog`, `remote-m3` is `:remote-catalog`. The endpoint is the aggregate one
-  deliberately — `m3-catalog` and the app catalogs stay reachable for a cross-catalog comparison. Reach
-  for a neighbour on purpose, not by leaving the `catalog` argument off.
+- **Default to this repository's own catalog**, `remote-m3`. The endpoint is the aggregate one
+  deliberately — `wear-m3-catalog` (the paired Wear sheet), `m3-catalog` and the app catalogs stay
+  reachable for a cross-catalog comparison. Reach for a neighbour on purpose, not by leaving the
+  `catalog` argument off.
 - **No credential is committed, and none may be.** The file passes
   `X-Compose-Preview-Token: ${COMPOSE_PREVIEW_TOKEN:-}`, so a session exporting a grant token uses it and
   one that does not sends an empty header. Reading a catalog needs a short-lived grant; `initialize`,
@@ -403,6 +380,10 @@ two origin checks, two body caps and two places to drift about what a grant mean
 - **The tools are absent unless the box serves a builder** (`--ui-builder-dir`) — absent rather than
   listed-and-failing. `tools/list` needs no grant, so checking costs one unauthenticated call.
 
+The `remote-m3` builder has three rendering surfaces that must not be collapsed into one; see
+[docs/design/REMOTE_M3_UI_BUILDER.md](docs/design/REMOTE_M3_UI_BUILDER.md). Its template designs and
+their round-trip gate: [docs/UI_BUILDER_TEMPLATES.md](docs/UI_BUILDER_TEMPLATES.md).
+
 ## Running Gradle
 
 Wrap Gradle in [`build-brief`](https://bb.staticvar.dev). It keeps the full log on disk and prints
@@ -415,8 +396,8 @@ On a shared developer host, automated builds use [`scripts/agent-gradle.sh`](scr
 instead of invoking `build-brief` directly:
 
 ```
-scripts/agent-gradle.sh :catalog:composePreviewDiscover
-scripts/agent-gradle.sh --exclusive :catalog:assemble :catalog-desktop:composePreviewDiscover :remote-catalog:assembleDebug test
+scripts/agent-gradle.sh :remote-catalog:composePreviewDiscover -PremoteSnapshot=
+scripts/agent-gradle.sh --exclusive :remote-catalog:assembleDebug :remote-catalog:composePreviewDiscover test
 ```
 
 The launcher keeps `build-brief` while limiting automation to four low-priority workers,
@@ -445,6 +426,10 @@ Wrapping changes none of the verification rules below; run the same tasks throug
   `agent/…`.
 - Conventional commit subjects (`feat:`, `fix:`, `docs:`, `chore:`). The squash commit is built from the
   **PR title**, so write the PR title as the commit subject.
+- **Qualify issue references from before the split.** Issue and PR numbers in older commits, comments
+  and docs are yschimke/wear-m3-catalog's; a bare `#158` here links to the wrong repository. Write
+  `yschimke/wear-m3-catalog#158` or a full link. Pre-split `remote-m3` issues stay there, and
+  `parity-issues.yml` reads both repositories.
 - **Never attribute a commit to an AI agent** — no `Co-authored-by:` trailer naming an agent, and no
   agent author/committer identity. Links to an agent session and the `_Generated by [Claude Code]_`
   footer are fine; they don't claim authorship. Enforced by one detector
@@ -479,10 +464,10 @@ Wrapping changes none of the verification rules below; run the same tasks throug
 
   This costs nothing, because every published render already has a twin on its delivery branch:
 
-  | `preview.coo.ee` | `raw.githubusercontent.com/yschimke/wear-m3-catalog` |
+  | `preview.coo.ee` | `raw.githubusercontent.com/yschimke/remote-m3-catalog-out` |
   | --- | --- |
-  | `/<system>/render/<component>__<rest>.png` | `/design-artifacts/<system>/images/<component>/<rest>.png` |
-  | `/<system>/reference/<id>.png` | `/design-artifacts/<system>/references/<id>.png` |
+  | `/remote-m3/render/<component>__<rest>.png` | `/design-artifacts/remote-m3/images/<component>/<rest>.png` |
+  | `/remote-m3/reference/<id>.png` | `/design-artifacts/remote-m3/references/<id>.png` |
 
   Split a render id on its **first** `__` and the head is the directory:
   `appcard__ideal__outlined__compact` is `images/appcard/ideal__outlined__compact.png`. A reference keeps
@@ -502,27 +487,30 @@ Wrapping changes none of the verification rules below; run the same tasks throug
 
 - **Renovate owns the version bumps; don't hand-bump.** `.github/renovate.json` automerges anything that
   is not a major once CI is green. Change the config instead when the policy is wrong.
-- Three groups are deliberately **not** automerged: **majors**, **Compose** (Wear Compose plus the
-  mobile BOM and the material3 pin), and **Horologist**. All change what the catalog renders, and the
-  render is the product — a human reads the visual diff before it lands. Horologist ships as one release
-  (a skew is a compile error) and only its `*-material3` artifacts are dependencies here.
+- Two groups are deliberately **not** automerged: **majors** and **Compose** (Compose, Wear Compose
+  and Glance Wear, which carries the Remote trio). Both change what the catalog renders, and the
+  render is the product — a human reads the visual diff before it lands.
 - **The preview coordinates come from two repositories, on two lines.** The plugin marker and the
   pinned CI action ref are compose-ai-tools' (`composePreviewCore`) and must not skew — a skew breaks
   preview discovery outright. `preview-annotations`, `data-preview-overrides-runtime` and
   `data-remotecompose-connector` publish from compose-preview-daemon (`composePreviewDaemon`) on a
-  line of their own since compose-ai-tools#5336. Two refs and two Renovate groups; pinning both to
-  one ref took `main` red at configuration time when the two lines still shared a repository. Note
-  that a GitHub release tag exists for every version a line publishes, so a tag can resolve as an
-  ACTION ref while the plugin at that version does not exist on Central.
+  line of their own since
+  [compose-ai-tools#5336](https://github.com/yschimke/compose-ai-tools/issues/5336). Two refs and two
+  Renovate groups; pinning both to one ref took `main` red at configuration time when the two lines
+  still shared a repository. Note that a GitHub release tag exists for every version a line
+  publishes, so a tag can resolve as an ACTION ref while the plugin at that version does not exist on
+  Central.
 - **The alpha Remote line is watched, not bumped.** `remote-snapshot-probe.yml` builds
-  `:remote-catalog` against the newest androidx.dev snapshot every Monday and comments on
-  [#95](https://github.com/yschimke/wear-m3-catalog/issues/95) only when the picture moves. Its overlay
-  is applied to the runner's checkout and thrown away; state lives on `snapshot-probe/remote-m3`. **A
-  snapshot pin must never change what the BUILD resolves** — `gradle/libs.versions.toml` stays on
-  released alphas, and `:catalog` stays outside the lane entirely.
+  `:remote-catalog` against the newest androidx.dev snapshot every Monday and comments on its
+  tracking issue only when the picture moves. That issue was
+  [yschimke/wear-m3-catalog#95](https://github.com/yschimke/wear-m3-catalog/issues/95) before the
+  split; `TRACKING_ISSUE` stays empty, and the report goes to the job summary only, until one is filed
+  here. Its overlay is applied to the runner's checkout and thrown away; state lives on
+  `snapshot-probe/remote-m3` in the output repository. **A snapshot pin must never change what the
+  BUILD resolves** — `gradle/libs.versions.toml` stays on released alphas.
 - **The snapshot LANE is selected by a FILE, not a flag.** `.github/ci/remote-snapshot-pin` — one line,
-  an androidx.dev build id or `latest` — repoints `:remote-catalog` and only it: `settings.gradle.kts`
-  adds the repository behind a `content` filter admitting the Remote groups and nothing else, and
+  an androidx.dev build id or `latest` — repoints `:remote-catalog`: `settings.gradle.kts` adds the
+  repository behind a `content` filter admitting the Remote groups and nothing else, and
   `remote-catalog/build.gradle.kts` applies the `1.0.0-SNAPSHOT` substitution to that module's own
   configurations. Both read the pin file, with `-PremoteSnapshot=<id>` as a per-invocation override; an
   empty or absent pin is the released line.
@@ -538,18 +526,19 @@ Wrapping changes none of the verification rules below; run the same tasks throug
   `kit-cells.json` and `docs/KIT_COVERAGE.md` are projected from `build/compose-previews/previews.json`,
   and a snapshot-lane run leaves that manifest holding components `main` does not have — regenerating
   then commits a snapshot-only component into a record CI validates on the released lane. Restore it
-  with `./gradlew :catalog:composePreviewDiscover :remote-catalog:composePreviewDiscover` and
-  `-PremoteSnapshot=` — an EMPTY property, passed explicitly, because the pin file is on by default.
+  with `./gradlew :remote-catalog:composePreviewDiscover -PremoteSnapshot=` — an EMPTY property,
+  passed explicitly, because the pin file is on by default.
 - **The published `remote-m3` SHEET and BOARD are both drawn on the SNAPSHOT lane**, at the one pinned
-  build id, read by `design-artifacts.yml` (the sheet) and `design-parity.yml` (the board). The Remote
-  sheet reproduces a kit whose components `remote-material3` has only just begun publishing, so a sheet
+  build id, read by `design-artifacts.yml` (the sheet) and `design-parity.yml` (the board). The sheet
+  reproduces a kit whose components `remote-material3` has only just begun publishing, so a sheet
   restricted to the released line would report those kit sets as undrawn for as long as the release
   takes. **The two move together or not at all**: a board scoring a sheet built from different bytes
   makes every difference unattributable, which is why the pin is one file rather than a literal in each.
-  The `wear-m3-catalog` sheet and board are NOT on the lane and must not be. **Pinned, never `latest`**
-  — a floating pin would move the verdict with no commit to explain it. Bump deliberately and read the
-  visual diff; the pin is in the parity job's `cache-paths` so a bump forces a re-render. The cost:
-  neither is reproducible from released artifacts alone, and androidx.dev does not keep builds forever.
+  **Pinned, never `latest`** — a floating pin would move the verdict with no commit to explain it. Bump
+  deliberately and read the visual diff; the pin is in the parity job's `cache-paths` so a bump forces
+  a re-render. The cost: neither is reproducible from released artifacts alone, and androidx.dev does
+  not keep builds forever. See
+  [`.github/ci/README-remote-snapshot-pin.md`](.github/ci/README-remote-snapshot-pin.md).
 - **A component this catalog is WAITING FOR is tracked by SYMBOL, in `AWAITED_API`**
   (`scripts/remote-snapshot-probe.py`). Each entry names the class the library would have to publish,
   what drawing it would unlock, and a link to the upstream change. Watch the SYMBOL, never the change: a
@@ -562,11 +551,16 @@ Wrapping changes none of the verification rules below; run the same tasks throug
   to the old signature, so the widget-container stickers die at RENDER time with `NoSuchMethodError`
   while the build stays green. Compiling is not the check; rendering is.
 - **Published vendored Remote Compose versions are immutable.** The five `vendor/remote-*`
-  artifacts publish as `ee.schimke.remotecompose:*` to GitHub Packages and to the
-  `remote-compose-cmp-maven` branch of `yschimke/wear-m3-catalog-out`, where the Wear port's
-  `wear-compose-cmp-maven` also lives; no generated branch belongs in this repository. Their version comes from `vendor/remote-compose-upstream.json`; any non-test source or
-  module build change must increase `portRevision`. CI enforces this before the publish workflow
-  skips an already-used version.
+  artifacts publish as `ee.schimke.remotecompose:*` to GitHub Packages
+  (`maven.pkg.github.com/yschimke/remote-m3-catalog`) and to the `remote-compose-cmp-maven` branch of
+  `yschimke/remote-m3-catalog-out`. Their version comes from `vendor/remote-compose-upstream.json`;
+  any non-test source or module build change must increase `portRevision`. CI enforces this before
+  the publish workflow skips an already-used version. See [vendor/README.md](vendor/README.md).
+- **Bootstrapping the output repository is ordered.** On an empty `remote-m3-catalog-out`, dispatch
+  `publish-remote-compose.yml` first (the renderer resolves the port from that branch), then
+  `design-parity-import.yml` until the reference cache is complete (parity requires it), then
+  `design-artifacts.yml`. The workflows need two secrets: `ARTIFACTS_TOKEN` (write access to
+  `remote-m3-catalog-out`) and `FIGMA_TOKEN`.
 - Repository settings — squash-only merges, auto-merge, and the `Protect Main` ruleset — are applied by
   `scripts/setup-repo-protection.sh`. They need an admin token, so no workflow or agent session can set
   them; re-running the script repairs drift. `DRY_RUN=1` prints without writing.
@@ -574,18 +568,17 @@ Wrapping changes none of the verification rules below; run the same tasks throug
 ## Verifying a change
 
 ```sh
-./gradlew :catalog:assemble :catalog:composePreviewDiscover \
-          :catalog-desktop:composePreviewDiscover \
-          :remote-catalog:assembleDebug :remote-catalog:composePreviewDiscover \
+./gradlew :remote-catalog:assembleDebug \
+          :remote-catalog:composePreviewDiscover -PremoteSnapshot= \
           test ktfmtCheck
 ```
 
-`:catalog:assemble`, not `assembleDebug`: `:catalog` is a Kotlin Multiplatform module and has no
-`debug` application variant. `assemble` also covers its `desktop` target, which is the point — a
-shared body that reaches for something only Android has should fail here.
-
 `composePreviewDiscover` is the real contract: it turns the annotations into the published inventory. A
-component that compiles but is not discovered vanishes from the sheet silently.
+component that compiles but is not discovered vanishes from the sheet silently. Then the committed
+records (`scripts/design-map.sh --check`, `scripts/kit-cells.sh --check`,
+`node scripts/import-figma-pages.mjs --check`, `node scripts/kit-coverage.mjs --check`) and, for any
+change to an id, a cell name or a `parallel`, the cross-repo pairing gate above against the pinned
+Wear checkout.
 
 <!-- build-brief:instructions:start -->
 ## build-brief

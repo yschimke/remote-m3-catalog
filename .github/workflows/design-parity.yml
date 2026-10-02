@@ -1,7 +1,9 @@
 name: Design parity
 
-# Compare the rendered catalog against the M3 Wear OS Apps Design Kit in Figma and publish the
-# triptych report to the long-lived `design-parity/main` branch.
+# Compare the rendered Remote Compose catalog against the M3 Wear OS Apps Design Kit in Figma and
+# publish the triptych report to the long-lived `design-parity/remote-m3` branch of the output
+# repository, `yschimke/remote-m3-catalog-out`. The Wear sheet's board (`design-parity/main`) is
+# published by yschimke/wear-m3-catalog.
 #
 # The direction is **design-led** (`.design-parity.json`): this catalog exists to reproduce the
 # published kit, so the kit is authoritative and a divergence is a bug in this code. That has teeth
@@ -12,19 +14,9 @@ name: Design parity
 # apply the verdict — lives in design-parity's reusable workflow. This file is the configuration,
 # not a copy of the pipeline.
 #
-# Runs on push to main and weekly, now that this catalog projects a non-empty design-map.json.
-#
-# It could not, for as long as the map projector paired a component's reference with its `_Light`
-# capture: a Wear sticker is a single DARK capture, so nothing paired and the projection came back
-# `0 mapped component(s)`. That is not a skip — design-parity dies on `no components: pass
-# --components, or commit a design-map.json with entries` — so the workflow was dispatch-only to
-# keep a known upstream gap from painting a red X on every push. The fallback to a catalog's sole
-# capture landed upstream in `@yschimke/compose-design-map` v1.16.0
-# (yschimke/compose-ai-tools#4196), and `design-map.json` is now committed: 49 components, 182
-# references, 133 of them resolved onto the kit's own variant nodes. See docs/DESIGN_MAP.md.
-#
-# The remaining prerequisite is a `FIGMA_TOKEN` repository secret — a read-only PAT with
-# `file_content:read`. That one makes the run skip with a notice rather than fail while absent.
+# Needs two repository secrets: `FIGMA_TOKEN` (a read-only PAT with `file_content:read`) and
+# `ARTIFACTS_TOKEN` (write access to `yschimke/remote-m3-catalog-out`). A missing `FIGMA_TOKEN`
+# makes the run skip with a notice rather than fail.
 
 # Scheduled, NOT per-push — and that is a throughput fact, not a preference.
 #
@@ -86,9 +78,9 @@ permissions: {}
 
 # ONE run at a time, and every one of them finishes.
 #
-# The group stays global on purpose: the jobs append their regenerated boards to
-# `design-parity/main` and `design-parity/remote-m3`, so two runs publishing at
-# once would race on the same branches. Serialising them is right, and
+# The group stays global on purpose: the job appends its regenerated board to
+# `design-parity/remote-m3`, so two runs publishing at once would race on the
+# same branch. Serialising them is right, and
 # `cancel-in-progress: false` is what keeps a run that has already paid for its
 # render from being thrown away — the same shape `design-artifacts.yml` uses,
 # for the same reason.
@@ -107,97 +99,43 @@ concurrency:
 jobs:
   parity:
     name: Design parity
-    if: ${{ github.repository == 'yschimke/wear-m3-catalog' }}
-    uses: yschimke/design-parity/.github/workflows/design-parity-reusable.yml@main
-    permissions:
-      contents: write # publish the regenerated artifacts to design-parity/main
-    with:
-      module: ':catalog'
-      publication-repository: yschimke/wear-m3-catalog-out
-
-      # Skip the run outright when nothing that feeds the comparison has moved: the module itself,
-      # the version catalog the renderer is pinned from, and the build files that assemble them.
-      cache-paths: catalog gradle build.gradle.kts settings.gradle.kts
-
-      force-refresh: ${{ github.event.schedule == '0 5 * * 1' }}
-      design-parity-ref: ${{ inputs.design_parity_ref || '' }}
-
-      # RED HERE MEANS BROKEN, not "the catalog still diverges".
-      #
-      # This workflow runs on `schedule` and `workflow_dispatch` only, so it gates nothing: there is
-      # no PR for a blocking verdict to hold back. What blocking bought instead was a run that fails
-      # on EVERY execution — the catalog is design-led and does still diverge, so the run rendered,
-      # compared, published its board, and then exited 1 by design
-      # ([#145](https://github.com/yschimke/wear-m3-catalog/issues/145)).
-      #
-      # A signal that is always red carries no information. Nobody could tell a render crash, a lost
-      # reference cache or an expired token from the steady state without opening the log, so a real
-      # breakage arrived looking exactly like every other run and read as more of the same.
-      #
-      # The verdict is not discarded. It lands on the job summary, as a warning annotation, and in
-      # the reusable workflow's `blocked` output (yschimke/design-parity#430). What it no longer
-      # does is own this job's colour. Where a divergence SHOULD gate — a pull request — leave the
-      # default `true`.
-      block-on-verdict: false
-
-      # The daily import workflow owns all Figma traffic and commits a versioned, carry-forward
-      # cache here. Ordinary parity runs are cache-only: no per-push API burst.
-      reference-cache-branch: design-parity/reference
-
-      shards: 1
-
-      # Writes `catalog/build/compose-previews/previews.json` and projects design-map.json out of
-      # it.
-      design-map-command: >
-        ./gradlew :catalog:composePreviewDiscover --stacktrace &&
-        scripts/design-map.sh
-
-      render-timeout: 1800
-      timeout-minutes: 60
-    secrets:
-      figma-token: ${{ secrets.FIGMA_TOKEN }}
-      publication-token: ${{ secrets.ARTIFACTS_TOKEN }}
-
-  remote:
-    name: Design parity (remote-m3)
-    if: ${{ github.repository == 'yschimke/wear-m3-catalog' }}
+    if: ${{ github.repository == 'yschimke/remote-m3-catalog' }}
     uses: yschimke/design-parity/.github/workflows/design-parity-reusable.yml@main
     permissions:
       contents: write # publish the regenerated artifacts to design-parity/remote-m3
     with:
       module: ':remote-catalog'
-      publication-repository: yschimke/wear-m3-catalog-out
+      publication-repository: yschimke/remote-m3-catalog-out
 
-      # Same policy as the job above, deliberately. `.design-parity.json` is repo-wide and says
-      # `design-led`, so a divergence from the kit is a defect in this code — for the Remote
-      # rendition too. That is the honest setting while the two sheets reproduce the same kit: a
-      # Remote component that cannot draw what the kit specifies says so in its caption or KDoc,
-      # which is the same rule `:catalog` follows for a Wear Compose gap.
-      # `.github/ci/remote-snapshot-pin` is in the list for THIS job only, and it is the snapshot
-      # switch below that puts it there. The gate asks "did any input move"; the pin decides what
-      # this board is built from, so without it a bump would change the artifacts and the gate would
-      # still re-apply the cached verdict. The `:catalog` job is not on the lane and does not need
-      # the entry.
+      # `.design-parity.json` says `design-led`, so a divergence from the kit is a defect in this
+      # code. A Remote component that cannot draw what the kit specifies says so in its caption or
+      # KDoc, which is the same rule the Wear sheet follows for a Wear Compose gap.
+      #
+      # Skip the run outright when nothing that feeds the comparison has moved.
+      # `.github/ci/remote-snapshot-pin` is in the list because of the snapshot switch below: the
+      # gate asks "did any input move"; the pin decides what this board is built from, so without it
+      # a bump would change the artifacts and the gate would still re-apply the cached verdict.
       cache-paths: remote-catalog gradle build.gradle.kts settings.gradle.kts .github/ci/remote-snapshot-pin
 
       force-refresh: ${{ github.event.schedule == '0 5 * * 1' }}
       design-parity-ref: ${{ inputs.design_parity_ref || '' }}
       reference-cache-branch: design-parity/reference
 
-      # Same reasoning as the job above, and this half needs it more: its verdict is usually the
-      # CACHED one, re-applied because nothing moved since a run that already blocked. That path
-      # failed in 0 seconds without rendering anything, which is the least informative red there is.
+      # RED HERE MEANS BROKEN, not "the catalog still diverges". This runs on `schedule` and
+      # `workflow_dispatch` only, so it gates nothing, and the catalog is design-led and does still
+      # diverge — a blocking verdict made every run red by design, and usually with the CACHED
+      # verdict, re-applied in 0 seconds without rendering anything. The verdict still lands on the
+      # job summary, as a warning annotation, and in the reusable workflow's `blocked` output.
       block-on-verdict: false
 
-      # A branch of its own. The job above publishes `design-parity/main`; two boards on one branch
-      # would each look like the other had gone stale.
+      # A branch of its own, kept from when both sheets published to one output repository: the
+      # Wear sheet's board is `design-parity/main`, and this name is what preview.coo.ee links.
       artifact-branch: design-parity/remote-m3
 
       shards: 1
 
-      # Projects the map for THIS module into ./design-map.json, which is the only path the action
-      # reads (see scripts/design-map.sh). Safe because this job has its own workspace: the root map
-      # committed for `:catalog` is regenerated here and never committed back.
+      # Projects the map into ./design-map.json, which is the only path the action reads (see
+      # scripts/design-map.sh). It is regenerated here on the snapshot lane and never committed back.
       # ── THIS BOARD IS BUILT ON THE SNAPSHOT LANE ───────────────────────────────────────────
       # Deliberate, and the one place in this repo where a published artifact is drawn with
       # unreleased code. The Remote sheet reproduces a kit whose components `remote-material3` has

@@ -32,5 +32,5 @@ jobs:
         with:
           phase: publish
           pr-number: ${{ steps.pr.outputs.number }}
-          artifact-repository: yschimke/wear-m3-catalog-out
+          artifact-repository: yschimke/remote-m3-catalog-out
           artifacts-token: ${{ secrets.ARTIFACTS_TOKEN }}

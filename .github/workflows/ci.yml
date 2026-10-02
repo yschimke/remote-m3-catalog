@@ -91,7 +91,7 @@ jobs:
     name: Build + discover previews
     needs: changes
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     # `issues: read` for the locator check at the end of this job; everything else reads the tree.
     permissions:
       contents: read
@@ -111,153 +111,100 @@ jobs:
         if: needs.changes.outputs.inert != 'true' && github.event_name == 'pull_request'
         run: .github/scripts/check-remote-compose-port-revision.sh HEAD^1
 
-      # `:catalog` is a Kotlin Multiplatform module, so it has no `debug` application variant and
-      # no `assembleDebug`: the KMP-Android plugin names its outputs after the target and
-      # compilation (`assembleAndroidMain`). `assemble` covers that AND the `desktop` target, which
-      # is the point of assembling it at all — a shared body that reaches for something only
-      # Android has must fail here rather than in the renderer. `:remote-catalog` is still an
-      # application and keeps `assembleDebug`.
       - name: Assemble
         if: needs.changes.outputs.inert != 'true'
-        run: ./gradlew :catalog:assemble :remote-catalog:assembleDebug --stacktrace
+        run: ./gradlew :remote-catalog:assembleDebug --stacktrace
 
-      # Discovery is the real contract for a design catalog: it is what turns the
-      # `@CatalogComponent` / `@CatalogVariant` / `@OverrideVariant` annotations into the published
-      # inventory. A component that compiles but is not discovered would silently vanish from the
-      # sticker sheet, so run it on every change.
-      # `:remote-catalog` is discovered alongside it for the same reason. Its inventory is still
-      # spec-driven rather than annotation-driven, so discovery is not yet the whole contract there
-      # — but it is what proves every `@Preview` the spec names still exists and still compiles
-      # against the alpha Remote Compose line, which is the half that moves under this repo.
+      # Discovery is the real contract for a design catalog: it is what proves every `@Preview` the
+      # spec names still exists and still compiles against the alpha Remote Compose line, and it
+      # turns the `@CatalogComponent` annotations into the published inventory.
       #
       # `-PremoteSnapshot=` — an EMPTY property — forces the RELEASED lane. It is load-bearing:
       # `.github/ci/remote-snapshot-pin` turns the snapshot lane on by default for every Gradle
       # invocation (see AGENTS.md -> Dependencies), and the records checked below (`design-map.json`,
-      # `kit-cells.json`, `docs/KIT_COVERAGE.md`) are committed and describe the released line. Let
-      # the default through and this manifest holds snapshot-only components, both `--check`s report
-      # stale against a sheet nobody committed, and regenerating at that point would commit those
-      # components into a record CI validates on the released lane.
+      # `kit-cells.json`, `design/pages/pages.json`, `docs/KIT_COVERAGE.md`) are committed and
+      # describe the released line. Let the default through and this manifest holds snapshot-only
+      # components, every `--check` reports stale against a sheet nobody committed, and regenerating
+      # at that point would commit those components into a record CI validates on the released lane.
       - name: Discover previews
         if: needs.changes.outputs.inert != 'true'
-        run: >-
-          ./gradlew :catalog:composePreviewDiscover :remote-catalog:composePreviewDiscover
-          -PremoteSnapshot= --stacktrace
+        run: ./gradlew :remote-catalog:composePreviewDiscover -PremoteSnapshot= --stacktrace
 
       # design-map.json is an OUTPUT — projected from the annotations that were just discovered —
       # and it is committed, so it can go stale the moment a component is added or a reference is
       # repointed. A stale map is silent in the worst way: parity keeps comparing yesterday's
-      # components and the imported kit pages keep linking to previews that have moved. Checking it
-      # here, in the job that already holds the manifest it is projected from, is the cheapest place
-      # the drift can be caught.
+      # components and the imported kit pages keep linking to previews that have moved.
       #
       # `--check` regenerates into a temp dir and diffs; it never writes the working tree.
-      # `:catalog-desktop` renders `:catalog`'s `commonMain` stickers on the CMP Desktop lane
-      # through `composePreviewSource`. `RenderAll`, not `composePreviewRender`: only the
-      # aggregate carries the missing-render gate, and the bare task writes a `.error.json` beside
-      # each preview it could not draw and still exits 0.
-      #
-      # This gate is what keeps the shared source honest in the way compiling cannot. The desktop
-      # TARGET already compiles in Assemble above; what only a render can catch is a body that
-      # compiles for both lanes and then draws nothing on one of them.
-      - name: Render the desktop sticker sheet
-        if: needs.changes.outputs.inert != 'true'
-        run: ./gradlew :catalog-desktop:composePreviewRenderAll --stacktrace
-
       - name: design-map.json is up to date
         if: needs.changes.outputs.inert != 'true'
         run: scripts/design-map.sh --check
 
-      # kit-cells.json is the same argument one level down. It records how much of each published
-      # kit set each sheet actually DRAWS — the question `kit-sets.json` does not ask, which is how
-      # `:remote-catalog` came to draw 15 of the `Card` set's 45 cells with every test green
-      # (#158). It is projected from both modules' resolved maps, so this is the job that holds its
-      # inputs: both manifests were just discovered above.
-      #
-      # `--check` regenerates into a temp dir and diffs; it never writes the working tree, and it
-      # never touches the committed map that belongs to `:catalog`.
+      # kit-cells.json records how much of each published kit set this sheet actually DRAWS — the
+      # question `kit-sets.json` does not ask, which is how this sheet came to draw 15 of the `Card`
+      # set's 45 cells with every test green (yschimke/wear-m3-catalog#158).
       - name: kit-cells.json is up to date
         if: needs.changes.outputs.inert != 'true'
         run: scripts/kit-cells.sh --check
 
-      # The page join is the third committed output projected from the map, and it was the one with
-      # no gate — which is exactly how it went stale. `design/pages/pages.json` records, per kit
-      # node, the preview that implements it, and the server draws every node it does not know
-      # about with a dashed red outline meaning "no code behind this". Recomputing it needs no
-      # Figma token (it is a pure function of the cache and the map), but nothing re-ran it when
-      # the map moved, so the Cards page reported 7 of 50 nodes implemented while the catalog was
-      # drawing 36 of them. A reader cannot tell that from a real gap, which is the whole
-      # value of the red.
-      #
-      # `--check` recomputes in memory and diffs; it never writes the working tree. A failure names
-      # the one-line fix, and no token is needed to apply it.
+      # The page join is the third committed output projected from the map. `design/pages/pages.json`
+      # records, per kit node, the preview that implements it, and the server draws every node it
+      # does not know about with a dashed red outline meaning "no code behind this". `--check`
+      # recomputes in memory and diffs; it needs no Figma token and never writes the working tree.
       - name: The imported page join is up to date
         if: needs.changes.outputs.inert != 'true'
         run: node scripts/import-figma-pages.mjs --check
 
-      # The join above is `:catalog`'s, because the map it is projected from is — one design map
-      # per checkout, and the committed one belongs to the Wear sheet. The Remote sheet's own join
-      # is projected at publish time (`design-artifacts.yml`, `design-map-command`), so there is no
-      # committed file here to reconcile; what CAN be checked without a second checkout is that
-      # relinking against the Remote map reaches the whole of it. It did not, and nothing said so:
-      # the published `/remote-m3/pages/` surface linked 22 of 1845 nodes — the component-level
-      # references and nothing below them — while that sheet's map resolves 228 (#316).
-      - name: The Remote sheet's page join reaches its whole map
+      # And that the join reaches the whole map. It once did not, and nothing said so: the published
+      # `/remote-m3/pages/` surface linked 22 of 1845 nodes — the component-level references and
+      # nothing below them — while this sheet's map resolved 228 (yschimke/wear-m3-catalog#316).
+      - name: The page join reaches the whole map
         if: needs.changes.outputs.inert != 'true'
         run: |
           set -euo pipefail
-          work="$(mktemp -d)"
-          scripts/design-map.sh --out-dir "$work" remote-catalog
-          node scripts/import-figma-pages.mjs \
-            --relink --design-map "$work/design-map.json" --require-full-join
-          # `--relink` rewrote the committed cache, which belongs to `:catalog`. Put it back, so
-          # the rest of this job reads the file this repository actually holds.
-          git checkout -- design/pages/pages.json
-
-      # The two sheets pair component by component through `parallel`, and until now nothing held
-      # the declaration to what AGENTS.md says it means — one taxonomy, the same id, the same kit
-      # node. Every way of breaking it is silent and a rename is when it breaks, which is why the
-      # gate lives in the job that has just discovered both manifests.
-      - name: The two sheets still pair
-        if: needs.changes.outputs.inert != 'true'
-        run: scripts/parallel-map.sh
+          node scripts/import-figma-pages.mjs --relink --require-full-join
+          git diff --exit-code -- design/pages/pages.json
 
       # `docs/KIT_COVERAGE.md` reads the two records gated directly above and nothing else, so it
-      # is a projection of files this job has already proved fresh — which is what makes gating it
-      # honest rather than flaky. Its sibling `docs/COMPONENT_MAP.md` deliberately has no gate: that
-      # one fetches the delivery branches for render paths, so a difference there can mean "a branch
-      # republished", not "the doc is stale", and a check would fail for something no PR did.
+      # is a projection of files this job has already proved fresh.
       - name: docs/KIT_COVERAGE.md is up to date
         if: needs.changes.outputs.inert != 'true'
         run: node scripts/kit-coverage.mjs --check
 
-      # The fifth record projected from the annotations, and the only one that does not live in this
-      # tree: the parity issue index, keyed on a `preview:` id inside each issue's
-      # `compose-parity-locator/v1` block. The four checks above guard files against the
-      # annotations; nothing guarded the issues, so renaming a cell pointed a locator at a preview
-      # that no longer exists and every one of them stayed green. It happened twice from one rename
-      # (#299, #300) and detached #293 and #284 from the compare page in silence — an issue whose
-      # locator does not resolve lands exactly where an issue with no locator lands, which is
-      # skipped. Filed as #305.
+      # ── THE TWO SHEETS STILL PAIR ──────────────────────────────────────────────────────────────
+      # This sheet pairs with the Wear one (`:catalog` in yschimke/wear-m3-catalog) component by
+      # component through `parallel`, and every `parallel` is declared HERE. So the gate lives here
+      # too, and it needs the Wear sheet's discovered manifest beside this one.
       #
-      # THE CHECKER IS UPSTREAM, beside the parser it has to agree with. A locator is parsed by
-      # `parity-issues.mjs`, and a second parser here would validate a subset while reporting on the
-      # whole — the failure mode that hid #284 during the manual audit, whose CRLF body a
-      # hand-rolled fence regex skipped. Same "check out the driver, run it with node" shape
-      # `parity-issues.yml` already uses to reach the producer.
-      # PINNED TO A COMMIT, not `main`. The checker is a GATE, and a gate that floats on another
-      # repository's head can redden this one for a change nobody here made —
-      # `scripts/design-map.sh` avoids exactly that by pinning its two upstream steps to exact
-      # versions, and says why: both outputs are committed and CI fails on any difference. A gate
-      # is the same bargain, since it decides whether a pull request here passes.
+      # PINNED, not `main`: `.github/ci/wear-m3-catalog-ref` names the commit. A gate that floats on
+      # another repository's head can redden this one for a change nobody here made. Bump the pin in
+      # a commit (it is one line) when the Wear sheet renames or adds a component, and fix any
+      # pairing the gate then reports in the same pull request.
+      - name: Check out the Wear sheet
+        if: needs.changes.outputs.inert != 'true'
+        id: wear
+        run: echo "ref=$(tr -d '[:space:]' < .github/ci/wear-m3-catalog-ref)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v7.0.1
+        if: needs.changes.outputs.inert != 'true'
+        with:
+          repository: yschimke/wear-m3-catalog
+          ref: ${{ steps.wear.outputs.ref }}
+          path: .wear-m3-catalog
+          persist-credentials: false
+      - name: Discover the Wear sheet
+        if: needs.changes.outputs.inert != 'true'
+        run: ./gradlew -p .wear-m3-catalog :catalog:composePreviewDiscover --stacktrace
+      - name: The two sheets still pair
+        if: needs.changes.outputs.inert != 'true'
+        run: scripts/parallel-map.sh .wear-m3-catalog/catalog/build/compose-previews/previews.json
+
+      # The parity issue index is keyed on a `preview:` id inside each issue's
+      # `compose-parity-locator/v1` block. Renaming a cell points a locator at a preview that no
+      # longer exists and every other check stays green (yschimke/wear-m3-catalog#305).
       #
-      # It cannot pin the same way. Those two steps are published npm packages; this one is a
-      # script in a git tree, so the version IS the commit. 26608e7 is compose-ai-tools#5214, which
-      # added `check-parity-locators.mjs`. Bumping is a one-line commit, and the reason to bump is
-      # a fix to the checker rather than a schedule.
-      #
-      # The `spec` job below checks the same repository out at `main`, left as it was: that one
-      # predates this and runs a validator this repository has always taken from head. The path is
-      # spelled the same in both so the two read as one driver.
+      # THE CHECKER IS UPSTREAM, beside the parser it has to agree with, and PINNED TO A COMMIT:
+      # 26608e7 is compose-ai-tools#5214, which added `check-parity-locators.mjs`. Bumping is a
+      # one-line commit, and the reason to bump is a fix to the checker rather than a schedule.
       - name: Check out the locator checker
         if: needs.changes.outputs.inert != 'true'
         uses: actions/checkout@v7.0.1
@@ -267,29 +214,30 @@ jobs:
           path: compose-ai-tools
           persist-credentials: false
 
-      # The BASELINE, and what turns "some issue is broken" into "this pull request broke it". Each
+      # The BASELINE, and what turns "some issue is broken" into "this pull request broke it": the
       # delivery branch's `preview-index.json` is what the catalog last actually served, so an id
       # that was served and is not drawn in this tree is this change's doing, while one that was
-      # never served is somebody's typo and only warns. Without it a single badly edited issue would
-      # redden every later PR with the fix nowhere in its diff.
+      # never served is somebody's typo and only warns.
       #
-      # `--depth=1` of two branch tips, for one file each: the delivery branches carry thousands of
-      # renders and none of them are wanted here.
-      - name: Fetch the served baselines
+      # The delivery branch moved with the split. Until this repository's first publish lands on
+      # `yschimke/remote-m3-catalog-out`, the last index served is still the one on
+      # `yschimke/wear-m3-catalog-out`, so fall back to it rather than failing every pull request.
+      - name: Fetch the served baseline
         if: needs.changes.outputs.inert != 'true'
         run: |
           set -euo pipefail
-          # Generated delivery branches are isolated in the public output repository. The source
-          # repository may still contain an in-flight, legacy branch, which is neither authoritative
-          # nor guaranteed to carry preview-index.json.
-          artifact_repo="https://github.com/yschimke/wear-m3-catalog-out.git"
-          for system in wear-m3-catalog remote-m3; do
-            git fetch --depth=1 "$artifact_repo" "design-artifacts/$system"
-            git show FETCH_HEAD:preview-index.json > "$RUNNER_TEMP/$system-index.json"
+          for repo in remote-m3-catalog-out wear-m3-catalog-out; do
+            if git fetch --depth=1 "https://github.com/yschimke/$repo.git" design-artifacts/remote-m3; then
+              git show FETCH_HEAD:preview-index.json > "$RUNNER_TEMP/remote-m3-index.json"
+              echo "baseline: yschimke/$repo"
+              exit 0
+            fi
           done
+          echo '::error::no design-artifacts/remote-m3 branch to read a baseline from'
+          exit 1
 
-      # `issues: read` is granted on this job alone — the workflow's default is `contents: read`,
-      # and every other step here reads the tree.
+      # Both repositories' issues: the `remote-m3` parity issues filed before the split live on
+      # yschimke/wear-m3-catalog, and the checker skips locators naming any other system.
       - name: Parity locators still name a cell this catalog draws
         if: needs.changes.outputs.inert != 'true'
         env:
@@ -298,18 +246,15 @@ jobs:
           set -euo pipefail
           node compose-ai-tools/scripts/design-artifacts/check-parity-locators.mjs \
             --repo ${{ github.repository }} \
-            --manifest "wear-m3-catalog=catalog/build/compose-previews/previews.json" \
+            --repo yschimke/wear-m3-catalog \
             --manifest "remote-m3=remote-catalog/build/compose-previews/previews.json" \
-            --published "wear-m3-catalog=$RUNNER_TEMP/wear-m3-catalog-index.json" \
             --published "remote-m3=$RUNNER_TEMP/remote-m3-index.json"
 
       - uses: actions/upload-artifact@v7.0.1
         if: always() && needs.changes.outputs.inert != 'true'
         with:
           name: previews-manifest
-          path: |
-            catalog/build/compose-previews/previews.json
-            remote-catalog/build/compose-previews/previews.json
+          path: remote-catalog/build/compose-previews/previews.json
           if-no-files-found: warn
 
   test:
@@ -324,10 +269,8 @@ jobs:
         if: needs.changes.outputs.inert != 'true'
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
-      # `test` does not reach `:catalog`: a KMP-Android module has no task by that name, only
-      # `testAndroidHostTest`, so the catalog's render and template round-trip tests ran nowhere
-      # and went red on main unnoticed. Named explicitly; it renders first (catalog/build.gradle.kts).
-      - run: ./gradlew test :catalog:testAndroidHostTest --stacktrace
+      # `:remote-catalog`'s tests read the renders, so it renders first (remote-catalog/build.gradle.kts).
+      - run: ./gradlew test --stacktrace
         if: needs.changes.outputs.inert != 'true'
       - if: always() && needs.changes.outputs.inert != 'true'
         uses: actions/upload-artifact@v7.0.1
@@ -372,35 +315,14 @@ jobs:
         if: needs.changes.outputs.inert != 'true'
         with:
           node-version: 24.21.0
-      # The build-free pre-flight: resolves every spec reference against the module's actual
-      # `@Preview` functions and flags PNG-less previews, before the (long) render in
-      # design-artifacts.yml spends a runner discovering the same problem.
+      # The Remote sheet's spec still carries its inventory as `groups`, so this is not a pre-flight
+      # over annotations but the check on the inventory itself: every `preview` and
+      # `motionPreview` it names has to resolve to a real `@Preview`.
       - name: validate-catalog-spec
         if: needs.changes.outputs.inert != 'true'
         run: |
           node compose-ai-tools/scripts/design-artifacts/validate-catalog-spec.mjs \
-            --spec catalog.spec.json --module-dir catalog
-
-      # The Remote sheet's spec still carries its inventory as `groups`, so for THAT module this is
-      # not a pre-flight over annotations but the check on the inventory itself: every `preview` and
-      # `motionPreview` it names has to resolve to a real `@Preview`.
-      - name: validate-catalog-spec (remote)
-        if: needs.changes.outputs.inert != 'true'
-        run: |
-          node compose-ai-tools/scripts/design-artifacts/validate-catalog-spec.mjs \
             --spec remote-catalog/catalog.spec.json --module-dir remote-catalog
-
-      # The samples sheet's spec is GENERATED, and `samples-spec.mjs --check` above already proves
-      # it matches the generator. That is a different question from whether it is CORRECT: the
-      # generator reads the vendored tree for renderable samples, so a spec entry naming a preview
-      # that does not exist would be a bug the regenerate-and-diff reproduces faithfully. This is
-      # the check that every `preview` it names resolves to a real `@Preview`, before
-      # design-artifacts.yml spends a runner discovering the same thing.
-      - name: validate-catalog-spec (samples)
-        if: needs.changes.outputs.inert != 'true'
-        run: |
-          node compose-ai-tools/scripts/design-artifacts/validate-catalog-spec.mjs \
-            --spec samples-catalog/catalog.spec.json --module-dir samples-catalog
 
   pages:
     name: Figma page resolution
@@ -422,14 +344,14 @@ jobs:
         if: needs.changes.outputs.inert != 'true'
 
       # What counts as a cell a sheet draws. The coverage record this decides is committed and
-      # reconciled in the `map` job above, so a bug here would move every number in it at once and
+      # reconciled in the `build` job above, so a bug here would move every number in it at once and
       # the diff would look like a change to the catalog rather than to the counter.
       - run: node --test scripts/kit-cells.test.mjs
         if: needs.changes.outputs.inert != 'true'
 
       # What counts as a broken pairing between the two sheets. The gate it backs runs in the `build`
-      # job (it needs both discovered manifests); its pure half is fixture-driven and belongs here
-      # beside the other script tests.
+      # job (it needs both discovered manifests, the Wear one from a pinned checkout); its pure half
+      # is fixture-driven and belongs here beside the other script tests.
       - run: node --test scripts/parallel-map.test.mjs
         if: needs.changes.outputs.inert != 'true'
 
@@ -440,57 +362,6 @@ jobs:
       # this is where this repo already runs `node --test` over its scripts.
       - run: node --test .github/scripts/fix-pr-body-markdown.test.mjs
         if: needs.changes.outputs.inert != 'true'
-
-      # The @sample KDoc reader behind sample-map.json — the API-to-sample map the samples catalog
-      # groups by, and the fingerprint samples-drift.mjs compares the two corpora on. A line-based
-      # reader mis-attributes about 12% of the blocks carrying a `@sample`, so the scanner that
-      # replaces it is worth holding still. See docs/design/ANDROIDX_SAMPLES.md.
-      - run: node --test scripts/sample-map.test.mjs
-        if: needs.changes.outputs.inert != 'true'
-
-      # The vendoring importer. The load-bearing behaviour is that a patch which no longer applies
-      # FAILS the import rather than silently dropping the fix it carries, that a quarantined file
-      # is a declared and checked gap, and that a sample tree is copied as a PACKAGE — a flat copy
-      # left `samples/icons/` behind here and cost 24 compile errors.
-      - run: node --test scripts/import-samples.test.mjs
-        if: needs.changes.outputs.inert != 'true'
-
-      # The @Preview wrapper generator. Only 34 of the 170 Wear samples are annotated upstream, so
-      # 115 of this catalog's cards exist only because this script wrote them — and it must refuse
-      # to write one for a sample that takes arguments (would not compile) or one quarantined as
-      # unrenderable, because a single failed preview fails the whole render job.
-      - run: node --test scripts/samples-previews.test.mjs
-        if: needs.changes.outputs.inert != 'true'
-
-      # Which samples fill the watch screen, and therefore render on a round device rather than
-      # cropping to their own bounds. Getting it backwards is a regression in BOTH directions — a
-      # full-screen sample on a square canvas shows corners a watch clips, and a one-component
-      # sticker pinned to a device becomes a watch face with the component adrift in it. The
-      # classification is read off a render, so the deriving script cannot run here; what is
-      # checkable without one is that it reads a render correctly, including the idempotence a
-      # first cut got wrong (a sample already ON the device must stay classified).
-      - run: node --test scripts/samples-device-bound.test.mjs
-        if: needs.changes.outputs.inert != 'true'
-
-      # The samples sheet's own spec, and with it the BACK-LINK each sample carries to the kit
-      # component it is a call site for. The link names the kit family's first-declared cell, which
-      # is a convention rather than an accident — so what is worth holding here is that "first" is
-      # deterministic (sorted paths, then file order) and that a sample whose API the kit publishes
-      # no component for carries no link at all rather than an empty one. The `--check` gate below
-      # is the other half: reordering a kit section re-points every sample of that family, and shows
-      # up as a diff to review instead of drifting silently.
-      - run: node --test scripts/samples-spec.test.mjs
-        if: needs.changes.outputs.inert != 'true'
-
-      # Both generated-and-committed samples artifacts, regenerated and diffed. The wrappers are
-      # compiled sources and the spec is what design-artifacts.yml publishes, so either going stale
-      # against the vendored tree publishes a catalog that does not match its own inventory.
-      - name: Regenerate the samples wrappers and spec
-        if: needs.changes.outputs.inert != 'true'
-        run: |
-          set -euo pipefail
-          node scripts/samples-previews.mjs --check
-          node scripts/samples-spec.mjs --check
 
       # The snapshot probe's decision logic — what makes `remote-snapshot-probe.yml` ping a human
       # or stay quiet. Pure and stdlib-only, so it runs beside the resolver test rather than

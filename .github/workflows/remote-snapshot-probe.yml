@@ -3,7 +3,8 @@ name: Remote snapshot probe
 # Build `:remote-catalog` against the newest androidx.dev snapshot and say when the picture moves.
 #
 # WHY. Three divergences on the `remote-m3` sheet are the Remote Compose library rendering its own
-# API wrongly rather than this catalog asking for the wrong thing — #89, #90, #91. Each is "fixed
+# API wrongly rather than this catalog asking for the wrong thing — yschimke/wear-m3-catalog#89,
+# #90, #91 (filed before the split). Each is "fixed
 # upstream or not at all", so the only way to learn anything is to build the sheet against a newer
 # artifact and look. Done by hand that is an afternoon, and it gets done once; the alpha line
 # publishes several builds a day. This makes it a weekly job that stays quiet until something
@@ -19,7 +20,7 @@ name: Remote snapshot probe
 # WHAT IT NEVER DOES. Touch `main`. The overlay repoints the Remote trio at an unreleased build,
 # which is exactly the skew AGENTS.md forbids in the committed build — it is applied to the runner's
 # checkout and thrown away. State lives on `snapshot-probe/remote-m3`, alongside this repo's other
-# long-lived delivery branches.
+# long-lived delivery branches, on the output repository `yschimke/remote-m3-catalog-out`.
 
 on:
   schedule:
@@ -52,10 +53,14 @@ env:
   STATE_BRANCH: snapshot-probe/remote-m3
   # Generated state lives in the output repository with the other generated branches, never in
   # this source repository.
-  STATE_REPOSITORY: yschimke/wear-m3-catalog-out
+  STATE_REPOSITORY: yschimke/remote-m3-catalog-out
   # The one issue this job talks to. Per-issue comments are deliberately left to a human: an
   # automation that posts to #89 / #90 / #91 on every wobble teaches people to skim them.
-  TRACKING_ISSUE: '95'
+  #
+  # EMPTY until a tracking issue is filed in THIS repository. The previous one,
+  # yschimke/wear-m3-catalog#95, stayed behind with the split, and `github.token` cannot comment
+  # across repositories. While empty the report still lands on the job summary.
+  TRACKING_ISSUE: ''
 
 jobs:
   probe:
@@ -225,4 +230,9 @@ jobs:
             echo
             echo "[Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) · state on [\`$STATE_BRANCH\`](${{ github.server_url }}/${STATE_REPOSITORY}/tree/${STATE_BRANCH})"
           } > comment.md
+          cat comment.md >> "$GITHUB_STEP_SUMMARY"
+          if [ -z "$TRACKING_ISSUE" ]; then
+            echo '::warning::TRACKING_ISSUE is unset; the report is on the job summary only.'
+            exit 0
+          fi
           gh issue comment "$TRACKING_ISSUE" --repo "${{ github.repository }}" --body-file comment.md

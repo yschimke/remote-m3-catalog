@@ -13,27 +13,14 @@ dependencyResolutionManagement {
 
     // ── The CMP Wear port, GROUP-FENCED ───────────────────────────────────────────────────────
     // `ee.schimke.wearcmp:*` — Wear Compose Material 3 / Foundation compiled for Compose
-    // Multiplatform, published to the `wear-compose-cmp-maven` branch of the output repository,
-    // `yschimke/wear-m3-catalog-out`, by the port lane on `wear-compose-cmp`. `:catalog` declares
-    // it in `commonMain` so the component bodies compile once for every target; the `android`
-    // configurations substitute it back to the real `androidx.wear.compose` AARs, so what the
-    // Robolectric lane renders — and what the published kit rendition therefore IS — stays the
-    // genuine library. See `catalog/build.gradle.kts` for that substitution.
+    // Multiplatform, published to the `wear-compose-cmp-maven` branch of
+    // `yschimke/wear-m3-catalog-out` by the port lane of yschimke/wear-m3-catalog. Only the
+    // UI-builder adapters and the browser renderer link it (the Wear frame and Material canvas
+    // stand-ins the Remote renderer draws around a document); `:remote-catalog` never does.
     //
-    // Fenced the same way and for the same reason as the snapshot lane below: a settings-level
-    // repository is visible to every project, so it is scoped to the one group it can legitimately
-    // answer for. `ee.schimke.wearcmp` is a coordinate namespace nothing else in this build or on
-    // Maven Central uses, so the filter is exact rather than a prefix guess — this repository can
-    // never satisfy a request for an `androidx.*` or `ee.schimke.composeai` artifact even by
-    // accident.
-    //
-    // Serving a build dependency from a git branch of this project's own output repository is a
-    // real coupling, and it is deliberate. The branch lives beside the design artifacts in
-    // `wear-m3-catalog-out` rather than here, so this source repository carries no generated
-    // branch (#604): the port is this project's own artifact, versioned by `portRevision` and
-    // gated by the port lane's CI (#413 requires that revision to increase). The alternative —
-    // vendoring the port's sources into `:catalog` — would put a fork of Wear Compose in the
-    // catalog's history and lose that gate.
+    // Fenced to the one group it can legitimately answer for: `ee.schimke.wearcmp` is a coordinate
+    // namespace nothing else in this build or on Maven Central uses, so this repository can never
+    // satisfy a request for an `androidx.*` or `ee.schimke.composeai` artifact even by accident.
     maven(
       "https://raw.githubusercontent.com/yschimke/wear-m3-catalog-out/wear-compose-cmp-maven/"
     ) {
@@ -41,12 +28,14 @@ dependencyResolutionManagement {
       content { includeGroup("ee.schimke.wearcmp") }
     }
 
-    // The published CMP Remote Compose writer used by the remote-m3 UI Builder Browser Preview.
+    // The published CMP Remote Compose writer used by the remote-m3 UI Builder Browser Preview —
+    // this repository's own `vendor/` port, published by `publish-remote-compose.yml` to the
+    // `remote-compose-cmp-maven` branch of the output repository `yschimke/remote-m3-catalog-out`.
     // Kept separate from the Wear port above because the two release independently. The exact
     // coordinate is pinned in libs.versions.toml and embedded in the renderer manifest; this
     // repository is fenced to its own namespace so it cannot answer any AndroidX dependency.
     maven(
-      "https://raw.githubusercontent.com/yschimke/wear-m3-catalog-out/remote-compose-cmp-maven/"
+      "https://raw.githubusercontent.com/yschimke/remote-m3-catalog-out/remote-compose-cmp-maven/"
     ) {
       name = "remoteComposeCmpPort"
       content { includeGroup("ee.schimke.remotecompose") }
@@ -69,16 +58,13 @@ dependencyResolutionManagement {
     //
     // The `content` filter is what makes the lane SAFE rather than merely off by default. A
     // settings-level repository is visible to every project, so scoping matters twice over: this
-    // one can only ever serve the Remote groups, and `:catalog` depends on none of them
-    // (`:catalog:dependencies --configuration debugCompileClasspath` names zero `*.remote.*` or
-    // `androidx.glance.wear` modules). So there is no coordinate `:catalog` asks for that this
-    // repository is allowed to answer, and the isolation holds by construction rather than by
-    // reviewers remembering it.
+    // one can only ever serve the Remote groups, so nothing outside the Remote Compose line can
+    // resolve from a snapshot by accident.
     //
     // The version substitution that actually selects `1.0.0-SNAPSHOT` is deliberately NOT here —
     // it lives in `remote-catalog/build.gradle.kts` as a resolution strategy on that module's own
     // configurations, which is a second, independent fence: even if a coordinate did become
-    // shared, `:catalog` would keep resolving the pinned alpha.
+    // shared, a module that does not opt in would keep resolving the pinned alpha.
     // A PRESENT property wins outright, blank included — `-PremoteSnapshot=` is how you force the
     // released lane for one invocation now that the pin file is on by default, and it can only mean
     // that if a blank property is distinguished from an absent one before the file is consulted.
@@ -107,14 +93,12 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "wear-m3-catalog"
+rootProject.name = "remote-m3-catalog"
 
-include(":catalog")
-
-// Catalog renderer builds consume the renderer SDK from source. Opt in explicitly so ordinary
+// Renderer builds consume the renderer SDK from source. Opt in explicitly so ordinary
 // catalog builds keep resolving exactly as before:
 //
-//   ./gradlew :catalog-ui-builder-renderer:rendererArchive \
+//   ./gradlew :remote-catalog-ui-builder-renderer:rendererArchive \
 //     -PcomposeUiBuilderDir=../compose-ui-builder
 //
 // The synthetic coordinate is intentionally absent from Maven, so asking for a renderer without
@@ -133,27 +117,19 @@ providers.gradleProperty("composeUiBuilderDir").orNull?.let { path ->
   }
 }
 
-// Both catalog-owned renderers link the source-only SDK. Keep them outside ordinary catalog builds:
-// without the composite there is deliberately no Maven fallback for that coordinate.
+// The renderer links the source-only SDK. Keep it outside ordinary catalog builds: without the
+// composite there is deliberately no Maven fallback for that coordinate.
 if (providers.gradleProperty("composeUiBuilderDir").isPresent) {
-  include(":catalog-ui-builder-renderer")
   include(":remote-catalog-ui-builder-renderer")
   include(":ui-builder-foundation-adapters")
   include(":ui-builder-material-adapters")
   include(":ui-builder-wear-adapters")
 }
 
-// The same component bodies, drawn by Compose Multiplatform Desktop instead of Robolectric. It
-// declares no previews: it names `:catalog` in `composePreviewSource` and renders that module's
-// `commonMain` stickers on its own lane, because the plugin allows one lane per module and
-// `:catalog`'s is Robolectric. Its renders are NOT the kit rendition — see
-// catalog-desktop/build.gradle.kts.
-include(":catalog-desktop")
-
-// The Remote Compose rendition of the same Wear surface — the third column of the comparison this
-// repo publishes. Separate module, not a source set: it is on the alpha Remote Compose line at
-// compileSdk 37 with no Compose BOM, and that must not reach `:catalog`. See
-// remote-catalog/build.gradle.kts.
+// The Remote Compose rendition of the M3 Wear OS Apps Design Kit — the `remote-m3` system. Its
+// Wear Compose sibling, the `wear-m3-catalog` system, lives in yschimke/wear-m3-catalog; the two
+// pair component by component through `parallel` (scripts/parallel-map.sh). See
+// remote-catalog/build.gradle.kts for why it is on the alpha line with no Compose BOM.
 include(":remote-catalog")
 
 // Source vendoring of the three Remote Compose layers being moved to CMP JVM by AndroidX CL
@@ -173,10 +149,3 @@ include(":vendor:remote-write-core")
 include(":remote-wasm")
 
 include(":remote-desktop")
-
-// The AndroidX Wear samples rendition — `androidx.wear.compose.material3`'s own `@Sampled`
-// composables, vendored from a pinned upstream commit and rendered beside the kit catalog.
-// Separate module, not a source set: the vendored sources are upstream's bytes under upstream's
-// package, and must not be formatted, linted or refactored with this repo's own code.
-// See docs/design/ANDROIDX_SAMPLES.md.
-include(":samples-catalog")

@@ -1,15 +1,15 @@
 name: Parity Issues
 
-# Publish this repository's parity issues as `parity/issues.json` on EACH catalog's
-# delivery branch, so the preview server can show a component's open issues on the page
-# where the difference is visible.
+# Publish the `remote-m3` parity issues as `parity/issues.json` on the catalog's delivery
+# branch, `design-artifacts/remote-m3` on `yschimke/remote-m3-catalog-out`, so the preview
+# server can show a component's open issues on the page where the difference is visible.
 #
-# There is one job per module, exactly as `design-parity.yml` has: `:catalog` publishes
-# `design-artifacts/wear-m3-catalog` and `:remote-catalog` publishes
-# `design-artifacts/remote-m3`. Both read the SAME issues out of this one repository —
-# the split is which delivery branch the index lands on, because the serving host reads
-# the index from the branch of the system it is serving. A single job left the remote-m3
-# compare page pinned to whatever index that branch last happened to carry.
+# TWO repositories' issues. The sheet was split out of yschimke/wear-m3-catalog, and the
+# `remote-m3` issues filed before the split stayed there; new ones are filed here. Each
+# issue's locator names its system, so the Wear sheet's issues in that repository are not
+# this index's business and are skipped. Issue events in yschimke/wear-m3-catalog cannot
+# trigger this workflow, so a relabelled pre-split issue reaches the index on the weekly
+# run below (or a dispatch).
 #
 # The pipeline — read issues -> parse each body's `compose-parity-locator/v1` block
 # -> commit the one path — is the shared reusable workflow in compose-ai-tools. This
@@ -22,7 +22,7 @@ name: Parity Issues
 #    ```compose-parity-locator/v1``` fence in its body is skipped — not because it is
 #    unimportant, but because nothing can say which component and preview variant it
 #    belongs to. The prefilled report on the focused comparison
-#    (`/wear-m3-catalog/compare/<previewId>?reference=…`) writes the block for you; a
+#    (`/remote-m3/compare/<previewId>?reference=…`) writes the block for you; a
 #    hand-written issue needs one pasted in. Until an issue carries one, this workflow
 #    correctly publishes an empty index rather than failing.
 # 2. **Labels are enrichment, not identity.** `area:{spec,component,preview,renderer,
@@ -55,54 +55,18 @@ permissions:
 
 jobs:
   publish:
-    name: wear-m3-catalog (:catalog)
-    # Don't let forks push to the delivery branch.
-    if: ${{ github.repository == 'yschimke/wear-m3-catalog' }}
-    permissions:
-      # `contents: write` commits the one path onto the delivery branch; `issues: read`
-      # is what the producer reads. Both have to be granted here: a called workflow
-      # cannot widen the permissions its caller hands it.
-      contents: write
-      issues: read
-    uses: yschimke/compose-ai-tools/.github/workflows/parity-issues-reusable.yml@main
-    with:
-      # The delivery branch is `design-artifacts/<system>`, and this catalog's is
-      # `design-artifacts/wear-m3-catalog` — the same slug `design-artifacts.yml` passes.
-      system: wear-m3-catalog
-      # Same output repository design-artifacts.yml publishes design-artifacts/<system> to;
-      # generated branches never live in this source repository.
-      artifact-repository: yschimke/wear-m3-catalog-out
-      # Only this repository. The catalog's previews are declared here, so this is where a
-      # difference gets reported; add a source repo to this array only alongside a
-      # credential that can read its issues, since an unreadable repo is indistinguishable
-      # from one with no parity issues.
-      repositories: '["yschimke/wear-m3-catalog"]'
-    secrets:
-      artifacts_token: ${{ secrets.ARTIFACTS_TOKEN }}
-
-  publish-remote:
     name: remote-m3 (:remote-catalog)
-    # Don't let forks push to the delivery branch.
-    if: ${{ github.repository == 'yschimke/wear-m3-catalog' }}
+    if: ${{ github.repository == 'yschimke/remote-m3-catalog' }}
     permissions:
       contents: write
       issues: read
     uses: yschimke/compose-ai-tools/.github/workflows/parity-issues-reusable.yml@main
     with:
-      # `:remote-catalog` publishes the `remote-m3` system, so its index has to land on
-      # `design-artifacts/remote-m3`. The reusable workflow's concurrency group keys on
-      # `inputs.system`, so this job and `publish` never race for a branch tip.
-      #
-      # Without this job the branch still HAS a `parity/issues.json` — `CARRY_FORWARD_PATHS`
-      # in `design-artifacts-reusable.yml` copies it onto every republished catalog — so the
-      # failure mode is a silently ageing index rather than a missing one, and the compare
-      # page keeps rendering a Bugs column that is simply out of date.
+      # `design-artifacts/remote-m3` — the same slug `design-artifacts.yml` passes.
       system: remote-m3
-      # Same output repository design-artifacts.yml publishes design-artifacts/<system> to;
-      # generated branches never live in this source repository.
-      artifact-repository: yschimke/wear-m3-catalog-out
-      # The same source repository: both catalogs' previews are declared here, and a locator
-      # names its own system, so one issue set feeds both indexes.
-      repositories: '["yschimke/wear-m3-catalog"]'
+      # The delivery branch lives in the output repository, so this lane writes there, with the
+      # same credential the render lane pushes with.
+      artifact-repository: yschimke/remote-m3-catalog-out
+      repositories: '["yschimke/remote-m3-catalog", "yschimke/wear-m3-catalog"]'
     secrets:
       artifacts_token: ${{ secrets.ARTIFACTS_TOKEN }}

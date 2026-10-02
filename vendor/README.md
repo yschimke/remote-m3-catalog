@@ -38,7 +38,7 @@ upstream's `androidx.compose.remote.creation.RemotePath`. The Android graph stil
 published `remote-creation`, which ships a different class under that name, and a duplicate FQN on
 one classpath makes whichever jar loads first serve both. In the cmp06 bundle that was the port's,
 so 35 of `remote-creation-android`'s own references failed to link
-([#652](https://github.com/yschimke/wear-m3-catalog/issues/652)).
+([yschimke/wear-m3-catalog#652](https://github.com/yschimke/wear-m3-catalog/issues/652)).
 
 `:remote-desktop` is the phase-2 client. Its `run` task performs a real Compose recomposition through
 the vendored JVM applier and writes the encoded document to
@@ -55,8 +55,10 @@ bitmap and path adapters.
 
 `remote-core`, `remote-creation-core`, and `remote-creation` remain Maven dependencies: their
 AndroidX artifacts already publish standard JVM variants. On JVM, Remote Material 3 uses this
-repository's existing CMP Wear Compose port for the Wear token types it references. Android
-configurations substitute that port back to the real AndroidX Wear Compose artifacts.
+Wear Compose CMP port (`ee.schimke.wearcmp`) for the Wear token types it references. That port is
+published by yschimke/wear-m3-catalog and consumed here from the `wear-compose-cmp-maven` branch of
+`yschimke/wear-m3-catalog-out`. Android configurations substitute it back to the real AndroidX Wear
+Compose artifacts.
 
 ## Published artifacts
 
@@ -64,13 +66,15 @@ The five vendored modules publish under `ee.schimke.remotecompose` at
 `4307936-ps17-cmp07`. The version is derived from `remote-compose-upstream.json`; bump its
 `portRevision` whenever published bytes change without moving to a newer AndroidX patch set.
 
-As with the repository's Wear Compose CMP port, CI publishes to GitHub Packages and to a
+[`publish-remote-compose.yml`](../.github/workflows/publish-remote-compose.yml) publishes to GitHub
+Packages (`https://maven.pkg.github.com/yschimke/remote-m3-catalog`, which needs a token) and to a
 credential-free Maven tree on the `remote-compose-cmp-maven` branch of the output repository,
-`yschimke/wear-m3-catalog-out`:
+`yschimke/remote-m3-catalog-out`. Before this repository was split out of yschimke/wear-m3-catalog
+the branch lived on `yschimke/wear-m3-catalog-out`, and that tree is no longer updated.
 
 ```kotlin
 repositories {
-  maven("https://raw.githubusercontent.com/yschimke/wear-m3-catalog-out/remote-compose-cmp-maven/")
+  maven("https://raw.githubusercontent.com/yschimke/remote-m3-catalog-out/remote-compose-cmp-maven/")
 }
 
 dependencies {
@@ -79,7 +83,9 @@ dependencies {
 ```
 
 `./gradlew publishToMavenLocal` publishes locally. `./gradlew publishRemoteComposeToBuildDir`
-produces the exact repository tree CI pushes under `build/remote-compose-maven`.
+produces the exact repository tree CI pushes under `build/remote-compose-maven`. On an empty output
+repository, dispatch the publish workflow before any render workflow: the UI-builder renderer
+resolves the port from that branch.
 
 The vendored source is Apache 2.0 licensed; each source file retains its Android Open Source Project
 header.
