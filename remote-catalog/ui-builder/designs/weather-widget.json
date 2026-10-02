@@ -60,11 +60,11 @@
     },
     "weather-location": {
       "id": "weather-location",
-      "componentId": "m3/text",
+      "componentId": "remote-m3/remote-text",
       "properties": {
         "text": { "type": "string", "value": "London" },
         "color": { "type": "color", "value": "#FFFFFFFF" },
-        "fontSizeSp": { "type": "float", "value": 14 },
+        "fontSize": { "type": "float", "value": 14 },
         "textAlign": { "type": "enum", "value": "center" }
       },
       "modifiers": [{ "type": "fillMaxWidth" }],
@@ -72,11 +72,11 @@
     },
     "weather-reading": {
       "id": "weather-reading",
-      "componentId": "m3/text",
+      "componentId": "remote-m3/remote-text",
       "properties": {
         "text": { "type": "string", "value": "75° ☀️" },
         "color": { "type": "color", "value": "#FFFFFFFF" },
-        "fontSizeSp": { "type": "float", "value": 36 },
+        "fontSize": { "type": "float", "value": 36 },
         "textAlign": { "type": "enum", "value": "center" }
       },
       "modifiers": [{ "type": "fillMaxWidth" }],
