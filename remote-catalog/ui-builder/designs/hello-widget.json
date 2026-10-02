@@ -48,14 +48,13 @@
     },
     "hello-text": {
       "id": "hello-text",
-      "componentId": "m3/text",
+      "componentId": "remote-m3/remote-text",
       "properties": {
         "text": { "type": "string", "value": "Hello, World!" },
         "color": { "type": "colorToken", "value": "onPrimary" },
-        "fontSizeSp": { "type": "float", "value": 20 },
-        "alignment": { "type": "enum", "value": "center" }
+        "fontSize": { "type": "float", "value": 20 }
       },
-      "modifiers": [],
+      "modifiers": [{ "type": "align", "alignment": "center" }],
       "slots": {}
     }
   }
