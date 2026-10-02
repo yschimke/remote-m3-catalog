@@ -122,6 +122,17 @@ kotlin {
   }
 }
 
+// The published Remote Compose port's JVM variants are Java 21 bytecode (class file 65): its KMP
+// `jvm()` targets set no `jvmTarget`, so they inherit the JDK 21 the publish job runs on, and their
+// Gradle metadata declares no `org.gradle.jvm.version` to stop a Java 17 consumer at resolution.
+// Run on a Java 17 test JVM, the first `captureCommonRemoteDocument` call threw
+// UnsupportedClassVersionError, every capture landed as "Failed" and the player never drew. The
+// tests run on the JDK this repository's CI is pinned to (.github/actions/setup) instead of
+// whichever JDK happens to launch Gradle.
+tasks.named<Test>("jvmTest") {
+  javaLauncher.set(javaToolchains.launcherFor { languageVersion.set(JavaLanguageVersion.of(21)) })
+}
+
 val uiBuilderCheckout =
   providers.gradleProperty("composeUiBuilderDir").map { rootProject.file(it).canonicalFile }
 
