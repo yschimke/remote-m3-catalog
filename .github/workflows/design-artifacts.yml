@@ -165,7 +165,7 @@ jobs:
       publish-live-bundle: true
       ui-builder-runtime-task: ':remote-catalog-ui-builder-renderer:rendererArchive'
       ui-builder-runtime-archive: 'remote-catalog-ui-builder-renderer/build/distributions/remote-m3-ui-builder-renderer.zip'
-      ui-builder-runtime-source-ref: '79daa99cfa8e26ecef3f46087d9292f2b98703aa'
+      ui-builder-runtime-source-ref: '746c44406927ae3cc9f2e8a32291d6c6a3cca870'
       defer-figma-svg: true
       split-per-preview: false
       # The CMP/Wasm player lane: the same browser environment visitors use, scoring every document
