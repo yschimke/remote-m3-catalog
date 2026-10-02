@@ -369,6 +369,30 @@
           "jsonType": "string",
           "required": false,
           "notes": "The widget's own background, painted by the host inside the frame it draws. Defaults to #FF272430, the colour WearWidgetContainer applies to a widget that declares none. Padding and corner radius are not properties: WearWidgetParams hands them to the widget per host shape (0 rectangular, 26 squircle, 999 round), so the outermost box never authors a radius."
+        },
+        {
+          "name": "themeDisplayTypeface",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The font family for the display roles (displayLarge, displayMedium, displaySmall, numeralExtraLarge, numeralLarge, numeralMedium, numeralSmall, numeralExtraSmall) of everything this theme host contains. A family name: one of the editor's vendored faces or any Google Fonts family (\"Space Grotesk\", \"Michroma\"); a `google:` prefix is accepted. Generated code sets it as a `GoogleFont` family on the theme's typography. Unset keeps the platform's own face for these roles."
+        },
+        {
+          "name": "themeTitleTypeface",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The font family for the title roles (titleLarge, titleMedium, titleSmall) of everything this theme host contains. A family name: one of the editor's vendored faces or any Google Fonts family (\"Space Grotesk\", \"Michroma\"); a `google:` prefix is accepted. Generated code sets it as a `GoogleFont` family on the theme's typography. Unset keeps the platform's own face for these roles."
+        },
+        {
+          "name": "themeBodyTypeface",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The font family for the body roles (bodyLarge, bodyMedium, bodySmall, bodyExtraSmall) of everything this theme host contains. A family name: one of the editor's vendored faces or any Google Fonts family (\"Space Grotesk\", \"Michroma\"); a `google:` prefix is accepted. Generated code sets it as a `GoogleFont` family on the theme's typography. Unset keeps the platform's own face for these roles."
+        },
+        {
+          "name": "themeLabelTypeface",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The font family for the label roles (labelLarge, labelMedium, labelSmall) of everything this theme host contains. A family name: one of the editor's vendored faces or any Google Fonts family (\"Space Grotesk\", \"Michroma\"); a `google:` prefix is accepted. Generated code sets it as a `GoogleFont` family on the theme's typography. Unset keeps the platform's own face for these roles."
         }
       ],
       "modifierCapabilities": []
@@ -411,6 +435,30 @@
           "jsonType": "string",
           "required": false,
           "notes": "The widget's own background, painted by the host inside the frame it draws. Defaults to #FF272430, the colour WearWidgetContainer applies to a widget that declares none. Padding and corner radius are not properties: WearWidgetParams hands them to the widget per host shape (0 rectangular, 26 squircle, 999 round), so the outermost box never authors a radius."
+        },
+        {
+          "name": "themeDisplayTypeface",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The font family for the display roles (displayLarge, displayMedium, displaySmall, numeralExtraLarge, numeralLarge, numeralMedium, numeralSmall, numeralExtraSmall) of everything this theme host contains. A family name: one of the editor's vendored faces or any Google Fonts family (\"Space Grotesk\", \"Michroma\"); a `google:` prefix is accepted. Generated code sets it as a `GoogleFont` family on the theme's typography. Unset keeps the platform's own face for these roles."
+        },
+        {
+          "name": "themeTitleTypeface",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The font family for the title roles (titleLarge, titleMedium, titleSmall) of everything this theme host contains. A family name: one of the editor's vendored faces or any Google Fonts family (\"Space Grotesk\", \"Michroma\"); a `google:` prefix is accepted. Generated code sets it as a `GoogleFont` family on the theme's typography. Unset keeps the platform's own face for these roles."
+        },
+        {
+          "name": "themeBodyTypeface",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The font family for the body roles (bodyLarge, bodyMedium, bodySmall, bodyExtraSmall) of everything this theme host contains. A family name: one of the editor's vendored faces or any Google Fonts family (\"Space Grotesk\", \"Michroma\"); a `google:` prefix is accepted. Generated code sets it as a `GoogleFont` family on the theme's typography. Unset keeps the platform's own face for these roles."
+        },
+        {
+          "name": "themeLabelTypeface",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The font family for the label roles (labelLarge, labelMedium, labelSmall) of everything this theme host contains. A family name: one of the editor's vendored faces or any Google Fonts family (\"Space Grotesk\", \"Michroma\"); a `google:` prefix is accepted. Generated code sets it as a `GoogleFont` family on the theme's typography. Unset keeps the platform's own face for these roles."
         }
       ],
       "modifierCapabilities": []
@@ -472,6 +520,30 @@
           "jsonType": "string",
           "required": false,
           "notes": "The widget's own background, painted by the host inside the frame it draws. Defaults to #FF272430, the colour WearWidgetContainer applies to a widget that declares none. Padding and corner radius are not properties: WearWidgetParams hands them to the widget per host shape (0 rectangular, 26 squircle, 999 round), so the outermost box never authors a radius."
+        },
+        {
+          "name": "themeDisplayTypeface",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The font family for the display roles (displayLarge, displayMedium, displaySmall, numeralExtraLarge, numeralLarge, numeralMedium, numeralSmall, numeralExtraSmall) of everything this theme host contains. A family name: one of the editor's vendored faces or any Google Fonts family (\"Space Grotesk\", \"Michroma\"); a `google:` prefix is accepted. Generated code sets it as a `GoogleFont` family on the theme's typography. Unset keeps the platform's own face for these roles."
+        },
+        {
+          "name": "themeTitleTypeface",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The font family for the title roles (titleLarge, titleMedium, titleSmall) of everything this theme host contains. A family name: one of the editor's vendored faces or any Google Fonts family (\"Space Grotesk\", \"Michroma\"); a `google:` prefix is accepted. Generated code sets it as a `GoogleFont` family on the theme's typography. Unset keeps the platform's own face for these roles."
+        },
+        {
+          "name": "themeBodyTypeface",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The font family for the body roles (bodyLarge, bodyMedium, bodySmall, bodyExtraSmall) of everything this theme host contains. A family name: one of the editor's vendored faces or any Google Fonts family (\"Space Grotesk\", \"Michroma\"); a `google:` prefix is accepted. Generated code sets it as a `GoogleFont` family on the theme's typography. Unset keeps the platform's own face for these roles."
+        },
+        {
+          "name": "themeLabelTypeface",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The font family for the label roles (labelLarge, labelMedium, labelSmall) of everything this theme host contains. A family name: one of the editor's vendored faces or any Google Fonts family (\"Space Grotesk\", \"Michroma\"); a `google:` prefix is accepted. Generated code sets it as a `GoogleFont` family on the theme's typography. Unset keeps the platform's own face for these roles."
         }
       ],
       "modifierCapabilities": []
