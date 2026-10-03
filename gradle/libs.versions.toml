@@ -150,8 +150,10 @@ uiBuilderSource = "3.69.0"
 # canvas-drawn cells (#639). 2.x needs connector 3.10.0+; `RemoteM3ThreeSurfaceContractTest` pins the
 # pair and `RemoteRenderTest` checks every capture actually used the embedded player.
 rcEmbeddedPlayer = "2.0.4"
-# The CMP player on Android (`CmpAndroidPlayerTrialTest`), on its own ref: it needs a release with
-# the Android target and `rcGoogleFontsTypefaceLoader`, and must not drag the embedded player above.
+# The CMP player on Android, on its own ref: it must not drag the embedded player above, which bakes
+# every sticker. It is on the RUNTIME classpath: the bundle manifest listing it is what offers the
+# hosted live lane its `cmp-android` player, and `CmpAndroidPlayerTrialTest` still replays every
+# `.rc` through it. Renovate's rc-players group moves this ref like the one above.
 rcPlayerComposeAndroid = "2.0.4"
 
 # materialkolor — the dynamic-colour engine Confetti Wear builds its conference palettes with. The
@@ -285,7 +287,7 @@ composeai-wear-preview-runtime = { module = "ee.schimke.composeai:wear-preview-r
 composeai-remotecompose-json = { module = "ee.schimke.composeai:remotecompose-json", version.ref = "composePreviewCore" }
 composeai-rc-players-bom = { module = "ee.schimke.composeai:rc-players-bom", version.ref = "rcEmbeddedPlayer" }
 composeai-rc-player-compose = { module = "ee.schimke.composeai:rc-player-compose" }
-composeai-rc-player-compose-android-trial = { module = "ee.schimke.composeai:rc-player-compose", version.ref = "rcPlayerComposeAndroid" }
+composeai-rc-player-compose-android = { module = "ee.schimke.composeai:rc-player-compose", version.ref = "rcPlayerComposeAndroid" }
 composeai-rc-embedded-player = { module = "ee.schimke.composeai:third-party-rc-embedded-player", version.ref = "rcEmbeddedPlayer" }
 composeai-ui-builder-export = { module = "ee.schimke.composeai:compose-preview-ui-builder-export", version.ref = "composePreviewServer" }
 composeai-ui-builder-renderer-sdk-source = { module = "ee.schimke.composeai:ui-builder-renderer-sdk-source", version.ref = "uiBuilderSource" }

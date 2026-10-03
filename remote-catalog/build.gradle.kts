@@ -285,6 +285,12 @@ dependencies {
   // `implementation`, matching what this module declared before the move: the bundle's re-render
   // classpath is built from it, and the sticker sources deliberately compile against none of it.
   implementation(libs.composeai.rc.embedded.player)
+  // The Compose Multiplatform player on Android: the hosted live lane offers `cmp-android` only
+  // for a bundle whose manifest lists it, and that manifest is built from this runtime classpath.
+  // `CmpAndroidPlayerTrialTest` replays every `.rc` sidecar through it beside the embedded player.
+  // Its own version ref, not the rc-players BOM: the BOM also pins the embedded player above, and
+  // this must not move the player the stickers are baked with.
+  implementation(libs.composeai.rc.player.compose.android)
 
   debugImplementation(libs.compose.ui.tooling.prerelease)
 
@@ -294,11 +300,6 @@ dependencies {
   testImplementation(libs.composeai.remotecompose.json)
   testImplementation(libs.junit)
   testImplementation(libs.truth)
-  // `CmpAndroidPlayerTrialTest` — the Compose Multiplatform player replaying this sheet's `.rc`
-  // sidecars on Android under Robolectric, beside the embedded player that bakes them.
-  // Its own version ref, not the rc-players BOM: the BOM also pins the embedded player above, and
-  // this trial must not move the player the stickers are baked with.
-  testImplementation(libs.composeai.rc.player.compose.android.trial)
   testImplementation(libs.robolectric)
   testImplementation(libs.compose.ui.test.junit4.prerelease)
   // The test activity has to be in the merged debug manifest Robolectric reads, which for an
