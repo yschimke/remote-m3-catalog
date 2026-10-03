@@ -52,6 +52,11 @@ class RemoteRenderTest {
    * which one it used in each capture's `.remotecompose.json`. That fallback is how rc-players 2.x
    * beside connector 3.9.2 blanked 319 canvas-drawn cells without a single error (#639), so it is
    * checked here rather than inferred from the pixels.
+   *
+   * The id is `androidx-embedded`, the vendored AndroidX embedded player. Connectors before 3.12.0
+   * recorded the same player as `cmp-android`; compose-preview-daemon#199 renamed it so that `cmp-`
+   * names only the CMP player (`rc-player-compose`), which replays but never captures. The View
+   * fallback this test exists to catch records `androidx-view`.
    */
   @Test
   fun `every capture used the embedded player`() {
@@ -60,7 +65,7 @@ class RemoteRenderTest {
     assertTrue("no .remotecompose.json captures to check", sidecars.isNotEmpty())
     val viaView =
       sidecars
-        .filterNot { it.readText().contains("\"capturePlayer\":\"cmp-android\"") }
+        .filterNot { it.readText().contains("\"capturePlayer\":\"androidx-embedded\"") }
         .map { it.name }
     assertTrue(
       "these captures did not use the embedded player (a connector / rc-players skew?):\n" +

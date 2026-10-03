@@ -112,9 +112,9 @@ compose-material3 = "1.5.0-alpha29"
 # does not exist. The release's own `verify-maven-readiness` job checks that the CLI shipped at a
 # tag asks Gradle for a plugin version that IS on Central, which is why the action at v2.2.1 is
 # correct beside a plugin at 2.2.0.
-composePreviewPlugin = "2.32.3"
-composePreviewCore = "2.32.3"
-composePreviewDaemon = "3.11.0"
+composePreviewPlugin = "2.33.0"
+composePreviewCore = "2.33.0"
+composePreviewDaemon = "3.13.2"
 # compose-preview-daemon's release guard publishes each module only when it changed, so ITS OWN
 # artifacts move on independent lines too: 3.9.x shipped `data-remotecompose-connector` (and the
 # `daemon-core` it pins) at 3.9.2 while holding `preview-annotations` and
@@ -122,7 +122,7 @@ composePreviewDaemon = "3.11.0"
 # ref over all three made Renovate propose 3.9.2 for the pair that was never uploaded, and #637
 # failed resolution ("Could not find ee.schimke.composeai:preview-annotations:3.9.2"). Same cure as
 # above: a ref per line, and a Renovate group per ref.
-composePreviewDaemonAnnotations = "3.11.0"
+composePreviewDaemonAnnotations = "3.13.2"
 
 # The UI-builder exporter, from yschimke/compose-preview-server, on its own release line — a
 # different repository from the compose-ai-tools artifacts above and versioned by it. Test-only:
@@ -149,12 +149,12 @@ uiBuilderSource = "3.69.0"
 # rc-players 2.x beside connector 3.9.2 baked every sticker through the View player, blanking 319
 # canvas-drawn cells (#639). 2.x needs connector 3.10.0+; `RemoteM3ThreeSurfaceContractTest` pins the
 # pair and `RemoteRenderTest` checks every capture actually used the embedded player.
-rcEmbeddedPlayer = "2.0.4"
+rcEmbeddedPlayer = "2.1.2"
 # The CMP player on Android, on its own ref: it must not drag the embedded player above, which bakes
 # every sticker. It is on the RUNTIME classpath: the bundle manifest listing it is what offers the
 # hosted live lane its `cmp-android` player, and `CmpAndroidPlayerTrialTest` still replays every
 # `.rc` through it. Renovate's rc-players group moves this ref like the one above.
-rcPlayerComposeAndroid = "2.1.1"
+rcPlayerComposeAndroid = "2.1.2"
 
 # materialkolor — the dynamic-colour engine Confetti Wear builds its conference palettes with. The
 # declared themes in `CatalogThemes.kt` reproduce them by running the same seed through the same
