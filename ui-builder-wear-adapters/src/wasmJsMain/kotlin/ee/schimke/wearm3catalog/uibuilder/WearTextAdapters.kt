@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.LocalTextStyle
 import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.ProvideTextStyle
 import androidx.wear.compose.material3.Text
 import ee.schimke.composeai.uibuilder.renderer.sdk.CanvasNodeScope
 import ee.schimke.composeai.uibuilder.renderer.sdk.canvasAdapterRegistry
@@ -79,6 +80,15 @@ fun resolveWearColor(value: String, fallback: Color = Color.Unspecified): Color 
     else -> fallback
   }
 
+/**
+ * The role a theme host's `themeTextStyle` names provided as the ambient text style, so a text with
+ * no `style` of its own is set in it. Unset keeps the theme's own, `bodyLarge`.
+ */
+@Composable
+internal fun ProvideThemeTextStyle(role: String, content: @Composable () -> Unit) {
+  if (role.isEmpty()) content() else ProvideTextStyle(textStyle(role), content)
+}
+
 @Composable
 private fun textStyle(value: String): TextStyle =
   when (value) {
@@ -94,6 +104,12 @@ private fun textStyle(value: String): TextStyle =
     "bodyLarge" -> MaterialTheme.typography.bodyLarge
     "bodyMedium" -> MaterialTheme.typography.bodyMedium
     "bodySmall" -> MaterialTheme.typography.bodySmall
+    "bodyExtraSmall" -> MaterialTheme.typography.bodyExtraSmall
+    "numeralExtraLarge" -> MaterialTheme.typography.numeralExtraLarge
+    "numeralLarge" -> MaterialTheme.typography.numeralLarge
+    "numeralMedium" -> MaterialTheme.typography.numeralMedium
+    "numeralSmall" -> MaterialTheme.typography.numeralSmall
+    "numeralExtraSmall" -> MaterialTheme.typography.numeralExtraSmall
     "labelLarge" -> MaterialTheme.typography.labelLarge
     "labelMedium" -> MaterialTheme.typography.labelMedium
     "labelSmall" -> MaterialTheme.typography.labelSmall
