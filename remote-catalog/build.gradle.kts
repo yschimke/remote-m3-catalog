@@ -285,8 +285,8 @@ dependencies {
   // `implementation`, matching what this module declared before the move: the bundle's re-render
   // classpath is built from it, and the sticker sources deliberately compile against none of it.
   implementation(libs.composeai.rc.embedded.player)
-  // The Compose Multiplatform player on Android: the hosted live lane offers `cmp-android` only for a
-  // bundle whose manifest lists it, and that manifest is built from this runtime classpath.
+  // The Compose Multiplatform player on Android: the hosted live lane offers `cmp-android` only
+  // for a bundle whose manifest lists it, and that manifest is built from this runtime classpath.
   // `CmpAndroidPlayerTrialTest` replays every `.rc` sidecar through it beside the embedded player.
   // Its own version ref, not the rc-players BOM: the BOM also pins the embedded player above, and
   // this must not move the player the stickers are baked with.
