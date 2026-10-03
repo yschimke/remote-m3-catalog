@@ -64,11 +64,13 @@ import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.remote.creation.compose.text.RemoteTextStyle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -151,6 +153,8 @@ internal fun RemoteM3DevicePreview(
   // The widget's typefaces: recorded into the document by name, as the generated widget writes
   // them, and resolved for the player from the runtime's font registry.
   val roleNames = remember(root) { root?.let(ThemeTypefaces::families).orEmpty().remoteRoleNames() }
+  // The role a text with no `style` is set in, as the generated widget's `ProvideRemoteTextStyle`.
+  val textRole = root?.string("themeTextStyle").orEmpty()
   val registry = LocalUiBuilderFontRegistry.current
   LaunchedEffect(registry, roleNames) { roleNames.values.toSet().forEach { registry?.request(it) } }
   val fonts = remember(registry) { RegistryTypefaceLoader(registry) }
@@ -161,11 +165,11 @@ internal fun RemoteM3DevicePreview(
       mutableStateOf<Result<CapturedRemoteDocuments>?>(null)
     }
   var refreshing by remember { mutableStateOf(true) }
-  LaunchedEffect(document, contentWidth, contentHeight, density, roleNames) {
+  LaunchedEffect(document, contentWidth, contentHeight, density, roleNames, textRole) {
     refreshing = true
     val next = runCatching {
       val content =
-        captureDocument(contentWidth, contentHeight, density, roleNames) {
+        captureDocument(contentWidth, contentHeight, density, roleNames, textRole) {
           RemoteDocumentTree(document).Render(widgetSize != null)
         }
       val background = hostSpec?.let { spec ->
@@ -177,6 +181,7 @@ internal fun RemoteM3DevicePreview(
               spec.frameHeightDp.toFloat(),
               density,
               roleNames,
+              textRole,
             ) {
               RemoteDocumentTree(document).RenderRootSlot("background")
             }
@@ -294,6 +299,7 @@ private suspend fun captureDocument(
   heightDp: Float,
   density: Density,
   roleNames: Map<String, String>,
+  textRole: String,
   content: @Composable @RemoteComposable () -> Unit,
 ): RcDocument {
   val bytes =
@@ -306,10 +312,9 @@ private suspend fun captureDocument(
       // Pictures travel inside the document: without an encoder the common writer drops them.
       encodePng = ::encodeDesignAssetPng,
     ) {
-      RemoteMaterialTheme(
-        typography = RemoteMaterialTheme.typography.withRoleNames(roleNames),
-        content = content,
-      )
+      RemoteMaterialTheme(typography = RemoteMaterialTheme.typography.withRoleNames(roleNames)) {
+        CompositionLocalProvider(LocalThemeTextRole provides textRole, content = content)
+      }
     }
   return RcDocumentCodec.decode(bytes)
 }
@@ -827,19 +832,40 @@ private fun UiBuilderNode.textAlign(): TextAlign? =
     else -> null
   }
 
+/**
+ * The role a widget container's `themeTextStyle` names, which a text with no `style` of its own is
+ * set in. Empty keeps the theme's own, `bodyLarge`.
+ */
+private val LocalThemeTextRole = staticCompositionLocalOf { "" }
+
+/**
+ * The node's `style`, else its theme's default role, else `bodyLarge` — what `RemoteMaterialTheme`
+ * provides, and so what the generated widget's unstyled `RemoteText` is set in on the device.
+ */
 @Composable
 private fun UiBuilderNode.textStyle(): RemoteTextStyle =
-  when (string("style")) {
+  textRole(string("style"))
+    ?: textRole(LocalThemeTextRole.current)
+    ?: RemoteMaterialTheme.typography.bodyLarge
+
+/** [role]'s style, with Material 3's headline roles as Wear's titles, or null for no Wear role. */
+@Composable
+private fun textRole(role: String): RemoteTextStyle? =
+  when (role) {
     "displayLarge" -> RemoteMaterialTheme.typography.displayLarge
     "displayMedium" -> RemoteMaterialTheme.typography.displayMedium
     "displaySmall" -> RemoteMaterialTheme.typography.displaySmall
+    "headlineLarge",
     "titleLarge" -> RemoteMaterialTheme.typography.titleLarge
+    "headlineMedium",
     "titleMedium" -> RemoteMaterialTheme.typography.titleMedium
+    "headlineSmall",
     "titleSmall" -> RemoteMaterialTheme.typography.titleSmall
     "labelLarge" -> RemoteMaterialTheme.typography.labelLarge
     "labelMedium" -> RemoteMaterialTheme.typography.labelMedium
     "labelSmall" -> RemoteMaterialTheme.typography.labelSmall
     "bodyLarge" -> RemoteMaterialTheme.typography.bodyLarge
+    "bodyMedium" -> RemoteMaterialTheme.typography.bodyMedium
     "bodySmall" -> RemoteMaterialTheme.typography.bodySmall
     "bodyExtraSmall" -> RemoteMaterialTheme.typography.bodyExtraSmall
     "numeralExtraLarge" -> RemoteMaterialTheme.typography.numeralExtraLarge
@@ -847,7 +873,7 @@ private fun UiBuilderNode.textStyle(): RemoteTextStyle =
     "numeralMedium" -> RemoteMaterialTheme.typography.numeralMedium
     "numeralSmall" -> RemoteMaterialTheme.typography.numeralSmall
     "numeralExtraSmall" -> RemoteMaterialTheme.typography.numeralExtraSmall
-    else -> RemoteMaterialTheme.typography.bodyMedium
+    else -> null
   }
 
 private fun UiBuilderNode.boxAlignment(): RemoteAlignment =

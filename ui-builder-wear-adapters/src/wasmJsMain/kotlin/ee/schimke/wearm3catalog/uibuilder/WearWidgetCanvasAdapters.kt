@@ -47,7 +47,7 @@ val wearWidgetCanvasAdapters = canvasAdapterRegistry {
           wear = true,
         )
       MaterialTheme(typography = MaterialTheme.typography.withRoleFamilies(typefaces)) {
-        Slot("content", Modifier.fillMaxSize())
+        ProvideThemeTextStyle(string("themeTextStyle")) { Slot("content", Modifier.fillMaxSize()) }
       }
     }
   }
