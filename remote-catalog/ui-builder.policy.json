@@ -82,6 +82,7 @@
   "$comment_builtins": "Three, and only because the record cannot carry them. The third, `remote-m3/widget-container-adaptive`, is EXPERIMENTAL: one widget authored once as named `headline` / `supporting` / `action` slots, which compose-ui-builder's `AdaptiveWearWidget.resolve` turns into the Small or Large container design before anything renders or exports it (Small drops `supporting`), so neither the device preview nor the generated source ever sees the adaptive id. It is declared here because a design rooted on it is otherwise refused by this catalog as an unknown component. The widget container is the Glance Wear HOST frame — the squircle the launcher draws around a widget, not a `remote-material3` component — so `WidgetContainerPreviews.kt` recreates it through `androidx.glance.wear`'s `WearWidgetPreview` wrapper and there is no component call for a record to find. That is exactly what a builtin is for: \"it has no call site, so there is nothing to discover and no sticker to annotate\". It matters more than two components' worth: this catalog's own policy says a Remote design starts from a container and everything else goes inside one, and the builder's record-free export routes on the ROOT component id — so a published catalog without these is one whose designs cannot be rooted. They were the blocker in https://github.com/yschimke/compose-preview-server/issues/674. `canvas: widget-container` is this catalog CLAIMING an adapter rather than a name anything validates: the Wasm canvas draws both by component id (UiBuilderRenderer's WearWidgetContainerScaffold), and a catalog claiming none would publish \"not drawn on the canvas\" about something the canvas draws. `remote-m3/lottie` is NOT here though the same argument reaches it — an asset player, no component call. It needs a shelf this catalog does not have (the frozen catalog files it under `Content`, a builder shelf), and inventing one is a catalog decision rather than a transcription. `remote-compose/document` stays out for the older reason: it is a BUILTIN OF THE BUILDER (https://github.com/yschimke/compose-preview-server/blob/main/docs/design/UI_BUILDER_REMOTE_COMPOSE.md), and declaring it here would be this catalog claiming to own the builder's vocabulary.",
 
   "$comment_remoteTextVocabulary": "WHY remote-m3/remote-text STATES A VOCABULARY AND THE OTHER SEVEN DO NOT. A component that states none is published with the properties DERIVED from its signature, and the derivation keeps only what maps to a JSON scalar: `RemoteText` has twelve parameters and four survive \u2014 `text`, `color`, `fontSize`, `maxLines`. `style` is a `RemoteTextStyle` and `textAlign` a `TextAlign`, so both were dropped, and `style` is the parameter this component is actually set through: a design could size text and not scale it. What is stated here is additive \u2014 the same four, plus the two the derivation cannot see \u2014 and stops there, because a design may only set what the writer writes, and `RemoteContentEmitter` writes these six and the modifier. The four derived names are repeated verbatim rather than left to be merged, because a vocabulary is all-or-nothing per component: state one and it replaces the derivation entirely. ONE CONSEQUENCE FOR THE MIGRATION: `style` is undeclared until this lands, so a stored value is tolerated and dropped from validation (https://github.com/yschimke/compose-preview-server/pull/840); once it is declared with `allowedValues`, a value outside the eighteen is INVALID rather than undeclared. Material 3 `headlineLarge`, `headlineMedium` and `headlineSmall` have no counterpart in this scale, so a design authored against the borrowed `m3/text` that carries one needs the role mapped by whatever rewrites it onto this component \u2014 the `supersedes` migration, not tolerance. Which Wear role each becomes is a design decision for this catalog and is deliberately not guessed here; publishing a `headline` role instead would publish one `RemoteTypography` cannot draw. The set is asserted against the compiled class by RemoteTextStyleVocabularyTest.",
+  "$comment_remoteIconVocabulary": "remote-m3/remote-icon STATES ITS VOCABULARY for the reason remote-m3/remote-text's are: the derivation keeps only parameters that map to a JSON scalar, and `RemoteIcon`'s `imageVector` is an `ImageVector`, so the published component offered `contentDescription` and `tint` and no way to choose the glyph — every icon drew `addCircle`, and a launcher widget's icon buttons could not be expressed (https://github.com/yschimke/remote-m3-catalog/issues/12). The key is a Material icon key, the same vocabulary the canvas's `wear-m3/icon` reads as `iconKey` (mapped above) and the Browser Preview resolves through the renderer SDK's icon table. No `allowedValues`: the key table is the builder's, generated from material-icons-extended, and a copy here would be a second list to drift. The other two are repeated verbatim because a vocabulary is all-or-nothing per component.",
   "$comment_components": "Where a component sits on the shelf when the id it derives from does not say. One id per SYMBOL means a component lands on whichever catalog id sorts first: RemoteText is drawn by 29 stickers and arrived under Containment via AppCard, leaving the Text shelf empty. Canvas adapters are an approximate editing projection only: every one below is admitted by a `parallel` relationship to the sibling Wear catalog, while the authored properties and slots remain the Remote API's and the exported `.rc` Browser Preview plus generated Remote source remain authoritative. A canvasMapping translates only the names the Wear counterpart reads and never mutates the stored design or either export.",
   "components": {
     "remote-m3/remote-app-card": {
@@ -160,7 +161,27 @@
       "canvasMapping": {
         "defaults": { "iconKey": { "type": "enum", "value": "addCircle" } },
         "properties": { "iconKey": "imageVector" }
-      }
+      },
+      "propertyCapabilities": [
+        {
+          "name": "imageVector",
+          "jsonType": "string",
+          "required": false,
+          "notes": "A Material icon key (`home`, `search`, `addCircle`, …), written as `Icons.<Style>.<Name>.toRemoteImageVector()` — `RemoteIcon` takes a `RemoteImageVector` captured from the `androidx.compose.material.icons` vector. Unset draws `addCircle`, the default the canvas mapping above gives."
+        },
+        {
+          "name": "contentDescription",
+          "jsonType": "string",
+          "required": false,
+          "notes": "What a screen reader says for the icon. Leave it empty beside a label; set it when the icon is the whole button."
+        },
+        {
+          "name": "tint",
+          "jsonType": "string",
+          "required": false,
+          "notes": "A colour: a `#RRGGBB` literal or one of `colorTokens.roles`. Unset inherits the enclosing content colour, which is how a button's colour reaches its icon."
+        }
+      ]
     },
     "remote-m3/remote-horizontal-page-indicator": {
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemotePageIndicatorKt.RemoteHorizontalPageIndicator",
