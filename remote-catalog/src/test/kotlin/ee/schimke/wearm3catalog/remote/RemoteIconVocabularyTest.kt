@@ -31,16 +31,12 @@ class RemoteIconVocabularyTest {
       }
 
     assertThat(names).containsExactly("imageVector", "contentDescription", "tint")
-    // The canvas reads the glyph through this mapping, so the stated name has to be its source.
+    // The canvas's `wear-m3/icon` reads `iconKey` and `color`, so the stated names have to be the
+    // sources of both: an unmapped `tint` exports and never shows on the canvas.
     val mapped =
-      icon
-        .getValue("canvasMapping")
-        .jsonObject
-        .getValue("properties")
-        .jsonObject
-        .getValue("iconKey")
-        .jsonPrimitive
-        .contentOrNull
-    assertThat(mapped).isEqualTo("imageVector")
+      icon.getValue("canvasMapping").jsonObject.getValue("properties").jsonObject.mapValues {
+        it.value.jsonPrimitive.contentOrNull
+      }
+    assertThat(mapped).containsExactly("iconKey", "imageVector", "color", "tint")
   }
 }
