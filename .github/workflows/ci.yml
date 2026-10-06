@@ -308,7 +308,11 @@ jobs:
         if: needs.changes.outputs.inert != 'true'
         with:
           repository: yschimke/compose-ai-tools
-          ref: main
+          # Pinned, never `main`: compose-ai-tools#5714 moved this validator into the
+          # `@design-parity/export-driver` package and deleted the script, which turned this job red
+          # on every PR with no change here. This is the last commit that carries it; move to the
+          # package's `design-artifacts validate-catalog-spec` in a change of its own.
+          ref: 30201769cc1103f6f943fbf10e7cf93858fdf6cd
           path: compose-ai-tools
           persist-credentials: false
       - uses: actions/setup-node@v7.0.0
