@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding as spinnerPadding
 import androidx.compose.foundation.layout.size
-import androidx.compose.remote.creation.compose.action.combinedAction
 import androidx.compose.remote.creation.compose.capture.RemoteCreationDisplayInfo
 import androidx.compose.remote.creation.compose.capture.captureCommonRemoteDocument
 import androidx.compose.remote.creation.compose.capture.toRemoteImageVector
@@ -35,7 +34,9 @@ import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.alpha
 import androidx.compose.remote.creation.compose.modifier.background
 import androidx.compose.remote.creation.compose.modifier.border
+import androidx.compose.remote.creation.compose.modifier.clickable
 import androidx.compose.remote.creation.compose.modifier.clip
+import androidx.compose.remote.creation.compose.modifier.combinedClickable
 import androidx.compose.remote.creation.compose.modifier.fillMaxHeight
 import androidx.compose.remote.creation.compose.modifier.fillMaxSize
 import androidx.compose.remote.creation.compose.modifier.fillMaxWidth
@@ -54,13 +55,16 @@ import androidx.compose.remote.creation.compose.shaders.RemoteBrush
 import androidx.compose.remote.creation.compose.shaders.horizontalGradient
 import androidx.compose.remote.creation.compose.shaders.verticalGradient
 import androidx.compose.remote.creation.compose.shapes.RemoteRoundedCornerShape
+import androidx.compose.remote.creation.compose.state.RemoteBoolean
 import androidx.compose.remote.creation.compose.state.RemoteColor
+import androidx.compose.remote.creation.compose.state.RemoteInt
 import androidx.compose.remote.creation.compose.state.asRemoteTextUnit
 import androidx.compose.remote.creation.compose.state.rb
 import androidx.compose.remote.creation.compose.state.rc
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rememberMutableRemoteInt
 import androidx.compose.remote.creation.compose.state.rf
+import androidx.compose.remote.creation.compose.state.ri
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.remote.creation.compose.text.RemoteTextStyle
 import androidx.compose.runtime.Composable
@@ -77,6 +81,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.platform.WindowInfo
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
@@ -84,25 +90,47 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.remote.material3.LocalRemoteContentColor
+import androidx.wear.compose.remote.material3.RemoteAppCard
 import androidx.wear.compose.remote.material3.RemoteButton
+import androidx.wear.compose.remote.material3.RemoteButtonGroup
 import androidx.wear.compose.remote.material3.RemoteCard
+import androidx.wear.compose.remote.material3.RemoteCheckboxButton
 import androidx.wear.compose.remote.material3.RemoteCircularProgressIndicator
+import androidx.wear.compose.remote.material3.RemoteCompactButton
+import androidx.wear.compose.remote.material3.RemoteCurvedProgressIndicator
+import androidx.wear.compose.remote.material3.RemoteHorizontalPageIndicator
 import androidx.wear.compose.remote.material3.RemoteIcon
+import androidx.wear.compose.remote.material3.RemoteIconButton
+import androidx.wear.compose.remote.material3.RemoteLinearProgressIndicator
 import androidx.wear.compose.remote.material3.RemoteMaterialTheme
+import androidx.wear.compose.remote.material3.RemoteOutlinedCard
+import androidx.wear.compose.remote.material3.RemoteRadioButton
+import androidx.wear.compose.remote.material3.RemoteSplitCheckboxButton
+import androidx.wear.compose.remote.material3.RemoteSplitRadioButton
+import androidx.wear.compose.remote.material3.RemoteSplitSwitchButton
+import androidx.wear.compose.remote.material3.RemoteStepper
+import androidx.wear.compose.remote.material3.RemoteSwitchButton
 import androidx.wear.compose.remote.material3.RemoteText
+import androidx.wear.compose.remote.material3.RemoteTextButton
+import androidx.wear.compose.remote.material3.RemoteTitleCard
+import androidx.wear.compose.remote.material3.RemoteVerticalPageIndicator
+import androidx.wear.compose.remote.material3.rememberRemotePageIndicatorState
 import ee.schimke.composeai.rcplayer.compose.RcComposePlayer
 import ee.schimke.composeai.rcplayer.compose.RcPlayerTheme
 import ee.schimke.composeai.rcplayer.protocol.RcDocument
 import ee.schimke.composeai.rcplayer.protocol.RcDocumentCodec
 import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
 import ee.schimke.composeai.uibuilder.export.SHOW_BY_STATE
+import ee.schimke.composeai.uibuilder.export.StateSelection
 import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
 import ee.schimke.composeai.uibuilder.export.UiBuilderNode
+import ee.schimke.composeai.uibuilder.export.UiDrawing
 import ee.schimke.composeai.uibuilder.export.WearWidgetScaffoldSize
 import ee.schimke.composeai.uibuilder.export.hostSpec
 import ee.schimke.composeai.uibuilder.export.stateSelection
@@ -294,6 +322,17 @@ private data class CapturedRemoteDocuments(
   val background: RcDocument?,
 )
 
+/**
+ * The round buttons' own circle, as a fixed radius: the default `RemoteCircleShape` is a 50% corner
+ * that rc-player-compose 2.1.2 resolves from a component size it has not registered yet (it fails
+ * the whole document). At the buttons' 52dp default this is the same circle.
+ */
+private val PLAYABLE_CIRCLE = RemoteRoundedCornerShape(26.rdp)
+
+private class CaptureWindowInfo(override val containerSize: IntSize) : WindowInfo {
+  override val isWindowFocused: Boolean = true
+}
+
 private suspend fun captureDocument(
   widthDp: Float,
   heightDp: Float,
@@ -312,25 +351,46 @@ private suspend fun captureDocument(
       // Pictures travel inside the document: without an encoder the common writer drops them.
       encodePng = ::encodeDesignAssetPng,
     ) {
-      RemoteMaterialTheme(typography = RemoteMaterialTheme.typography.withRoleNames(roleNames)) {
-        CompositionLocalProvider(LocalThemeTextRole provides textRole, content = content)
+      // The capture runs outside any window; components that size to the screen (the stepper)
+      // read the widget's own extent instead.
+      val window =
+        CaptureWindowInfo(
+          IntSize(
+            (widthDp * density.density).roundToInt(),
+            (heightDp * density.density).roundToInt(),
+          )
+        )
+      CompositionLocalProvider(LocalWindowInfo provides window) {
+        RemoteMaterialTheme(typography = RemoteMaterialTheme.typography.withRoleNames(roleNames)) {
+          CompositionLocalProvider(LocalThemeTextRole provides textRole, content = content)
+        }
       }
     }
   return RcDocumentCodec.decode(bytes)
 }
 
 private class RemoteDocumentTree(private val document: UiBuilderDocument) {
+  // Computed values stay expressions: the recorded document plays them, through [DocumentValues],
+  // rather than drawing the value they have at the preview state.
   private val tree =
     CanvasRenderTree(
       document = document,
       state = document.initialState(),
       adapterIds = emptyMap(),
       adapterMappings = emptyMap(),
+      evaluateExpressions = false,
     )
+
+  private var documentValues: DocumentValues? = null
+
+  /** The design's live state, remembered by whichever entry point is composing. */
+  private val values: DocumentValues
+    get() = checkNotNull(documentValues) { "values read outside Render" }
 
   @Composable
   @RemoteComposable
   fun Render(skipWidgetFrame: Boolean) {
+    documentValues = rememberDocumentValues(document)
     document.roots.forEach { id ->
       tree.root(id)?.let { root ->
         if (skipWidgetFrame && root.node.widgetSize() != null) {
@@ -345,6 +405,7 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
   @Composable
   @RemoteComposable
   fun RenderRootSlot(slotName: String) {
+    documentValues = rememberDocumentValues(document)
     // Stacked in one full-frame box, the way the host layers a widget's background: each layer is
     // a brush over the whole frame, so it fills it without authoring any size of its own (the
     // export refuses a background node that carries one).
@@ -375,12 +436,66 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
       selection?.selectedNode(document.initialState(), document.stateVariables)?.let {
         branches.indexOf(it)
       }
-    val current = rememberMutableRemoteInt(selected?.takeIf { it >= 0 } ?: branches.lastIndex)
+    val initial = rememberMutableRemoteInt(selected?.takeIf { it >= 0 } ?: branches.lastIndex)
+    // Follow the variable itself, so a click or toggle that sets it switches the branch.
+    val current = selection?.let(::liveBranch) ?: initial
     RemoteBox(modifier = modifier, contentAlignment = node.boxAlignment()) {
       RemoteStateLayout(current, *IntArray(branches.size) { it }) { branch ->
         RemoteBox { branches.getOrNull(branch)?.let(children::get)?.let { RenderNode(it) } }
       }
     }
+  }
+
+  /**
+   * The selected branch as the export writes it: the index of the case the live state variable
+   * equals, else the fallback's (`cases.size`). Int cases compare 16-bit halves, as the export
+   * does, so `Int.MIN_VALUE` cannot overflow the player's equality. Null for a selector that is not
+   * an int or boolean state read; those keep the branch their initial value picks.
+   */
+  private fun liveBranch(selection: StateSelection): RemoteInt? {
+    if (selection.selector["type"] != JsonPrimitive("state")) return null
+    val asInt = values.int(selection.selector)
+    val asBool = if (asInt == null) values.bool(selection.selector) ?: return null else null
+    var ordinal: RemoteInt = selection.cases.size.ri
+    selection.cases.values.withIndex().reversed().forEach { (index, literal) ->
+      val match: RemoteBoolean =
+        if (asInt != null) {
+          val value = literal.intOrNull ?: return null
+          (asInt and 65535.ri)
+            .isEqualTo((value and 65535).ri)
+            .and((asInt shr 16.ri).isEqualTo((value shr 16).ri))
+        } else {
+          asBool!!.isEqualTo((literal.booleanOrNull ?: return null).rb)
+        }
+      ordinal = match.select(index.ri, ordinal)
+    }
+    return ordinal
+  }
+
+  /** A slot's children as a composable lambda, or null for an empty slot (an absent overload). */
+  private fun CanvasRenderNode.slotContent(
+    name: String
+  ): (@Composable @RemoteComposable () -> Unit)? =
+    slot(name)
+      .takeIf { it.isNotEmpty() }
+      ?.let { children -> { children.forEach { RenderNode(it) } } }
+
+  /** [slotContent] for a slot whose lambda receives the row it is laid out in. */
+  private fun CanvasRenderNode.rowSlotContent(
+    name: String
+  ): (@Composable @RemoteComposable RemoteRowScope.() -> Unit)? =
+    slot(name)
+      .takeIf { it.isNotEmpty() }
+      ?.let { children -> { children.forEach { RenderNode(it, row = this) } } }
+
+  /** `enabled`, which may read Boolean state or be computed. */
+  private fun UiBuilderNode.enabled(): RemoteBoolean =
+    values.bool(properties["enabled"]) ?: boolean("enabled", true).rb
+
+  @Composable
+  @RemoteComposable
+  private fun DrawCanvas(entry: CanvasRenderNode, modifier: RemoteModifier) {
+    DeviceDrawCanvas(entry, modifier, values) { it.remoteColor() }
   }
 
   /**
@@ -401,9 +516,25 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
   ) {
     val node = entry.node
     val modifier =
-      node.remoteModifier(row, column, collapsibleColumn, collapsibleRow).let {
-        if (fillFrame) it.fillMaxSize() else it
-      }
+      node
+        .remoteModifier(values, row, column, collapsibleColumn, collapsibleRow)
+        .let { if (fillFrame) it.fillMaxSize() else it }
+        .let { base ->
+          // A layout's own click, long press and double tap, as the export writes them.
+          val long = values.hasAction(node, "longClick")
+          val double = values.hasAction(node, "doubleClick")
+          when {
+            node.componentId.startsWith("remote-m3/") -> base
+            long || double ->
+              base.combinedClickable(
+                onClick = values.action(node, "click"),
+                onLongClick = values.action(node, "longClick"),
+                onDoubleClick = values.action(node, "doubleClick"),
+              )
+            values.hasAction(node, "click") -> base.clickable(values.action(node, "click"))
+            else -> base
+          }
+        }
     if (node.componentId == "layout/box" && SHOW_BY_STATE in node.properties) {
       StateSwitch(entry, modifier)
       return
@@ -498,9 +629,9 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
       "m3/text",
       "remote-m3/remote-text" ->
         RemoteText(
-          text = node.string("text").rs,
+          text = values.string(node.properties["text"]) ?: node.string("text").rs,
           modifier = modifier,
-          color = node.remoteColor("color"),
+          color = values.color(node.properties["color"]) ?: node.remoteColor("color"),
           fontSize =
             node.number("fontSize")?.sp?.asRemoteTextUnit()
               ?: node.number("fontSizeSp")?.sp?.asRemoteTextUnit(),
@@ -512,12 +643,9 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
         )
       "remote-m3/remote-button" ->
         RemoteButton(
-          onClick = combinedAction(),
+          onClick = values.action(node, "click"),
           modifier = modifier,
-          enabled =
-            node.boolean("enabled", true).let {
-              androidx.compose.remote.creation.compose.state.RemoteBoolean(it)
-            },
+          enabled = node.enabled(),
         ) {
           entry.slot("content").forEach { RenderNode(it) }
         }
@@ -542,16 +670,188 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
         }
       }
       "remote-m3/remote-card" ->
-        RemoteCard(onClick = combinedAction(), modifier = modifier) {
+        RemoteCard(
+          onClick = values.action(node, "click"),
+          modifier = modifier,
+          enabled = node.enabled(),
+        ) {
           entry.slot("content").forEach { RenderNode(it) }
         }
       "remote-m3/remote-circular-progress-indicator" ->
         RemoteCircularProgressIndicator(
-          progress = (node.number("progress") ?: 0f).rf,
+          progress = values.float(node.properties["progress"]) ?: 0f.rf,
           modifier = modifier,
-          startAngle = (node.number("startAngle") ?: 0f).rf,
-          endAngle = (node.number("endAngle") ?: node.number("startAngle") ?: 0f).rf,
+          startAngle = values.float(node.properties["startAngle"]) ?: 0f.rf,
+          endAngle =
+            values.float(node.properties["endAngle"])
+              ?: values.float(node.properties["startAngle"])
+              ?: 0f.rf,
         )
+      "remote-m3/remote-linear-progress-indicator" ->
+        RemoteLinearProgressIndicator(
+          progress = values.float(node.properties["progress"]) ?: 0f.rf,
+          modifier = modifier,
+          enabled = node.enabled(),
+        )
+      "remote-m3/remote-curved-progress-indicator" ->
+        RemoteCurvedProgressIndicator(
+          progress = values.float(node.properties["progress"]) ?: 0f.rf,
+          modifier = modifier,
+          enabled = node.enabled(),
+        )
+      "remote-m3/remote-horizontal-page-indicator",
+      "remote-m3/remote-vertical-page-indicator" -> {
+        val state =
+          rememberRemotePageIndicatorState(
+            pageCount = node.integer("pageCount")?.coerceAtLeast(1) ?: 4,
+            selectedPage = values.int(node.properties["selectedPage"]) ?: 0.ri,
+          )
+        if (node.componentId.endsWith("vertical-page-indicator"))
+          RemoteVerticalPageIndicator(state = state, modifier = modifier)
+        else RemoteHorizontalPageIndicator(state = state, modifier = modifier)
+      }
+      "remote-m3/remote-compact-button" ->
+        RemoteCompactButton(
+          onClick = values.action(node, "click"),
+          modifier = modifier,
+          icon = entry.slotContent("icon"),
+          enabled = node.enabled(),
+          label = entry.rowSlotContent("label"),
+        )
+      "remote-m3/remote-icon-button" ->
+        RemoteIconButton(
+          onClick = values.action(node, "click"),
+          modifier = modifier,
+          enabled = node.enabled(),
+          shape = PLAYABLE_CIRCLE,
+        ) {
+          entry.slot("content").forEach { RenderNode(it) }
+        }
+      "remote-m3/remote-text-button" ->
+        RemoteTextButton(
+          onClick = values.action(node, "click"),
+          modifier = modifier,
+          enabled = node.enabled(),
+          shape = PLAYABLE_CIRCLE,
+        ) {
+          entry.slot("content").forEach { RenderNode(it) }
+        }
+      "remote-m3/remote-outlined-card" ->
+        RemoteOutlinedCard(
+          onClick = values.action(node, "click"),
+          modifier = modifier,
+          enabled = node.enabled(),
+        ) {
+          entry.slot("content").forEach { RenderNode(it) }
+        }
+      "remote-m3/remote-title-card" ->
+        RemoteTitleCard(
+          onClick = values.action(node, "click"),
+          title = { entry.slot("title").forEach { RenderNode(it) } },
+          modifier = modifier,
+          enabled = node.enabled(),
+          time = entry.slotContent("time"),
+          subtitle = entry.slotContent("subtitle"),
+          content = entry.slotContent("content"),
+        )
+      "remote-m3/remote-app-card" ->
+        RemoteAppCard(
+          onClick = values.action(node, "click"),
+          appName = { entry.slot("appName").forEach { RenderNode(it) } },
+          title = { entry.slot("title").forEach { RenderNode(it) } },
+          modifier = modifier,
+          enabled = node.enabled(),
+          appImage = entry.slotContent("appImage"),
+          time = entry.slotContent("time"),
+        ) {
+          entry.slot("content").forEach { RenderNode(it) }
+        }
+      "remote-m3/remote-button-group" ->
+        RemoteButtonGroup(modifier = modifier) {
+          entry.slot("content").forEach { RenderNode(it, row = this) }
+        }
+      "remote-m3/remote-checkbox-button" ->
+        RemoteCheckboxButton(
+          checked = values.bool(node.properties["checked"]) ?: false.rb,
+          onCheckedChange = values.action(node, "checkedChange"),
+          modifier = modifier,
+          enabled = node.enabled(),
+          icon = entry.slotContent("icon"),
+          secondaryLabel = entry.rowSlotContent("secondaryLabel"),
+          label = entry.rowSlotContent("label") ?: {},
+        )
+      "remote-m3/remote-switch-button" ->
+        RemoteSwitchButton(
+          checked = values.bool(node.properties["checked"]) ?: false.rb,
+          onCheckedChange = values.action(node, "checkedChange"),
+          modifier = modifier,
+          enabled = node.enabled(),
+          icon = entry.slotContent("icon"),
+          secondaryLabel = entry.rowSlotContent("secondaryLabel"),
+          label = entry.rowSlotContent("label") ?: {},
+        )
+      "remote-m3/remote-radio-button" ->
+        RemoteRadioButton(
+          selected = values.bool(node.properties["selected"]) ?: false.rb,
+          onSelect = values.action(node, "select"),
+          modifier = modifier,
+          enabled = node.enabled(),
+          icon = entry.slotContent("icon"),
+          secondaryLabel = entry.rowSlotContent("secondaryLabel"),
+          label = entry.rowSlotContent("label") ?: {},
+        )
+      "remote-m3/remote-split-checkbox-button" ->
+        RemoteSplitCheckboxButton(
+          checked = values.bool(node.properties["checked"]) ?: false.rb,
+          onCheckedChange = values.action(node, "checkedChange"),
+          toggleContentDescription = null,
+          onContainerClick = values.action(node, "containerClick"),
+          modifier = modifier,
+          enabled = node.enabled(),
+          secondaryLabel = entry.rowSlotContent("secondaryLabel"),
+          label = entry.rowSlotContent("label") ?: {},
+        )
+      "remote-m3/remote-split-switch-button" ->
+        RemoteSplitSwitchButton(
+          checked = values.bool(node.properties["checked"]) ?: false.rb,
+          onCheckedChange = values.action(node, "checkedChange"),
+          toggleContentDescription = null,
+          onContainerClick = values.action(node, "containerClick"),
+          modifier = modifier,
+          enabled = node.enabled(),
+          secondaryLabel = entry.rowSlotContent("secondaryLabel"),
+          label = entry.rowSlotContent("label") ?: {},
+        )
+      "remote-m3/remote-split-radio-button" ->
+        RemoteSplitRadioButton(
+          selected = values.bool(node.properties["selected"]) ?: false.rb,
+          onSelectionClick = values.action(node, "selectionClick"),
+          selectionContentDescription = null,
+          onContainerClick = values.action(node, "containerClick"),
+          modifier = modifier,
+          enabled = node.enabled(),
+          secondaryLabel = entry.rowSlotContent("secondaryLabel"),
+          label = entry.rowSlotContent("label") ?: {},
+        )
+      // Not recorded here: the edge button and the slider record, but rc-player-compose 2.1.2
+      // (built
+      // against Compose 1.11) cannot play them on this Compose line — the edge's conic path calls a
+      // Skia `Path.conicTo` this Skiko lacks, and the slider's weighted bar canvas reads a
+      // component
+      // value the player rejects. Either would take the whole preview down, so both keep the
+      // "unsupported" stand-in until the player moves.
+      "remote-m3/remote-stepper" ->
+        RemoteStepper(
+          value = values.float(node.properties["value"]) ?: 0f.rf,
+          steps = node.integer("steps") ?: 0,
+          modifier = modifier,
+          decreaseAction = values.action(node, "decreaseAction"),
+          increaseAction = values.action(node, "increaseAction"),
+          enabled = node.enabled(),
+        ) {
+          entry.slot("content").forEach { RenderNode(it) }
+        }
+      UiDrawing.CANVAS -> DrawCanvas(entry, modifier)
       "asset/image" -> {
         // The editor inlines the uploaded pictures it has fetched; until it has, a plain frame.
         val bytes = document.embeddedAssetBytes(node.assetKey())
@@ -642,6 +942,7 @@ private fun UiBuilderNode.boolean(name: String, fallback: Boolean): Boolean =
 
 @Composable
 private fun UiBuilderNode.remoteModifier(
+  values: DocumentValues,
   row: RemoteRowScope? = null,
   column: RemoteColumnScope? = null,
   collapsibleColumn: RemoteCollapsibleColumnScope? = null,
@@ -709,10 +1010,15 @@ private fun UiBuilderNode.remoteModifier(
         "sharedElement" ->
           number("key")?.toInt()?.takeIf { it >= 1 }?.let { result.sharedElement(key = it) }
             ?: result
-        "alpha" -> result.alpha((number("alpha") ?: 1f).rf)
-        "rotate" -> result.rotate((number("degrees") ?: 0f).rf)
-        "scale" -> result.scale((number("scaleX") ?: 1f).rf, (number("scaleY") ?: 1f).rf)
-        "zIndex" -> result.zIndex((number("zIndex") ?: 0f).rf)
+        // Each may be computed, and then plays as the expression the export writes.
+        "alpha" -> result.alpha(values.float(modifier["alpha"].wrapped()) ?: 1f.rf)
+        "rotate" -> result.rotate(values.float(modifier["degrees"].wrapped()) ?: 0f.rf)
+        "scale" ->
+          result.scale(
+            values.float(modifier["scaleX"].wrapped()) ?: 1f.rf,
+            values.float(modifier["scaleY"].wrapped()) ?: 1f.rf,
+          )
+        "zIndex" -> result.zIndex(values.float(modifier["zIndex"].wrapped()) ?: 0f.rf)
         "offset" -> result.offset((number("xDp") ?: 0f).rdp, (number("yDp") ?: 0f).rdp)
         "widthIn" -> result.widthIn(number("minDp")?.rdp, number("maxDp")?.rdp)
         "heightIn" -> result.heightIn(number("minDp")?.rdp, number("maxDp")?.rdp)
@@ -754,6 +1060,16 @@ internal fun namedShapeRadiusDp(declared: String?): Float =
     "medium" -> 12f
     "small" -> 8f
     else -> declared?.toFloatOrNull() ?: 0f
+  }
+
+/**
+ * A modifier field — a bare number or a computed wrapper — as the wrapper [DocumentValues] reads.
+ */
+private fun kotlinx.serialization.json.JsonElement?.wrapped():
+  kotlinx.serialization.json.JsonElement? =
+  when (this) {
+    is JsonPrimitive -> JsonObject(mapOf("type" to JsonPrimitive("float"), "value" to this))
+    else -> this
   }
 
 /** A modifier's colour, written either bare or as the `{"type":"color","value":…}` wrapper. */
