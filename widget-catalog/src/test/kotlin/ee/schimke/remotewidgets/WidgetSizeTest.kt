@@ -1,6 +1,7 @@
 package ee.schimke.remotewidgets
 
 import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import java.io.File
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.int
@@ -56,10 +57,10 @@ class WidgetSizeTest {
     assertThat(frames).isNotEmpty()
     frames.forEach { (label, width, height, dpi) ->
       val size = WidgetSize.fromLabel(label)
-      assertThat(size).named(label).isNotNull()
-      assertThat(width.toInt()).named("$label width").isEqualTo(size!!.widthDp)
-      assertThat(height.toInt()).named("$label height").isEqualTo(size.heightDp)
-      assertThat(dpi.toInt()).named("$label dpi").isEqualTo(WidgetSize.DPI)
+      assertWithMessage(label).that(size).isNotNull()
+      assertWithMessage("$label width").that(width.toInt()).isEqualTo(size!!.widthDp)
+      assertWithMessage("$label height").that(height.toInt()).isEqualTo(size.heightDp)
+      assertWithMessage("$label dpi").that(dpi.toInt()).isEqualTo(WidgetSize.DPI)
     }
     // Every size has its single-frame annotation.
     WidgetSize.entries.forEach { assertThat(source).contains("annotation class Widget${it.label}") }

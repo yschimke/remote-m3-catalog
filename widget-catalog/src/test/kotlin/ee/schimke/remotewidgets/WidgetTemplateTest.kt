@@ -1,6 +1,7 @@
 package ee.schimke.remotewidgets
 
 import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import java.io.File
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -76,7 +77,7 @@ class WidgetTemplateTest(private val templatePath: String) {
     val width = environment.getValue("widthDp").jsonPrimitive.int
     val height = environment.getValue("heightDp").jsonPrimitive.int
     val size = WidgetSize.entries.firstOrNull { it.widthDp == width && it.heightDp == height }
-    assertThat(size).named("$width×$height dp").isNotNull()
+    assertWithMessage("$width×$height dp").that(size).isNotNull()
     assertThat(document.getValue("title").jsonPrimitive.content).contains(size!!.label)
   }
 
@@ -97,8 +98,8 @@ class WidgetTemplateTest(private val templatePath: String) {
     nodes.values.forEach { node ->
       node.getValue("properties").jsonObject.forEach { (name, value) ->
         if (name == "color" || name == "background") {
-          assertThat(value.jsonObject.getValue("value").jsonPrimitive.content)
-            .named("${node.getValue("id").jsonPrimitive.content}.$name")
+          assertWithMessage("${node.getValue("id").jsonPrimitive.content}.$name")
+            .that(value.jsonObject.getValue("value").jsonPrimitive.content)
             .matches("#[0-9A-Fa-f]{8}")
         }
       }
