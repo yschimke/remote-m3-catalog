@@ -57,6 +57,7 @@ import androidx.compose.remote.creation.compose.shaders.verticalGradient
 import androidx.compose.remote.creation.compose.shapes.RemoteRoundedCornerShape
 import androidx.compose.remote.creation.compose.state.RemoteBoolean
 import androidx.compose.remote.creation.compose.state.RemoteColor
+import androidx.compose.remote.creation.compose.state.RemoteInt
 import androidx.compose.remote.creation.compose.state.asRemoteTextUnit
 import androidx.compose.remote.creation.compose.state.rb
 import androidx.compose.remote.creation.compose.state.rc
@@ -125,6 +126,7 @@ import ee.schimke.composeai.rcplayer.protocol.RcDocument
 import ee.schimke.composeai.rcplayer.protocol.RcDocumentCodec
 import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
 import ee.schimke.composeai.uibuilder.export.SHOW_BY_STATE
+import ee.schimke.composeai.uibuilder.export.StateSelection
 import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
 import ee.schimke.composeai.uibuilder.export.UiBuilderNode
@@ -434,12 +436,40 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
       selection?.selectedNode(document.initialState(), document.stateVariables)?.let {
         branches.indexOf(it)
       }
-    val current = rememberMutableRemoteInt(selected?.takeIf { it >= 0 } ?: branches.lastIndex)
+    val initial = rememberMutableRemoteInt(selected?.takeIf { it >= 0 } ?: branches.lastIndex)
+    // Follow the variable itself, so a click or toggle that sets it switches the branch.
+    val current = selection?.let(::liveBranch) ?: initial
     RemoteBox(modifier = modifier, contentAlignment = node.boxAlignment()) {
       RemoteStateLayout(current, *IntArray(branches.size) { it }) { branch ->
         RemoteBox { branches.getOrNull(branch)?.let(children::get)?.let { RenderNode(it) } }
       }
     }
+  }
+
+  /**
+   * The selected branch as the export writes it: the index of the case the live state variable
+   * equals, else the fallback's (`cases.size`). Int cases compare 16-bit halves, as the export
+   * does, so `Int.MIN_VALUE` cannot overflow the player's equality. Null for a selector that is not
+   * an int or boolean state read; those keep the branch their initial value picks.
+   */
+  private fun liveBranch(selection: StateSelection): RemoteInt? {
+    if (selection.selector["type"] != JsonPrimitive("state")) return null
+    val asInt = values.int(selection.selector)
+    val asBool = if (asInt == null) values.bool(selection.selector) ?: return null else null
+    var ordinal: RemoteInt = selection.cases.size.ri
+    selection.cases.values.withIndex().reversed().forEach { (index, literal) ->
+      val match: RemoteBoolean =
+        if (asInt != null) {
+          val value = literal.intOrNull ?: return null
+          (asInt and 65535.ri)
+            .isEqualTo((value and 65535).ri)
+            .and((asInt shr 16.ri).isEqualTo((value shr 16).ri))
+        } else {
+          asBool!!.isEqualTo((literal.booleanOrNull ?: return null).rb)
+        }
+      ordinal = match.select(index.ri, ordinal)
+    }
+    return ordinal
   }
 
   /** A slot's children as a composable lambda, or null for an empty slot (an absent overload). */

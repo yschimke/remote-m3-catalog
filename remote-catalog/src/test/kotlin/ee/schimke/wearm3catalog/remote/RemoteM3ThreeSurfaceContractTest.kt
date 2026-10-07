@@ -114,7 +114,9 @@ class RemoteM3ThreeSurfaceContractTest {
         .readText()
 
     assertThat(device).contains("\"remote-m3/remote-button\"")
-    assertThat(device).contains("node.boolean(\"enabled\", true)")
+    // Enabled reads a state or computed value when one is bound, else the literal (default on).
+    assertThat(device).contains("enabled = node.enabled()")
+    assertThat(device).contains("boolean(\"enabled\", true)")
     assertThat(device).contains("entry.slot(\"content\")")
     assertThat(device).contains("Unsupported: ${'$'}{node.componentId}")
   }
