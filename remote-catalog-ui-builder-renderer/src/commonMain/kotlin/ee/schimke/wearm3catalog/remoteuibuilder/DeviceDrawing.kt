@@ -77,9 +77,10 @@ private class Extent(val width: RemoteFloat, val height: RemoteFloat) {
 
 private class Operation(
   val node: UiBuilderNode,
-  val color: RemoteColor,
-  /** Where a gradient paint ends, resolved in composition beside [color]; null for none. */
-  val gradientColor: RemoteColor?,
+  /** The authored literal or theme role, read in composition; null when computed or absent. */
+  val themedColor: RemoteColor?,
+  /** Where a gradient paint ends, read in composition beside [themedColor]. */
+  val themedGradientColor: RemoteColor?,
   val children: List<Operation>,
 ) {
   private fun RemoteDrawScope.drawChildren(extent: Extent, values: DocumentValues) =
@@ -91,6 +92,20 @@ private class Operation(
     with(scope) {
       fun px(name: String): RemoteFloat? = values.float(node.properties[name])?.asRemoteDp()?.toPx()
       fun float(name: String): RemoteFloat? = values.float(node.properties[name])
+      // Computed paint is lowered here rather than in composition, so a loop index reaches it.
+      val alpha = float("alpha")
+      fun paint(name: String, themed: RemoteColor?, fallback: RemoteColor): RemoteColor {
+        val base =
+          values.color(node.properties[name]?.takeIf { it.isComputedColour() })
+            ?: themed
+            ?: fallback
+        return alpha?.let { base.copy(alpha = it) } ?: base
+      }
+      val fill = paint("color", themedColor, Color.Black.rc)
+      val gradientColor =
+        node.text("gradient")?.let {
+          paint("gradientColor", themedGradientColor, Color.Transparent.rc)
+        }
       when (node.componentId) {
         UiDrawing.GROUP -> {
           val pivot =
@@ -150,7 +165,7 @@ private class Operation(
       val stroked = node.text("style") == "stroke" || node.componentId == "draw/line"
       val strokeWidth = px("strokeWidthDp") ?: 1f.rdp.toPx()
       val paint = RemotePaint {
-        color = this@Operation.color
+        color = fill
         if (stroked) {
           style = PaintingStyle.Stroke
           this.strokeWidth = strokeWidth
@@ -170,10 +185,10 @@ private class Operation(
         if (end != null && kind != null) {
           val brush =
             when (kind) {
-              "horizontal" -> RemoteBrush.horizontalGradient(listOf(this@Operation.color, end))
-              "vertical" -> RemoteBrush.verticalGradient(listOf(this@Operation.color, end))
-              "radial" -> RemoteBrush.radialGradient(listOf(this@Operation.color, end))
-              else -> RemoteBrush.sweepGradient(listOf(this@Operation.color, end))
+              "horizontal" -> RemoteBrush.horizontalGradient(listOf(fill, end))
+              "vertical" -> RemoteBrush.verticalGradient(listOf(fill, end))
+              "radial" -> RemoteBrush.radialGradient(listOf(fill, end))
+              else -> RemoteBrush.sweepGradient(listOf(fill, end))
             }
           with(brush) { applyTo(this@RemotePaint, RemoteSize(extent.width, extent.height)) }
         }
@@ -307,33 +322,29 @@ private fun collect(
 ): List<Operation> = operations.mapNotNull { operation ->
   val node = operation.node
   if (node.componentId !in UiDrawing.BY_ID) return@mapNotNull null
-  val base =
-    values.color(node.properties["color"]?.takeIf { it.isComputedColour() })
-      ?: node.text("color")?.let { resolveColor(it) }
-      ?: Color.Black.rc
-  val alpha = values.float(node.properties["alpha"])
-  val color = alpha?.let { base.copy(alpha = it) } ?: base
-  val gradientColor =
-    node.text("gradient")?.let {
-      val end =
-        values.color(node.properties["gradientColor"]?.takeIf { it.isComputedColour() })
-          ?: node.text("gradientColor")?.let { resolveColor(it) }
-          ?: Color.Transparent.rc
-      alpha?.let { end.copy(alpha = it) } ?: end
-    }
+  val themedColor =
+    node
+      .text("color")
+      ?.takeUnless { node.properties["color"].isComputedColour() }
+      ?.let { resolveColor(it) }
+  val themedGradientColor =
+    node
+      .text("gradientColor")
+      ?.takeUnless { node.properties["gradientColor"].isComputedColour() }
+      ?.let { resolveColor(it) }
   Operation(
     node,
-    color,
-    gradientColor,
+    themedColor,
+    themedGradientColor,
     if (UiDrawing.BY_ID.getValue(node.componentId).container)
       collect(operation.slot(UiDrawing.OPS_SLOT), values, resolveColor)
     else emptyList(),
   )
 }
 
-private fun kotlinx.serialization.json.JsonElement.isComputedColour(): Boolean =
+private fun kotlinx.serialization.json.JsonElement?.isComputedColour(): Boolean =
   (this as? JsonObject)?.get("type")?.let { (it as? JsonPrimitive)?.contentOrNull } in
-    setOf("expr", "system", "state")
+    setOf("expr", "system", "state", "binding")
 
 /** SVG path data as the port's `RemotePath`: arcs and smooth curves become cubics on the way. */
 private fun remotePath(data: String): RemotePath? {
