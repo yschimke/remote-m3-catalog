@@ -561,9 +561,12 @@ Wrapping changes none of the verification rules below; run the same tasks throug
   `design-parity-import.yml` until the reference cache is complete (parity requires it), then
   `design-artifacts.yml`. The workflows need two secrets: `ARTIFACTS_TOKEN` (write access to
   `remote-m3-catalog-out`) and `FIGMA_TOKEN`.
-- Repository settings — squash-only merges, auto-merge, and the `Protect Main` ruleset — are applied by
-  `scripts/setup-repo-protection.sh`. They need an admin token, so no workflow or agent session can set
-  them; re-running the script repairs drift. `DRY_RUN=1` prints without writing.
+- Repository settings — squash-only merges, auto-merge, and the `Protect Main` ruleset — are applied
+  centrally from [yschimke/renovate-config `repo-policy/`](https://github.com/yschimke/renovate-config/tree/main/repo-policy),
+  shared with the other Compose Preview repositories. They need an admin token, so no workflow or
+  agent session can set them. Its `apply-repo-policy.sh` reports drift read-only and `--apply`
+  repairs it. This repository's required checks are listed in its `policy.json`: rename a required
+  job here and update that list in the same sitting, or every PR waits on a check that never reports.
 
 ## Verifying a change
 
