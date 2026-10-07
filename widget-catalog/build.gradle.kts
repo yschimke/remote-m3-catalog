@@ -10,7 +10,8 @@
 //   `verifyNoRemoteMaterial3` below fails the build if the library reaches this module's compile
 //   classpath by any route.
 // - **No Glance Wear.** A launcher widget is an `AppWidgetProvider` — upstream's
-//   `RemoteComposeWidget` — not a `GlanceWearWidget`, and the launcher, not a watch host, frames it.
+//   `RemoteComposeWidget` — not a `GlanceWearWidget`, and the launcher, not a watch host, frames
+// it.
 // - **Frames are launcher grid cells**, `@Widget3x2` and friends in `WidgetSizes.kt`, not device
 //   sizes or Wear container sizes.
 // - **No kit.** There is no Figma kit for launcher widgets, so this sheet is outside design-parity

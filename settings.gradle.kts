@@ -134,7 +134,8 @@ include(":remote-catalog")
 
 // Mobile Launcher Widgets in Remote Compose — the `remote-widgets` system. A second design system,
 // not a mode of `remote-m3`: no `remote-material3`, no Glance Wear, and frames sized in launcher
-// grid cells. It shares the vendored Remote Compose port below. See widget-catalog/build.gradle.kts.
+// grid cells. It shares the vendored Remote Compose port below. See
+// widget-catalog/build.gradle.kts.
 include(":widget-catalog")
 
 // Source vendoring of the three Remote Compose layers being moved to CMP JVM by AndroidX CL

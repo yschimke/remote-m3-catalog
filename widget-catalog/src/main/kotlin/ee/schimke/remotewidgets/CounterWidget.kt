@@ -22,10 +22,10 @@ import androidx.compose.runtime.Composable
  * player-view-demos/…/widgets/MyWidget.kt`) rebuilt from this sheet's components. A counter with a
  * minus and a plus, each a widget lambda action the launcher routes back here.
  *
- * It is the shape the UI builder's generated code takes for this catalog — a
- * `RemoteComposeWidget` whose `Content(context, widgetId)` is the design's body — which is why it
- * is a real provider class rather than a bare composable. Not registered in the manifest: this is
- * a preview-only module, as `:remote-catalog` is.
+ * It is the shape the UI builder's generated code takes for this catalog — a `RemoteComposeWidget`
+ * whose `Content(context, widgetId)` is the design's body — which is why it is a real provider
+ * class rather than a bare composable. Not registered in the manifest: this is a preview-only
+ * module, as `:remote-catalog` is.
  */
 class CounterWidget : RemoteComposeWidget() {
 

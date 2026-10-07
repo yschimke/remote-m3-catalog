@@ -85,7 +85,9 @@ class WidgetSizeTest {
           )
         }
     assertThat(sizes)
-      .containsExactlyElementsIn(WidgetSize.entries.map { Triple(it.label, it.widthDp, it.heightDp) })
+      .containsExactlyElementsIn(
+        WidgetSize.entries.map { Triple(it.label, it.widthDp, it.heightDp) }
+      )
       .inOrder()
   }
 
