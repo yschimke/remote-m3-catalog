@@ -2,7 +2,9 @@ package ee.schimke.wearm3catalog.remoteuibuilder
 
 import ee.schimke.composeai.rcplayer.compose.RcFontAxis
 import ee.schimke.composeai.rcplayer.compose.RcFontVariations
+import ee.schimke.composeai.rcplayer.compose.RcTypefaceLoader
 import ee.schimke.composeai.uibuilder.UiBuilderFontRegistry
+import ee.schimke.composeai.uibuilder.export.FontSettings
 import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertNotNull
@@ -52,6 +54,26 @@ class RegistryTypefaceLoaderTest {
     assertSame(registry.loaded[ROBOTO_FLEX], loader.typeface(ROBOTO_FLEX, axes("tnum" to 1f)))
     // Inter is static: it has no `wdth` to set.
     assertSame(registry.loaded[INTER], loader.typeface(INTER, axes("wdth" to 25f)))
+  }
+
+  @Test
+  fun `axes on a text with no family draw in Roboto Flex, as the canvas does`() {
+    val fallback = RcTypefaceLoader.Default
+    // The player's own default for an unstyled run, and the loader's when there are no axes.
+    assertSame(fallback.typeface("default", null), loader.typeface("default", null))
+    val bold = assertNotNull(loader.typeface("default", axes("wght" to 800f)))
+    assertSame(registry.variant(ROBOTO_FLEX, listOf(FontSettings.Axis("wght", 800f))), bold)
+    // Features alone are no axes of Roboto Flex: the plain default stays.
+    assertSame(fallback.typeface("default", null), loader.typeface("default", axes("tnum" to 1f)))
+  }
+
+  @Test
+  fun `a generic serif or monospace text keeps the player's face`() {
+    val fallback = RcTypefaceLoader.Default
+    assertSame(
+      fallback.typeface("serif", axes("wght" to 800f)),
+      loader.typeface("serif", axes("wght" to 800f)),
+    )
   }
 
   private companion object {
