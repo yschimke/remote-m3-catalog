@@ -77,16 +77,10 @@ private class Extent(val width: RemoteFloat, val height: RemoteFloat) {
 
 private class Operation(
   val node: UiBuilderNode,
-<<<<<<< HEAD
   /** The authored literal or theme role, read in composition; null when computed or absent. */
   val themedColor: RemoteColor?,
   /** Where a gradient paint ends, read in composition beside [themedColor]. */
   val themedGradientColor: RemoteColor?,
-=======
-  val color: RemoteColor,
-  /** Where a gradient paint ends, resolved in composition beside [color]; null for none. */
-  val gradientColor: RemoteColor?,
->>>>>>> origin/main
   val children: List<Operation>,
 ) {
   private fun RemoteDrawScope.drawChildren(extent: Extent, values: DocumentValues) =
@@ -98,7 +92,6 @@ private class Operation(
     with(scope) {
       fun px(name: String): RemoteFloat? = values.float(node.properties[name])?.asRemoteDp()?.toPx()
       fun float(name: String): RemoteFloat? = values.float(node.properties[name])
-<<<<<<< HEAD
       // Computed paint is lowered here rather than in composition, so a loop index reaches it.
       val alpha = float("alpha")
       fun paint(name: String, themed: RemoteColor?, fallback: RemoteColor): RemoteColor {
@@ -113,8 +106,6 @@ private class Operation(
         node.text("gradient")?.let {
           paint("gradientColor", themedGradientColor, Color.Transparent.rc)
         }
-=======
->>>>>>> origin/main
       when (node.componentId) {
         UiDrawing.GROUP -> {
           val pivot =
@@ -194,17 +185,10 @@ private class Operation(
         if (end != null && kind != null) {
           val brush =
             when (kind) {
-<<<<<<< HEAD
               "horizontal" -> RemoteBrush.horizontalGradient(listOf(fill, end))
               "vertical" -> RemoteBrush.verticalGradient(listOf(fill, end))
               "radial" -> RemoteBrush.radialGradient(listOf(fill, end))
               else -> RemoteBrush.sweepGradient(listOf(fill, end))
-=======
-              "horizontal" -> RemoteBrush.horizontalGradient(listOf(this@Operation.color, end))
-              "vertical" -> RemoteBrush.verticalGradient(listOf(this@Operation.color, end))
-              "radial" -> RemoteBrush.radialGradient(listOf(this@Operation.color, end))
-              else -> RemoteBrush.sweepGradient(listOf(this@Operation.color, end))
->>>>>>> origin/main
             }
           with(brush) { applyTo(this@RemotePaint, RemoteSize(extent.width, extent.height)) }
         }
@@ -338,7 +322,6 @@ private fun collect(
 ): List<Operation> = operations.mapNotNull { operation ->
   val node = operation.node
   if (node.componentId !in UiDrawing.BY_ID) return@mapNotNull null
-<<<<<<< HEAD
   val themedColor =
     node
       .text("color")
@@ -353,26 +336,6 @@ private fun collect(
     node,
     themedColor,
     themedGradientColor,
-=======
-  val base =
-    values.color(node.properties["color"]?.takeIf { it.isComputedColour() })
-      ?: node.text("color")?.let { resolveColor(it) }
-      ?: Color.Black.rc
-  val alpha = values.float(node.properties["alpha"])
-  val color = alpha?.let { base.copy(alpha = it) } ?: base
-  val gradientColor =
-    node.text("gradient")?.let {
-      val end =
-        values.color(node.properties["gradientColor"]?.takeIf { it.isComputedColour() })
-          ?: node.text("gradientColor")?.let { resolveColor(it) }
-          ?: Color.Transparent.rc
-      alpha?.let { end.copy(alpha = it) } ?: end
-    }
-  Operation(
-    node,
-    color,
-    gradientColor,
->>>>>>> origin/main
     if (UiDrawing.BY_ID.getValue(node.componentId).container)
       collect(operation.slot(UiDrawing.OPS_SLOT), values, resolveColor)
     else emptyList(),
