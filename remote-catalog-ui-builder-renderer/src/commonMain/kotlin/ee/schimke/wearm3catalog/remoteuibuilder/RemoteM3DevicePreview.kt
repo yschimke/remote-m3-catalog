@@ -193,6 +193,14 @@ internal fun RemoteM3DevicePreview(
   val textRole = root?.string("themeTextStyle").orEmpty()
   val registry = LocalUiBuilderFontRegistry.current
   LaunchedEffect(registry, roleNames) { roleNames.values.toSet().forEach { registry?.request(it) } }
+  // Axes on a text with no family are drawn in Roboto Flex
+  // ([RegistryTypefaceLoader.DEVICE_FAMILY]),
+  // which the registry only holds once something asks for it.
+  val hasAxes =
+    remember(document) { document.nodes.values.any { it.fontVariationSettings() != null } }
+  LaunchedEffect(registry, hasAxes) {
+    if (hasAxes) registry?.request(RegistryTypefaceLoader.DEVICE_FAMILY)
+  }
   val fonts = remember(registry) { RegistryTypefaceLoader(registry) }
   // Kept across edits. Keyed on the document, every edit dropped the last drawing and showed a
   // placeholder until the new one was recorded; the previous frame stays up under a scrim instead.

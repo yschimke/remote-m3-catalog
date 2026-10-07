@@ -70,6 +70,10 @@ internal fun RemoteTypography.withRoleNames(names: Map<String, String>): RemoteT
  * applied to a loaded family as a variable instance of it. Only the axes the face has are passed:
  * Remote Compose writes a text's features into the same list, and a static face has no axes at all,
  * so either would otherwise be a new instance that draws the plain face.
+ *
+ * A text with no family of its own (the player's `default` or `sans-serif`) that carries axes is
+ * drawn in Wear's Roboto Flex at those axes, as the editor's canvas draws it: that is the face a
+ * watch sets such a text in, and the player's own default is static, so its axes drew nothing.
  */
 internal class RegistryTypefaceLoader(
   private val registry: UiBuilderFontRegistry?,
@@ -79,13 +83,32 @@ internal class RegistryTypefaceLoader(
     get() = fallback.families + registry?.loaded?.keys.orEmpty()
 
   override fun typeface(family: String, variations: RcFontVariations?): FontFamily? {
-    val loaded = registry?.loaded?.get(family) ?: return fallback.typeface(family, variations)
-    val axes =
-      variations
-        ?.axes
-        .orEmpty()
-        .filter { registry.hasAxis(family, it.tag) }
-        .map { FontSettings.Axis(it.tag, it.value) }
+    val loaded =
+      registry?.loaded?.get(family)
+        ?: return deviceFace(family, variations) ?: fallback.typeface(family, variations)
+    val axes = axes(family, variations)
     return if (axes.isEmpty()) loaded else registry.variant(family, axes) ?: loaded
+  }
+
+  /** Roboto Flex at [variations] for a text the player would set in its own default face. */
+  private fun deviceFace(family: String, variations: RcFontVariations?): FontFamily? {
+    if (family !in DEFAULT_FAMILIES || registry?.loaded?.get(DEVICE_FAMILY) == null) return null
+    val axes = axes(DEVICE_FAMILY, variations)
+    return if (axes.isEmpty()) null else registry.variant(DEVICE_FAMILY, axes)
+  }
+
+  private fun axes(family: String, variations: RcFontVariations?): List<FontSettings.Axis> =
+    variations
+      ?.axes
+      .orEmpty()
+      .filter { registry?.hasAxis(family, it.tag) == true }
+      .map { FontSettings.Axis(it.tag, it.value) }
+
+  internal companion object {
+    /** The face a text with no family is drawn in on a watch, and on the editor's canvas. */
+    const val DEVICE_FAMILY: String = FontSettings.WEAR_DEFAULT_FAMILY
+
+    /** The names the player hands a loader for a text that names no family. */
+    private val DEFAULT_FAMILIES = setOf("default", "sans-serif")
   }
 }
