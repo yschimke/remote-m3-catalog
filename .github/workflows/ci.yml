@@ -130,6 +130,16 @@ jobs:
         if: needs.changes.outputs.inert != 'true'
         run: ./gradlew :remote-catalog:composePreviewDiscover -PremoteSnapshot= --stacktrace
 
+      # The second sheet, `remote-widgets` (Mobile Launcher Widgets). Same contract — discovery is
+      # what turns its annotations into an inventory — and `check` carries
+      # `verifyNoRemoteMaterial3`, the rule that keeps it a design system of its own. It has no kit,
+      # so none of the design-map, kit-cell or page-join records below describe it.
+      - name: Launcher widgets — assemble, discover, verify
+        if: needs.changes.outputs.inert != 'true'
+        run: >
+          ./gradlew :widget-catalog:assembleDebug :widget-catalog:composePreviewDiscover
+          :widget-catalog:verifyNoRemoteMaterial3 --stacktrace
+
       # design-map.json is an OUTPUT — projected from the annotations that were just discovered —
       # and it is committed, so it can go stale the moment a component is added or a reference is
       # repointed. A stale map is silent in the worst way: parity keeps comparing yesterday's
@@ -327,6 +337,8 @@ jobs:
         run: |
           node compose-ai-tools/scripts/design-artifacts/validate-catalog-spec.mjs \
             --spec remote-catalog/catalog.spec.json --module-dir remote-catalog
+          node compose-ai-tools/scripts/design-artifacts/validate-catalog-spec.mjs \
+            --spec widget-catalog/catalog.spec.json --module-dir widget-catalog
 
   pages:
     name: Figma page resolution

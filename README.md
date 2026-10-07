@@ -62,6 +62,7 @@ downloadable-font axes, the Glance Wear widget host frame — so its component c
 | Path | What it is |
 | --- | --- |
 | [`remote-catalog/`](remote-catalog) | the `remote-m3` sheet: stickers, cover-sheet spec, UI-builder policy and templates |
+| [`widget-catalog/`](widget-catalog) | the `remote-widgets` sheet: **Mobile Launcher Widgets** in Remote Compose, a second design system drawn with `remote-creation-compose` + `remote-foundation` only and sized in launcher grid cells (see [docs/design/REMOTE_WIDGETS_UI_BUILDER.md](docs/design/REMOTE_WIDGETS_UI_BUILDER.md)) |
 | [`remote-catalog-ui-builder-renderer/`](remote-catalog-ui-builder-renderer) | the UI builder's Wasm runtime for `remote-m3` (see [docs/design/REMOTE_M3_UI_BUILDER.md](docs/design/REMOTE_M3_UI_BUILDER.md)) |
 | [`vendor/`](vendor) | the vendored AndroidX Remote Compose CMP port, published as `ee.schimke.remotecompose:*` ([vendor/README.md](vendor/README.md)) |
 | [`remote-desktop/`](remote-desktop), [`remote-wasm/`](remote-wasm) | JVM and Wasm clients of that port |

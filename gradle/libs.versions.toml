@@ -196,6 +196,8 @@ compose-material-icons = "1.7.8"
 
 activity-compose = "1.13.0"
 truth = "1.4.5"
+# `:widget-catalog`'s tests read the module's own `ui-builder.policy.json` and `catalog.spec.json`.
+kotlinx-serialization-json = "1.9.0"
 
 robolectric = "4.17"
 junit = "4.13.2"
@@ -302,6 +304,7 @@ ktfmt-cli = { module = "com.facebook:ktfmt", version.ref = "ktfmt-cli" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 junit = { module = "junit:junit", version.ref = "junit" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

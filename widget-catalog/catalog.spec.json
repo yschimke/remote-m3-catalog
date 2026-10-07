@@ -1,0 +1,66 @@
+{
+  "$schema": "https://raw.githubusercontent.com/yschimke/compose-ai-tools/main/scripts/design-artifacts/catalog.spec.schema.json",
+  "$comment": "Cover sheet for :widget-catalog, the `remote-widgets` system: Mobile Launcher Widgets in Remote Compose. The inventory lives in @CatalogComponent annotations under widget-catalog/src/main/kotlin/ee/schimke/remotewidgets/, as it does for :remote-catalog. A design system of its own rather than a mode of `remote-m3`: it draws with remote-creation-compose and remote-foundation only (no remote-material3, no Glance Wear), and its breakpoints are LAUNCHER GRID SIZES rather than devices — each `size` is a cell count, its dp the portrait size Android documents for it, (73n - 16) x (118m - 16), at the Pixel 4's 440dpi the table was measured on. WidgetSizeTest holds these to WidgetSizes.kt. No referenceKits and no compareWith: there is no published design kit for launcher widgets and no sibling sheet to pair with. Light mode, because a launcher widget sits on a wallpaper under the device's day theme by default and its stickers paint their own surface.",
+  "system": "remote-widgets",
+  "title": "Remote Compose Launcher Widgets",
+  "library": [
+    "androidx.compose.remote:remote-creation-compose",
+    "androidx.compose.remote:foundation"
+  ],
+  "module": ":widget-catalog",
+  "modes": [
+    "light"
+  ],
+  "display": {
+    "surface": "light",
+    "hero": "LauncherWidget/Counter"
+  },
+  "breakpoints": [
+    {
+      "size": "1x1",
+      "widthDp": 57,
+      "device": "spec:width=57dp,height=102dp,dpi=440"
+    },
+    {
+      "size": "2x1",
+      "widthDp": 130,
+      "device": "spec:width=130dp,height=102dp,dpi=440"
+    },
+    {
+      "size": "2x2",
+      "widthDp": 130,
+      "device": "spec:width=130dp,height=220dp,dpi=440"
+    },
+    {
+      "size": "3x1",
+      "widthDp": 203,
+      "device": "spec:width=203dp,height=102dp,dpi=440"
+    },
+    {
+      "size": "3x2",
+      "widthDp": 203,
+      "device": "spec:width=203dp,height=220dp,dpi=440"
+    },
+    {
+      "size": "4x1",
+      "widthDp": 276,
+      "device": "spec:width=276dp,height=102dp,dpi=440"
+    },
+    {
+      "size": "4x2",
+      "widthDp": 276,
+      "device": "spec:width=276dp,height=220dp,dpi=440"
+    },
+    {
+      "size": "4x3",
+      "widthDp": 276,
+      "device": "spec:width=276dp,height=338dp,dpi=440"
+    },
+    {
+      "size": "5x2",
+      "widthDp": 349,
+      "device": "spec:width=349dp,height=220dp,dpi=440"
+    }
+  ],
+  "referenceKits": []
+}
