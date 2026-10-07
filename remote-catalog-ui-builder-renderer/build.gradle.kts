@@ -131,6 +131,15 @@ kotlin {
 // whichever JDK happens to launch Gradle.
 tasks.named<Test>("jvmTest") {
   javaLauncher.set(javaToolchains.launcherFor { languageVersion.set(JavaLanguageVersion.of(21)) })
+  // The runtime's vendored faces, which `RegistryTypefaceLoaderTest` loads to prove the player's
+  // axes reach a variable face. The same directory the runtime archive copies into `fonts/`.
+  systemProperty(
+    "uiBuilder.rcFonts",
+    providers
+      .gradleProperty("composeUiBuilderDir")
+      .map { rootProject.file(it).canonicalFile.resolve("assets/rc-fonts").path }
+      .get(),
+  )
 }
 
 val uiBuilderCheckout =

@@ -86,6 +86,7 @@ import androidx.compose.ui.platform.WindowInfo
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -125,6 +126,7 @@ import ee.schimke.composeai.rcplayer.compose.RcPlayerTheme
 import ee.schimke.composeai.rcplayer.protocol.RcDocument
 import ee.schimke.composeai.rcplayer.protocol.RcDocumentCodec
 import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
+import ee.schimke.composeai.uibuilder.export.FontSettings
 import ee.schimke.composeai.uibuilder.export.SHOW_BY_STATE
 import ee.schimke.composeai.uibuilder.export.StateSelection
 import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
@@ -639,7 +641,8 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
           textAlign = node.textAlign(),
           overflow = node.textOverflow(),
           maxLines = node.integer("maxLines") ?: Int.MAX_VALUE,
-          style = node.textStyle(),
+          style = node.textStyle().withFontFeatures(node),
+          fontVariationSettings = node.fontVariationSettings(),
         )
       "remote-m3/remote-button" ->
         RemoteButton(
@@ -1207,6 +1210,29 @@ private fun String.boxAlignment(): RemoteAlignment =
     "bottomEnd" -> RemoteAlignment.BottomEnd
     else -> RemoteAlignment.TopStart
   }
+
+/**
+ * The node's `fontVariationSettings`, as the generated widget writes them
+ * (`RemoteText(fontVariationSettings = …)`): the document carries the axes and the player applies
+ * them to the face it resolves ([RegistryTypefaceLoader]).
+ */
+private fun UiBuilderNode.fontVariationSettings(): FontVariation.Settings? =
+  FontSettings.parseVariations(string(FontSettings.VARIATION_PROPERTY))
+    .takeIf { it.isNotEmpty() }
+    ?.let { axes ->
+      FontVariation.Settings(*axes.map { FontVariation.Setting(it.tag, it.value) }.toTypedArray())
+    }
+
+/**
+ * [this] with the node's `fontFeatureSettings` merged in, as the generated widget writes them:
+ * `RemoteText` has no feature parameter, so they ride on the style into the document.
+ */
+private fun RemoteTextStyle.withFontFeatures(node: UiBuilderNode): RemoteTextStyle =
+  FontSettings.formatFeatures(
+      FontSettings.parseFeatures(node.string(FontSettings.FEATURE_PROPERTY))
+    )
+    .takeIf { it.isNotEmpty() }
+    ?.let { merge(fontFeatureSettings = it) } ?: this
 
 private fun UiBuilderNode.fontWeight(): FontWeight? =
   when (string("fontWeight")) {
