@@ -15,7 +15,7 @@ These modules are copied from AndroidX change
 ## Later upstream changes
 
 Since that patch set, the modules have taken the upstream delta between androidx.dev snapshot builds
-16427341 and 16480970 (the snapshot lane's pin), applied onto the port rather than re-copied:
+16427341 and 16480970 (the snapshot lane's pin when the port was refreshed), applied onto the port rather than re-copied:
 
 - `remote-material3`: the selection controls animate their progress, and `AnimateTick.kt` is new.
   Upstream's removal of `RemotePageIndicator.inverseLerp`'s divide-by-zero guard is not taken.
