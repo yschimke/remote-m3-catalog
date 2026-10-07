@@ -149,7 +149,7 @@ uiBuilderSource = "3.69.0"
 # rc-players 2.x beside connector 3.9.2 baked every sticker through the View player, blanking 319
 # canvas-drawn cells (#639). 2.x needs connector 3.10.0+; `RemoteM3ThreeSurfaceContractTest` pins the
 # pair and `RemoteRenderTest` checks every capture actually used the embedded player.
-rcEmbeddedPlayer = "2.1.2"
+rcEmbeddedPlayer = "2.1.4"
 # The CMP player on Android, on its own ref: it must not drag the embedded player above, which bakes
 # every sticker. It is on the RUNTIME classpath: the bundle manifest listing it is what offers the
 # hosted live lane its `cmp-android` player, and `CmpAndroidPlayerTrialTest` still replays every
