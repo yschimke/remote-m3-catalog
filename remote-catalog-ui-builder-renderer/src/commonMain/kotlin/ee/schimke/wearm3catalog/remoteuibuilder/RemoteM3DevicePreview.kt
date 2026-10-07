@@ -113,6 +113,7 @@ import androidx.wear.compose.remote.material3.RemoteMaterialTheme
 import androidx.wear.compose.remote.material3.RemoteOutlinedCard
 import androidx.wear.compose.remote.material3.RemoteRadioButton
 import androidx.wear.compose.remote.material3.RemoteSlider
+import androidx.wear.compose.remote.material3.RemoteSliderDefaults
 import androidx.wear.compose.remote.material3.RemoteSplitCheckboxButton
 import androidx.wear.compose.remote.material3.RemoteSplitRadioButton
 import androidx.wear.compose.remote.material3.RemoteSplitSwitchButton
@@ -849,15 +850,19 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
         ) {
           entry.slot("content").forEach { RenderNode(it, row = this) }
         }
-      "remote-m3/remote-slider" ->
+      "remote-m3/remote-slider" -> {
+        val steps = node.integer("steps") ?: 0
         RemoteSlider(
           value = values.float(node.properties["value"]) ?: 0f.rf,
-          steps = node.integer("steps") ?: 0,
+          steps = steps,
           modifier = modifier,
           decreaseAction = values.action(node, "decreaseAction"),
           increaseAction = values.action(node, "increaseAction"),
           enabled = node.enabled(),
+          // The component's own default when the design does not say.
+          segmented = node.boolean("segmented", steps <= RemoteSliderDefaults.MaxSegmentSteps),
         )
+      }
       UiTimeText.ID ->
         RemoteTimeText(
           modifier = modifier,
