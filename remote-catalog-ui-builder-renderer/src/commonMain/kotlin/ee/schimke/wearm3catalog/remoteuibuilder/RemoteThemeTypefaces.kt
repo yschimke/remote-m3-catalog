@@ -6,6 +6,7 @@ import androidx.wear.compose.remote.material3.RemoteTypography
 import ee.schimke.composeai.rcplayer.compose.RcFontVariations
 import ee.schimke.composeai.rcplayer.compose.RcTypefaceLoader
 import ee.schimke.composeai.uibuilder.UiBuilderFontRegistry
+import ee.schimke.composeai.uibuilder.export.FontSettings
 import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 
 /**
@@ -64,6 +65,11 @@ internal fun RemoteTypography.withRoleNames(names: Map<String, String>): RemoteT
  *
  * [UiBuilderFontRegistry.loaded] is snapshot state, so a player that asked for a family before it
  * arrived draws again in it once it does.
+ *
+ * The document's axes (a text's `fontVariationSettings`, which `RemoteText` writes into it) are
+ * applied to a loaded family as a variable instance of it. Only the axes the face has are passed:
+ * Remote Compose writes a text's features into the same list, and a static face has no axes at all,
+ * so either would otherwise be a new instance that draws the plain face.
  */
 internal class RegistryTypefaceLoader(
   private val registry: UiBuilderFontRegistry?,
@@ -72,6 +78,14 @@ internal class RegistryTypefaceLoader(
   override val families: Set<String>
     get() = fallback.families + registry?.loaded?.keys.orEmpty()
 
-  override fun typeface(family: String, variations: RcFontVariations?): FontFamily? =
-    registry?.loaded?.get(family) ?: fallback.typeface(family, variations)
+  override fun typeface(family: String, variations: RcFontVariations?): FontFamily? {
+    val loaded = registry?.loaded?.get(family) ?: return fallback.typeface(family, variations)
+    val axes =
+      variations
+        ?.axes
+        .orEmpty()
+        .filter { registry.hasAxis(family, it.tag) }
+        .map { FontSettings.Axis(it.tag, it.value) }
+    return if (axes.isEmpty()) loaded else registry.variant(family, axes) ?: loaded
+  }
 }

@@ -23,6 +23,7 @@ import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.Text
 import ee.schimke.composeai.uibuilder.LocalUiBuilderFontFamilies
 import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
+import ee.schimke.composeai.uibuilder.LocalUiBuilderFontVariants
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
 import ee.schimke.composeai.uibuilder.protocol.CanvasAdapterMappingV1
 import ee.schimke.composeai.uibuilder.protocol.UiBuilderRendererSurfaceModeV2
@@ -131,6 +132,7 @@ fun main() {
           LocalWearWidgetHostShape provides document.wearWidgetHostShape(),
           LocalUiBuilderFontRegistry provides fonts,
           LocalUiBuilderFontFamilies provides fonts.loaded,
+          LocalUiBuilderFontVariants provides fonts,
         ) {
           MaterialTheme {
             // The viewport's canvas starts opaque white, and whatever the design leaves uncovered
