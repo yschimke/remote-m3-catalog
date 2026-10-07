@@ -77,7 +77,7 @@ check(libs.versions.remote.compose.cmp.get() == remoteComposeWriterVersion) {
     "found ${libs.versions.remote.compose.cmp.get()}"
 }
 
-val rcPlayerVersion = libs.versions.rcEmbeddedPlayer.get()
+val rcPlayerVersion = libs.versions.rcPlayers.get()
 
 val generatedRuntimePolicy = layout.buildDirectory.dir("generated/uiBuilderRuntimePolicy")
 val generateRuntimePolicy by

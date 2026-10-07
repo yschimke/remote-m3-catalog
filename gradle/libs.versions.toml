@@ -112,9 +112,9 @@ compose-material3 = "1.5.0-alpha29"
 # does not exist. The release's own `verify-maven-readiness` job checks that the CLI shipped at a
 # tag asks Gradle for a plugin version that IS on Central, which is why the action at v2.2.1 is
 # correct beside a plugin at 2.2.0.
-composePreviewPlugin = "2.33.0"
-composePreviewCore = "2.33.0"
-composePreviewDaemon = "3.13.2"
+composePreviewPlugin = "2.35.0"
+composePreviewCore = "2.35.0"
+composePreviewDaemon = "3.14.1"
 # compose-preview-daemon's release guard publishes each module only when it changed, so ITS OWN
 # artifacts move on independent lines too: 3.9.x shipped `data-remotecompose-connector` (and the
 # `daemon-core` it pins) at 3.9.2 while holding `preview-annotations` and
@@ -128,7 +128,7 @@ composePreviewDaemonAnnotations = "3.13.2"
 # different repository from the compose-ai-tools artifacts above and versioned by it. Test-only:
 # `:remote-catalog` uses it to prove a widget design still generates the Kotlin checked in beside
 # it, and the compiler proves that Kotlin still builds against this module's own classpath.
-composePreviewServer = "3.90.0"
+composePreviewServer = "3.91.0"
 
 # Synthetic source-composite coordinates for :remote-catalog-ui-builder-renderer. There are deliberately
 # no Maven artifacts at these names: settings.gradle.kts substitutes both from the checkout named
@@ -150,11 +150,17 @@ uiBuilderSource = "3.69.0"
 # canvas-drawn cells (#639). 2.x needs connector 3.10.0+; `RemoteM3ThreeSurfaceContractTest` pins the
 # pair and `RemoteRenderTest` checks every capture actually used the embedded player.
 rcEmbeddedPlayer = "2.1.4"
+# The rc-players BOM, on a ref of its own for the reason above, one level in: rc-players publishes a
+# module only when it changed, so 2.2.0 shipped the BOM and `rc-player-compose` and left
+# `third-party-rc-embedded-player` at 2.1.4. One ref over both made Renovate raise the embedded player
+# to a 2.2.0 nobody uploaded (#9). The Browser Preview runtime's `rcPlayer` is this one: the CMP
+# player it links resolves through the BOM, not through the embedded player.
+rcPlayers = "2.2.0"
 # The CMP player on Android, on its own ref: it must not drag the embedded player above, which bakes
 # every sticker. It is on the RUNTIME classpath: the bundle manifest listing it is what offers the
 # hosted live lane its `cmp-android` player, and `CmpAndroidPlayerTrialTest` still replays every
 # `.rc` through it. Renovate's rc-players group moves this ref like the one above.
-rcPlayerComposeAndroid = "2.1.2"
+rcPlayerComposeAndroid = "2.2.0"
 
 # materialkolor — the dynamic-colour engine Confetti Wear builds its conference palettes with. The
 # declared themes in `CatalogThemes.kt` reproduce them by running the same seed through the same
@@ -285,7 +291,7 @@ composeai-wear-preview-runtime = { module = "ee.schimke.composeai:wear-preview-r
 # `composePreviewPlugin`, so a skew between them would mean this module gating the sheet's export
 # with a different projector than the one that produces it.
 composeai-remotecompose-json = { module = "ee.schimke.composeai:remotecompose-json", version.ref = "composePreviewCore" }
-composeai-rc-players-bom = { module = "ee.schimke.composeai:rc-players-bom", version.ref = "rcEmbeddedPlayer" }
+composeai-rc-players-bom = { module = "ee.schimke.composeai:rc-players-bom", version.ref = "rcPlayers" }
 composeai-rc-player-compose = { module = "ee.schimke.composeai:rc-player-compose" }
 composeai-rc-player-compose-android = { module = "ee.schimke.composeai:rc-player-compose", version.ref = "rcPlayerComposeAndroid" }
 composeai-rc-embedded-player = { module = "ee.schimke.composeai:third-party-rc-embedded-player", version.ref = "rcEmbeddedPlayer" }

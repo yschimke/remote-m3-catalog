@@ -129,8 +129,9 @@
       "minimumReleaseAge": null
     },
     {
-      "description": "LAST, after the compose-ai-tools rule and the two train rules that follow it: the last match wins, so this rule takes the RemoteCompose players back out of that group. The patterns cover the whole rc-players train rather than only the `third-party-rc-embedded-player` coordinate this catalog resolves today: naming one coordinate left the rest falling back into the broad rule above, so the first player artifact added here would have inherited the very bug this rule exists to fix. They carry the ee.schimke.composeai GROUP, but are not part of that release \u2014 it is published from yschimke/rc-players on a version line of its own that is already ahead. Grouped, Renovate raised the shared `composePreviewAnnotations` ref to a player-only version and dragged four compose-ai-tools artifacts to a version nobody published, which is what broke #199. Ungrouped it moves on its own ref (`rcEmbeddedPlayer` in gradle/libs.versions.toml) in a PR of its own. Automerged like its neighbour and for the same reason: the connector resolves the player's entry point reflectively, so a skew shows up as the embedded lane going quiet, and the render CI is what catches that.",
+      "description": "LAST, after the compose-ai-tools rule and the two train rules that follow it: the last match wins, so this rule takes the RemoteCompose players back out of that group. The patterns cover the whole rc-players train rather than only the `third-party-rc-embedded-player` coordinate this catalog resolves today: naming one coordinate left the rest falling back into the broad rule above, so the first player artifact added here would have inherited the very bug this rule exists to fix. They carry the ee.schimke.composeai GROUP, but are not part of that release \u2014 it is published from yschimke/rc-players on a version line of its own that is already ahead. Grouped, Renovate raised the shared `composePreviewAnnotations` ref to a player-only version and dragged four compose-ai-tools artifacts to a version nobody published, which is what broke #199. Ungrouped it moves on its own ref (`rcEmbeddedPlayer` in gradle/libs.versions.toml) in a PR of its own. Automerged like its neighbour and for the same reason: the connector resolves the player's entry point reflectively, so a skew shows up as the embedded lane going quiet, and the render CI is what catches that. The BOM is named here by its exact coordinate because no pattern above caught it: `rc-player-` does not match `rc-players-bom`, so the BOM fell into the broad compose-ai-tools group and rode a compose-ai-tools PR (#9). It moves on its own `rcPlayers` ref, because rc-players publishes a module only when it changed and 2.2.0 left the embedded player at 2.1.4.",
       "matchPackageNames": [
+        "ee.schimke.composeai:rc-players-bom",
         "/^ee\\.schimke\\.composeai:rc-player-/",
         "/^ee\\.schimke\\.composeai:third-party-rc-embedded-player($|-)/",
         "ee.schimke.composeai:remote-compose-player-js-dist"
@@ -144,6 +145,13 @@
         "at any time"
       ],
       "minimumReleaseAge": null
+    },
+    {
+      "description": "Never looked up. `ui-builder-renderer-sdk-source` is a synthetic coordinate that settings.gradle.kts substitutes from a compose-ui-builder checkout (-PcomposeUiBuilderDir); there is deliberately no Maven artifact at that name, so every Renovate run logged a `no-result` lookup failure for it on the Dependency Dashboard and on every PR it opened. Its `uiBuilderSource` version is a placeholder the substitution ignores.",
+      "matchPackageNames": [
+        "ee.schimke.composeai:ui-builder-renderer-sdk-source"
+      ],
+      "enabled": false
     }
   ]
 }
