@@ -67,6 +67,27 @@ class RemoteM3DeviceRichnessUiTest {
     }
 
   @Test
+  fun `a theme node re-skins its child, and a label button records`() =
+    runDesktopComposeUiTest(width = 432, height = 248) {
+      var ready = 0
+      setContent {
+        RemoteM3DevicePreview(document(THEMED), widthDp = 216f, heightDp = 124f) { ready++ }
+      }
+      waitUntil(timeoutMillis = 15_000) { ready == 1 }
+      onAllNodesWithText("Remote M3 preview failed", substring = true).assertCountEqualsZero()
+      onAllNodesWithText("Unsupported", substring = true).assertCountEqualsZero()
+
+      val pixels = onNodeWithTag(REMOTE_M3_WIDGET_CONTENT_TEST_TAG).captureToImage().toPixelMap()
+      var red = 0
+      for (x in 0 until pixels.width) for (y in 0 until pixels.height) {
+        val pixel = pixels[x, y]
+        if (abs(pixel.red - 1f) < 0.1f && pixel.green < 0.1f && pixel.blue < 0.1f) red++
+      }
+      // The button fills with `primary`, which the theme sets to red.
+      assertTrue(red > 1_000, "the themed button is not red ($red red pixels)")
+    }
+
+  @Test
   fun `every published Remote Material 3 component records`() =
     runDesktopComposeUiTest(width = 432, height = 248) {
       var ready = 0
@@ -183,6 +204,38 @@ class RemoteM3DeviceRichnessUiTest {
       }
       """
         .trimIndent()
+
+    val THEMED =
+      """
+      {
+        "schema": "compose-ui-builder-document/v1-candidate",
+        "id": "remote-m3-themed", "title": "Themed", "revision": 1,
+        "catalogPin": {"systemId": "remote-m3", "catalogRevision": "test",
+          "capabilityDigest": "test", "nativeRuntimeId": "remote-m3-test-runtime"},
+        "environment": {"widthDp": 216, "heightDp": 124, "density": 1, "theme": "dark",
+          "fontScale": 1, "layoutDirection": "ltr"},
+        "stateVariables": {},
+        "roots": ["root"],
+        "nodes": {
+          "root": {"id": "root", "componentId": "remote-m3/widget-container-large",
+            "properties": {}, "modifiers": [],
+            "slots": {"background": [], "content": ["theme"]}},
+          "theme": {"id": "theme", "componentId": "remote-m3/remote-material-theme",
+            "properties": {"themePrimaryColor": {"type": "color", "value": "#FFFF0000"},
+              "themeOnPrimaryColor": {"type": "colorToken", "value": "onSurface"}},
+            "modifiers": [], "slots": {"children": ["button"]}},
+          "button": {"id": "button", "componentId": "remote-m3/remote-label-button",
+            "properties": {}, "modifiers": [{"type": "fillMaxSize"}],
+            "slots": {"label": ["title"], "secondaryLabel": ["detail"]}},
+          "title": {"id": "title", "componentId": "remote-m3/remote-text",
+            "properties": {"text": {"type": "string", "value": "Start"}},
+            "modifiers": [], "slots": {}},
+          "detail": {"id": "detail", "componentId": "remote-m3/remote-text",
+            "properties": {"text": {"type": "string", "value": "5 km"}},
+            "modifiers": [], "slots": {}}
+        }
+      }
+      """
 
     val DRAWING =
       """
