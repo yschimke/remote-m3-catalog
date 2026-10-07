@@ -7,16 +7,23 @@ import androidx.compose.remote.creation.compose.layout.RemoteOffset
 import androidx.compose.remote.creation.compose.layout.RemoteSize
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.path.RemotePath
+import androidx.compose.remote.creation.compose.shaders.RemoteBrush
+import androidx.compose.remote.creation.compose.shaders.horizontalGradient
+import androidx.compose.remote.creation.compose.shaders.radialGradient
+import androidx.compose.remote.creation.compose.shaders.sweepGradient
+import androidx.compose.remote.creation.compose.shaders.verticalGradient
 import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.RemoteFloat
 import androidx.compose.remote.creation.compose.state.RemotePaint
 import androidx.compose.remote.creation.compose.state.asRemoteDp
+import androidx.compose.remote.creation.compose.state.clamp
 import androidx.compose.remote.creation.compose.state.min
 import androidx.compose.remote.creation.compose.state.rc
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.ClipOp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.PathSegment
@@ -71,22 +78,74 @@ private class Extent(val width: RemoteFloat, val height: RemoteFloat) {
 private class Operation(
   val node: UiBuilderNode,
   val color: RemoteColor,
+  /** Where a gradient paint ends, resolved in composition beside [color]; null for none. */
+  val gradientColor: RemoteColor?,
   val children: List<Operation>,
 ) {
+  private fun RemoteDrawScope.drawChildren(extent: Extent, values: DocumentValues) =
+    children.forEach {
+      it.draw(this, extent, values)
+    }
+
   fun draw(scope: RemoteDrawScope, extent: Extent, values: DocumentValues) {
     with(scope) {
       fun px(name: String): RemoteFloat? = values.float(node.properties[name])?.asRemoteDp()?.toPx()
       fun float(name: String): RemoteFloat? = values.float(node.properties[name])
-      if (node.componentId == UiDrawing.GROUP) {
-        val pivot = RemoteOffset(px("pivotXDp") ?: extent.centerX, px("pivotYDp") ?: extent.centerY)
-        withTransform({
-          translate(px("translateXDp") ?: 0f.rf, px("translateYDp") ?: 0f.rf)
-          float("rotate")?.let { rotate(it, pivot) }
-          float("scale")?.let { scale(it, it, pivot) }
-        }) {
-          children.forEach { it.draw(this, extent, values) }
+      when (node.componentId) {
+        UiDrawing.GROUP -> {
+          val pivot =
+            RemoteOffset(px("pivotXDp") ?: extent.centerX, px("pivotYDp") ?: extent.centerY)
+          withTransform({
+            translate(px("translateXDp") ?: 0f.rf, px("translateYDp") ?: 0f.rf)
+            float("rotate")?.let { rotate(it, pivot) }
+            float("scale")?.let { scale(it, it, pivot) }
+          }) {
+            drawChildren(extent, values)
+          }
+          return
         }
-        return
+        UiDrawing.CLIP -> {
+          val clipOp = if (node.flag("exclude")) ClipOp.Difference else ClipOp.Intersect
+          val outline = node.text("pathData")?.let(::remotePath)
+          if (outline != null) {
+            // As the export writes it: into the viewport, clip, and back out.
+            val sx = extent.width / (node.number("viewportWidth")?.takeIf { it > 0f } ?: 24f).rf
+            val sy = extent.height / (node.number("viewportHeight")?.takeIf { it > 0f } ?: 24f).rf
+            withTransform({
+              scale(sx, sy)
+              clipPath(outline, clipOp)
+              scale(1f.rf / sx, 1f.rf / sy)
+            }) {
+              drawChildren(extent, values)
+            }
+          } else {
+            val x = px("xDp") ?: 0f.rf
+            val y = px("yDp") ?: 0f.rf
+            clipRect(
+              x,
+              y,
+              px("widthDp")?.let { x + it } ?: extent.width,
+              px("heightDp")?.let { y + it } ?: extent.height,
+              clipOp,
+            ) {
+              drawChildren(extent, values)
+            }
+          }
+          return
+        }
+        UiDrawing.IF -> {
+          val condition = values.bool(node.properties["condition"]) ?: return
+          drawConditionally(condition) { drawChildren(extent, values) }
+          return
+        }
+        UiDrawing.REPEAT -> {
+          val name = UiDrawing.indexName(node) ?: return
+          val until = float("until") ?: return
+          loop(float("from") ?: 0f.rf, until, float("step") ?: 1f.rf) { index ->
+            children.forEach { it.draw(this, extent, values.withBindings(mapOf(name to index))) }
+          }
+          return
+        }
       }
       val stroked = node.text("style") == "stroke" || node.componentId == "draw/line"
       val strokeWidth = px("strokeWidthDp") ?: 1f.rdp.toPx()
@@ -100,7 +159,24 @@ private class Operation(
           "round" -> strokeCap = StrokeCap.Round
           "square" -> strokeCap = StrokeCap.Square
         }
-        if (node.componentId == "draw/text") textSize = px("textSizeSp") ?: 14f.rdp.toPx()
+        when (node.componentId) {
+          "draw/text",
+          UiDrawing.TEXT_CIRCLE -> textSize = px("textSizeSp") ?: 14f.rdp.toPx()
+          // Drawn inside a one-dp scale, so the size is divided back out.
+          UiDrawing.TEXT_PATH -> textSize = (px("textSizeSp") ?: 14f.rdp.toPx()) / 1f.rdp.toPx()
+        }
+        val end = gradientColor
+        val kind = node.text("gradient")
+        if (end != null && kind != null) {
+          val brush =
+            when (kind) {
+              "horizontal" -> RemoteBrush.horizontalGradient(listOf(this@Operation.color, end))
+              "vertical" -> RemoteBrush.verticalGradient(listOf(this@Operation.color, end))
+              "radial" -> RemoteBrush.radialGradient(listOf(this@Operation.color, end))
+              else -> RemoteBrush.sweepGradient(listOf(this@Operation.color, end))
+            }
+          with(brush) { applyTo(this@RemotePaint, RemoteSize(extent.width, extent.height)) }
+        }
       }
       val boxStated = listOf("xDp", "yDp", "widthDp", "heightDp").any { it in node.properties }
       val inset = if (stroked && !boxStated) strokeWidth / 2f.rf else null
@@ -158,6 +234,50 @@ private class Operation(
               drawPath(path, paint)
             }
           }
+        UiDrawing.MORPH -> {
+          val from = node.text("pathData")?.let(::remotePath) ?: return
+          val to = node.text("toPathData")?.let(::remotePath) ?: return
+          val viewportWidth = node.number("viewportWidth")?.takeIf { it > 0f } ?: 24f
+          val viewportHeight = node.number("viewportHeight")?.takeIf { it > 0f } ?: 24f
+          withTransform({
+            scale(
+              extent.width / viewportWidth.rf,
+              extent.height / viewportHeight.rf,
+              RemoteOffset(0f, 0f),
+            )
+          }) {
+            drawTweenPath(
+              from,
+              to,
+              tween = clamp(float("progress") ?: 0f.rf, 0f, 1f),
+              paint = paint,
+            )
+          }
+        }
+        UiDrawing.TEXT_CIRCLE ->
+          drawTextOnCircle(
+            values.string(node.properties["text"]) ?: "".rs,
+            px("centerXDp") ?: extent.centerX,
+            px("centerYDp") ?: extent.centerY,
+            px("radiusDp")
+              ?: (min(extent.width, extent.height) / 2f.rf - (px("textSizeSp") ?: 14f.rdp.toPx())),
+            float("angle") ?: 270f.rf,
+            0f.rf,
+            paint,
+          )
+        UiDrawing.TEXT_PATH -> {
+          val path = node.text("pathData")?.let(::remotePath) ?: return
+          val density = 1f.rdp.toPx()
+          withTransform({ scale(density, density, RemoteOffset(0f, 0f)) }) {
+            drawTextOnPath(
+              values.string(node.properties["text"]) ?: "".rs,
+              path,
+              hOffset = float("startDp") ?: 0f.rf,
+              vOffset = float("offsetDp") ?: 0f.rf,
+              paint = paint,
+            )
+          }
+        }
         "draw/text" -> {
           val pan =
             when (node.text("align")) {
@@ -191,11 +311,21 @@ private fun collect(
     values.color(node.properties["color"]?.takeIf { it.isComputedColour() })
       ?: node.text("color")?.let { resolveColor(it) }
       ?: Color.Black.rc
-  val color = values.float(node.properties["alpha"])?.let { base.copy(alpha = it) } ?: base
+  val alpha = values.float(node.properties["alpha"])
+  val color = alpha?.let { base.copy(alpha = it) } ?: base
+  val gradientColor =
+    node.text("gradient")?.let {
+      val end =
+        values.color(node.properties["gradientColor"]?.takeIf { it.isComputedColour() })
+          ?: node.text("gradientColor")?.let { resolveColor(it) }
+          ?: Color.Transparent.rc
+      alpha?.let { end.copy(alpha = it) } ?: end
+    }
   Operation(
     node,
     color,
-    if (node.componentId == UiDrawing.GROUP)
+    gradientColor,
+    if (UiDrawing.BY_ID.getValue(node.componentId).container)
       collect(operation.slot(UiDrawing.OPS_SLOT), values, resolveColor)
     else emptyList(),
   )

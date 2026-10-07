@@ -104,6 +104,7 @@ import androidx.wear.compose.remote.material3.RemoteCheckboxButton
 import androidx.wear.compose.remote.material3.RemoteCircularProgressIndicator
 import androidx.wear.compose.remote.material3.RemoteCompactButton
 import androidx.wear.compose.remote.material3.RemoteCurvedProgressIndicator
+import androidx.wear.compose.remote.material3.RemoteEdgeButton
 import androidx.wear.compose.remote.material3.RemoteHorizontalPageIndicator
 import androidx.wear.compose.remote.material3.RemoteIcon
 import androidx.wear.compose.remote.material3.RemoteIconButton
@@ -111,6 +112,7 @@ import androidx.wear.compose.remote.material3.RemoteLinearProgressIndicator
 import androidx.wear.compose.remote.material3.RemoteMaterialTheme
 import androidx.wear.compose.remote.material3.RemoteOutlinedCard
 import androidx.wear.compose.remote.material3.RemoteRadioButton
+import androidx.wear.compose.remote.material3.RemoteSlider
 import androidx.wear.compose.remote.material3.RemoteSplitCheckboxButton
 import androidx.wear.compose.remote.material3.RemoteSplitRadioButton
 import androidx.wear.compose.remote.material3.RemoteSplitSwitchButton
@@ -118,6 +120,7 @@ import androidx.wear.compose.remote.material3.RemoteStepper
 import androidx.wear.compose.remote.material3.RemoteSwitchButton
 import androidx.wear.compose.remote.material3.RemoteText
 import androidx.wear.compose.remote.material3.RemoteTextButton
+import androidx.wear.compose.remote.material3.RemoteTimeText
 import androidx.wear.compose.remote.material3.RemoteTitleCard
 import androidx.wear.compose.remote.material3.RemoteVerticalPageIndicator
 import androidx.wear.compose.remote.material3.rememberRemotePageIndicatorState
@@ -127,12 +130,14 @@ import ee.schimke.composeai.rcplayer.protocol.RcDocument
 import ee.schimke.composeai.rcplayer.protocol.RcDocumentCodec
 import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
 import ee.schimke.composeai.uibuilder.export.FontSettings
+import ee.schimke.composeai.uibuilder.export.RemoteModifierVocabulary
 import ee.schimke.composeai.uibuilder.export.SHOW_BY_STATE
 import ee.schimke.composeai.uibuilder.export.StateSelection
 import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
 import ee.schimke.composeai.uibuilder.export.UiBuilderNode
 import ee.schimke.composeai.uibuilder.export.UiDrawing
+import ee.schimke.composeai.uibuilder.export.UiTimeText
 import ee.schimke.composeai.uibuilder.export.WearWidgetScaffoldSize
 import ee.schimke.composeai.uibuilder.export.hostSpec
 import ee.schimke.composeai.uibuilder.export.stateSelection
@@ -836,13 +841,32 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
           secondaryLabel = entry.rowSlotContent("secondaryLabel"),
           label = entry.rowSlotContent("label") ?: {},
         )
-      // Not recorded here: the edge button and the slider record, but rc-player-compose 2.1.2
-      // (built
-      // against Compose 1.11) cannot play them on this Compose line — the edge's conic path calls a
-      // Skia `Path.conicTo` this Skiko lacks, and the slider's weighted bar canvas reads a
-      // component
-      // value the player rejects. Either would take the whole preview down, so both keep the
-      // "unsupported" stand-in until the player moves.
+      "remote-m3/remote-edge-button" ->
+        RemoteEdgeButton(
+          onClick = values.action(node, "click"),
+          modifier = modifier,
+          enabled = node.enabled(),
+        ) {
+          entry.slot("content").forEach { RenderNode(it, row = this) }
+        }
+      "remote-m3/remote-slider" ->
+        RemoteSlider(
+          value = values.float(node.properties["value"]) ?: 0f.rf,
+          steps = node.integer("steps") ?: 0,
+          modifier = modifier,
+          decreaseAction = values.action(node, "decreaseAction"),
+          increaseAction = values.action(node, "increaseAction"),
+          enabled = node.enabled(),
+        )
+      UiTimeText.ID ->
+        RemoteTimeText(
+          modifier = modifier,
+          fontSize = node.number("textSizeSp")?.sp?.asRemoteTextUnit(),
+          leadingText = values.string(node.properties["leadingText"]),
+          trailingText = values.string(node.properties["trailingText"]),
+          separator = values.string(node.properties["separator"]) ?: "·".rs,
+          color = values.color(node.properties["color"]) ?: node.remoteColor("color"),
+        )
       "remote-m3/remote-stepper" ->
         RemoteStepper(
           value = values.float(node.properties["value"]) ?: 0f.rf,
@@ -1044,6 +1068,7 @@ private fun UiBuilderNode.remoteModifier(
         "align",
         "alignVertical",
         "alignHorizontal" -> result
+        RemoteModifierVocabulary.TYPE -> result.remoteCall(modifier, values)
         else -> error("Unsupported Remote Compose modifier '$type' on ${componentId}")
       }
   }
