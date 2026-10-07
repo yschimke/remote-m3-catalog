@@ -167,7 +167,7 @@
       "canvas": "m3/text"
     }
   },
-  "$comment_templates": "Two starting points, both rooted on the launcher widget: an empty 2x1 widget and the 3x2 counter reproducing AndroidX's MyWidget demo. WidgetTemplateTest holds them to the grid table and to this policy's vocabulary; the generated Kotlin they become is the compiled golden beside it (CounterWidgetGolden.kt).",
+  "$comment_templates": "Two starting points, both rooted on the launcher widget: an empty 2x1 widget, and the 3x2 counter LAYOUT reproducing AndroidX's MyWidget demo — its row, its two WidgetButtons and its count. The template is the layout only and its buttons are inert: MyWidget's clicks are widget LAMBDA actions (`RemoteModifier.onClick { … }`, Kotlin run in the app's process), which a builder document cannot author, and WidgetButton takes no Remote action a design could bind instead. The working counter is CounterWidget.kt in this module. WidgetTemplateTest holds the templates to the grid table and to this policy's vocabulary; the generated Kotlin the counter becomes is the compiled golden generated/CounterWidget.kt.",
   "templates": [
     "ui-builder/designs/launcher-widget-2x1.json",
     "ui-builder/designs/counter-widget.json"

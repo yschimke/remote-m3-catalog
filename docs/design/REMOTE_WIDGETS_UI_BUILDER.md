@@ -121,6 +121,12 @@ the live exporter joins it.
 - **New-design templates.** The policy names its two templates. Like `remote-m3`'s, they are
   served only once the server reads the policy's `templates`
   ([SEED_TEMPLATES](https://github.com/yschimke/compose-preview-server/blob/main/docs/design/UI_BUILDER_SEED_TEMPLATES.md)).
+- **Actions.** The `counter-widget` template is the counter's layout, and its buttons are inert.
+  `MyWidget`'s clicks are widget lambda actions (`RemoteModifier.onClick { … }`), Kotlin run in the
+  app's process, which a builder document cannot author. `WidgetButton` takes no Remote action a
+  design could bind instead. The working counter is `CounterWidget.kt`. Wiring a design's buttons
+  needs one of two things: `WidgetButton` taking a Remote action (`valueChange` on document state),
+  or the exporter writing `onClick` lambdas.
 - **Pictures.** The launcher exporter refuses `asset/image` for now.
 - **Publishing.** The `remote-widgets` design-artifacts lane needs a delivery branch in the output
   repository and a registration on the preview server.
