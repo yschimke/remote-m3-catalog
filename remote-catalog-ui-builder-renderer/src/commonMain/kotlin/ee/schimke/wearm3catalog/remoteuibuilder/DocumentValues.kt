@@ -66,7 +66,24 @@ internal class DocumentValues(
   private val floats: Map<String, MutableRemoteFloat>,
   private val bools: Map<String, MutableRemoteBoolean>,
   private val strings: Map<String, MutableRemoteString>,
+  /** Loop indices in scope, by the name a formula reads them as: a `draw/repeat`'s lambda value. */
+  private val bindings: Map<String, RemoteFloat> = emptyMap(),
 ) {
+  /** These values with [extra] loop indices in scope, as a `draw/repeat` hands its operations. */
+  fun withBindings(extra: Map<String, RemoteFloat>): DocumentValues {
+    val all = bindings + extra
+    return DocumentValues(
+      UiExpressions.Scope(scope.stateKinds) { key ->
+        if (key in all) UiValueKind.FLOAT else scope.bindingKinds(key)
+      },
+      ints,
+      floats,
+      bools,
+      strings,
+      all,
+    )
+  }
+
   /** A property as a `RemoteFloat`: a number, an Int or Float state read, or an expression. */
   fun float(value: JsonElement?): RemoteFloat? =
     when (val read = read(value, UiValueKind.FLOAT)) {
@@ -88,7 +105,7 @@ internal class DocumentValues(
   private fun read(value: JsonElement?, expected: UiValueKind): Any? {
     val wrapper = value as? JsonObject ?: return null
     val type = (wrapper["type"] as? JsonPrimitive)?.contentOrNull
-    if (type == "state" || UiExpressions.isComputed(wrapper)) {
+    if (type == "state" || type == "binding" || UiExpressions.isComputed(wrapper)) {
       val checked = UiExpressions.check(wrapper, scope) as? UiExpressions.Checked.Ok ?: return null
       return lower(checked.expr)
     }
@@ -119,7 +136,7 @@ internal class DocumentValues(
           UiValueKind.BOOL -> bools.getValue(expr.variable)
           else -> strings.getValue(expr.variable)
         }
-      is UiExpressions.Expr.Binding -> 0f.rf
+      is UiExpressions.Expr.Binding -> bindings[expr.key] ?: 0f.rf
       is UiExpressions.Expr.System -> system(expr.value.id)
       is UiExpressions.Expr.Call -> call(expr)
     }

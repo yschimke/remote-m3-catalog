@@ -46,10 +46,31 @@ class RemoteM3DeviceRichnessUiTest {
     }
 
   @Test
+  fun `loops, clips, conditionals, morphs, curved text, gradients and Remote calls play`() =
+    runDesktopComposeUiTest(width = 432, height = 248) {
+      var ready = 0
+      setContent {
+        RemoteM3DevicePreview(document(CONTROL), widthDp = 216f, heightDp = 124f) { ready++ }
+      }
+      waitUntil(timeoutMillis = 15_000) { ready == 1 }
+      onAllNodesWithText("Remote M3 preview failed", substring = true).assertCountEqualsZero()
+      onAllNodesWithText("Unsupported", substring = true).assertCountEqualsZero()
+
+      val pixels = onNodeWithTag(REMOTE_M3_WIDGET_CONTENT_TEST_TAG).captureToImage().toPixelMap()
+      var red = 0
+      for (x in 0 until pixels.width) for (y in 0 until pixels.height) {
+        val pixel = pixels[x, y]
+        if (abs(pixel.red - 1f) < 0.1f && pixel.green < 0.1f && pixel.blue < 0.1f) red++
+      }
+      // Three squares from the loop, each read from its own index, so not stacked on one another.
+      assertTrue(red > 3 * 8 * 8, "the repeated squares are missing ($red red pixels)")
+    }
+
+  @Test
   fun `every published Remote Material 3 component records`() =
     runDesktopComposeUiTest(width = 432, height = 248) {
       var ready = 0
-      val components = RemoteMaterial3.components.filter { it.componentId !in PLAYER_GAPS }
+      val components = RemoteMaterial3.components
       var current by mutableStateOf(document(single(components.first().componentId)))
       setContent { RemoteM3DevicePreview(current, widthDp = 216f, heightDp = 124f) { ready++ } }
       components.forEachIndexed { index, component ->
@@ -91,13 +112,77 @@ class RemoteM3DeviceRichnessUiTest {
       )
 
   private companion object {
-    /**
-     * Recorded, but not yet playable by rc-player-compose 2.1.2 on this Compose line, so the
-     * preview shows them as unsupported: the edge button's conic path needs a newer Skia
-     * `Path.conicTo`, and the slider's weighted bar canvas reads a component value the player
-     * rejects.
-     */
-    val PLAYER_GAPS = setOf("remote-m3/remote-edge-button", "remote-m3/remote-slider")
+
+    val CONTROL =
+      """
+      {
+        "schema": "compose-ui-builder-document/v1-candidate",
+        "id": "remote-m3-control",
+        "title": "Remote M3 control",
+        "revision": 1,
+        "catalogPin": {"systemId": "remote-m3", "catalogRevision": "test",
+          "capabilityDigest": "test", "nativeRuntimeId": "remote-m3-test-runtime"},
+        "environment": {"widthDp": 216, "heightDp": 124, "density": 1, "theme": "dark",
+          "fontScale": 1, "layoutDirection": "ltr"},
+        "stateVariables": {"shown": {"type": "value", "valueType": "bool", "initialValue": true,
+          "nullable": false, "persistence": "session"}},
+        "roots": ["root"],
+        "nodes": {
+          "root": {"id": "root", "componentId": "remote-m3/widget-container-large",
+            "properties": {}, "modifiers": [],
+            "slots": {"background": [], "content": ["box"]}},
+          "box": {"id": "box", "componentId": "layout/box", "properties": {},
+            "modifiers": [{"type": "fillMaxSize"},
+              {"type": "remoteCall", "name": "graphicsLayer",
+                "args": {"alpha": {"type": "float", "value": 1}}},
+              {"type": "remoteCall", "name": "semantics",
+                "args": {"contentDescription": {"type": "string", "value": "Dial"}}}],
+            "slots": {"children": ["canvas", "time"]}},
+          "canvas": {"id": "canvas", "componentId": "draw/canvas", "properties": {},
+            "modifiers": [{"type": "size", "widthDp": 120, "heightDp": 60}],
+            "slots": {"ops": ["squares", "lens", "alarm", "grow", "arc-label", "path-label"]}},
+          "squares": {"id": "squares", "componentId": "draw/repeat", "properties": {
+            "until": {"type": "float", "value": 3}}, "modifiers": [], "slots": {"ops": ["square"]}},
+          "square": {"id": "square", "componentId": "draw/rect", "properties": {
+            "xDp": {"type": "expr", "op": "mul", "args": [
+              {"type": "binding", "value": "i"}, {"type": "int", "value": 20}]},
+            "yDp": {"type": "float", "value": 0},
+            "widthDp": {"type": "float", "value": 12}, "heightDp": {"type": "float", "value": 12},
+            "color": {"type": "color", "value": "#FFFF0000"}}, "modifiers": [], "slots": {}},
+          "lens": {"id": "lens", "componentId": "draw/clip", "properties": {
+            "pathData": {"type": "string", "value": "M0 0 L24 0 L24 24 Z"}},
+            "modifiers": [], "slots": {"ops": ["fill"]}},
+          "fill": {"id": "fill", "componentId": "draw/rect", "properties": {
+            "yDp": {"type": "float", "value": 20},
+            "color": {"type": "color", "value": "#FF00FF00"},
+            "gradient": {"type": "enum", "value": "horizontal"},
+            "gradientColor": {"type": "color", "value": "#FF0000FF"}},
+            "modifiers": [], "slots": {}},
+          "alarm": {"id": "alarm", "componentId": "draw/if", "properties": {
+            "condition": {"type": "state", "variable": "shown"}},
+            "modifiers": [], "slots": {"ops": ["dot"]}},
+          "dot": {"id": "dot", "componentId": "draw/circle", "properties": {
+            "radiusDp": {"type": "float", "value": 4},
+            "color": {"type": "color", "value": "#FF00FFFF"}}, "modifiers": [], "slots": {}},
+          "grow": {"id": "grow", "componentId": "draw/morph", "properties": {
+            "pathData": {"type": "string", "value": "M11 13 L13 13 L12 12 Z"},
+            "toPathData": {"type": "string", "value": "M0 24 L24 24 L12 12 Z"},
+            "progress": {"type": "float", "value": 0.5},
+            "color": {"type": "color", "value": "#FFFFFF00"}}, "modifiers": [], "slots": {}},
+          "arc-label": {"id": "arc-label", "componentId": "draw/text-circle", "properties": {
+            "text": {"type": "string", "value": "ROUND"},
+            "color": {"type": "color", "value": "#FFFFFFFF"}}, "modifiers": [], "slots": {}},
+          "path-label": {"id": "path-label", "componentId": "draw/text-path", "properties": {
+            "text": {"type": "string", "value": "ALONG"},
+            "pathData": {"type": "string", "value": "M4 50 Q60 30 116 50"},
+            "color": {"type": "color", "value": "#FFFFFFFF"}}, "modifiers": [], "slots": {}},
+          "time": {"id": "time", "componentId": "remote-m3/remote-time-text", "properties": {
+            "trailingText": {"type": "string", "value": "WED"}},
+            "modifiers": [{"type": "fillMaxSize"}], "slots": {}}
+        }
+      }
+      """
+        .trimIndent()
 
     val DRAWING =
       """
