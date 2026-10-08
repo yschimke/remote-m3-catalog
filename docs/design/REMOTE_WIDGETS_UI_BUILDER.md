@@ -111,6 +111,35 @@ fun CounterWidgetPreview() =
 `LauncherWidgetExportTest` pins. Once the release is pinned here, an equality assertion against
 the live exporter joins it.
 
+## The hello world starter
+
+`hello-widget` is the template the builder's built-in seed opens a new launcher widget on. The policy lists it first, but the schema cannot mark a default yet, so after the catalog-owned cutover the first entry is only the chooser's order. It shows "Hello, World!" centred on
+the accent at 3x1, which is 203×102dp. That is the smallest grid size where the line fits at 24sp;
+a 2x1 is only 130dp wide.
+
+Two copies of the same design exist, one for each way the builder seeds a new design:
+
+- compose-ui-builder's `LauncherWidgetTemplates` is the built-in seed, used while the
+  catalog-owned cutover is off.
+- `widget-catalog/ui-builder/designs/hello-widget.json` is the copy this catalog publishes, read
+  once the cutover hands the catalog its own templates.
+
+Its generated Kotlin is `generated/HelloWidget.kt`, compiled here:
+
+```kotlin
+class HelloWidget : RemoteComposeWidget() {
+    @RemoteComposable
+    @Composable
+    override fun Content(context: Context, widgetId: Int) {
+        RemoteBox(modifier = RemoteModifier.fillMaxSize().background(Color(0xFF6750A4).rc)) {
+            RemoteBox(modifier = RemoteModifier.fillMaxSize(), contentAlignment = RemoteAlignment.Center) {
+                RemoteText(text = "Hello, World!".rs, color = Color(0xFFFFFFFF).rc, fontSize = 24.rsp)
+            }
+        }
+    }
+}
+```
+
 ## Not done yet
 
 - **Visual Editor and Browser Preview.** The policy declares only the native surface. The
@@ -118,8 +147,9 @@ the live exporter joins it.
   would add a launcher-widget frame and record and play the document in the browser. It would
   reuse `:remote-catalog-ui-builder-renderer`'s CMP pair and foundation adapters, but not its Wear
   and Material ones.
-- **New-design templates.** The policy names its two templates. Like `remote-m3`'s, they are
-  served only once the server reads the policy's `templates`
+- **New-design templates.** The builder's built-in seed offers only `hello-widget` for this
+  catalog. The policy's other two templates, `launcher-widget-2x1` and `counter-widget`, are
+  served once the catalog-owned cutover reads the policy's `templates`
   ([SEED_TEMPLATES](https://github.com/yschimke/compose-preview-server/blob/main/docs/design/UI_BUILDER_SEED_TEMPLATES.md)).
 - **Actions.** The `counter-widget` template is the counter's layout, and its buttons are inert.
   `MyWidget`'s clicks are widget lambda actions (`RemoteModifier.onClick { … }`), Kotlin run in the
