@@ -82,7 +82,7 @@ val wearCanvasAdapters = canvasAdapterRegistry {
     OutsideRow {
       SwitchButton(
         checked = boolean("checked"),
-        onCheckedChange = {},
+        onCheckedChange = { writeBoundChange("checked", it.toString()) },
         modifier = modifier.fillMaxWidth(),
         enabled = boolean("enabled", true),
         label = { Label("label") },
@@ -96,7 +96,7 @@ val wearCanvasAdapters = canvasAdapterRegistry {
     OutsideRow {
       CheckboxButton(
         checked = boolean("checked"),
-        onCheckedChange = {},
+        onCheckedChange = { writeBoundChange("checked", it.toString()) },
         modifier = modifier.fillMaxWidth(),
         enabled = boolean("enabled", true),
         label = { Label("label") },
@@ -110,7 +110,8 @@ val wearCanvasAdapters = canvasAdapterRegistry {
     OutsideRow {
       RadioButton(
         selected = boolean("selected"),
-        onSelect = {},
+        // A radio row selects itself: its change is always to selected.
+        onSelect = { writeBoundChange("selected", "true") },
         modifier = modifier.fillMaxWidth(),
         enabled = boolean("enabled", true),
         label = { Label("label") },
@@ -122,7 +123,7 @@ val wearCanvasAdapters = canvasAdapterRegistry {
   register("wear-m3/slider") {
     Slider(
       value = float("value"),
-      onValueChange = {},
+      onValueChange = { updateBoundState("value", it.toString()) },
       modifier = modifier.fillMaxWidth(),
       enabled = boolean("enabled", true),
       steps = integer("steps").coerceAtLeast(0),
@@ -133,7 +134,7 @@ val wearCanvasAdapters = canvasAdapterRegistry {
   register("wear-m3/stepper") {
     Stepper(
       value = float("value"),
-      onValueChange = {},
+      onValueChange = { updateBoundState("value", it.toString()) },
       steps = integer("steps").coerceAtLeast(0),
       modifier = modifier.fillMaxWidth(),
       enabled = boolean("enabled", true),

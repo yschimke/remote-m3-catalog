@@ -87,6 +87,41 @@ class RemoteM3DeviceRichnessUiTest {
       assertTrue(red > 1_000, "the themed button is not red ($red red pixels)")
     }
 
+  /**
+   * A checkbox row whose `checked` reads a flag whole, with nothing authored on its change: the
+   * preview leads its `onCheckedChange` with the write back, `valueChange(notify, !notify)`, and
+   * the document still records.
+   */
+  @Test
+  fun `a two-way bound checkbox button records with its write back`() =
+    runDesktopComposeUiTest(width = 432, height = 248) {
+      var ready = 0
+      val bound =
+        single("remote-m3/remote-checkbox-button")
+          // The subject's own empty map, which single() writes first.
+          .replaceFirst(
+            "\"properties\": {}, \"modifiers\": [], \"slots\": {}}",
+            "\"properties\": {\"checked\": {\"type\": \"state\", \"variable\": \"notify\"}}, " +
+              "\"modifiers\": [], \"slots\": {}}",
+          )
+          .replace(
+            "\"stateVariables\": {",
+            "\"stateVariables\": {\"notify\": {\"type\": \"value\", \"valueType\": \"bool\", " +
+              "\"initialValue\": true, \"nullable\": false, \"persistence\": \"preview\"}, ",
+          )
+      check("\"variable\": \"notify\"" in bound) { bound }
+      setContent {
+        RemoteM3DevicePreview(document(bound), widthDp = 216f, heightDp = 124f) { ready++ }
+      }
+      waitUntil(timeoutMillis = 15_000) {
+        ready == 1 ||
+          onAllNodesWithText("Remote M3 preview failed", substring = true)
+            .fetchSemanticsNodes()
+            .isNotEmpty()
+      }
+      onAllNodesWithText("Remote M3 preview failed", substring = true).assertCountEqualsZero()
+    }
+
   @Test
   fun `every published Remote Material 3 component records`() =
     runDesktopComposeUiTest(width = 432, height = 248) {
