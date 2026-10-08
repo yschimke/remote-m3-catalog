@@ -59,12 +59,57 @@ class RegistryTypefaceLoaderTest {
   @Test
   fun `axes on a text with no family draw in Roboto Flex, as the canvas does`() {
     val fallback = RcTypefaceLoader.Default
+    val loader =
+      RegistryTypefaceLoader(
+        registry,
+        declaredAxes =
+          listOf(listOf(FontSettings.Axis("wght", 800f), FontSettings.Axis("wdth", 75f))),
+      )
     // The player's own default for an unstyled run, and the loader's when there are no axes.
     assertSame(fallback.typeface("default", null), loader.typeface("default", null))
-    val bold = assertNotNull(loader.typeface("default", axes("wght" to 800f)))
-    assertSame(registry.variant(ROBOTO_FLEX, listOf(FontSettings.Axis("wght", 800f))), bold)
+    // The declared axes, and the `ital` the player adds to an italic text's.
+    val condensed =
+      assertNotNull(loader.typeface("sans-serif", axes("wght" to 800f, "wdth" to 75f)))
+    assertSame(
+      registry.variant(
+        ROBOTO_FLEX,
+        listOf(FontSettings.Axis("wght", 800f), FontSettings.Axis("wdth", 75f)),
+      ),
+      condensed,
+    )
+    assertNotNull(loader.typeface("default", axes("wght" to 800f, "wdth" to 75f, "ital" to 1f)))
     // Features alone are no axes of Roboto Flex: the plain default stays.
     assertSame(fallback.typeface("default", null), loader.typeface("default", axes("tnum" to 1f)))
+  }
+
+  @Test
+  fun `the weight the player adds to every text is not a declared axis`() {
+    val fallback = RcTypefaceLoader.Default
+    val loader =
+      RegistryTypefaceLoader(
+        registry,
+        declaredAxes = listOf(listOf(FontSettings.Axis("wdth", 75f))),
+      )
+    // rc-players hands every text its style weight as `wght`. A text that declared nothing, in a
+    // document where another text did, keeps the player's face and so its features: Roboto Flex
+    // has no `frac` or `tnum`.
+    assertSame(
+      fallback.typeface("sans-serif", null),
+      loader.typeface("sans-serif", axes("wght" to 450f)),
+    )
+    // The declared text, with the weight added beside its axis.
+    assertSame(
+      registry.variant(
+        ROBOTO_FLEX,
+        listOf(FontSettings.Axis("wdth", 75f), FontSettings.Axis("wght", 450f)),
+      ),
+      loader.typeface("sans-serif", axes("wdth" to 75f, "wght" to 450f)),
+    )
+    // No declared axes at all: nothing moves onto Roboto Flex.
+    assertSame(
+      fallback.typeface("default", null),
+      RegistryTypefaceLoader(registry).typeface("default", axes("wght" to 800f)),
+    )
   }
 
   @Test

@@ -127,6 +127,7 @@ import androidx.wear.compose.remote.material3.RemoteVerticalPageIndicator
 import androidx.wear.compose.remote.material3.rememberRemotePageIndicatorState
 import ee.schimke.composeai.rcplayer.compose.RcComposePlayer
 import ee.schimke.composeai.rcplayer.compose.RcPlayerTheme
+import ee.schimke.composeai.rcplayer.compose.RcTypefaceLoader
 import ee.schimke.composeai.rcplayer.protocol.RcDocument
 import ee.schimke.composeai.rcplayer.protocol.RcDocumentCodec
 import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
@@ -163,12 +164,18 @@ internal const val REMOTE_M3_WIDGET_BACKGROUND_TEST_TAG = "remote-m3-widget-back
 internal const val REMOTE_M3_WIDGET_CONTENT_TEST_TAG = "remote-m3-widget-content"
 internal const val REMOTE_M3_REFRESHING_TEST_TAG = "remote-m3-refreshing"
 
-/** Real Remote M3 creation and playback for the read-only browser device surface. */
+/**
+ * Real Remote M3 creation and playback for the read-only browser device surface.
+ *
+ * [typefaceFallback] answers for every family the runtime's font registry does not: the player's
+ * own default face unless a test stands in for the browser's.
+ */
 @Composable
 internal fun RemoteM3DevicePreview(
   document: UiBuilderDocument,
   widthDp: Float,
   heightDp: Float,
+  typefaceFallback: RcTypefaceLoader = RcTypefaceLoader.Default,
   onReady: () -> Unit,
 ) {
   val root = document.roots.singleOrNull()?.let(document.nodes::get)
@@ -196,12 +203,20 @@ internal fun RemoteM3DevicePreview(
   // Axes on a text with no family are drawn in Roboto Flex
   // ([RegistryTypefaceLoader.DEVICE_FAMILY]),
   // which the registry only holds once something asks for it.
-  val hasAxes =
-    remember(document) { document.nodes.values.any { it.fontVariationSettings() != null } }
+  val declaredAxes =
+    remember(document) {
+      document.nodes.values.mapNotNullTo(mutableSetOf()) { node ->
+        FontSettings.parseVariations(node.string(FontSettings.VARIATION_PROPERTY)).ifEmpty { null }
+      }
+    }
+  val hasAxes = declaredAxes.isNotEmpty()
   LaunchedEffect(registry, hasAxes) {
     if (hasAxes) registry?.request(RegistryTypefaceLoader.DEVICE_FAMILY)
   }
-  val fonts = remember(registry) { RegistryTypefaceLoader(registry) }
+  val fonts =
+    remember(registry, declaredAxes, typefaceFallback) {
+      RegistryTypefaceLoader(registry, declaredAxes, typefaceFallback)
+    }
   // Kept across edits. Keyed on the document, every edit dropped the last drawing and showed a
   // placeholder until the new one was recorded; the previous frame stays up under a scrim instead.
   var captured by
