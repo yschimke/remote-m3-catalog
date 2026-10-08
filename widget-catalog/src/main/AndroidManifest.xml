@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Preview-only module: no launcher activity and no registered widget provider, same as :remote-catalog. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:label="Remote Compose Launcher Widgets" />
+</manifest>

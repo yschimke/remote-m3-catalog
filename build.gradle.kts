@@ -50,6 +50,7 @@ allprojects {
     .configureEach {
       if (this is SourceTask) {
         exclude("**/remote/generated/**")
+        exclude("**/remotewidgets/generated/**")
       }
     }
 }

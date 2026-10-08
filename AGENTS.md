@@ -56,6 +56,24 @@ two PRs, one per repository.
   Wear Compose CMP port (`ee.schimke.wearcmp`, branch `wear-compose-cmp-maven`), which only the
   adapters and the renderer link.
 
+### The second sheet: `remote-widgets`
+
+`:widget-catalog` publishes **Mobile Launcher Widgets** in Remote Compose, a design system of its own
+([docs/design/REMOTE_WIDGETS_UI_BUILDER.md](docs/design/REMOTE_WIDGETS_UI_BUILDER.md)). Most of this
+file is about `remote-m3` and its kit, and does not apply there. These rules do:
+
+- **No `remote-material3`, no Glance Wear.** It draws with `remote-creation-compose` and
+  `remote-foundation` only. `verifyNoRemoteMaterial3` fails `check` if Remote Material 3 reaches its
+  compile classpath. Colours are literals, not theme roles.
+- **Frames are launcher grid cells** (`@Widget3x2`, …), never device sizes. The dp is Android's
+  documented `(73n − 16) × (118m − 16)`. `WidgetSizeTest` holds `WidgetSize`, the frames, the
+  policy's `sizesDp` and the spec's `breakpoints` to that formula, so change all four together.
+- **No kit, so no parity.** Every component carries `noReference`. Nothing from design-parity, kit
+  coverage, the page join or the `parallel` gate applies. Do not add it to `design-map.json`.
+- **Stickers record no lambda actions.** `WidgetButton(onClick = null)` in a sticker: each widget
+  lambda action takes a process-wide counter id, so a capture that registered one would differ by
+  render order.
+
 ### The cross-repo pairing gate
 
 **The two sheets pair through `parallel`, and every `parallel` is declared on THIS side**, so the
