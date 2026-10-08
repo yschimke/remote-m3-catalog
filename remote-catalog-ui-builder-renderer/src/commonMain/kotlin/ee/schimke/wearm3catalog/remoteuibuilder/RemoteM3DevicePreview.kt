@@ -132,6 +132,7 @@ import ee.schimke.composeai.rcplayer.protocol.RcDocument
 import ee.schimke.composeai.rcplayer.protocol.RcDocumentCodec
 import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
 import ee.schimke.composeai.uibuilder.export.FontSettings
+import ee.schimke.composeai.uibuilder.export.REMOTE_LABEL_BUTTON_ID
 import ee.schimke.composeai.uibuilder.export.RemoteModifierVocabulary
 import ee.schimke.composeai.uibuilder.export.SHOW_BY_STATE
 import ee.schimke.composeai.uibuilder.export.StateSelection
@@ -139,7 +140,9 @@ import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
 import ee.schimke.composeai.uibuilder.export.UiBuilderNode
 import ee.schimke.composeai.uibuilder.export.UiDrawing
+import ee.schimke.composeai.uibuilder.export.UiRemoteTheme
 import ee.schimke.composeai.uibuilder.export.UiTimeText
+import ee.schimke.composeai.uibuilder.export.WearScreenTheme
 import ee.schimke.composeai.uibuilder.export.WearWidgetScaffoldSize
 import ee.schimke.composeai.uibuilder.export.hostSpec
 import ee.schimke.composeai.uibuilder.export.stateSelection
@@ -886,6 +889,56 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
           segmented = node.boolean("segmented", steps <= RemoteSliderDefaults.MaxSegmentSteps),
         )
       }
+      REMOTE_LABEL_BUTTON_ID ->
+        RemoteButton(
+          onClick = values.action(node, "click"),
+          modifier = modifier,
+          secondaryLabel = entry.rowSlotContent("secondaryLabel"),
+          icon = entry.slotContent("icon"),
+          enabled = node.enabled(),
+          label = entry.rowSlotContent("label") ?: {},
+        )
+      // The overridden roles over the enclosing scheme, as the export's `colorScheme.copy(…)`.
+      UiRemoteTheme.ID -> {
+        val base = RemoteMaterialTheme.colorScheme
+        fun role(role: String): RemoteColor? {
+          val authored = node.properties[WearScreenTheme.property(role)] ?: return null
+          return values.color(authored)
+            ?: ((authored as? JsonObject)?.get("value") as? JsonPrimitive)?.contentOrNull?.let {
+              base.role(it)
+            }
+        }
+        RemoteMaterialTheme(
+          colorScheme =
+            base.copy(
+              primary = role("primary") ?: base.primary,
+              onPrimary = role("onPrimary") ?: base.onPrimary,
+              primaryContainer = role("primaryContainer") ?: base.primaryContainer,
+              onPrimaryContainer = role("onPrimaryContainer") ?: base.onPrimaryContainer,
+              secondary = role("secondary") ?: base.secondary,
+              onSecondary = role("onSecondary") ?: base.onSecondary,
+              secondaryContainer = role("secondaryContainer") ?: base.secondaryContainer,
+              onSecondaryContainer = role("onSecondaryContainer") ?: base.onSecondaryContainer,
+              tertiary = role("tertiary") ?: base.tertiary,
+              onTertiary = role("onTertiary") ?: base.onTertiary,
+              tertiaryContainer = role("tertiaryContainer") ?: base.tertiaryContainer,
+              onTertiaryContainer = role("onTertiaryContainer") ?: base.onTertiaryContainer,
+              surfaceContainerLow = role("surfaceContainerLow") ?: base.surfaceContainerLow,
+              surfaceContainer = role("surfaceContainer") ?: base.surfaceContainer,
+              surfaceContainerHigh = role("surfaceContainerHigh") ?: base.surfaceContainerHigh,
+              onSurface = role("onSurface") ?: base.onSurface,
+              onSurfaceVariant = role("onSurfaceVariant") ?: base.onSurfaceVariant,
+              outline = role("outline") ?: base.outline,
+              outlineVariant = role("outlineVariant") ?: base.outlineVariant,
+              background = role("background") ?: base.background,
+              onBackground = role("onBackground") ?: base.onBackground,
+              error = role("error") ?: base.error,
+              onError = role("onError") ?: base.onError,
+            )
+        ) {
+          entry.slot(UiRemoteTheme.SLOT).forEach { RenderNode(it) }
+        }
+      }
       UiTimeText.ID ->
         RemoteTimeText(
           modifier = modifier,
@@ -1368,3 +1421,35 @@ private fun UiBuilderNode.horizontalArrangement(): RemoteArrangement.Horizontal 
  * `remote-catalog/ui-builder.policy.json`'s default for `remote-m3/remote-icon`'s `imageVector`.
  */
 private const val REMOTE_ICON_DEFAULT_KEY = "addCircle"
+
+/** A theme role named as a token, read off [this] scheme; null for a name it does not have. */
+private fun androidx.wear.compose.remote.material3.RemoteColorScheme.role(
+  name: String
+): RemoteColor? =
+  when (name) {
+    "primary" -> primary
+    "onPrimary" -> onPrimary
+    "primaryContainer" -> primaryContainer
+    "onPrimaryContainer" -> onPrimaryContainer
+    "secondary" -> secondary
+    "onSecondary" -> onSecondary
+    "secondaryContainer" -> secondaryContainer
+    "onSecondaryContainer" -> onSecondaryContainer
+    "tertiary" -> tertiary
+    "onTertiary" -> onTertiary
+    "tertiaryContainer" -> tertiaryContainer
+    "onTertiaryContainer" -> onTertiaryContainer
+    "surfaceContainerLow" -> surfaceContainerLow
+    "surfaceContainer",
+    "surface" -> surfaceContainer
+    "surfaceContainerHigh" -> surfaceContainerHigh
+    "onSurface" -> onSurface
+    "onSurfaceVariant" -> onSurfaceVariant
+    "outline" -> outline
+    "outlineVariant" -> outlineVariant
+    "background" -> background
+    "onBackground" -> onBackground
+    "error" -> error
+    "onError" -> onError
+    else -> null
+  }
