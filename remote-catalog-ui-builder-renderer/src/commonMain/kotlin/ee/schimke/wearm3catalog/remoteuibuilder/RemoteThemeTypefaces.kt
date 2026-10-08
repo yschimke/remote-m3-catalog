@@ -71,12 +71,23 @@ internal fun RemoteTypography.withRoleNames(names: Map<String, String>): RemoteT
  * Remote Compose writes a text's features into the same list, and a static face has no axes at all,
  * so either would otherwise be a new instance that draws the plain face.
  *
- * A text with no family of its own (the player's `default` or `sans-serif`) that carries axes is
+ * A text with no family of its own (the player's `default` or `sans-serif`) that declares axes is
  * drawn in Wear's Roboto Flex at those axes, as the editor's canvas draws it: that is the face a
  * watch sets such a text in, and the player's own default is static, so its axes drew nothing.
+ *
+ * **Declared** is what [declaredAxes] says, not "the player passed axes". The player hands every
+ * text a `wght` (rc-players' `withWeightAxis`, so a variable default face draws the style's
+ * weight), so read that way every text in the document moved onto Roboto Flex — whose vendored
+ * instance has no `frac` or `tnum`, so a features-only text lost its fraction. A text the document
+ * gave no axes keeps the player's face, with its features, as it does on the canvas.
+ *
+ * @param declaredAxes each `fontVariationSettings` the document's texts declare. The player's
+ *   variations for a text include all of one of these when that text declared it; it adds `wght`
+ *   and `ital` to them, but never drops one.
  */
 internal class RegistryTypefaceLoader(
   private val registry: UiBuilderFontRegistry?,
+  private val declaredAxes: Collection<List<FontSettings.Axis>> = emptyList(),
   private val fallback: RcTypefaceLoader = RcTypefaceLoader.Default,
 ) : RcTypefaceLoader {
   override val families: Set<String>
@@ -93,8 +104,16 @@ internal class RegistryTypefaceLoader(
   /** Roboto Flex at [variations] for a text the player would set in its own default face. */
   private fun deviceFace(family: String, variations: RcFontVariations?): FontFamily? {
     if (family !in DEFAULT_FAMILIES || registry?.loaded?.get(DEVICE_FAMILY) == null) return null
+    if (!declared(variations)) return null
     val axes = axes(DEVICE_FAMILY, variations)
     return if (axes.isEmpty()) null else registry.variant(DEVICE_FAMILY, axes)
+  }
+
+  /** Whether [variations] carry every axis of one of [declaredAxes]: the text asked for them. */
+  private fun declared(variations: RcFontVariations?): Boolean {
+    val passed =
+      variations?.axes.orEmpty().mapTo(mutableSetOf()) { FontSettings.Axis(it.tag, it.value) }
+    return declaredAxes.any { it.isNotEmpty() && passed.containsAll(it) }
   }
 
   private fun axes(family: String, variations: RcFontVariations?): List<FontSettings.Axis> =
