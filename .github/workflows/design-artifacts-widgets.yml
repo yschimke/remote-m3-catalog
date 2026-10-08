@@ -1,0 +1,87 @@
+name: Design Artifacts (remote-widgets)
+
+# Render `:widget-catalog` — the `remote-widgets` system, Mobile Launcher Widgets in Remote Compose —
+# and publish its importable bundle to the `design-artifacts/remote-widgets` branch of the output
+# repository, `yschimke/remote-m3-catalog-out`, which the public preview server (preview.coo.ee)
+# serves at /remote-widgets/ once its `deploy/preview.coo.ee/catalogs.json` names it. The box already
+# trusts every `design-artifacts/*` branch of that repository.
+#
+# A workflow of its own rather than a second job in `design-artifacts.yml`, for two reasons. The
+# `remote-m3` lane takes up to two hours (four player lanes, the parity reference cache, the Figma
+# rasteriser) and a launcher widget change should not re-run it, nor wait behind its concurrency
+# group. And the two sheets have different inputs: this one has no kit, no design map, no page join
+# and no Browser Preview runtime, so every input that exists for those is absent here rather than
+# copied and left inert.
+#
+# Same rule as the other lane: the pipeline is the shared reusable workflow in compose-ai-tools, and a
+# need it cannot express becomes a generic input upstream, never a fork here.
+
+on:
+  # Weekly, a little after the remote-m3 lane, so the sheet tracks renderer changes upstream.
+  schedule:
+    - cron: '30 6 * * 1' # Mondays 06:30 UTC
+  push:
+    branches: [main]
+    paths:
+      - 'widget-catalog/**'
+      # The vendored Remote Compose port is this sheet's whole component vocabulary.
+      - 'vendor/remote-creation-compose/**'
+      - 'vendor/remote-foundation/**'
+      - 'vendor/remote-core/**'
+      - 'vendor/remote-write-core/**'
+      - 'gradle/libs.versions.toml'
+      - 'gradle/wrapper/gradle-wrapper.properties'
+      - 'settings.gradle.kts'
+      - 'build.gradle.kts'
+      - '.github/workflows/design-artifacts-widgets.yml'
+  workflow_dispatch:
+    inputs:
+      allow_incomplete:
+        description: 'Publish even if some previews fail to render or lack semantics.'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  widgets:
+    name: remote-widgets
+    # Don't let forks push to the delivery branch.
+    if: ${{ github.repository == 'yschimke/remote-m3-catalog' }}
+    permissions:
+      contents: write
+    # One publisher at a time for this delivery branch — this lane force-pushes
+    # `design-artifacts/remote-widgets` and nothing else does.
+    concurrency:
+      group: design-artifacts-${{ github.ref }}-remote-widgets
+      cancel-in-progress: false
+    uses: yschimke/compose-ai-tools/.github/workflows/design-artifacts-reusable.yml@main
+    with:
+      system: remote-widgets
+      artifact-repository: yschimke/remote-m3-catalog-out
+      spec: widget-catalog/catalog.spec.json
+      module: ':widget-catalog'
+      # The render CLI in lockstep with the applied Gradle plugin, as the remote-m3 lane does.
+      cli-version: catalog
+      catalog-key: composePreviewPlugin
+      # An ANDROID module: every sticker is a RemoteDocument rasterised by the player under
+      # Robolectric.
+      desktop-render: false
+      # A module-level live bundle, so a serve host can re-render a sticker on demand. No
+      # per-preview split, for the reason the remote-m3 lane gives.
+      publish-live-bundle: true
+      split-per-preview: false
+      # The documents as text beside the pixels, so a change to a widget reads as a diff.
+      rc-document-json: true
+      commit-user-name: Yuri Schimke
+      commit-user-email: yuri@schimke.ee
+      timeout-minutes: 60
+      render-timeout: 1200
+      render-shards: 1
+      allow-incomplete: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_incomplete }}
+    secrets:
+      artifacts_token: ${{ secrets.ARTIFACTS_TOKEN }}
+      # This sheet maps no kit nodes, so the rasteriser has nothing to do; passed so the reusable
+      # workflow's secret contract is the same as the remote-m3 lane's.
+      figma_token: ${{ secrets.FIGMA_TOKEN }}
