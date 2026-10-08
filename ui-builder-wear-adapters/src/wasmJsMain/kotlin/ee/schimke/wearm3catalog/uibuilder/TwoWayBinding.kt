@@ -39,3 +39,14 @@ internal fun CanvasNodeScope.writeBoundChange(
 
 private val WRITING_ACTIONS =
   setOf("set", "select", "selectOrClear", "setText", "toggle", "increment")
+
+/**
+ * The event this node's change runs: the first of [events] it binds, else `click`.
+ *
+ * These adapters also draw the `remote-m3` selection rows (`ui-builder.policy.json` maps
+ * `remote-checkbox-button` and its split and radio twins onto them), whose documents key the change
+ * as `checkedChange`, `select` or `selectionClick`, as `RemoteM3DevicePreview` plays them. A Wear
+ * design keys it as `click`, which stays the fallback.
+ */
+internal fun CanvasNodeScope.boundEvent(vararg events: String): String =
+  events.firstOrNull { node.eventBindings[it] != null } ?: "click"

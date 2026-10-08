@@ -82,7 +82,9 @@ val wearCanvasAdapters = canvasAdapterRegistry {
     OutsideRow {
       SwitchButton(
         checked = boolean("checked"),
-        onCheckedChange = { writeBoundChange("checked", it.toString()) },
+        onCheckedChange = {
+          writeBoundChange("checked", it.toString(), boundEvent("checkedChange"))
+        },
         modifier = modifier.fillMaxWidth(),
         enabled = boolean("enabled", true),
         label = { Label("label") },
@@ -96,7 +98,9 @@ val wearCanvasAdapters = canvasAdapterRegistry {
     OutsideRow {
       CheckboxButton(
         checked = boolean("checked"),
-        onCheckedChange = { writeBoundChange("checked", it.toString()) },
+        onCheckedChange = {
+          writeBoundChange("checked", it.toString(), boundEvent("checkedChange"))
+        },
         modifier = modifier.fillMaxWidth(),
         enabled = boolean("enabled", true),
         label = { Label("label") },
@@ -111,7 +115,7 @@ val wearCanvasAdapters = canvasAdapterRegistry {
       RadioButton(
         selected = boolean("selected"),
         // A radio row selects itself: its change is always to selected.
-        onSelect = { writeBoundChange("selected", "true") },
+        onSelect = { writeBoundChange("selected", "true", boundEvent("select", "selectionClick")) },
         modifier = modifier.fillMaxWidth(),
         enabled = boolean("enabled", true),
         label = { Label("label") },
