@@ -113,7 +113,7 @@ the live exporter joins it.
 
 ## The hello world starter
 
-`hello-widget` is the template a new launcher widget opens on. It shows "Hello, World!" centred on
+`hello-widget` is the template the builder's built-in seed opens a new launcher widget on. The policy lists it first, but the schema cannot mark a default yet, so after the catalog-owned cutover the first entry is only the chooser's order. It shows "Hello, World!" centred on
 the accent at 3x1, which is 203×102dp. That is the smallest grid size where the line fits at 24sp;
 a 2x1 is only 130dp wide.
 
