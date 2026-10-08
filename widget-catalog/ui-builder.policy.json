@@ -113,12 +113,15 @@
       "modifierCapabilities": []
     }
   },
-  "$comment_components": "The sheet's own components and the creation DSL's text. Each `record` names the discovered call (module-relative FQN, the shape remote-m3 uses); the layouts (`layout/box`, `layout/row`, `layout/column`, …) need no entry, being the builder's generic Remote Compose vocabulary.",
+  "$comment_components": "The sheet's own components and the creation DSL's text. Each `record` names the discovered call (module-relative FQN, the shape remote-m3 uses); the layouts (`layout/box`, `layout/row`, `layout/column`, …) need no entry, being the builder's generic Remote Compose vocabulary. A `canvasMapping` renames, for the editing canvas only, a name the Remote API spells differently from the canvas adapter it is drawn with (`fontSize` is `m3/text`'s `fontSizeSp`; `WidgetSurface`'s `content` is `layout/box`'s `children`), as remote-m3's do; it never changes the stored design or the export.",
   "components": {
     "remote-widgets/remote-text": {
       "record": "widget-catalog/androidx.compose.remote.creation.compose.layout.RemoteTextKt.RemoteText",
       "group": "Text",
       "canvas": "m3/text",
+      "canvasMapping": {
+        "properties": { "fontSizeSp": "fontSize" }
+      },
       "propertyCapabilities": [
         {
           "name": "text",
@@ -149,7 +152,10 @@
     "remote-widgets/widget-surface": {
       "record": "widget-catalog/ee.schimke.remotewidgets.WidgetComponentsKt.WidgetSurface",
       "group": "Containment",
-      "canvas": "layout/box"
+      "canvas": "layout/box",
+      "canvasMapping": {
+        "slots": { "children": "content" }
+      }
     },
     "remote-widgets/widget-button": {
       "record": "widget-catalog/ee.schimke.remotewidgets.WidgetComponentsKt.WidgetButton",
