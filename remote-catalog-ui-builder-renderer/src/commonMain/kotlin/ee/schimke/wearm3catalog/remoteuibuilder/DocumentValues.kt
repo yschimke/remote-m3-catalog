@@ -235,34 +235,41 @@ internal class DocumentValues(
   /**
    * The ordered actions bound to [event] on [node], as one `Action`: each state write a
    * `valueChange`, as the export writes them. Navigation and unknown writes play nothing.
+   *
+   * A two-way bound flag leads them: `checkedChange` with `checked` read whole from a flag the
+   * authored actions do not already write negates it first, as compose-ui-builder's
+   * `RemoteContentEmitter` exports it — so a bound `RemoteCheckboxButton` ticks with nothing
+   * authored on its change.
    */
   fun action(node: UiBuilderNode, event: String): Action {
+    val writeBack = writeBack(node, event)?.let { valueChange(it, !it) }
     val actions =
-      (node.eventBindings[event] as? JsonArray).orEmpty().mapNotNull { element ->
-        val action = element as? JsonObject ?: return@mapNotNull null
-        val variable =
-          (action["variable"] as? JsonPrimitive)?.contentOrNull ?: return@mapNotNull null
-        val value = action["value"] as? JsonPrimitive
-        when ((action["type"] as? JsonPrimitive)?.contentOrNull) {
-          "toggle" -> bools[variable]?.let { valueChange(it, !it) }
-          "set",
-          "select",
-          "setText" ->
-            ints[variable]?.let { target ->
-              value?.doubleOrNull?.let { valueChange(target, it.toInt().ri) }
-            }
-              ?: floats[variable]?.let { target ->
-                value?.doubleOrNull?.let { valueChange(target, it.toFloat().rf) }
+      listOfNotNull(writeBack) +
+        (node.eventBindings[event] as? JsonArray).orEmpty().mapNotNull { element ->
+          val action = element as? JsonObject ?: return@mapNotNull null
+          val variable =
+            (action["variable"] as? JsonPrimitive)?.contentOrNull ?: return@mapNotNull null
+          val value = action["value"] as? JsonPrimitive
+          when ((action["type"] as? JsonPrimitive)?.contentOrNull) {
+            "toggle" -> bools[variable]?.let { valueChange(it, !it) }
+            "set",
+            "select",
+            "setText" ->
+              ints[variable]?.let { target ->
+                value?.doubleOrNull?.let { valueChange(target, it.toInt().ri) }
               }
-              ?: bools[variable]?.let { target ->
-                value?.booleanOrNull?.let { valueChange(target, it.rb) }
-              }
-              ?: strings[variable]?.let { target ->
-                value?.contentOrNull?.let { valueChange(target, it.rs) }
-              }
-          else -> null
+                ?: floats[variable]?.let { target ->
+                  value?.doubleOrNull?.let { valueChange(target, it.toFloat().rf) }
+                }
+                ?: bools[variable]?.let { target ->
+                  value?.booleanOrNull?.let { valueChange(target, it.rb) }
+                }
+                ?: strings[variable]?.let { target ->
+                  value?.contentOrNull?.let { valueChange(target, it.rs) }
+                }
+            else -> null
+          }
         }
-      }
     return when (actions.size) {
       0 -> Action.Empty
       1 -> actions.single()
@@ -271,9 +278,28 @@ internal class DocumentValues(
   }
 
   fun hasAction(node: UiBuilderNode, event: String): Boolean =
-    (node.eventBindings[event] as? JsonArray)?.isNotEmpty() == true
+    (node.eventBindings[event] as? JsonArray)?.isNotEmpty() == true ||
+      writeBack(node, event) != null
+
+  /** The flag [event]'s change writes back, when the authored actions leave it unwritten. */
+  private fun writeBack(node: UiBuilderNode, event: String): MutableRemoteBoolean? {
+    if (!event.endsWith("Change")) return null
+    val wrapper = node.properties[event.removeSuffix("Change")] as? JsonObject ?: return null
+    if ((wrapper["type"] as? JsonPrimitive)?.contentOrNull != "state") return null
+    val variable = (wrapper["variable"] as? JsonPrimitive)?.contentOrNull ?: return null
+    val written =
+      (node.eventBindings[event] as? JsonArray).orEmpty().any { element ->
+        val action = element as? JsonObject ?: return@any false
+        (action["type"] as? JsonPrimitive)?.contentOrNull in WRITING_ACTIONS &&
+          (action["variable"] as? JsonPrimitive)?.contentOrNull == variable
+      }
+    return if (written) null else bools[variable]
+  }
 
   companion object {
+    private val WRITING_ACTIONS =
+      setOf("set", "select", "selectOrClear", "setText", "toggle", "increment")
+
     private fun argb(value: String): Int? {
       val hex = value.removePrefix("#")
       val packed = hex.toLongOrNull(16) ?: return null
