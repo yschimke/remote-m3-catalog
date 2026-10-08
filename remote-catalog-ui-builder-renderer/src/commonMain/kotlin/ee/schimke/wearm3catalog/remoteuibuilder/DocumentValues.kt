@@ -49,6 +49,8 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.doubleOrNull
+import kotlinx.serialization.json.floatOrNull
+import kotlinx.serialization.json.intOrNull
 
 /**
  * A design's state, values and actions as the player's own: every typed state variable a mutable
@@ -252,6 +254,20 @@ internal class DocumentValues(
           val value = action["value"] as? JsonPrimitive
           when ((action["type"] as? JsonPrimitive)?.contentOrNull) {
             "toggle" -> bools[variable]?.let { valueChange(it, !it) }
+            // Summed in the player, as the export writes it: `valueChange(count, count + 1)`.
+            "increment" -> {
+              val amount = (action["amount"] as? JsonPrimitive)?.takeUnless { it.isString }
+              ints[variable]?.let { target ->
+                (amount?.intOrNull ?: if (amount == null) 1 else null)?.let {
+                  valueChange(target, target + it)
+                }
+              }
+                ?: floats[variable]?.let { target ->
+                  (amount?.floatOrNull ?: if (amount == null) 1f else null)?.let {
+                    valueChange(target, target + it)
+                  }
+                }
+            }
             "set",
             "select",
             "setText" ->
