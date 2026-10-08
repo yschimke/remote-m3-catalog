@@ -158,5 +158,8 @@ class HelloWidget : RemoteComposeWidget() {
   needs one of two things: `WidgetButton` taking a Remote action (`valueChange` on document state),
   or the exporter writing `onClick` lambdas.
 - **Pictures.** The launcher exporter refuses `asset/image` for now.
-- **Publishing.** The `remote-widgets` design-artifacts lane needs a delivery branch in the output
-  repository and a registration on the preview server.
+- **Publishing.** `.github/workflows/design-artifacts-widgets.yml` publishes the sheet to
+  `design-artifacts/remote-widgets` in `yschimke/remote-m3-catalog-out`. preview.coo.ee serves it
+  once compose-preview-server's `deploy/preview.coo.ee/catalogs.json` names it. The builder offers
+  it once the box's `SERVE_UI_BUILDER_CATALOGS` does; that is an operator setting in the box's own
+  `.env`.
