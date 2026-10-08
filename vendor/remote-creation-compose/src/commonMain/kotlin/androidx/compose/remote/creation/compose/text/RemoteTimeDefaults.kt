@@ -1,12 +1,11 @@
 package androidx.compose.remote.creation.compose.text
 
-import androidx.compose.remote.creation.common.RemoteContext.FLOAT_TIME_IN_HR
-import androidx.compose.remote.creation.common.RemoteContext.FLOAT_TIME_IN_MIN
 import androidx.compose.remote.creation.common.TextFromFloat.PAD_PRE_NONE
 import androidx.compose.remote.creation.common.TextFromFloat.PAD_PRE_ZERO
 import androidx.compose.remote.creation.compose.state.RemoteBoolean
 import androidx.compose.remote.creation.compose.state.RemoteFloat
 import androidx.compose.remote.creation.compose.state.RemoteString
+import androidx.compose.remote.creation.compose.state.RemoteTimeVariables
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.runtime.Composable
 
@@ -20,8 +19,13 @@ public object RemoteTimeDefaults {
     public fun defaultTimeString(
         is24HourFormat: RemoteBoolean = is24HourFormat()
     ): RemoteString {
-        val mins = (RemoteFloat(FLOAT_TIME_IN_MIN) % 60f).toRemoteStringOptions(2, 0, PAD_PRE_ZERO)
-        val currentHour = RemoteFloat(FLOAT_TIME_IN_HR)
+        val mins =
+            (RemoteTimeVariables.minuteOfDay.toRemoteFloat() % 60f).toRemoteStringOptions(
+                2,
+                0,
+                PAD_PRE_ZERO,
+            )
+        val currentHour = RemoteTimeVariables.hourOfDay.toRemoteFloat()
         val hours24 = currentHour.toRemoteStringOptions(2, 0, PAD_PRE_ZERO)
         val hour12 =
             ((currentHour % 12f).isEqualTo(0.rf)).select(RemoteFloat(12f), currentHour % 12f)

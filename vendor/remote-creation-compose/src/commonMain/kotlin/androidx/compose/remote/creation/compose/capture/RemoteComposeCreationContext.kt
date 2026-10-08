@@ -17,11 +17,8 @@
 package androidx.compose.remote.creation.compose.capture
 
 import androidx.annotation.RestrictTo
-import androidx.collection.MutableIntObjectMap
 import androidx.compose.remote.creation.common.RemoteWriter
 import androidx.compose.remote.creation.compose.state.BaseRemoteState
-import androidx.compose.remote.creation.compose.state.RemoteFloat
-import androidx.compose.remote.creation.compose.state.RemoteInt
 import androidx.compose.remote.creation.compose.state.RemoteStateCacheKey
 import androidx.compose.remote.creation.compose.state.RemoteStateScope
 import androidx.compose.ui.graphics.ImageBitmap
@@ -32,9 +29,21 @@ import androidx.compose.ui.unit.LayoutDirection
 public interface RemoteComposeCreationContext : RemoteStateScope {
     public val writer: RemoteWriter
 
-    public val expressionCache: MutableIntObjectMap<RemoteFloat>
+    /**
+     * Returns the id of a float expression with the same lowered [array] and [animation] that was
+     * already written to [writer], or calls [write] to write it and caches the resulting id.
+     */
+    public fun getOrPutFloatExpressionId(
+        array: FloatArray,
+        animation: FloatArray?,
+        write: () -> Int,
+    ): Int
 
-    public val intExpressionCache: MutableIntObjectMap<RemoteInt>
+    /**
+     * Returns the id of an integer expression with the same lowered [array] that was already
+     * written to [writer], or calls [write] to write it and caches the resulting id.
+     */
+    public fun getOrPutIntExpressionId(array: LongArray, write: () -> Int): Int
 
     public override val remoteDensity: RemoteDensity
 

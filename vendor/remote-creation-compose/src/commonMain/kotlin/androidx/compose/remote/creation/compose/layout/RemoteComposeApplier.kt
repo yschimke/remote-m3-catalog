@@ -17,9 +17,29 @@
 package androidx.compose.remote.creation.compose.layout
 
 import androidx.compose.runtime.AbstractApplier
+import kotlin.concurrent.atomics.AtomicLong
+import kotlin.concurrent.atomics.ExperimentalAtomicApi
+import kotlin.concurrent.atomics.incrementAndFetch
 
+// Port: kotlin.concurrent.atomics in place of upstream's java.util.concurrent.atomic.AtomicLong, so
+// the applier stays in commonMain.
+@OptIn(ExperimentalAtomicApi::class)
 internal class RemoteComposeApplier(root: RemoteComposeNode) :
     AbstractApplier<RemoteComposeNode>(root) {
+
+    private val changeBatches = AtomicLong(0L)
+
+    /**
+     * Number of non-empty change batches applied to the node tree so far, including late changes
+     * (e.g. movable content). Safe to read from any thread.
+     */
+    val changeCount: Long
+        get() = changeBatches.load()
+
+    override fun onEndChanges() {
+        super.onEndChanges()
+        changeBatches.incrementAndFetch()
+    }
 
     override fun insertTopDown(index: Int, instance: RemoteComposeNode) {
         // Ignored as we build the tree bottom-up for efficiency

@@ -73,9 +73,6 @@ constructor(
     public val fontVariationSettings: FontVariation.Settings? = null,
 ) {
 
-    public val combinedFontVariationSettings: FontVariation.Settings?
-        get() = combineFontSettings(fontFeatureSettings, fontVariationSettings)
-
     /**
      * Returns a new [RemoteTextStyle] that is a combination of this style and the given [other]
      * style.
@@ -196,18 +193,11 @@ constructor(
             val lineHeight =
                 if (style.lineHeight == TextUnit.Unspecified) null
                 else style.lineHeight.asRemoteTextUnit()
-            val featureList = parseFontFeatureSettings(style.fontFeatureSettings)
-
-            val fontVariationSettings =
-                if (featureList.isNotEmpty()) {
-                    FontVariation.Settings(*featureList.toTypedArray())
-                } else {
-                    val fontWithSettings =
-                        (style.fontFamily as? FontListFontFamily)?.fonts?.fastFirstOrNull { font ->
-                            font.variationSettings.settings.isNotEmpty()
-                        }
-                    fontWithSettings?.variationSettings
+            val fontWithSettings =
+                (style.fontFamily as? FontListFontFamily)?.fonts?.fastFirstOrNull { font ->
+                    font.variationSettings.settings.isNotEmpty()
                 }
+            val fontVariationSettings = fontWithSettings?.variationSettings
             return RemoteTextStyle(
                 color = color,
                 fontSize = fontSize,
@@ -256,7 +246,7 @@ internal fun parseFontFeatureSettings(fontFeatureSettings: String?): List<FontVa
 
 /**
  * Combines [fontFeatureSettings] string and [fontVariationSettings] into a single
- * [FontVariation.Settings].
+ * [FontVariation.Settings]. Used when passing font settings to remote-creation APIs.
  */
 internal fun combineFontSettings(
     fontFeatureSettings: String?,
