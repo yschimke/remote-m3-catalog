@@ -6,7 +6,7 @@ agp = "9.4.1"
 
 # Wear Compose Material 3 — the library the sibling `:catalog` (yschimke/wear-m3-catalog) reproduces
 # the kit against. Here only the Robolectric preview harness and the UI-builder Wear frame read it.
-wear-compose = "1.7.0"
+wear-compose = "1.7.1"
 wear-tooling-preview = "1.0.0"
 # `LocalOnBackPressedDispatcherOwner`, which the one-handed-gesture samples read. Declared by
 # upstream's own samples build.gradle; this module needs it for the same reason.
@@ -28,11 +28,11 @@ compose-bom = "2026.09.00"
 #
 # Here only the UI-builder adapters and the browser renderer link it; `:remote-catalog`, which is
 # what the published `remote-m3` stickers are drawn by, never does.
-wearcmp-port = "1.7.0-beta02-cmp09"
+wearcmp-port = "1.7.1-cmp01"
 
 # The published CMP Remote Compose writer. Browser Preview resolves this exact immutable version
 # from the group-fenced remote-compose-cmp-maven repository; it never follows latest.
-remote-compose-cmp = "4307936-ps17-cmp08"
+remote-compose-cmp = "4307936-ps17-cmp09"
 
 # Compose Multiplatform. `commonMain` compiles against the JetBrains runtime/foundation/ui, which
 # resolve to the androidx artifacts on the android target — same FQNs, so the port and the AARs are
@@ -50,7 +50,7 @@ compose-multiplatform-material3 = "1.12.0-alpha03"
 # the only published home of the 35 shapes the kit's Shapes page draws. The alpha's AAR metadata
 # declares minCompileSdk 37, which is what `catalog/build.gradle.kts` already compiles at for
 # wear-compose 1.7.0-beta. Drop the pin once 1.5.0 is stable in the BOM.
-compose-material3 = "1.5.0-alpha29"
+compose-material3 = "1.5.0-beta01"
 
 # THE DATA LINE MOVED OUT OF compose-ai-tools. `preview-annotations`, `data-preview-overrides-runtime`
 # and `data-remotecompose-connector` publish from yschimke/compose-preview-daemon since its 3.0.0
@@ -178,9 +178,9 @@ materialkolor = "5.0.1"
 # Compose beta line; this one deliberately is not, which is why the two were always separate
 # modules rather than two source sets and could split into two repositories (see
 # remote-catalog/build.gradle.kts).
-compose-remote = "1.0.0-alpha20"
-wear-compose-remote = "1.0.0-alpha12"
-glance-wear = "1.0.0-alpha19"
+compose-remote = "1.0.0-alpha21"
+wear-compose-remote = "1.0.0-alpha13"
+glance-wear = "1.0.0-alpha20"
 
 # Pre-release compose-ui for `:remote-catalog`. The alpha remote artifacts align with the Compose
 # 1.11+ line (1.11.0 is the first release shipping `PreviewWrapper`), so that module pins explicit

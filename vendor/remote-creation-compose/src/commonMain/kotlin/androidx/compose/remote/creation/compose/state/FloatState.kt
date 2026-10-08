@@ -1690,22 +1690,8 @@ internal constructor(
             return Utils.idFromNan(array[0])
         }
 
-        val hash = calcHashID(array, null)
-        val fe = creationState.expressionCache[hash]
-        if (fe != null) {
-            // TODO check if contentEquals is safe here with NaN?
-            if (
-                fe != this &&
-                    fe is RemoteFloatExpression &&
-                    fe.arrayForCreationState(creationState) contentEquals array
-            ) {
-                return fe.getIdForCreationState(creationState)
-            }
-            creationState.expressionCache.put(hash, this)
-            return Utils.idFromNan(creationState.writer.floatExpression(*array))
-        } else {
-            creationState.expressionCache.put(hash, this)
-            return Utils.idFromNan(creationState.writer.floatExpression(*array))
+        return creationState.getOrPutFloatExpressionId(array, animation = null) {
+            Utils.idFromNan(creationState.writer.floatExpression(*array))
         }
     }
 }
@@ -1917,44 +1903,14 @@ internal constructor(
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     public override fun writeToDocument(creationState: RemoteComposeCreationContext): Int {
         val array = input.arrayForCreationState(creationState)
-        val hash = calcHashID(array, anim)
-        val fe = creationState.expressionCache[hash]
-        if (fe != null) {
-            // TODO check if contentEquals is safe here with NaN?
-            if (
-                fe != this &&
-                    fe is AnimatedRemoteFloat &&
-                    fe.anim contentEquals anim &&
-                    fe.input.arrayForCreationState(creationState) contentEquals array
-            ) {
-                return fe.getIdForCreationState(creationState)
-            }
-            creationState.expressionCache.put(hash, this)
-            return Utils.idFromNan(creationState.writer.floatExpression(array, anim))
-        } else {
-            creationState.expressionCache.put(hash, this)
-            return Utils.idFromNan(creationState.writer.floatExpression(array, anim))
+        return creationState.getOrPutFloatExpressionId(array, anim) {
+            Utils.idFromNan(creationState.writer.floatExpression(array, anim))
         }
     }
 
     public fun getAnimationTime(): Float {
         return start.elapsedNow().inWholeNanoseconds * 1E-9f
     }
-}
-
-private fun calcHashID(array: FloatArray, anim: FloatArray?): Int {
-    var sum = 0
-    for (fl in array) {
-        sum = sum * 31 + fl.toRawBits()
-    }
-    var animLocal = anim
-    if (animLocal != null) {
-        sum = sum * 31 + 17
-        for (fl in animLocal) {
-            sum = sum * 31 + fl.toRawBits()
-        }
-    }
-    return sum
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP) public const val CUBIC_STANDARD: Int = 1

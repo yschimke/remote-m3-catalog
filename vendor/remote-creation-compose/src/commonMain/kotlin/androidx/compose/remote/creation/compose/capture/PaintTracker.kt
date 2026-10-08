@@ -27,6 +27,7 @@ import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.RemoteColorFilter
 import androidx.compose.remote.creation.compose.state.RemotePaint
 import androidx.compose.remote.creation.compose.text.RemoteTypeface
+import androidx.compose.remote.creation.compose.text.combineFontSettings
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.PaintingStyle
@@ -173,7 +174,8 @@ internal class PaintTracker {
             isChanged = true
         }
 
-        val targetFontVariationSettings = newPaint.fontVariationSettings
+        val targetFontVariationSettings =
+            combineFontSettings(newPaint.fontFeatureSettings, newPaint.fontVariationSettings)
         val settingsToUse =
             if (RemoteComposeCreationComposeFlags.allowSendingEmptyFontAxis) {
                 targetFontVariationSettings

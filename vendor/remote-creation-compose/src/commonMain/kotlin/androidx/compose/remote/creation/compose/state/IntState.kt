@@ -430,6 +430,16 @@ internal constructor(
         }
 
         /**
+         * Creates a [RemoteInt] referencing a host system variable, such as
+         * `RemoteContext.ID_YEAR`.
+         *
+         * @param id The system variable ID (an `ID_*` constant, not a long-encoded `INT_*` one).
+         * @return A [RemoteInt] referencing the system variable.
+         */
+        internal fun createForContextId(id: Int): RemoteInt =
+            createForId(id.toLong() + 0x100000000L)
+
+        /**
          * Checks if a given [Long] value is considered a literal (i.e., not an ID or an OP code).
          *
          * @param v The [Long] value to check.
@@ -1037,14 +1047,6 @@ internal constructor(
         Utils.idFromLong(idProvider(creationState)).toInt()
 }
 
-private fun calcHashID(array: LongArray): Int {
-    var sum = 0L
-    for (i in array) {
-        sum = sum * 31L + i
-    }
-    return sum.hashCode()
-}
-
 /**
  * Returns [ifTrue] if [a] < [b], otherwise returns [ifFalse].
  *
@@ -1221,22 +1223,8 @@ internal constructor(
         if (array.size == 1 && array[0] > 0x100000000L) {
             return Utils.idFromLong(array[0]).toInt()
         }
-        val hash = calcHashID(array)
-        val ie = creationState.intExpressionCache[hash]
-        if (ie != null) {
-            if (
-                ie != this &&
-                    ie is RemoteIntExpression &&
-                    ie.arrayForCreationState(creationState) contentEquals array
-            ) {
-                return ie.getIdForCreationState(creationState)
-            }
-
-            creationState.intExpressionCache.put(hash, this)
-            return Utils.idFromLong(creationState.writer.integerExpression(*array)).toInt()
-        } else {
-            creationState.intExpressionCache.put(hash, this)
-            return Utils.idFromLong(creationState.writer.integerExpression(*array)).toInt()
+        return creationState.getOrPutIntExpressionId(array) {
+            Utils.idFromLong(creationState.writer.integerExpression(*array)).toInt()
         }
     }
 }

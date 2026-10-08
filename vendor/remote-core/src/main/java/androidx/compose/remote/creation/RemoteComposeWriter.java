@@ -1612,6 +1612,24 @@ public class RemoteComposeWriter {
     }
 
     /**
+     * Draw the text along an already registered path.
+     *
+     * @param textId       The id of the text to be drawn
+     * @param bitmapFontId The id of the bitmap font to draw with
+     * @param pathId       The id of the path to draw along
+     * @param start        The index of the first character in text to draw
+     * @param end          (end - 1) is the index of the last character in text to draw
+     * @param yAdj         Adjustment away from the path along the normal at that point
+     * @param glyphSpacing Horizontal spacing adjustment between glyphs in pixels
+     */
+    public void drawBitmapFontTextRunOnPath(
+            int textId, int bitmapFontId, int pathId, int start, int end, float yAdj,
+            float glyphSpacing) {
+        mBuffer.addDrawBitmapFontTextRunOnPath(
+                textId, bitmapFontId, pathId, start, end, yAdj, glyphSpacing);
+    }
+
+    /**
      * Draw a text on canvas at relative to position (x, y), offset panX and panY.
      *
      * <p>The panning factors (panX, panY) mapped to the resulting bounding box of the text, in such

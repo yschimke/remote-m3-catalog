@@ -41,17 +41,21 @@ import androidx.compose.remote.creation.compose.modifier.semantics
 import androidx.compose.remote.creation.compose.modifier.size
 import androidx.compose.remote.creation.compose.shapes.RemoteCircleShape
 import androidx.compose.remote.creation.compose.shapes.RemoteShape
+import androidx.compose.remote.creation.compose.state.RemoteAnimationSpec
 import androidx.compose.remote.creation.compose.state.RemoteBoolean
 import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.RemoteDp
+import androidx.compose.remote.creation.compose.state.RemoteEasing
 import androidx.compose.remote.creation.compose.state.RemoteFloat
 import androidx.compose.remote.creation.compose.state.RemoteInt
 import androidx.compose.remote.creation.compose.state.RemotePaint
 import androidx.compose.remote.creation.compose.state.RemoteString
+import androidx.compose.remote.creation.compose.state.animateRemoteFloatAsState
 import androidx.compose.remote.creation.compose.state.max
 import androidx.compose.remote.creation.compose.state.min
 import androidx.compose.remote.creation.compose.state.rb
 import androidx.compose.remote.creation.compose.state.rdp
+import androidx.compose.remote.creation.compose.state.remoteTween
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.round
 import androidx.compose.runtime.Composable
@@ -111,13 +115,18 @@ public fun RemoteSlider(
     val valueRangeStart = valueRange.start.rf
     val rangeSpan = (valueRange.endInclusive - valueRange.start).rf
     val normalizedValue = (value - valueRangeStart) / rangeSpan
-    val valueRatio =
+    val targetValueRatio =
         if (steps > 0) {
             val stepCount = (steps + 1).toFloat().rf
             min(max(round(normalizedValue * stepCount) / stepCount, 0f.rf), 1f.rf)
         } else {
             min(max(normalizedValue, 0f.rf), 1f.rf)
         }
+    val valueRatio =
+        animateRemoteFloatAsState(
+            targetValue = targetValueRatio,
+            animationSpec = ProgressBarAnimationSpec,
+        )
 
     RemoteRow(
         verticalAlignment = RemoteAlignment.CenterVertically,
@@ -543,6 +552,13 @@ public class RemoteSliderColors(
     }
 }
 
+/**
+ * Animation used when the slider value changes. Matches Wear Compose Material3 Slider, which uses
+ * `tween(MotionTokens.DurationShort3, easing = MotionTokens.EasingStandardDecelerate)`.
+ */
+private val ProgressBarAnimationSpec: RemoteAnimationSpec =
+    remoteTween(durationMillis = 150, easing = RemoteEasing.Cubic(0f, 0f, 0f, 1f))
+
 private fun RemoteDrawScope.drawProgressBar(
     selectedBarColor: RemoteColor,
     unselectedBarColor: RemoteColor,
@@ -558,10 +574,16 @@ private fun RemoteDrawScope.drawProgressBar(
     val separatorRadiusInPx = RemoteSliderDefaults.BarSeparatorRadius.toPx()
     val segmentBarPaddingInPx = RemoteSliderDefaults.SegmentBarPadding.toPx()
 
+    // The segmented width formula extends past the canvas bounds when the value is at (or near)
+    // the end of the range. Compose Slider clips the bar to the slider shape; clamp it here so the
+    // selected bar never overflows into the increase/decrease buttons.
     val barWidthInPx =
         if (segmented) {
             val nonZeroWidth =
-                (width + separatorRadiusInPx * 2f.rf) * valueRatio + segmentBarPaddingInPx
+                min(
+                    (width + separatorRadiusInPx * 2f.rf) * valueRatio + segmentBarPaddingInPx,
+                    width,
+                )
             valueRatio.isGreaterThan(0f.rf).select(nonZeroWidth, 0f.rf)
         } else {
             width * valueRatio

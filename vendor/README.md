@@ -15,7 +15,10 @@ These modules are copied from AndroidX change
 ## Later upstream changes
 
 Since that patch set, the modules have taken the upstream delta between androidx.dev snapshot builds
-16427341 and 16480970 (the snapshot lane's pin when the port was refreshed), applied onto the port rather than re-copied:
+16427341 and 16547072, in two refreshes (16427341 → 16480970, then 16480970 → 16547072), each
+applied onto the port rather than re-copied.
+
+16427341 → 16480970:
 
 - `remote-material3`: the selection controls animate their progress, and `AnimateTick.kt` is new.
   Upstream's removal of `RemotePageIndicator.inverseLerp`'s divide-by-zero guard is not taken.
@@ -28,6 +31,36 @@ Since that patch set, the modules have taken the upstream delta between androidx
   and the buffer's optimisations are off by default upstream.
 - `remote-core`: the matching write-side changes, including `AnimationSpec`'s packed
   animation/sequence ints and function ids, and optional document compression (`Header.COMPRESS`).
+
+16480970 → 16547072:
+
+- `remote-material3`: `RemoteSlider` animates its value and clamps the segmented bar to the track;
+  the split checkbox/radio/switch buttons take their outer corners from the container shape
+  (`splitSectionShapes`); `RemoteRoundButton` takes a `role`; `RemoteTimeText` passes font feature
+  settings through; the indeterminate `RemoteCircularProgressIndicator` reads
+  `RemoteTimeVariables.continuousSeconds`; `RemoteCurvedProgressIndicator`'s intro slide starts from
+  the collapse-freeze fraction. The new components (`RemoteIconToggleButton`,
+  `RemoteTextToggleButton`, `RemoteToggleButtonShape`, `RemoteSegmentedCircularProgressIndicator`,
+  `RemoteOneHandedGestureClickIndicator`, `RemoteMotionTokens`) are not taken: nothing in the port
+  needs them, and `RemoteToggleButtonShape` reads Android profiles.
+- `remote-creation-compose`: `RemoteTimeVariables`, `RemoteConfiguration` and the NaN-id-aware
+  expression cache (`NanIdEquality`, `LoweredFloatExpressionKey` / `LoweredIntExpressionKey`), which
+  fixes expressions that differ only in a variable id or operator sharing one cached id; font feature
+  settings carried on `RemotePaint` rather than folded into `RemoteTextStyle`
+  (`combinedFontVariationSettings` is gone); `RemoteCustomComponent` recorded as a layout component
+  instead of inside a canvas; the "h:mm" time string built from the integer hour/minute variables;
+  and the Android capture loop's write tracker, frame budget, render-invalidation tracker and
+  `CaptureUpdateThrottle`. `RemoteComposeApplier.changeCount` uses `kotlin.concurrent.atomics` so it
+  stays in `commonMain`, and the JVM capture loop is unchanged. Upstream's further move of
+  `RecordingCanvas` onto `RemoteCanvas`, and its split of `RemoteComposeCreationState` /
+  `RemoteImageVector` into Android files, are not mirrored, as before: the port already has its own
+  platform split.
+- `remote-core`: `Operations.EVENT_ACTION` moves from 110 to 100, `MODIFIER_ALIGN_BY` leaves the
+  experimental v7 profiles, `RemoteComposeWriter` gains the path-id `drawBitmapFontTextRunOnPath`
+  overload (the DSL's `drawTextOnPath` previously passed the id as path data), and the DSL gains
+  `bitmapFontGlyph`. The antialiased 2D mesh API (`addMesh2DAntialias`, `remoteMesh2DAntialias`,
+  `AddMesh2D` / `Mesh2DGenerator` changes) is not taken, because the port never carried
+  `AddMesh2D`; nor are the JSON importer and the Android `RcPlatformProfiles` annotation.
 
 The copied Kotlin sources started as upstream bytes; the port then moved the portable Creation,
 Foundation, and Material 3 closure to `commonMain`. Local build files expose Android, JVM, and Wasm
@@ -63,7 +96,7 @@ Compose artifacts.
 ## Published artifacts
 
 The five vendored modules publish under `ee.schimke.remotecompose` at
-`4307936-ps17-cmp08`. The version is derived from `remote-compose-upstream.json`; bump its
+`4307936-ps17-cmp09`. The version is derived from `remote-compose-upstream.json`; bump its
 `portRevision` whenever published bytes change without moving to a newer AndroidX patch set.
 
 [`publish-remote-compose.yml`](../.github/workflows/publish-remote-compose.yml) publishes to GitHub
@@ -78,7 +111,7 @@ repositories {
 }
 
 dependencies {
-  implementation("ee.schimke.remotecompose:remote-material3:4307936-ps17-cmp07")
+  implementation("ee.schimke.remotecompose:remote-material3:4307936-ps17-cmp09")
 }
 ```
 
