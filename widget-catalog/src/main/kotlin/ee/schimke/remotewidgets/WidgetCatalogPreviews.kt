@@ -24,8 +24,11 @@ import androidx.compose.remote.creation.compose.state.rsp
 import androidx.compose.remote.foundation.layout.RemoteSpacer
 import androidx.compose.remote.foundation.text.RemoteBasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import ee.schimke.composeai.preview.CatalogComponent
 
 // ---------------------------------------------------------------------------------------------
@@ -53,6 +56,51 @@ private const val NO_KIT = "No published design kit covers Remote Compose launch
 @WidgetSizes
 @Composable
 fun CounterWidgetSticker() = WidgetSticker { CounterContent(count = 3) }
+
+@CatalogComponent(
+  id = "LauncherWidget/Adaptive",
+  group = "Widget",
+  noReference = NO_KIT,
+  caption =
+    "Glance's SizeMode.Responsive sample on Remote Compose: every breakpoint recorded into one " +
+      "RemoteStateLayout, and the one shown picked during playback from the widget's size.",
+)
+@Widget2x1
+@Widget3x1
+@Widget4x1
+@Widget4x2
+@Widget5x2
+@Composable
+fun AdaptiveDestinationsSticker() = WidgetSticker { DestinationsContent() }
+
+/**
+ * The same widget when the recording already knows its size: [AdaptiveWidget] records only the
+ * branch that size picks, and the document carries no StateLayout. Each frame must match
+ * [AdaptiveDestinationsSticker]'s, which made the same choice during playback.
+ */
+@CatalogComponent(
+  id = "LauncherWidget/AdaptiveFixed",
+  group = "Widget",
+  noReference = NO_KIT,
+  caption =
+    "The adaptive sample recorded for a known size: only the breakpoint that size picks, with no " +
+      "StateLayout — what a widget that cannot be resized needs.",
+)
+@Widget2x1
+@Widget3x1
+@Widget4x1
+@Widget4x2
+@Widget5x2
+@Composable
+fun AdaptiveDestinationsFixedSticker() {
+  val configuration = LocalConfiguration.current
+  val frame = DpSize(configuration.screenWidthDp.dp, configuration.screenHeightDp.dp)
+  // Inside the sticker: the document is recorded in a composition of its own, which does not
+  // inherit locals provided around it.
+  WidgetSticker {
+    CompositionLocalProvider(LocalFixedWidgetSize provides frame) { DestinationsContent() }
+  }
+}
 
 /**
  * The launcher grid itself: an empty [WidgetSurface] at every footprint this sheet names, labelled
