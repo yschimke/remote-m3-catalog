@@ -3,9 +3,7 @@ package ee.schimke.wearm3catalog.remoteuibuilder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
-import ee.schimke.composeai.rcplayer.compose.LocalRcAnimationClock
 import ee.schimke.composeai.rcplayer.compose.LocalRcTimeSource
-import ee.schimke.composeai.rcplayer.compose.RcAnimationClock
 import ee.schimke.composeai.rcplayer.runtime.RcTimeSnapshot
 import ee.schimke.composeai.rcplayer.runtime.RcTimeSource
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
@@ -18,9 +16,12 @@ import kotlinx.serialization.json.contentOrNull
  * [content]'s players on the clock the editor asked for.
  *
  * The editor hands a device pane a document whose `environment.animations` is `running` only while
- * its preview's time toggle is on. Otherwise the pane is a still frame like every other render of
- * the design: the wall clock pinned at the document's `fixedTime` (read as the canvas reads it, its
- * own fields rather than the host's zone) and animation time held at its first frame.
+ * its preview's time toggle is on. Otherwise its wall clock is pinned at the document's `fixedTime`
+ * (read as the canvas reads it, its own fields rather than the host's zone).
+ *
+ * Animation time is left to the player. Holding it with `LocalRcAnimationClock` would freeze it,
+ * but a host-driven clock makes the player redraw every frame for any document that declares a
+ * float animation — every Remote M3 button carries a press spring — so the pane would never idle.
  */
 @Composable
 internal fun ProvideDevicePreviewTime(
@@ -33,14 +34,8 @@ internal fun ProvideDevicePreviewTime(
   }
   val fixedTime = (document.environment["fixedTime"] as? JsonPrimitive)?.contentOrNull
   val source = remember(fixedTime) { FixedTimeSource(UiExpressions.Clock.of(fixedTime)) }
-  CompositionLocalProvider(
-    LocalRcTimeSource provides source,
-    LocalRcAnimationClock provides FirstFrame,
-    content = content,
-  )
+  CompositionLocalProvider(LocalRcTimeSource provides source, content = content)
 }
-
-private val FirstFrame = RcAnimationClock { 0f }
 
 private class FixedTimeSource(private val clock: UiExpressions.Clock) : RcTimeSource {
   override fun currentTimeMillis(): Long = clock.epochMillis
