@@ -46,7 +46,6 @@ import androidx.compose.remote.creation.compose.modifier.offset
 import androidx.compose.remote.creation.compose.modifier.padding
 import androidx.compose.remote.creation.compose.modifier.rotate
 import androidx.compose.remote.creation.compose.modifier.scale
-import androidx.compose.remote.creation.compose.modifier.sharedElement
 import androidx.compose.remote.creation.compose.modifier.width
 import androidx.compose.remote.creation.compose.modifier.widthIn
 import androidx.compose.remote.creation.compose.modifier.wrapContentSize
@@ -1121,9 +1120,8 @@ private fun UiBuilderNode.remoteModifier(
         // The export writes `animationSpec(Int, Boolean)` because the native lane's
         // alpha19 predates `sharedElement`; the port this preview records with has both, and they
         // lower to the same AnimationSpec operation with the same default motion.
-        "sharedElement" ->
-          number("key")?.toInt()?.takeIf { it >= 1 }?.let { result.sharedElement(key = it) }
-            ?: result
+        "sharedElement" -> result.sharedElementFrom(modifier)
+        "animateEnterExit" -> result.animateEnterExitFrom(modifier)
         // Each may be computed, and then plays as the expression the export writes.
         "alpha" -> result.alpha(values.float(modifier["alpha"].wrapped()) ?: 1f.rf)
         "rotate" -> result.rotate(values.float(modifier["degrees"].wrapped()) ?: 0f.rf)
