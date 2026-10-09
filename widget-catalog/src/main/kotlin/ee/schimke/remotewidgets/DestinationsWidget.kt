@@ -5,6 +5,8 @@ package ee.schimke.remotewidgets
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
 import android.content.Context
+import android.os.Build
+import android.util.SizeF
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
 import androidx.compose.remote.creation.compose.layout.RemoteArrangement
 import androidx.compose.remote.creation.compose.layout.RemoteColumn
@@ -36,18 +38,34 @@ class DestinationsWidget : RemoteComposeWidget() {
 }
 
 /**
- * The size of widget [widgetId] when it cannot change: its provider declares no resize mode, so the
- * launcher keeps it at the size it was placed at. Null when it can be resized, or the launcher has
- * not said how big it is.
+ * The size of widget [widgetId] when it has exactly one: its provider declares no resize mode AND
+ * the launcher reports a single rectangle for it. `RESIZE_NONE` alone is not enough — it only stops
+ * the person resizing it, and a launcher may still give it a different portrait and landscape size
+ * — so a widget is fixed only when its reported sizes (API 31's `OPTION_APPWIDGET_SIZES`) are one,
+ * or, before that, when its min and max agree in both axes. Null otherwise, and the widget keeps
+ * every breakpoint.
  */
 fun fixedWidgetSize(context: Context, widgetId: Int): DpSize? {
   val manager = AppWidgetManager.getInstance(context)
   val info = manager.getAppWidgetInfo(widgetId) ?: return null
   if (info.resizeMode != AppWidgetProviderInfo.RESIZE_NONE) return null
   val options = manager.getAppWidgetOptions(widgetId)
-  val width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
-  val height = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
-  return if (width > 0 && height > 0) DpSize(width.dp, height.dp) else null
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    // The untyped getter: the typed one is API 33, and OPTION_APPWIDGET_SIZES is API 31.
+    @Suppress("DEPRECATION")
+    val reported = options.getParcelableArrayList<SizeF>(AppWidgetManager.OPTION_APPWIDGET_SIZES)
+    if (!reported.isNullOrEmpty()) {
+      val distinct = reported.distinct()
+      return distinct.singleOrNull()?.let { DpSize(it.width.dp, it.height.dp) }
+    }
+  }
+  val minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
+  val minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
+  val maxWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH)
+  val maxHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)
+  if (minWidth <= 0 || minHeight <= 0) return null
+  if (minWidth != maxWidth || minHeight != maxHeight) return null
+  return DpSize(minWidth.dp, minHeight.dp)
 }
 
 /**

@@ -2,6 +2,7 @@
 
 package ee.schimke.remotewidgets
 
+import androidx.compose.remote.creation.compose.layout.RemoteBox
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.layout.RemoteStateLayout
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
@@ -83,7 +84,11 @@ fun AdaptiveWidget(
 ) {
   require(sizes.isNotEmpty()) { "an adaptive widget needs at least one size" }
   if (fixedSize != null) {
-    CompositionLocalProvider(LocalWidgetSize provides bestFitSize(fixedSize, sizes)) { content() }
+    // The same container the StateLayout would have been, so [modifier] means the same thing
+    // whichever way the widget was recorded.
+    RemoteBox(modifier.fillMaxSize()) {
+      CompositionLocalProvider(LocalWidgetSize provides bestFitSize(fixedSize, sizes)) { content() }
+    }
     return
   }
   val ordered = smallestFirst(sizes)
