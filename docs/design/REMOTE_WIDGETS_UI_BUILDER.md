@@ -177,10 +177,10 @@ call, `AdaptiveLayout(compact = { … }, medium = { … })`.
   needs one of two things: `WidgetButton` taking a Remote action (`valueChange` on document state),
   or the exporter writing `onClick` lambdas.
 - **Pictures.** The launcher exporter refuses `asset/image` for now.
-- **The adaptive layout on the canvas.** The policy draws `remote-widgets/adaptive-layout` as a
-  box showing its `compact` slot. Showing the slot that fits the frame being viewed — so the
-  builder's resizable launcher pane switches layout as it is dragged — is a renderer change in
-  compose-ui-builder, keyed on the component id as the launcher root is.
+- **The adaptive layout on the canvas.** The policy draws `remote-widgets/adaptive-layout` with
+  compose-ui-builder's `launcher/adaptive-layout` canvas adapter, which shows the slot that fits the
+  frame being viewed, so the builder's resizable launcher pane switches layout as it is dragged. A
+  builder older than that adapter draws the component as a placeholder.
 - **Publishing.** `.github/workflows/design-artifacts-widgets.yml` publishes the sheet to
   `design-artifacts/remote-widgets` in `yschimke/remote-m3-catalog-out`. preview.coo.ee serves it
   once compose-preview-server's `deploy/preview.coo.ee/catalogs.json` names it. The builder offers

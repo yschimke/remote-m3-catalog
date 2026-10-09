@@ -177,12 +177,7 @@
     "remote-widgets/adaptive-layout": {
       "record": "widget-catalog/ee.schimke.remotewidgets.AdaptiveLayoutKt.AdaptiveLayout",
       "displayName": "Adaptive layout",
-      "canvas": "layout/box",
-      "canvasMapping": {
-        "slots": {
-          "children": "compact"
-        }
-      },
+      "canvas": "launcher/adaptive-layout",
       "propertyCapabilities": [
         {
           "name": "compactSize",
