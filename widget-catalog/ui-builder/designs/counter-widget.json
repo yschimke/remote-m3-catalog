@@ -50,7 +50,7 @@
       "properties": {
         "verticalAlignment": {
           "type": "string",
-          "value": "centerVertically"
+          "value": "center"
         }
       },
       "modifiers": [
