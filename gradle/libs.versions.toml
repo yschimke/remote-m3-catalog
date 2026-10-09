@@ -136,31 +136,23 @@ composePreviewServer = "3.95.0"
 # adapter registry have completed their release cycle.
 uiBuilderSource = "3.69.0"
 
-# rc-players — `ee.schimke.composeai:third-party-rc-embedded-player`. Same GROUP as the artifacts
-# above and nothing else: it is published from yschimke/rc-players on a release line of its own,
-# which moves separately and is already ahead. Sharing one ref with it (the `composePreviewAnnotations`
-# that the block above has now split in two) dragged the four compose-ai-tools artifacts to a version
-# that does not exist (#199); it gets its own ref, and .github/renovate.json keeps it out of the
-# compose-ai-tools group so the two cannot re-merge. Read that block for the third instance of this
-# bug: a version REF is a claim that its artifacts release together, and it is wrong the moment they
-# do not — whether the other line lives in another repository (here) or in the same one (#347).
-# The connector (`composePreviewDaemon`) links this player's `RcPlayer` entry point reflectively and,
-# when the shape it was built against is missing, falls back to the View player WITHOUT failing:
-# rc-players 2.x beside connector 3.9.2 baked every sticker through the View player, blanking 319
-# canvas-drawn cells (#639). 2.x needs connector 3.10.0+; `RemoteM3ThreeSurfaceContractTest` pins the
-# pair and `RemoteRenderTest` checks every capture actually used the embedded player.
-rcEmbeddedPlayer = "2.1.4"
-# The rc-players BOM, on a ref of its own for the reason above, one level in: rc-players publishes a
-# module only when it changed, so 2.2.0 shipped the BOM and `rc-player-compose` and left
-# `third-party-rc-embedded-player` at 2.1.4. One ref over both made Renovate raise the embedded player
-# to a 2.2.0 nobody uploaded (#9). The Browser Preview runtime's `rcPlayer` is this one: the CMP
-# player it links resolves through the BOM, not through the embedded player.
-rcPlayers = "2.3.0"
-# The CMP player on Android, on its own ref: it must not drag the embedded player above, which bakes
-# every sticker. It is on the RUNTIME classpath: the bundle manifest listing it is what offers the
-# hosted live lane its `cmp-android` player, and `CmpAndroidPlayerTrialTest` still replays every
-# `.rc` through it. Renovate's rc-players group moves this ref like the one above.
-rcPlayerComposeAndroid = "2.2.1"
+# rc-players — every artifact this build takes from yschimke/rc-players (the embedded player the
+# stickers are baked with, and the CMP player on Android and in the Browser Preview runtime) resolves
+# through its BOM, on this one ref. Same GROUP as the compose-ai-tools artifacts above and nothing
+# else: rc-players is a release line of its own that moves separately and is already ahead, so it
+# keeps a ref of its own (sharing one dragged four compose-ai-tools artifacts to a version that does
+# not exist, #199) and .github/renovate.json keeps it out of the compose-ai-tools group. One ref over
+# the BOM, not one per module: rc-players publishes a module only when it changed (2.4.0 pins
+# `third-party-rc-embedded-player` at 2.1.4), and only the BOM knows which version of each it ships —
+# a per-module ref raised to the BOM's version asked for one nobody uploaded (#9).
+# The connector (`composePreviewDaemon`) links the embedded player's `RcPlayer` entry point
+# reflectively and, when the shape it was built against is missing, falls back to the View player
+# WITHOUT failing: rc-players 2.x beside connector 3.9.2 baked every sticker through the View player,
+# blanking 319 canvas-drawn cells (#639). 2.x needs connector 3.10.0+; `RemoteM3ThreeSurfaceContractTest`
+# pins the pair and `RemoteRenderTest` checks every capture actually used the embedded player.
+# 2.4.0 plays shared elements named by their AnimationSpec and a component's own enter/exit across a
+# StateLayout switch (rc-players#604, rc-players#606), which `RemoteM3DeviceMotionUiTest` needs.
+rcPlayers = "2.4.0"
 
 # materialkolor — the dynamic-colour engine Confetti Wear builds its conference palettes with. The
 # declared themes in `CatalogThemes.kt` reproduce them by running the same seed through the same
@@ -295,8 +287,8 @@ composeai-wear-preview-runtime = { module = "ee.schimke.composeai:wear-preview-r
 composeai-remotecompose-json = { module = "ee.schimke.composeai:remotecompose-json", version.ref = "composePreviewCore" }
 composeai-rc-players-bom = { module = "ee.schimke.composeai:rc-players-bom", version.ref = "rcPlayers" }
 composeai-rc-player-compose = { module = "ee.schimke.composeai:rc-player-compose" }
-composeai-rc-player-compose-android = { module = "ee.schimke.composeai:rc-player-compose", version.ref = "rcPlayerComposeAndroid" }
-composeai-rc-embedded-player = { module = "ee.schimke.composeai:third-party-rc-embedded-player", version.ref = "rcEmbeddedPlayer" }
+composeai-rc-player-compose-android = { module = "ee.schimke.composeai:rc-player-compose" }
+composeai-rc-embedded-player = { module = "ee.schimke.composeai:third-party-rc-embedded-player" }
 composeai-ui-builder-export = { module = "ee.schimke.composeai:compose-preview-ui-builder-export", version.ref = "composePreviewServer" }
 composeai-ui-builder-renderer-sdk-source = { module = "ee.schimke.composeai:ui-builder-renderer-sdk-source", version.ref = "uiBuilderSource" }
 ktfmt-cli = { module = "com.facebook:ktfmt", version.ref = "ktfmt-cli" }

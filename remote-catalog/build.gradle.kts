@@ -284,12 +284,13 @@ dependencies {
   // learn a second signature first; that is compose-ai-tools' change to make, not this repo's.
   // `implementation`, matching what this module declared before the move: the bundle's re-render
   // classpath is built from it, and the sticker sources deliberately compile against none of it.
+  // Versioned by the rc-players BOM, with the CMP player below: one ref for the whole player line.
+  implementation(platform(libs.composeai.rc.players.bom))
   implementation(libs.composeai.rc.embedded.player)
   // The Compose Multiplatform player on Android: the hosted live lane offers `cmp-android` only
   // for a bundle whose manifest lists it, and that manifest is built from this runtime classpath.
   // `CmpAndroidPlayerTrialTest` replays every `.rc` sidecar through it beside the embedded player.
-  // Its own version ref, not the rc-players BOM: the BOM also pins the embedded player above, and
-  // this must not move the player the stickers are baked with.
+  // From the rc-players BOM like the embedded player above, so the two never skew.
   implementation(libs.composeai.rc.player.compose.android)
 
   debugImplementation(libs.compose.ui.tooling.prerelease)
