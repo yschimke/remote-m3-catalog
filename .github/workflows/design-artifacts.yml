@@ -170,7 +170,9 @@ jobs:
       ui-builder-runtime-archive: 'remote-catalog-ui-builder-renderer/build/distributions/remote-m3-ui-builder-renderer.zip'
       # v3.97.0 is the first SDK with the live preview clock and tween/spring animated values that
       # DevicePreviewTime.kt and DocumentValues.kt read (#49); older pins fail to compile them.
-      ui-builder-runtime-source-ref: 'v3.97.0'
+      # v3.100.0 sends Compose's Noto fallback downloads to the host's /api/fonts/noto instead of
+      # fonts.gstatic.com, which the runtime page's connect-src refused (compose-ui-builder#612).
+      ui-builder-runtime-source-ref: 'v3.100.0'
       defer-figma-svg: true
       split-per-preview: false
       # The CMP/Wasm player lane: the same browser environment visitors use, scoring every document
