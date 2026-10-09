@@ -255,17 +255,7 @@ internal class DocumentValues(
     return animateRemoteFloatAsState(target, spec)
   }
 
-  private fun easing(name: String): RemoteEasing =
-    when (name) {
-      "linear" -> RemoteEasing.Linear
-      "accelerate" -> RemoteEasing.Accelerate
-      "decelerate" -> RemoteEasing.Decelerate
-      "anticipate" -> RemoteEasing.Anticipate
-      "overshoot" -> RemoteEasing.Overshoot
-      "bounce" -> RemoteEasing.Bounce
-      "elastic" -> RemoteEasing.Elastic
-      else -> RemoteEasing.Standard
-    }
+  private fun easing(name: String): RemoteEasing = remoteEasing(name)
 
   private fun asString(value: Any): RemoteString =
     when (value) {
