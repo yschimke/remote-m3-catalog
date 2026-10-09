@@ -30,6 +30,12 @@ plugins {
 composePreview {
   // Same Robolectric pin as `:remote-catalog`: compileSdk 37 here, Robolectric ships up to 36.
   sdkVersion.set(35)
+  // RemoteText lives outside discovery's built-in component libraries, so without this its sticker
+  // records only the `WidgetSticker` wrapper and `remote-widgets/remote-text` in
+  // ui-builder.policy.json joins nothing (`component.policy.orphaned`) — which leaves both template
+  // designs naming an unknown component. An exact owner class, not the package: the package would
+  // also admit RemoteBox / RemoteRow, which would then compete to be each sticker's subject.
+  componentLibraryPrefixes.add("androidx.compose.remote.creation.compose.layout.RemoteTextKt")
 }
 
 android {
