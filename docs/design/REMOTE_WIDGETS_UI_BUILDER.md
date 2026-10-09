@@ -156,7 +156,7 @@ reports exactly one size), only the chosen branch is recorded.
 in the builder. Code branches on `LocalWidgetSize`; a design has no code to branch in, so each
 breakpoint is a slot — `compact`, `medium`, `expanded` — and its size a property naming a cell
 count (`compactSize = "2x1"`, `mediumSize = "4x1"`, `expandedSize = "4x2"`, the grid's labels as
-allowed values). A slot left empty is not a breakpoint. It exports as an ordinary record-driven
+allowed values). A slot left empty is not a breakpoint, `compact` included. It exports as an ordinary record-driven
 call, `AdaptiveLayout(compact = { … }, medium = { … })`.
 
 ## Not done yet

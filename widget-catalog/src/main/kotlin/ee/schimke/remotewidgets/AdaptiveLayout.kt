@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
  * [expanded] — and its size is a property naming the cell count it is laid out for (`"2x1"`,
  * `"4x1"`, `"4x2"`). Which slot shows is [AdaptiveWidget]'s choice: during playback, through a
  * `RemoteStateLayout` keyed on the widget's size, or while recording when the size is already
- * known. A slot left out is not a breakpoint, so a widget with only [compact] is a widget with one
- * layout.
+ * known. A slot left out is not a breakpoint, [compact] included: a widget with only [expanded] has
+ * one layout, shown at every size, rather than an empty one at 2x1.
  */
 @RemoteComposable
 @Composable
@@ -27,15 +27,17 @@ fun AdaptiveLayout(
   compactSize: String = "2x1",
   mediumSize: String = "4x1",
   expandedSize: String = "4x2",
-  compact: @Composable @RemoteComposable () -> Unit,
+  compact: @Composable @RemoteComposable () -> Unit = NoLayout,
   medium: @Composable @RemoteComposable () -> Unit = NoLayout,
   expanded: @Composable @RemoteComposable () -> Unit = NoLayout,
 ) {
   val branches = buildList {
-    add(launcherCellSize(compactSize) to compact)
+    if (compact !== NoLayout) add(launcherCellSize(compactSize) to compact)
     if (medium !== NoLayout) add(launcherCellSize(mediumSize) to medium)
     if (expanded !== NoLayout) add(launcherCellSize(expandedSize) to expanded)
   }
+  // Nothing authored is nothing to show, rather than an empty breakpoint the widget could pick.
+  if (branches.isEmpty()) return
   AdaptiveWidget(branches.map { it.first }.toSet(), modifier) {
     val size = LocalWidgetSize.current
     // Two slots authored at one size are one breakpoint; the first of them is the one it shows.
