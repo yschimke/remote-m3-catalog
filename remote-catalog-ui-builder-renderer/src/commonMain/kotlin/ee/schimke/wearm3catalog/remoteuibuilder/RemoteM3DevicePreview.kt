@@ -230,13 +230,13 @@ internal fun RemoteM3DevicePreview(
   var refreshing by remember { mutableStateOf(true) }
   LaunchedEffect(document, contentWidth, contentHeight, density, roleNames, textRole) {
     refreshing = true
-    // The capture records once and cannot wait for an icon, and in the browser a vector arrives
-    // with its data file; fetch every icon the document names first, so none is recorded as "?".
-    document.nodes.values
-      .filter { it.componentId == "remote-m3/remote-icon" }
-      .mapTo(mutableSetOf()) { it.remoteIconKey() }
-      .forEach { GoogleMaterialIconVectors.load(it) }
     val next = runCatching {
+      // The capture records once and cannot wait for an icon, and in the browser a vector arrives
+      // with its data file; fetch every icon the document names first, so none is recorded as "?".
+      document.nodes.values
+        .filter { it.componentId == "remote-m3/remote-icon" }
+        .mapTo(mutableSetOf()) { it.remoteIconKey() }
+        .forEach { GoogleMaterialIconVectors.load(it) }
       val content =
         captureDocument(contentWidth, contentHeight, density, roleNames, textRole) {
           RemoteDocumentTree(document).Render(widgetSize != null)
