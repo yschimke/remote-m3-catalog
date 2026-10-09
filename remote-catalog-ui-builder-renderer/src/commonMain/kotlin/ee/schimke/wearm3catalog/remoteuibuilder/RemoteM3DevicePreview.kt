@@ -148,6 +148,7 @@ import ee.schimke.composeai.uibuilder.export.hostSpec
 import ee.schimke.composeai.uibuilder.export.stateSelection
 import ee.schimke.composeai.uibuilder.renderer.sdk.CanvasRenderNode
 import ee.schimke.composeai.uibuilder.renderer.sdk.CanvasRenderTree
+import ee.schimke.composeai.uibuilder.renderer.sdk.GoogleMaterialIconVectors
 import ee.schimke.composeai.uibuilder.renderer.sdk.googleMaterialIconImageVector
 import ee.schimke.wearm3catalog.uibuilder.WearWidgetContainerFrame
 import ee.schimke.wearm3catalog.uibuilder.wearWidgetHostShape
@@ -230,6 +231,12 @@ internal fun RemoteM3DevicePreview(
   LaunchedEffect(document, contentWidth, contentHeight, density, roleNames, textRole) {
     refreshing = true
     val next = runCatching {
+      // The capture records once and cannot wait for an icon, and in the browser a vector arrives
+      // with its data file; fetch every icon the document names first, so none is recorded as "?".
+      document.nodes.values
+        .filter { it.componentId == "remote-m3/remote-icon" }
+        .mapTo(mutableSetOf()) { it.remoteIconKey() }
+        .forEach { GoogleMaterialIconVectors.load(it) }
       val content =
         captureDocument(contentWidth, contentHeight, density, roleNames, textRole) {
           RemoteDocumentTree(document).Render(widgetSize != null)
@@ -689,10 +696,7 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
       // glyph. Without this branch the pane drew the red "Unsupported" text, which a round button
       // then wrapped a few letters to a line.
       "remote-m3/remote-icon" -> {
-        val vector =
-          googleMaterialIconImageVector(
-            node.string("imageVector").ifEmpty { REMOTE_ICON_DEFAULT_KEY }
-          )
+        val vector = googleMaterialIconImageVector(node.remoteIconKey())
         if (vector == null) {
           RemoteText(text = "?".rs, modifier = modifier)
         } else {
@@ -1421,6 +1425,9 @@ private fun UiBuilderNode.horizontalArrangement(): RemoteArrangement.Horizontal 
  * `remote-catalog/ui-builder.policy.json`'s default for `remote-m3/remote-icon`'s `imageVector`.
  */
 private const val REMOTE_ICON_DEFAULT_KEY = "addCircle"
+
+private fun UiBuilderNode.remoteIconKey(): String =
+  string("imageVector").ifEmpty { REMOTE_ICON_DEFAULT_KEY }
 
 /** A theme role named as a token, read off [this] scheme; null for a name it does not have. */
 private fun androidx.wear.compose.remote.material3.RemoteColorScheme.role(
