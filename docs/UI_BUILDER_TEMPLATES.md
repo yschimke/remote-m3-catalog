@@ -1,7 +1,8 @@
-# The UI builder's template designs, and why four of them belong here
+# The UI builder's template designs, and why five of them belong here
 
 The UI builder offers a starting point when somebody makes a new design. For the `remote-m3`
-catalog that is two widget host frames and two worked widget samples. All of them were **Kotlin
+catalog that is two widget host frames, the experimental adaptive widget, and two worked widget
+samples. All of them were **Kotlin
 document builders in the preview server**, under `ui-builder-export/…/UiBuilderTemplates.kt`,
 drawing components only this repository publishes.
 
@@ -9,7 +10,7 @@ The plan to move them is
 [`UI_BUILDER_SEED_TEMPLATES.md`](https://github.com/yschimke/compose-preview-server/blob/main/docs/design/UI_BUILDER_SEED_TEMPLATES.md)
 in that repository, under the
 [catalog contract](https://github.com/yschimke/compose-preview-server/blob/main/docs/design/UI_BUILDER_CATALOG_CONTRACT.md)'s
-phase 3a and phase 2 item 11. **The four `remote-m3` templates have arrived**, each as a design
+phase 3a and phase 2 item 11. **The five `remote-m3` templates have arrived**, each as a design
 document `:remote-catalog` declares in its `ui-builder.policy.json` and gates with a round-trip test,
 under `remote-catalog/ui-builder/designs/` (`WidgetTemplateRoundTripTest`).
 
@@ -24,6 +25,7 @@ split out of.
 | --- | --- | --- |
 | `remote-m3` | `wear-widget-small` | the 216×76dp host frame, one empty content slot |
 | `remote-m3` | `wear-widget-large` | the 216×124dp host frame, one empty content slot |
+| `remote-m3` | `wear-widget-adaptive` | a meeting reminder authored once as `headline` / `supporting` / `action`, resolved to Small (headline and action) or Large (all three) before it renders or exports |
 | `remote-m3` | `hello-widget` | centred text on the theme's primary, in the small host |
 | `remote-m3` | `weather-widget` | location over a large reading on the sample's sunny blue, in the large host |
 
@@ -34,6 +36,14 @@ the record. (The schema takes paths only today; the label / supporting-text / or
 are
 [SEED_TEMPLATES step 3](https://github.com/yschimke/compose-preview-server/blob/main/docs/design/UI_BUILDER_SEED_TEMPLATES.md)
 in compose-ai-tools, and the policy's `$comment_templates` records them until then.)
+
+`wear-widget-adaptive` was the last template only the server's Kotlin seeds offered
+(`AdaptiveWearWidget.newDocument`); without it here a catalog-owned `remote-m3` would drop it from the
+chooser. It is authored at the Large frame, the size the canvas edits at because it shows every slot,
+and its golden is one widget that switches on `large`.
+
+Every template pins `environment.fixedTime` to `2024-05-16T12:00:00Z`, the instant the Kotlin seeds
+use, so a render never reads the system clock.
 
 The two host frames are worth one line of their own: their dimensions are **already** authored here,
 in `remote-catalog/ui-builder.policy.json`'s `frame.geometry.sizesDp`, from

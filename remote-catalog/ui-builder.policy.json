@@ -71,6 +71,7 @@
       "Steppers",
       "Text",
       "Iconography",
+      "Content",
       "Communication",
       "Position indicators",
       "Shapes",
@@ -82,7 +83,7 @@
     ]
   },
 
-  "$comment_builtins": "Three, and only because the record cannot carry them. The third, `remote-m3/widget-container-adaptive`, is EXPERIMENTAL: one widget authored once as named `headline` / `supporting` / `action` slots, which compose-ui-builder's `AdaptiveWearWidget.resolve` turns into the Small or Large container design before anything renders or exports it (Small drops `supporting`), so neither the device preview nor the generated source ever sees the adaptive id. It is declared here because a design rooted on it is otherwise refused by this catalog as an unknown component. The widget container is the Glance Wear HOST frame — the squircle the launcher draws around a widget, not a `remote-material3` component — so `WidgetContainerPreviews.kt` recreates it through `androidx.glance.wear`'s `WearWidgetPreview` wrapper and there is no component call for a record to find. That is exactly what a builtin is for: \"it has no call site, so there is nothing to discover and no sticker to annotate\". It matters more than two components' worth: this catalog's own policy says a Remote design starts from a container and everything else goes inside one, and the builder's record-free export routes on the ROOT component id — so a published catalog without these is one whose designs cannot be rooted. They were the blocker in https://github.com/yschimke/compose-preview-server/issues/674. `canvas: widget-container` is this catalog CLAIMING an adapter rather than a name anything validates: the Wasm canvas draws both by component id (UiBuilderRenderer's WearWidgetContainerScaffold), and a catalog claiming none would publish \"not drawn on the canvas\" about something the canvas draws. `remote-m3/lottie` is NOT here though the same argument reaches it — an asset player, no component call. It needs a shelf this catalog does not have (the frozen catalog files it under `Content`, a builder shelf), and inventing one is a catalog decision rather than a transcription. `remote-compose/document` stays out for the older reason: it is a BUILTIN OF THE BUILDER (https://github.com/yschimke/compose-preview-server/blob/main/docs/design/UI_BUILDER_REMOTE_COMPOSE.md), and declaring it here would be this catalog claiming to own the builder's vocabulary.",
+  "$comment_builtins": "Seven, and only because the record cannot carry them. FOUR were the builder's Kotlin catalog's alone and are published so a catalog-owned remote-m3 loses nothing, each transcribed from that catalog's definition (roles, traits, slots, properties and adapter notes verbatim): `remote-m3/remote-label-button` and `remote-m3/remote-material-theme` have call sites but no sticker here, and the builder writes both by id; `remote-m3/remote-time-text` has no sticker because the resolved writer rejects its DrawTextOnCircle opcode (see CatalogPreviews.kt); `remote-m3/lottie` is an asset player with no component call, filed under the builder's own `Content` shelf, which `menu.groupOrder` now carries. The label button's canvas adapter is claimed (`wear-m3/button`) but its slot mapping (`content` → `label`) is not expressible on a builtin yet. The other three are the widget containers. Of the containers, `remote-m3/widget-container-adaptive`, is EXPERIMENTAL: one widget authored once as named `headline` / `supporting` / `action` slots, which compose-ui-builder's `AdaptiveWearWidget.resolve` turns into the Small or Large container design before anything renders or exports it (Small drops `supporting`), so neither the device preview nor the generated source ever sees the adaptive id. It is declared here because a design rooted on it is otherwise refused by this catalog as an unknown component. The widget container is the Glance Wear HOST frame — the squircle the launcher draws around a widget, not a `remote-material3` component — so `WidgetContainerPreviews.kt` recreates it through `androidx.glance.wear`'s `WearWidgetPreview` wrapper and there is no component call for a record to find. That is exactly what a builtin is for: \"it has no call site, so there is nothing to discover and no sticker to annotate\". The containers matter more than two components' worth: this catalog's own policy says a Remote design starts from a container and everything else goes inside one, and the builder's record-free export routes on the ROOT component id — so a published catalog without these is one whose designs cannot be rooted. They were the blocker in https://github.com/yschimke/compose-preview-server/issues/674. `canvas: widget-container` is this catalog CLAIMING an adapter rather than a name anything validates: the Wasm canvas draws both by component id (UiBuilderRenderer's WearWidgetContainerScaffold), and a catalog claiming none would publish \"not drawn on the canvas\" about something the canvas draws. `remote-compose/document` stays out for the older reason: it is a BUILTIN OF THE BUILDER (https://github.com/yschimke/compose-preview-server/blob/main/docs/design/UI_BUILDER_REMOTE_COMPOSE.md), and declaring it here would be this catalog claiming to own the builder's vocabulary.",
 
   "$comment_remoteTextVocabulary": "WHY remote-m3/remote-text STATES A VOCABULARY AND THE OTHER SEVEN DO NOT. A component that states none is published with the properties DERIVED from its signature, and the derivation keeps only what maps to a JSON scalar: `RemoteText` has twelve parameters and four survive \u2014 `text`, `color`, `fontSize`, `maxLines`. `style` is a `RemoteTextStyle` and `textAlign` a `TextAlign`, so both were dropped, and `style` is the parameter this component is actually set through: a design could size text and not scale it. What is stated here is additive \u2014 the same four, plus the two the derivation cannot see \u2014 and stops there, because a design may only set what the writer writes, and `RemoteContentEmitter` writes these six and the modifier — and, since compose-ui-builder#521, the text's `fontVariationSettings` and `fontFeatureSettings`, which every design system's text carries and which are stated here too. The four derived names are repeated verbatim rather than left to be merged, because a vocabulary is all-or-nothing per component: state one and it replaces the derivation entirely. ONE CONSEQUENCE FOR THE MIGRATION: `style` is undeclared until this lands, so a stored value is tolerated and dropped from validation (https://github.com/yschimke/compose-preview-server/pull/840); once it is declared with `allowedValues`, a value outside the eighteen is INVALID rather than undeclared. Material 3 `headlineLarge`, `headlineMedium` and `headlineSmall` have no counterpart in this scale, so a design authored against the borrowed `m3/text` that carries one needs the role mapped by whatever rewrites it onto this component \u2014 the `supersedes` migration, not tolerance. Which Wear role each becomes is a design decision for this catalog and is deliberately not guessed here; publishing a `headline` role instead would publish one `RemoteTypography` cannot draw. The set is asserted against the compiled class by RemoteTextStyleVocabularyTest.",
   "$comment_remoteIconVocabulary": "remote-m3/remote-icon STATES ITS VOCABULARY for the reason remote-m3/remote-text's are: the derivation keeps only parameters that map to a JSON scalar, and `RemoteIcon`'s `imageVector` is an `ImageVector`, so the published component offered `contentDescription` and `tint` and no way to choose the glyph — every icon drew `addCircle`, and a launcher widget's icon buttons could not be expressed (https://github.com/yschimke/remote-m3-catalog/issues/12). The key is a Material icon key, the same vocabulary the canvas's `wear-m3/icon` reads as `iconKey` (mapped above, as `tint` is mapped onto the `color` that adapter reads) and the Browser Preview resolves through the renderer SDK's icon table. No `allowedValues`: the key table is the builder's, generated from material-icons-extended, and a copy here would be a second list to drift. The other two are repeated verbatim because a vocabulary is all-or-nothing per component.",
@@ -411,6 +412,326 @@
     }
   },
   "builtins": {
+    "remote-m3/remote-label-button": {
+      "role": "container",
+      "shelfRole": "Container",
+      "displayName": "Label button",
+      "group": "Buttons",
+      "canvas": "wear-m3/button",
+      "traits": [
+        "RemoteContent",
+        "RemoteAuthorable"
+      ],
+      "slots": {
+        "label": {
+          "acceptedRoles": [
+            "Scaffold",
+            "Container",
+            "Leaf"
+          ],
+          "acceptedTraits": [
+            "RemoteAuthorable"
+          ],
+          "ordered": true
+        },
+        "secondaryLabel": {
+          "acceptedRoles": [
+            "Scaffold",
+            "Container",
+            "Leaf"
+          ],
+          "acceptedTraits": [
+            "RemoteAuthorable"
+          ],
+          "ordered": true
+        },
+        "icon": {
+          "acceptedRoles": [
+            "Scaffold",
+            "Container",
+            "Leaf"
+          ],
+          "acceptedTraits": [
+            "RemoteAuthorable"
+          ],
+          "ordered": true
+        }
+      },
+      "modifierCapabilities": ["size", "fillMaxSize", "fillMaxWidth", "padding", "clip", "alpha", "offset", "rotate", "scale", "zIndex", "width", "height", "widthIn", "heightIn", "fillMaxHeight", "background", "border", "wrapContentSize", "verticalScroll", "horizontalScroll", "align", "alignHorizontal", "alignVertical", "weight", "animateEnterExit", "collapsiblePriority", "remoteCall", "sharedElement"],
+      "properties": [
+        {
+          "name": "enabled",
+          "jsonType": [
+            "boolean",
+            "object"
+          ],
+          "notes": "`RemoteButton`'s `enabled: RemoteBoolean`."
+        },
+        {
+          "name": "borderColor",
+          "jsonType": "string",
+          "notes": "`RemoteButton`'s `borderColor: RemoteColor?`."
+        },
+        {
+          "name": "containerImageKey",
+          "jsonType": "string",
+          "notes": "The key of an asset to fill the container with, as `asset/image`'s `assetKey`: written as the `containerPainter` overload, `containerPainter = painterRemoteImageBitmap(…)`. A plain container when absent."
+        }
+      ],
+      "wasm": {
+        "platformSupported": true,
+        "adapterStatus": "supported",
+        "notes": "Drawn with Wear Material 3's `wear-m3/button`, the adapter the published catalog names; the widget plays `RemoteButton` itself."
+      },
+      "svg": {
+        "status": "unsupported",
+        "fallback": "none",
+        "blocksExport": true,
+        "notes": "Remote Material 3 inside a widget body has no structured SVG answer."
+      }
+    },
+    "remote-m3/remote-time-text": {
+      "role": "list-item",
+      "shelfRole": "Leaf",
+      "displayName": "Time text",
+      "group": "Text",
+      "traits": [
+        "RemoteAuthorable"
+      ],
+      "modifierCapabilities": ["size", "fillMaxSize", "fillMaxWidth", "padding", "clip", "alpha", "offset", "rotate", "scale", "zIndex", "width", "height", "widthIn", "heightIn", "fillMaxHeight", "background", "border", "wrapContentSize", "verticalScroll", "horizontalScroll", "align", "alignHorizontal", "alignVertical", "weight", "animateEnterExit", "collapsiblePriority", "remoteCall", "sharedElement"],
+      "properties": [
+        {
+          "name": "leadingText",
+          "jsonType": "string",
+          "notes": "Text before the time, e.g. a date. None when absent."
+        },
+        {
+          "name": "trailingText",
+          "jsonType": "string",
+          "notes": "Text after the time. None when absent."
+        },
+        {
+          "name": "separator",
+          "jsonType": "string",
+          "notes": "What sits between the time and the text beside it. `·` when absent."
+        },
+        {
+          "name": "textSizeSp",
+          "jsonType": "number",
+          "notes": "Text size. The time text style's when absent."
+        },
+        {
+          "name": "color",
+          "jsonType": "string",
+          "notes": "Text colour. The theme's onBackground when absent."
+        }
+      ],
+      "wasm": {
+        "platformSupported": true,
+        "adapterStatus": "planned",
+        "notes": "RemoteTimeText: the device's time curved along the top of its bounds, with optional text either side. The canvas shows the design's preview time."
+      },
+      "svg": {
+        "status": "unsupported",
+        "fallback": "none",
+        "blocksExport": true,
+        "notes": "A Remote Compose drawing has no structured SVG answer."
+      }
+    },
+    "remote-m3/remote-material-theme": {
+      "role": "container",
+      "shelfRole": "Container",
+      "displayName": "Theme",
+      "group": "Theme",
+      "traits": [
+        "RemoteAuthorable"
+      ],
+      "slots": {
+        "children": {
+          "acceptedRoles": [
+            "Scaffold",
+            "Container",
+            "Leaf"
+          ],
+          "acceptedTraits": [
+            "AnyContent"
+          ],
+          "ordered": true,
+          "max": 1
+        }
+      },
+      "modifierCapabilities": [],
+      "properties": [
+        {
+          "name": "themePrimaryColor",
+          "jsonType": "string",
+          "notes": "The `primary` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeOnPrimaryColor",
+          "jsonType": "string",
+          "notes": "The `onPrimary` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themePrimaryContainerColor",
+          "jsonType": "string",
+          "notes": "The `primaryContainer` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeOnPrimaryContainerColor",
+          "jsonType": "string",
+          "notes": "The `onPrimaryContainer` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeSecondaryColor",
+          "jsonType": "string",
+          "notes": "The `secondary` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeOnSecondaryColor",
+          "jsonType": "string",
+          "notes": "The `onSecondary` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeSecondaryContainerColor",
+          "jsonType": "string",
+          "notes": "The `secondaryContainer` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeOnSecondaryContainerColor",
+          "jsonType": "string",
+          "notes": "The `onSecondaryContainer` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeTertiaryColor",
+          "jsonType": "string",
+          "notes": "The `tertiary` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeOnTertiaryColor",
+          "jsonType": "string",
+          "notes": "The `onTertiary` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeTertiaryContainerColor",
+          "jsonType": "string",
+          "notes": "The `tertiaryContainer` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeOnTertiaryContainerColor",
+          "jsonType": "string",
+          "notes": "The `onTertiaryContainer` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeSurfaceContainerLowColor",
+          "jsonType": "string",
+          "notes": "The `surfaceContainerLow` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeSurfaceContainerColor",
+          "jsonType": "string",
+          "notes": "The `surfaceContainer` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeSurfaceContainerHighColor",
+          "jsonType": "string",
+          "notes": "The `surfaceContainerHigh` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeOnSurfaceColor",
+          "jsonType": "string",
+          "notes": "The `onSurface` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeOnSurfaceVariantColor",
+          "jsonType": "string",
+          "notes": "The `onSurfaceVariant` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeOutlineColor",
+          "jsonType": "string",
+          "notes": "The `outline` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeOutlineVariantColor",
+          "jsonType": "string",
+          "notes": "The `outlineVariant` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeBackgroundColor",
+          "jsonType": "string",
+          "notes": "The `background` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeOnBackgroundColor",
+          "jsonType": "string",
+          "notes": "The `onBackground` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeErrorColor",
+          "jsonType": "string",
+          "notes": "The `error` role inside this theme. The enclosing theme's when absent."
+        },
+        {
+          "name": "themeOnErrorColor",
+          "jsonType": "string",
+          "notes": "The `onError` role inside this theme. The enclosing theme's when absent."
+        }
+      ],
+      "wasm": {
+        "platformSupported": true,
+        "adapterStatus": "planned",
+        "notes": "RemoteMaterialTheme: re-skins the subtree it holds with the colour roles it overrides, reading the enclosing theme for the rest."
+      },
+      "svg": {
+        "status": "unsupported",
+        "fallback": "none",
+        "blocksExport": true,
+        "notes": "A Remote Compose drawing has no structured SVG answer."
+      }
+    },
+    "remote-m3/lottie": {
+      "role": "list-item",
+      "shelfRole": "Leaf",
+      "displayName": "Lottie animation",
+      "group": "Content",
+      "traits": [
+        "RemoteContent",
+        "RemoteAuthorable"
+      ],
+      "modifierCapabilities": ["size", "fillMaxSize", "fillMaxWidth", "clip", "alpha", "offset", "rotate", "scale", "zIndex", "width", "height", "widthIn", "heightIn", "fillMaxHeight", "align", "alignHorizontal", "alignVertical", "weight", "animateEnterExit", "collapsiblePriority", "remoteCall", "sharedElement"],
+      "properties": [
+        {
+          "name": "url",
+          "jsonType": "string",
+          "notes": "Where the animation was fetched from. Resolved into `json` once, in the builder; the generated widget never reaches the network."
+        },
+        {
+          "name": "json",
+          "jsonType": "string",
+          "notes": "The Lottie animation itself, as JSON text. This is what is compiled into the Remote Compose document, so it is what the export needs."
+        },
+        {
+          "name": "progress",
+          "jsonType": [
+            "number",
+            "object"
+          ],
+          "notes": "Pins the animation to one frame, 0 (first) to 1 (last). Unset — the default — lets the document's animation clock run it in a loop."
+        }
+      ],
+      "wasm": {
+        "platformSupported": true,
+        "adapterStatus": "supported",
+        "notes": "Drawn as a named placeholder carrying the animation's source and size. The canvas has no Lottie renderer, and compiling the animation the way the export does — into Remote Compose operations — is Horologist's Android-only creation API, which a Wasm build cannot link. A lookalike would be an impression of an animation nobody could check; the picture comes from the native lane, which builds this design's own generated document."
+      },
+      "svg": {
+        "status": "unsupported",
+        "fallback": "none",
+        "blocksExport": true,
+        "notes": "A placeholder on the canvas must not claim structured SVG parity with an animation."
+      }
+    },
     "remote-m3/widget-container-small": {
       "role": "screen-root",
       "displayName": "Wear widget · Small (216×76dp)",
@@ -438,7 +759,7 @@
             "Leaf"
           ],
           "acceptedTraits": [
-            "AnyContent"
+            "RemoteAuthorable"
           ],
           "max": 1
         }
@@ -530,7 +851,7 @@
             "Leaf"
           ],
           "acceptedTraits": [
-            "AnyContent"
+            "RemoteAuthorable"
           ],
           "max": 1
         }
@@ -622,7 +943,7 @@
             "Leaf"
           ],
           "acceptedTraits": [
-            "AnyContent"
+            "RemoteAuthorable"
           ]
         },
         "supporting": {
@@ -632,7 +953,7 @@
             "Leaf"
           ],
           "acceptedTraits": [
-            "AnyContent"
+            "RemoteAuthorable"
           ]
         },
         "action": {
@@ -642,7 +963,7 @@
             "Leaf"
           ],
           "acceptedTraits": [
-            "AnyContent"
+            "RemoteAuthorable"
           ]
         }
       },
@@ -708,12 +1029,20 @@
     }
   },
 
-  "$comment_templates": "The four template designs this module offers in the New design chooser, as branch-relative paths the design-artifacts pipeline copies from remote-catalog/ui-builder/designs/ onto the delivery branch beside ui-builder.json. Transcribed from the Kotlin builders in compose-ui-builder's UiBuilderTemplates.kt, which remain the live seed until the server reads this entry (SEED_TEMPLATES step 5): the two host frames whose dimensions THIS FILE already declares in frame.geometry.sizesDp, and the two worked designs reproducing android/wear-os-samples' WearWidget sample. Hand-authored designs rather than vendored bytes, so the `groups` exception for :samples-catalog does not apply to them. The chooser's per-template label, supporting text, order and default are NOT expressible in the schema yet (SEED_TEMPLATES step 3, compose-ai-tools): wear-widget-small 'Wear widget · Small (216×76dp)', wear-widget-large 'Wear widget · Large (216×124dp)', hello-widget 'Hello widget' (default), weather-widget 'Weather widget'. Each document's `catalogPin` is the placeholder the server rewrites at creation, never a live revision. The round trip they need — document to generated creation-DSL Kotlin, compiled against this module's own alpha Remote trio — is WidgetTemplateRoundTripTest, the gate only this repository can run. See docs/UI_BUILDER_TEMPLATES.md and https://github.com/yschimke/compose-preview-server/blob/main/docs/design/UI_BUILDER_SEED_TEMPLATES.md",
+  "$comment_templates": "The five template designs this module offers in the New design chooser, as branch-relative paths the design-artifacts pipeline copies from remote-catalog/ui-builder/designs/ onto the delivery branch beside ui-builder.json. Transcribed from the Kotlin builders in compose-ui-builder's UiBuilderTemplates.kt, which remain the live seed until the server reads this entry (SEED_TEMPLATES step 5): the two host frames whose dimensions THIS FILE already declares in frame.geometry.sizesDp, the EXPERIMENTAL adaptive widget (AdaptiveWearWidget.newDocument, authored at the Large frame it edits at; the builder resolves it to Small or Large before rendering or exporting), and the two worked designs reproducing android/wear-os-samples' WearWidget sample. Hand-authored designs rather than vendored bytes, so the `groups` exception for :samples-catalog does not apply to them. The chooser's per-template label, supporting text, order and default are NOT expressible in the schema yet (SEED_TEMPLATES step 3, compose-ai-tools): wear-widget-small 'Wear widget · Small (216×76dp)', wear-widget-large 'Wear widget · Large (216×124dp)', wear-widget-adaptive 'Wear widget · Adaptive (experimental)', hello-widget 'Hello widget' (default), weather-widget 'Weather widget'. Each document pins `environment.fixedTime` to 2024-05-16T12:00:00Z, the instant the Kotlin seeds use, so a render never reads the system clock. Each document's `catalogPin` is the placeholder the server rewrites at creation, never a live revision. The round trip they need — document to generated creation-DSL Kotlin, compiled against this module's own alpha Remote trio — is WidgetTemplateRoundTripTest, the gate only this repository can run. See docs/UI_BUILDER_TEMPLATES.md and https://github.com/yschimke/compose-preview-server/blob/main/docs/design/UI_BUILDER_SEED_TEMPLATES.md",
   "templates": [
     "ui-builder/designs/wear-widget-small.json",
     "ui-builder/designs/wear-widget-large.json",
+    "ui-builder/designs/wear-widget-adaptive.json",
     "ui-builder/designs/hello-widget.json",
     "ui-builder/designs/weather-widget.json"
   ],
+  "$comment_supersedes": "The builder's Kotlin remote-m3 catalog borrows Material 3's `m3/text` beside this catalog's own `remote-m3/remote-text`; the published catalog has only the Remote one, which is the text a Remote document can actually write (PublishedRemoteM3CatalogEquivalenceTest). A saved design carrying `m3/text` is migrated onto it rather than stranded. `fontSizeSp` is the one property spelled differently (`fontSize` here, as the canvas mapping already says); every other name carries over, and one `remote-text` does not declare (`fontWeight`, `fontStyle`, `lineHeightSp`, …) is reported by the upgrade preview rather than silently dropped. Material 3's headline styles have no counterpart in `remote-text`'s Wear scale (see $comment_remoteTextVocabulary): a migrated design carrying one is reported invalid, and which Wear role each becomes stays a design decision.",
+  "supersedes": {
+    "m3/text": {
+      "componentId": "remote-m3/remote-text",
+      "properties": { "fontSizeSp": "fontSize" }
+    }
+  },
   "$comment_code": "No `code` block yet, so the export stays `record`. A Remote widget is written in the creation DSL rather than in Compose, which is a `code.language` and a set of structural templates — and both arrive with the template engine, not ahead of it. Until then the export prints call sites from the record, which is what it already does."
 }
