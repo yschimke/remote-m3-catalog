@@ -66,6 +66,8 @@
       ]
     }
   },
+  "$comment_composeSourceExport": "The Compose source emitter this catalog's designs export through (compose-ui-builder's CatalogExportRouting). `remote-compose-launcher-widget` writes a launcher widget at the cell sizes this catalog's frame declares; it is the emitter a `remote-widgets` design reaches today, and declaring it lets the catalog own its export.",
+  "composeSourceExport": { "adapter": "remote-compose-launcher-widget", "version": 1 },
   "$comment_colorTokens": "No `colorTokens`. A colour role exports as `RemoteMaterialTheme.colorScheme.<role>`, which is remote-material3 — the library this system does not have. Every colour a design writes is a `#AARRGGBB` literal, exporting as `Color(0x…).rc`; the sheet's own palette is WidgetColors in WidgetComponents.kt.",
   "menu": {
     "$comment": "This catalog's @CatalogComponent(group = …) vocabulary. Widget leads because a design starts from the launcher widget root.",

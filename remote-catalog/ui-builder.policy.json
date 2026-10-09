@@ -35,6 +35,9 @@
     }
   },
 
+  "$comment_composeSourceExport": "The Compose source emitter this catalog's designs export through, resolved by the host against the emitters it ships (compose-ui-builder's CatalogExportRouting). `remote-compose` is the Remote Compose screen exporter the builder reaches today for `remote-m3` by its id; declaring it is what lets a catalog-owned `remote-m3` keep offering Kotlin export once that id test is gone.",
+  "composeSourceExport": { "adapter": "remote-compose", "version": 1 },
+
   "colorTokens": {
     "$comment": "The theme roles a colour property may name. Same Material 3 vocabulary as the sibling :catalog, and stated here for the same reason: a Remote design names roles, and a role the canvas cannot resolve is a literal. Every sticker in this catalog is a RemoteDocument carrying explicit dark-first Material colours, so the values behind these names are the document's rather than a theme's — but the names are what a design writes.",
     "roles": [
