@@ -155,7 +155,7 @@ rcEmbeddedPlayer = "2.1.4"
 # `third-party-rc-embedded-player` at 2.1.4. One ref over both made Renovate raise the embedded player
 # to a 2.2.0 nobody uploaded (#9). The Browser Preview runtime's `rcPlayer` is this one: the CMP
 # player it links resolves through the BOM, not through the embedded player.
-rcPlayers = "2.2.1"
+rcPlayers = "2.3.0"
 # The CMP player on Android, on its own ref: it must not drag the embedded player above, which bakes
 # every sticker. It is on the RUNTIME classpath: the bundle manifest listing it is what offers the
 # hosted live lane its `cmp-android` player, and `CmpAndroidPlayerTrialTest` still replays every
