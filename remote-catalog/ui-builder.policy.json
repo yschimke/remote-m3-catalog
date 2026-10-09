@@ -115,7 +115,7 @@
       "propertyCapabilities": [
         {
           "name": "text",
-          "jsonType": "string",
+          "jsonType": ["string", "object"],
           "required": true,
           "notes": "The string the component draws. `RemoteText` takes a `RemoteString`, so a design's plain string is written as `\"\u2026\".rs` and a binding or a state value as the remote expression it names \u2014 what the design carries is the same JSON either way."
         },
@@ -186,7 +186,7 @@
         },
         {
           "name": "contentDescription",
-          "jsonType": "string",
+          "jsonType": ["string", "object"],
           "required": false,
           "notes": "What a screen reader says for the icon. Leave it empty beside a label; set it when the icon is the whole button."
         },
@@ -204,7 +204,21 @@
       "canvas": "wear-m3/page-indicator",
       "canvasMapping": {
         "defaults": { "variant": { "type": "enum", "value": "horizontal" } }
-      }
+      },
+      "propertyCapabilities": [
+        {
+          "name": "pageCount",
+          "jsonType": "integer",
+          "required": false,
+          "notes": "How many pages there are; 4 when absent. `state` is a `RemotePageIndicatorState`, which no design value becomes, so the emitter builds it from this and `selectedPage`."
+        },
+        {
+          "name": "selectedPage",
+          "jsonType": ["integer", "object"],
+          "required": false,
+          "notes": "The page shown, from zero: a literal or the design's Int state, which is how a pager drives the dots. The first when absent."
+        }
+      ]
     },
     "remote-m3/remote-vertical-page-indicator": {
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemotePageIndicatorKt.RemoteVerticalPageIndicator",
@@ -212,7 +226,21 @@
       "canvas": "wear-m3/page-indicator",
       "canvasMapping": {
         "defaults": { "variant": { "type": "enum", "value": "vertical" } }
-      }
+      },
+      "propertyCapabilities": [
+        {
+          "name": "pageCount",
+          "jsonType": "integer",
+          "required": false,
+          "notes": "How many pages there are; 4 when absent. `state` is a `RemotePageIndicatorState`, which no design value becomes, so the emitter builds it from this and `selectedPage`."
+        },
+        {
+          "name": "selectedPage",
+          "jsonType": ["integer", "object"],
+          "required": false,
+          "notes": "The page shown, from zero: a literal or the design's Int state, which is how a pager drives the dots. The first when absent."
+        }
+      ]
     },
     "remote-m3/remote-circular-progress-indicator": {
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteCircularProgressIndicatorKt.RemoteCircularProgressIndicator",
@@ -244,7 +272,15 @@
       "canvas": "wear-m3/button",
       "canvasMapping": {
         "defaults": { "variant": { "type": "enum", "value": "filled" } }
-      }
+      },
+      "propertyCapabilities": [
+        {
+          "name": "containerImageKey",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The key of an asset to fill the container with, as `asset/image`'s `assetKey`: written as the `containerPainter` overload, `containerPainter = painterRemoteImageBitmap(…)`. A plain container when absent. The record carries the overload without a painter, so this is stated rather than derived."
+        }
+      ]
     },
     "remote-m3/remote-compact-button": {
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteButtonKt.RemoteCompactButton",
@@ -261,7 +297,15 @@
       "canvas": "wear-m3/card",
       "canvasMapping": {
         "defaults": { "variant": { "type": "enum", "value": "filled" } }
-      }
+      },
+      "propertyCapabilities": [
+        {
+          "name": "containerImageKey",
+          "jsonType": "string",
+          "required": false,
+          "notes": "The key of an asset to fill the container with, as `asset/image`'s `assetKey`: written as the `containerPainter` overload, `containerPainter = painterRemoteImageBitmap(…)`. A plain container when absent. The record carries the overload without a painter, so this is stated rather than derived."
+        }
+      ]
     },
     "remote-m3/remote-outlined-card": {
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteCardKt.RemoteOutlinedCard",
