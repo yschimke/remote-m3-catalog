@@ -173,6 +173,111 @@
       "record": "widget-catalog/ee.schimke.remotewidgets.WidgetComponentsKt.WidgetLabel",
       "group": "Text",
       "canvas": "m3/text"
+    },
+    "remote-widgets/adaptive-layout": {
+      "record": "widget-catalog/ee.schimke.remotewidgets.AdaptiveLayoutKt.AdaptiveLayout",
+      "displayName": "Adaptive layout",
+      "canvas": "launcher/adaptive-layout",
+      "propertyCapabilities": [
+        {
+          "name": "compactSize",
+          "jsonType": "string",
+          "required": false,
+          "allowedValues": [
+            "1x1",
+            "2x1",
+            "2x2",
+            "3x1",
+            "3x2",
+            "4x1",
+            "4x2",
+            "4x3",
+            "5x2"
+          ],
+          "notes": "The launcher grid size the `compact` slot is laid out for, as its cell count; default `2x1`. The widget shows whichever authored slot fits it best, Glance's SizeMode.Responsive rule: the closest size that fits, else the smallest."
+        },
+        {
+          "name": "mediumSize",
+          "jsonType": "string",
+          "required": false,
+          "allowedValues": [
+            "1x1",
+            "2x1",
+            "2x2",
+            "3x1",
+            "3x2",
+            "4x1",
+            "4x2",
+            "4x3",
+            "5x2"
+          ],
+          "notes": "The launcher grid size the `medium` slot is laid out for, as its cell count; default `4x1`. The widget shows whichever authored slot fits it best, Glance's SizeMode.Responsive rule: the closest size that fits, else the smallest."
+        },
+        {
+          "name": "expandedSize",
+          "jsonType": "string",
+          "required": false,
+          "allowedValues": [
+            "1x1",
+            "2x1",
+            "2x2",
+            "3x1",
+            "3x2",
+            "4x1",
+            "4x2",
+            "4x3",
+            "5x2"
+          ],
+          "notes": "The launcher grid size the `expanded` slot is laid out for, as its cell count; default `4x2`. The widget shows whichever authored slot fits it best, Glance's SizeMode.Responsive rule: the closest size that fits, else the smallest."
+        }
+      ],
+      "slotCapabilities": [
+        {
+          "name": "compact",
+          "cardinality": {
+            "min": 0,
+            "max": 1
+          },
+          "acceptedRoles": [
+            "Scaffold",
+            "Container",
+            "Leaf"
+          ],
+          "acceptedTraits": [
+            "AnyContent"
+          ]
+        },
+        {
+          "name": "medium",
+          "cardinality": {
+            "min": 0,
+            "max": 1
+          },
+          "acceptedRoles": [
+            "Scaffold",
+            "Container",
+            "Leaf"
+          ],
+          "acceptedTraits": [
+            "AnyContent"
+          ]
+        },
+        {
+          "name": "expanded",
+          "cardinality": {
+            "min": 0,
+            "max": 1
+          },
+          "acceptedRoles": [
+            "Scaffold",
+            "Container",
+            "Leaf"
+          ],
+          "acceptedTraits": [
+            "AnyContent"
+          ]
+        }
+      ]
     }
   },
   "$comment_templates": "Three starting points, all rooted on the launcher widget. The hello world is listed first. That is the chooser order once the catalog-owned cutover reads this list (UiBuilderNewDesignSeed.templateIds keeps the published order). It is not a declared default: the schema takes paths only and cannot mark one yet (SEED_TEMPLATES step 3), so which template opens selected is not this file's to say. It shows \"Hello, World!\" centred on the accent at 3x1 (203x102dp, the smallest grid size the line fits at 24sp), the same document compose-ui-builder's LauncherWidgetTemplates seeds; its generated Kotlin is the compiled golden generated/HelloWidget.kt. Then an empty 2x1 widget, and the 3x2 counter LAYOUT reproducing AndroidX's MyWidget demo — its row, its two WidgetButtons and its count. The template is the layout only and its buttons are inert: MyWidget's clicks are widget LAMBDA actions (`RemoteModifier.onClick { … }`, Kotlin run in the app's process), which a builder document cannot author, and WidgetButton takes no Remote action a design could bind instead. The working counter is CounterWidget.kt in this module. WidgetTemplateTest holds the templates to the grid table and to this policy's vocabulary; the generated Kotlin the counter becomes is the compiled golden generated/CounterWidget.kt.",

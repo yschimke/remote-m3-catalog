@@ -316,3 +316,25 @@ fun RemoteSpacerSticker() = WidgetSticker {
     }
   }
 }
+
+@CatalogComponent(
+  id = "AdaptiveLayout",
+  group = "Layout",
+  noReference = NO_KIT,
+  caption =
+    "Up to three layouts, each authored at a grid size, of which the widget shows the one that " +
+      "fits it: a RemoteStateLayout choosing during playback, so a resize switches layout.",
+)
+@Widget2x1
+@Widget3x1
+@Widget4x1
+@Widget4x2
+@Widget5x2
+@Composable
+fun AdaptiveLayoutSticker() = WidgetSticker {
+  AdaptiveLayout(
+    compact = { WidgetSurface { WidgetTitle("Compact") } },
+    medium = { WidgetSurface { WidgetTitle("Medium") } },
+    expanded = { WidgetSurface { WidgetTitle("Expanded") } },
+  )
+}
