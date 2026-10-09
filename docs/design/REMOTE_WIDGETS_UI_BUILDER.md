@@ -140,6 +140,25 @@ class HelloWidget : RemoteComposeWidget() {
 }
 ```
 
+## Adaptive layouts
+
+A launcher widget is resized on the home screen, and Glance answers that with
+`SizeMode.Responsive`: a few breakpoints, one layout each, and the host shows the best fit
+([Build UI with Glance](https://developer.android.com/develop/ui/compose/glance/build-ui)). A
+Remote Compose widget is recorded once and played at any size, so the choice moves to playback.
+`AdaptiveWidget` (`AdaptiveWidget.kt`) records every breakpoint into one `RemoteStateLayout`
+whose index is Glance's rule — the closest breakpoint that fits, else the smallest — evaluated
+over the player's window. Resizing re-evaluates it and StateLayout animates between layouts. When
+the size is known while recording (`LocalFixedWidgetSize`, or `fixedWidgetSize` for a widget that
+reports exactly one size), only the chosen branch is recorded.
+
+`AdaptiveLayout` is the same thing as a component a design places, `remote-widgets/adaptive-layout`
+in the builder. Code branches on `LocalWidgetSize`; a design has no code to branch in, so each
+breakpoint is a slot — `compact`, `medium`, `expanded` — and its size a property naming a cell
+count (`compactSize = "2x1"`, `mediumSize = "4x1"`, `expandedSize = "4x2"`, the grid's labels as
+allowed values). A slot left empty is not a breakpoint. It exports as an ordinary record-driven
+call, `AdaptiveLayout(compact = { … }, medium = { … })`.
+
 ## Not done yet
 
 - **Visual Editor and Browser Preview.** The policy declares only the native surface. The
@@ -158,6 +177,10 @@ class HelloWidget : RemoteComposeWidget() {
   needs one of two things: `WidgetButton` taking a Remote action (`valueChange` on document state),
   or the exporter writing `onClick` lambdas.
 - **Pictures.** The launcher exporter refuses `asset/image` for now.
+- **The adaptive layout on the canvas.** The policy draws `remote-widgets/adaptive-layout` as a
+  box showing its `compact` slot. Showing the slot that fits the frame being viewed — so the
+  builder's resizable launcher pane switches layout as it is dragged — is a renderer change in
+  compose-ui-builder, keyed on the component id as the launcher root is.
 - **Publishing.** `.github/workflows/design-artifacts-widgets.yml` publishes the sheet to
   `design-artifacts/remote-widgets` in `yschimke/remote-m3-catalog-out`. preview.coo.ee serves it
   once compose-preview-server's `deploy/preview.coo.ee/catalogs.json` names it. The builder offers
