@@ -65,11 +65,22 @@ val fetchWearAdapterSources =
 
 // `-PwearM3CatalogDir=../wear-m3-catalog` compiles against a local checkout instead, to try an
 // adapter change before it lands there. It is then that checkout's sources, whatever its commit.
-val wearM3CatalogRoot: Provider<Directory> =
-  providers.gradleProperty("wearM3CatalogDir").orNull?.let { path ->
-    val dir = rootProject.layout.projectDirectory.dir(path)
-    provider { dir }
-  } ?: fetchWearAdapterSources.flatMap { it.outputDirectory }
+val localWearM3Catalog: File? =
+  providers.gradleProperty("wearM3CatalogDir").orNull?.let { rootProject.file(it) }
+
+// A fixed path carrying the fetch as its producer, not the task's output provider: the ktfmt plugin
+// and IDE sync read source directories while the build is still being configured.
+fun wearAdapterSources(sourceSet: String) =
+  files(
+      (localWearM3Catalog ?: layout.buildDirectory.dir("wear-m3-catalog").get().asFile).resolve(
+        "ui-builder-wear-adapters/src/$sourceSet/kotlin"
+      )
+    )
+    .apply { if (localWearM3Catalog == null) builtBy(fetchWearAdapterSources) }
+
+// The fetched sources are wear-m3-catalog's to format. The one file this module owns is checked by
+// the root `ktfmtCheckUiBuilderRendererSources`, which reads `ui-builder-wear-adapters/src`.
+tasks.matching { it.name.startsWith("ktfmt") }.configureEach { enabled = false }
 
 kotlin {
   jvm()
@@ -78,9 +89,7 @@ kotlin {
 
   sourceSets {
     commonMain {
-      kotlin.srcDir(
-        wearM3CatalogRoot.map { it.dir("ui-builder-wear-adapters/src/commonMain/kotlin") }
-      )
+      kotlin.srcDir(wearAdapterSources("commonMain"))
       dependencies {
         api(libs.composeai.ui.builder.renderer.sdk.source)
         implementation(libs.wearcmp.compose.material3)
@@ -90,9 +99,7 @@ kotlin {
       }
     }
     wasmJsMain {
-      kotlin.srcDir(
-        wearM3CatalogRoot.map { it.dir("ui-builder-wear-adapters/src/wasmJsMain/kotlin") }
-      )
+      kotlin.srcDir(wearAdapterSources("wasmJsMain"))
     }
   }
 }
