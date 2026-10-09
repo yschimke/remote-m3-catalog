@@ -90,7 +90,9 @@ dependencies {
   // `.rc` sidecar (see `WidgetSticker`).
   implementation(libs.composeai.remotecompose.connector)
   // The embedded player the connector replays through; see `remote-catalog/build.gradle.kts` for
-  // why it is the vendored coordinate and why a missing one fails silently.
+  // why it is the vendored coordinate and why a missing one fails silently. Versioned by the
+  // rc-players BOM.
+  implementation(platform(libs.composeai.rc.players.bom))
   implementation(libs.composeai.rc.embedded.player)
 
   debugImplementation(libs.compose.ui.tooling.prerelease)

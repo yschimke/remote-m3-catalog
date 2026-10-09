@@ -201,7 +201,9 @@ class RemoteM3ThreeSurfaceContractTest {
    * The connector links the embedded player's `RcPlayer` entry point reflectively and falls back to
    * the View player, silently, when the shape it was built against is missing. rc-players 2.x
    * reshaped that entry point, so 2.x beside a connector older than 3.10.0 bakes every sticker
-   * through the View player (#639). Move the two refs together.
+   * through the View player (#639). Move the two refs together. The embedded player is versioned by
+   * the rc-players BOM, whose 2.x line pins a 2.x embedded player, so the BOM's ref is the one
+   * read.
    */
   @Test
   fun `embedded player and connector are on matching lines`() {
@@ -213,7 +215,7 @@ class RemoteM3ThreeSurfaceContractTest {
         .take(3)
         .map { it.toInt() }
 
-    val player = ref("rcEmbeddedPlayer")
+    val player = ref("rcPlayers")
     val connector = ref("composePreviewDaemon")
     if (player[0] >= 2) {
       assertThat(connector[0] * 1000 + connector[1]).isAtLeast(3 * 1000 + 10)
