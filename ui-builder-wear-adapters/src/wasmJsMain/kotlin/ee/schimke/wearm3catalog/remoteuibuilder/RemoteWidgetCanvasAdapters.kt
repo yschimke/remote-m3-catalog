@@ -1,4 +1,4 @@
-package ee.schimke.wearm3catalog.uibuilder
+package ee.schimke.wearm3catalog.remoteuibuilder
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
@@ -10,11 +10,21 @@ import ee.schimke.composeai.uibuilder.export.WearWidgetScaffoldSize
 import ee.schimke.composeai.uibuilder.export.hostSpec
 import ee.schimke.composeai.uibuilder.rememberThemeRoleFamilies
 import ee.schimke.composeai.uibuilder.renderer.sdk.canvasAdapterRegistry
+import ee.schimke.wearm3catalog.uibuilder.LocalWearWidgetHostShape
+import ee.schimke.wearm3catalog.uibuilder.ProvideThemeTextStyle
+import ee.schimke.wearm3catalog.uibuilder.WearWidgetContainerFrame
+import ee.schimke.wearm3catalog.uibuilder.resolveWearColor
+import ee.schimke.wearm3catalog.uibuilder.withRoleFamilies
 
 /**
  * Host chrome for Remote Compose widgets; this frame is supplied by Glance Wear, not Material 3.
+ *
+ * remote-m3's own `widget-container`, registered INSTEAD of wear-m3-catalog's
+ * `wearWidgetCanvasAdapters`: it also draws the widget's theme typefaces, as the device preview
+ * does through `RemoteMaterialTheme`. Everything else this module compiles is wear-m3-catalog's,
+ * fetched at the pinned commit (see build.gradle.kts).
  */
-val wearWidgetCanvasAdapters = canvasAdapterRegistry {
+val remoteWidgetCanvasAdapters = canvasAdapterRegistry {
   register("widget-container") {
     val size =
       WearWidgetScaffoldSize.entries.firstOrNull { it.componentId == node.componentId }

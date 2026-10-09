@@ -33,6 +33,9 @@ on:
       - 'ui-builder-foundation-adapters/**'
       - 'ui-builder-material-adapters/**'
       - 'ui-builder-wear-adapters/**'
+      # The visual editor's Wear stand-ins are wear-m3-catalog's adapters at this commit
+      # (ui-builder-wear-adapters/build.gradle.kts), so a pin bump changes the published runtime.
+      - '.github/ci/wear-m3-catalog-ref'
       - '.github/ci/remote-m3-cmp-wasm-allowlist.json'
       - '.github/ci/remote-snapshot-pin'
       - 'design-pages.json'
