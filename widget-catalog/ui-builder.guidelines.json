@@ -2,7 +2,7 @@
   "schema": "compose-ui-builder/catalog-guidelines/v1",
   "catalog": "remote-widgets",
   "platform": "launcher",
-  "version": 1,
+  "version": 2,
   "about": "Android launcher (home-screen) app widget design guidance from developer.android.com, for Remote Compose launcher widgets (WIDGETS_V6 on Android 16, WIDGETS_V7 on Android 17).",
   "frames": [
     {
@@ -173,28 +173,6 @@
       "guidance": "Provide touch targets at 48x48 dp. Don't make touch targets too small.",
       "check": "Is every clickable node (including icon buttons and list rows) at least 48dp in both width and height, with no size, width or height modifier shrinking a click target below 48dp?",
       "source": "https://developer.android.com/docs/quality-guidelines/widget-quality"
-    },
-    {
-      "id": "launcher.color.theme-roles",
-      "surfaces": [
-        "widget"
-      ],
-      "kind": "structure",
-      "severity": "warning",
-      "guidance": "Use Material color roles and tokens to fulfill accessibility contrast guidelines and support dynamic color features, such as user-generated color and dark or light themes.",
-      "check": "Are the background, text and icon colours taken from theme colour roles (for example primary, primaryContainer, surface, onSurface), so they follow the device's dynamic theme, rather than hard-coded hex colours? A single deliberate brand accent is acceptable.",
-      "source": "https://developer.android.com/design/ui/mobile/guides/widgets/style"
-    },
-    {
-      "id": "launcher.color.light-and-dark",
-      "surfaces": [
-        "widget"
-      ],
-      "kind": "structure",
-      "severity": "warning",
-      "guidance": "Widget supports light theme and dark theme palettes. If your widget doesn't adapt to dark theme, it will appear out of place and could potentially frustrate users.",
-      "check": "Do the background and its content colours come from paired roles that switch together between light and dark themes (for example surface with onSurface), with no fixed light background or fixed dark text that would stay the same in dark theme?",
-      "source": "https://developer.android.com/design/ui/mobile/guides/widgets/style"
     },
     {
       "id": "launcher.color.contrast",
