@@ -91,6 +91,14 @@ the same. **The pin is a commit SHA, never `main`**: a gate floating on the othe
 turns this one red for a change nobody here made. Bump it in a commit of its own, and when a pairing
 change spans both repositories, land the Wear side first and bump the pin in the PR that needs it.
 
+**The same pin is the visual editor's Wear stand-ins.** The editor draws each remote-m3 component
+with its Wear Compose counterpart ([docs/design/REMOTE_M3_UI_BUILDER.md](docs/design/REMOTE_M3_UI_BUILDER.md)),
+and those adapters are wear-m3-catalog's `ui-builder-wear-adapters`, not a copy: `:ui-builder-wear-adapters`
+here sparse-fetches their sources at the pinned commit when it builds (`-PwearM3CatalogDir=<checkout>`
+compiles a local one instead). Fix a stand-in in wear-m3-catalog and bump the pin; the only adapter
+this repository owns is `remoteWidgetCanvasAdapters`, the widget container, registered instead of
+wear-m3-catalog's.
+
 [`scripts/component-map.mjs [<wear checkout>]`](scripts/component-map.mjs) draws the same pairing out
 component by component, with renders, as [docs/COMPONENT_MAP.md](docs/COMPONENT_MAP.md) (generated;
 refreshed weekly and after Design Artifacts by `component-map.yml`).

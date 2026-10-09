@@ -46,7 +46,6 @@ import ee.schimke.wearm3catalog.uibuilder.resolveWearColor
 import ee.schimke.wearm3catalog.uibuilder.wearCanvasAdapters
 import ee.schimke.wearm3catalog.uibuilder.wearScreenAdapters
 import ee.schimke.wearm3catalog.uibuilder.wearTextAdapters
-import ee.schimke.wearm3catalog.uibuilder.wearWidgetCanvasAdapters
 import ee.schimke.wearm3catalog.uibuilder.wearWidgetHostShape
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
@@ -62,7 +61,8 @@ private val runtimeAdapters =
     wearCanvasAdapters +
     wearScreenAdapters +
     wearTextAdapters +
-    wearWidgetCanvasAdapters
+    // remote-m3's own widget container; the other wear-m3 registries are wear-m3-catalog's.
+    remoteWidgetCanvasAdapters
 
 private val runtimePolicy by lazy {
   Json { ignoreUnknownKeys = true }.parseToJsonElement(catalogUiBuilderPolicyJson).jsonObject

@@ -79,13 +79,8 @@ class RemoteM3ThreeSurfaceContractTest {
 
   @Test
   fun `authoring colour literals use the sRGB Color constructor`() {
-    val wearAdapter =
-      File(
-          root,
-          "ui-builder-wear-adapters/src/wasmJsMain/kotlin/ee/schimke/" +
-            "wearm3catalog/uibuilder/WearTextAdapters.kt",
-        )
-        .readText()
+    // The wear-m3 adapters' `parseArgb` is wear-m3-catalog's source now, fetched at the pinned
+    // commit rather than kept here, so only this repository's own adapter is read.
     val materialAdapter =
       File(
           root,
@@ -96,8 +91,6 @@ class RemoteM3ThreeSurfaceContractTest {
 
     // Color(ULong) treats the value as a packed wide-gamut colour whose low bits name a colour
     // space. UI Builder literals are ordinary ARGB values and must select Color(Long) instead.
-    assertThat(wearAdapter).contains("private fun parseArgb(value: String): Long")
-    assertThat(wearAdapter).doesNotContain("private fun parseArgb(value: String): ULong")
     assertThat(materialAdapter).contains("private fun parseMaterialArgb(value: String): Long")
     assertThat(materialAdapter)
       .doesNotContain("private fun parseMaterialArgb(value: String): ULong")
