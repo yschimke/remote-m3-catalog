@@ -252,8 +252,8 @@
       ],
       "kind": "structure",
       "severity": "warning",
-      "guidance": "The actions in this Tile are unclear: where does the container with the album art take the user, and is that different from the Play button?",
-      "check": "If this design is a widget, is no clickable card or container wrapping a button that does something different? Answer not_applicable when it is not a widget.",
+      "guidance": "Experiences on the watch don't have the luxury of having ample space to communicate their meaning, so the most effective Tiles have easily predictable interactive components. (Tiles guidance; widgets replace Tiles.) For example, don't wrap a Play button in a tappable container showing album art: the user can't tell where the container takes them, or whether that differs from Play.",
+      "check": "If this design is a widget, can a user tell from each tappable element alone what tapping it will do, and do no two overlapping tap targets lead to different outcomes (such as a clickable card or container wrapping a button that does something else)? Answer not_applicable when it is not a widget.",
       "source": "https://developer.android.com/design/ui/wear/guides/surfaces/tiles/bestpractices",
       "profiles": [
         "wear-widgets"
@@ -266,7 +266,7 @@
       ],
       "kind": "structure",
       "severity": "warning",
-      "guidance": "If you do not hide the app title on small screen, and have two rows, the height of the components will not adhere to our accessibility standards.",
+      "guidance": "To ensure enough space for interactive elements on smaller screens, the app title can be hidden when a Tile uses two rows (and a bottom section). This ensures the rows are tall enough (at least 48dp). (Tiles guidance; widgets replace Tiles.)",
       "check": "If this design is a small widget (remote-m3/widget-container-small, 76dp tall), does it avoid stacking a title above a row of tap targets, or two rows of tap targets? Answer not_applicable for other designs.",
       "source": "https://developer.android.com/design/ui/wear/guides/surfaces/tiles/bestpractices",
       "profiles": [
