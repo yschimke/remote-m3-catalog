@@ -28,7 +28,7 @@ compose-bom = "2026.09.00"
 #
 # Here only the UI-builder adapters and the browser renderer link it; `:remote-catalog`, which is
 # what the published `remote-m3` stickers are drawn by, never does.
-wearcmp-port = "1.7.1-cmp01"
+wearcmp-port = "1.7.1-cmp02"
 
 # The published CMP Remote Compose writer. Browser Preview resolves this exact immutable version
 # from the group-fenced remote-compose-cmp-maven repository; it never follows latest.
