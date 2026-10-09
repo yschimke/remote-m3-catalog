@@ -278,53 +278,55 @@ internal fun RemoteM3DevicePreview(
       stateDescription = state
     }
   ) {
-    when (result) {
-      null -> Unit
-      else ->
-        result.fold(
-          onSuccess = { documents ->
-            if (hostSpec == null || root == null) {
-              RcComposePlayer(
-                document = documents.content,
-                theme = document.playerTheme(),
-                typefaces = fonts,
-                modifier = Modifier.fillMaxSize(),
-              )
-            } else {
-              val background = root.color("background") ?: Color(39, 36, 48)
-              WearWidgetContainerFrame(
-                modifier = Modifier.testTag(REMOTE_M3_WIDGET_HOST_TEST_TAG),
-                contentWidthDp = contentWidth,
-                contentHeightDp = contentHeight,
-                horizontalPaddingDp = horizontalPadding,
-                verticalPaddingDp = verticalPadding,
-                cornerRadiusDp = cornerRadius,
-                background = background,
-                backgroundContent = { shape ->
-                  documents.background?.let {
-                    RcComposePlayer(
-                      document = it,
-                      theme = document.playerTheme(),
-                      typefaces = fonts,
-                      modifier =
-                        Modifier.fillMaxSize()
-                          .clip(shape)
-                          .testTag(REMOTE_M3_WIDGET_BACKGROUND_TEST_TAG),
-                    )
-                  }
-                },
-              ) {
+    ProvideDevicePreviewTime(document) {
+      when (result) {
+        null -> Unit
+        else ->
+          result.fold(
+            onSuccess = { documents ->
+              if (hostSpec == null || root == null) {
                 RcComposePlayer(
                   document = documents.content,
                   theme = document.playerTheme(),
                   typefaces = fonts,
-                  modifier = Modifier.fillMaxSize().testTag(REMOTE_M3_WIDGET_CONTENT_TEST_TAG),
+                  modifier = Modifier.fillMaxSize(),
                 )
+              } else {
+                val background = root.color("background") ?: Color(39, 36, 48)
+                WearWidgetContainerFrame(
+                  modifier = Modifier.testTag(REMOTE_M3_WIDGET_HOST_TEST_TAG),
+                  contentWidthDp = contentWidth,
+                  contentHeightDp = contentHeight,
+                  horizontalPaddingDp = horizontalPadding,
+                  verticalPaddingDp = verticalPadding,
+                  cornerRadiusDp = cornerRadius,
+                  background = background,
+                  backgroundContent = { shape ->
+                    documents.background?.let {
+                      RcComposePlayer(
+                        document = it,
+                        theme = document.playerTheme(),
+                        typefaces = fonts,
+                        modifier =
+                          Modifier.fillMaxSize()
+                            .clip(shape)
+                            .testTag(REMOTE_M3_WIDGET_BACKGROUND_TEST_TAG),
+                      )
+                    }
+                  },
+                ) {
+                  RcComposePlayer(
+                    document = documents.content,
+                    theme = document.playerTheme(),
+                    typefaces = fonts,
+                    modifier = Modifier.fillMaxSize().testTag(REMOTE_M3_WIDGET_CONTENT_TEST_TAG),
+                  )
+                }
               }
-            }
-          },
-          onFailure = { Text("Remote M3 preview failed: ${it.message ?: it::class.simpleName}") },
-        )
+            },
+            onFailure = { Text("Remote M3 preview failed: ${it.message ?: it::class.simpleName}") },
+          )
+      }
     }
     if (refreshing) RefreshingIndicator(dimmed = result != null)
   }

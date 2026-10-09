@@ -1,5 +1,6 @@
 package ee.schimke.wearm3catalog.remoteuibuilder
 
+import androidx.compose.remote.creation.common.RemoteContext
 import androidx.compose.remote.creation.compose.action.Action
 import androidx.compose.remote.creation.compose.action.combinedAction
 import androidx.compose.remote.creation.compose.action.valueChange
@@ -10,10 +11,12 @@ import androidx.compose.remote.creation.compose.state.MutableRemoteInt
 import androidx.compose.remote.creation.compose.state.MutableRemoteString
 import androidx.compose.remote.creation.compose.state.RemoteBoolean
 import androidx.compose.remote.creation.compose.state.RemoteColor
+import androidx.compose.remote.creation.compose.state.RemoteEasing
 import androidx.compose.remote.creation.compose.state.RemoteFloat
 import androidx.compose.remote.creation.compose.state.RemoteInt
 import androidx.compose.remote.creation.compose.state.RemoteString
 import androidx.compose.remote.creation.compose.state.abs
+import androidx.compose.remote.creation.compose.state.animateRemoteFloatAsState
 import androidx.compose.remote.creation.compose.state.ceil
 import androidx.compose.remote.creation.compose.state.clamp
 import androidx.compose.remote.creation.compose.state.cos
@@ -28,6 +31,8 @@ import androidx.compose.remote.creation.compose.state.rememberMutableRemoteBoole
 import androidx.compose.remote.creation.compose.state.rememberMutableRemoteFloat
 import androidx.compose.remote.creation.compose.state.rememberMutableRemoteInt
 import androidx.compose.remote.creation.compose.state.rememberMutableRemoteString
+import androidx.compose.remote.creation.compose.state.remoteSpring
+import androidx.compose.remote.creation.compose.state.remoteTween
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.ri
 import androidx.compose.remote.creation.compose.state.round
@@ -152,7 +157,12 @@ internal class DocumentValues(
         "time.continuousSecond" -> ContinuousSec()
         "time.dayOfWeek" -> DayOfWeek()
         "time.dayOfMonth" -> DayOfMonth()
-        else -> UtcOffset()
+        "time.utcOffset" -> UtcOffset()
+        // The player's own clock: seconds since it started the document.
+        "time.animation" -> RemoteFloat(RemoteContext.FLOAT_ANIMATION_TIME)
+        // `UiExpressions.check` refuses an id it does not know, so this is a value it learned
+        // after this mapping was written: fail here rather than play it as some other clock.
+        else -> error("system value `$id` has no remote mapping")
       }
     }
 
@@ -222,8 +232,40 @@ internal class DocumentValues(
         }
       UiExpressions.Op.CONCAT -> args.map(::asString).reduce { a, b -> a + b }
       UiExpressions.Op.TO_STRING -> asString(args[0])
+      UiExpressions.Op.TWEEN,
+      UiExpressions.Op.SPRING -> animated(expr, f(0))
     }
   }
+
+  /**
+   * `tween`/`spring`, as `RemoteContentEmitter` writes them: the player animates toward [target].
+   */
+  private fun animated(expr: UiExpressions.Expr.Call, target: RemoteFloat): RemoteFloat {
+    fun literal(index: Int): String? =
+      (expr.args.getOrNull(index) as? UiExpressions.Expr.Literal)?.value?.content
+    val spec =
+      if (expr.op == UiExpressions.Op.TWEEN) {
+        remoteTween(literal(1)!!.toDouble().toInt(), easing(literal(2) ?: "standard"))
+      } else {
+        remoteSpring(
+          stiffness = literal(1)?.toFloat() ?: 50f,
+          dampingRatio = literal(2)?.toFloat() ?: 1f,
+        )
+      }
+    return animateRemoteFloatAsState(target, spec)
+  }
+
+  private fun easing(name: String): RemoteEasing =
+    when (name) {
+      "linear" -> RemoteEasing.Linear
+      "accelerate" -> RemoteEasing.Accelerate
+      "decelerate" -> RemoteEasing.Decelerate
+      "anticipate" -> RemoteEasing.Anticipate
+      "overshoot" -> RemoteEasing.Overshoot
+      "bounce" -> RemoteEasing.Bounce
+      "elastic" -> RemoteEasing.Elastic
+      else -> RemoteEasing.Standard
+    }
 
   private fun asString(value: Any): RemoteString =
     when (value) {
