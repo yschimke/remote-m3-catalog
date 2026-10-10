@@ -34,8 +34,7 @@ jobs:
       # The PR check reads the catalog publishes' guideline result caches read-only, so a preview
       # already judged on main is not paid for again. Results are filed by content hash and pooled
       # across modules, but the apply action restores ONE prefix (`guidelines-cache-key`, below:
-      # remote-m3's), so remote-widgets' cache is restored here, at the same path, first. Inert
-      # until the apply action has the input (compose-ai-tools#5789; v2.42.0 warns and ignores it).
+      # remote-m3's), so remote-widgets' cache is restored here, at the same path, first.
       - name: Restore remote-widgets guideline results
         continue-on-error: true
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
