@@ -161,6 +161,10 @@ Remote theme carries its colours mapped onto those roles and its faces as data f
 resolve, never a `Typography`. Same names, same palettes; only the mechanism differs. These answer to
 no kit node and are not inventory.
 
+[The parallel Kotlin-authored policy](docs/design/TYPED_M3_CATALOG.md) starts the typesafe catalog
+migration alongside the production JSON. Its independent validation preserves the full policy
+contract; renderer and saved-design compatibility remain cutover gates.
+
 ## Building
 
 ```sh

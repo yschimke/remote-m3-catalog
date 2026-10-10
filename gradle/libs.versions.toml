@@ -112,6 +112,7 @@ compose-material3 = "1.5.0-beta01"
 # does not exist. The release's own `verify-maven-readiness` job checks that the CLI shipped at a
 # tag asks Gradle for a plugin version that IS on Central, which is why the action at v2.2.1 is
 # correct beside a plugin at 2.2.0.
+composePreviewContracts = "3.26.0"
 composePreviewPlugin = "2.43.0"
 composePreviewCore = "2.38.0"
 composePreviewDaemon = "3.14.1"
@@ -195,6 +196,7 @@ robolectric = "4.17"
 junit = "4.13.2"
 
 [libraries]
+composeai-contracts-bom = { module = "ee.schimke.composeai:compose-preview-contracts-bom", version.ref = "composePreviewContracts" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 # `Icons.*` — the icon set the kit's icon slots draw, CORE PLUS EXTENDED.
@@ -299,6 +301,7 @@ truth = { module = "com.google.truth:truth", version.ref = "truth" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 
 [plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
