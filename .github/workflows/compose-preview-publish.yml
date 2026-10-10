@@ -31,6 +31,20 @@ jobs:
         # The handoff comes from the PR's run, so keep only digits before writing an output; the
         # apply action still checks the number against the workflow_run head.
         run: echo "number=$(tr -cd 0-9 < _compose_preview_handoff/_pr_number)" >> "$GITHUB_OUTPUT"
+      # The PR check reads the catalog publishes' guideline result caches read-only, so a preview
+      # already judged on main is not paid for again. Results are filed by content hash and pooled
+      # across modules, but the apply action restores ONE prefix (`guidelines-cache-key`, below:
+      # remote-m3's), so remote-widgets' cache is restored here, at the same path, first. Inert
+      # until the apply action has the input (compose-ai-tools#5789; v2.42.0 warns and ignores it).
+      - name: Restore remote-widgets guideline results
+        continue-on-error: true
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ./**/build/compose-previews/guidelines
+          # Never an exact hit: the newest save under design-artifacts-widgets.yml's prefix.
+          key: guidelines-remote-widgets-pr-check-restore-only
+          restore-keys: |
+            guidelines-remote-widgets-
       - uses: yschimke/compose-ai-tools/.github/actions/apply@5765a5ac041e2b7911c0c678db74be50c67ce400 # v2.42.0
         with:
           phase: publish
@@ -42,3 +56,4 @@ jobs:
           guidelines: 'true'
           openrouter-key: ${{ secrets.OPENROUTER_API_KEY }}
           guidelines-max-cost: '0.25'
+          guidelines-cache-key: guidelines-remote-m3-
