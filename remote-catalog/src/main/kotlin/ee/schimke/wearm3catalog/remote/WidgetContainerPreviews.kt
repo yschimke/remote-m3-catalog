@@ -220,7 +220,7 @@ fun WidgetContainerLargeRemote() {
     CenteredWidgetContent {
       RemoteColumn {
         RemoteText(
-          "MORNING RUN WEEKLY TRAINING SUMMARY".rs,
+          "Morning run weekly training summary".rs,
           fontSize = 7.rsp,
           color = Color(0xFF2A2A2A).rc,
         )
