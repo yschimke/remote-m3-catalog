@@ -34,3 +34,8 @@ jobs:
           pr-number: ${{ steps.pr.outputs.number }}
           artifact-repository: yschimke/remote-m3-catalog-out
           artifacts-token: ${{ secrets.ARTIFACTS_TOKEN }}
+          # Check the PR's changed previews against each catalog's ui-builder.guidelines.json and
+          # post a sticky comment.
+          guidelines: 'true'
+          openrouter-key: ${{ secrets.OPENROUTER_API_KEY }}
+          guidelines-max-cost: '0.25'

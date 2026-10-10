@@ -49,6 +49,10 @@ jobs:
           artifact-repository: yschimke/remote-m3-catalog-out
           artifacts-token: ''
           phase: render
+          # Stage the changed previews for the design-guidelines check, which the publish phase runs
+          # (only it holds the OpenRouter key). Each module's own build/compose-previews/
+          # ui-builder.guidelines.json is used: remote-m3 and remote-widgets keep their own rules.
+          guidelines: 'true'
           # Single source of truth for the renderer version: the composePreviewPlugin entry in
           # libs.versions.toml. A newer published CLI auto-installed against an older applied
           # plugin breaks preview discovery outright.
