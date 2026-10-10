@@ -80,8 +80,18 @@ jobs:
       render-timeout: 1200
       render-shards: 1
       allow-incomplete: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_incomplete }}
+      # Check the sheet against its ui-builder.guidelines.json before bundling, so the published
+      # bundle carries every preview's verdicts. Advisory: a finding never fails the publish.
+      # Results are cached under `guidelines-remote-widgets-` and only previews whose inputs changed are
+      # re-checked, so the first publishes seed the cache at up to the cap per run and later ones
+      # cost little. compose-preview-publish.yml reads that cache for the PR check.
+      guidelines: true
+      guidelines-max-cost: '1.00'
     secrets:
       artifacts_token: ${{ secrets.ARTIFACTS_TOKEN }}
+      # Only the guidelines step reads it, from the environment. Absent, the check is skipped with
+      # a warning and the catalog still publishes.
+      openrouter_key: ${{ secrets.OPENROUTER_API_KEY }}
       # This sheet maps no kit nodes, so the rasteriser has nothing to do; passed so the reusable
       # workflow's secret contract is the same as the remote-m3 lane's.
       figma_token: ${{ secrets.FIGMA_TOKEN }}
