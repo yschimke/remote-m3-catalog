@@ -254,8 +254,18 @@ jobs:
       # sheet references are those cells has not been established. Adding it blind would change
       # every published reference to chase a problem this sheet may not have. Left for evidence.
       allow-incomplete: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_incomplete }}
+      # Check the sheet against its ui-builder.guidelines.json before bundling, so the published
+      # bundle carries every preview's verdicts. Advisory: a finding never fails the publish.
+      # Results are cached under `guidelines-remote-m3-` and only previews whose inputs changed are
+      # re-checked, so the first publishes seed the cache at up to the cap per run and later ones
+      # cost little. compose-preview-publish.yml reads that cache for the PR check.
+      guidelines: true
+      guidelines-max-cost: '1.00'
     secrets:
       artifacts_token: ${{ secrets.ARTIFACTS_TOKEN }}
+      # Only the guidelines step reads it, from the environment. Absent, the check is skipped with
+      # a warning and the catalog still publishes.
+      openrouter_key: ${{ secrets.OPENROUTER_API_KEY }}
       # The reference rasteriser. Without it the `figma:` entries in the projected design map are
       # "skipped with a warning and the rest of the manifest still publishes" — which is exactly
       # the state this sheet has been in: `catalog.json` declares a `reference` on 19 of its 45
