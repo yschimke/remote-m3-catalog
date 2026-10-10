@@ -2,14 +2,19 @@
 
 package ee.schimke.wearm3catalog.remote
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
 import androidx.compose.remote.creation.compose.layout.RemoteBox
 import androidx.compose.remote.creation.compose.layout.RemoteColumn
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.fillMaxSize
+import androidx.compose.remote.creation.compose.modifier.size
 import androidx.compose.remote.creation.compose.state.rc
+import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rs
+import androidx.compose.remote.creation.compose.state.rsp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,6 +23,8 @@ import androidx.glance.wear.core.ContainerInfo
 import androidx.glance.wear.core.WearWidgetParams
 import androidx.glance.wear.core.WidgetInstanceId
 import androidx.glance.wear.verticalGradient
+import androidx.wear.compose.remote.material3.RemoteIcon
+import androidx.wear.compose.remote.material3.RemoteIconButton
 import androidx.wear.compose.remote.material3.RemoteMaterialTheme
 import androidx.wear.compose.remote.material3.RemoteText
 import ee.schimke.composeai.preview.CatalogComponent
@@ -207,10 +214,34 @@ fun WidgetContainerSmallRemote() {
 @Composable
 fun WidgetContainerLargeRemote() {
   CapturingWearWidgetPreview(params = largeWidgetParams, background = WearWidgetBrush) {
+    // DELIBERATELY BAD (guidelines check test, do not merge): 7sp hard-coded text in dark grey on
+    // the dark container, far too many lines for a glanceable widget (they overflow the 108dp
+    // content height and are cut top and bottom), and an 18dp icon button.
     CenteredWidgetContent {
       RemoteColumn {
-        RemoteText("Morning run".rs, style = RemoteMaterialTheme.typography.bodyLarge)
-        RemoteText("5.2 km · 28 min".rs, style = RemoteMaterialTheme.typography.labelSmall)
+        RemoteText(
+          "MORNING RUN WEEKLY TRAINING SUMMARY".rs,
+          fontSize = 7.rsp,
+          color = Color(0xFF2A2A2A).rc,
+        )
+        RemoteText("Mon 5.2 km 28 min 5:23/km".rs, fontSize = 14.rsp, color = Color(0xFF333333).rc)
+        RemoteText("Tue 8.1 km 44 min 5:26/km".rs, fontSize = 14.rsp, color = Color(0xFF333333).rc)
+        RemoteText("Wed rest day, stretching".rs, fontSize = 14.rsp, color = Color(0xFF333333).rc)
+        RemoteText("Thu 6.0 km 31 min 5:10/km".rs, fontSize = 14.rsp, color = Color(0xFF333333).rc)
+        RemoteText("Fri 10.4 km 58 min 5:34/km".rs, fontSize = 14.rsp, color = Color(0xFF333333).rc)
+        RemoteText("Sat long run 21.1 km 1:58".rs, fontSize = 14.rsp, color = Color(0xFF333333).rc)
+        RemoteText("Sun recovery 4.0 km 25 min".rs, fontSize = 14.rsp, color = Color(0xFF333333).rc)
+        RemoteIconButton(
+          onClick = toggledRemote().second,
+          modifier = RemoteModifier.size(18.rdp),
+          content = {
+            RemoteIcon(
+              Icons.Filled.Add.asCatalogRemoteIcon(),
+              "Add".rs,
+              RemoteModifier.size(10.rdp),
+            )
+          },
+        )
       }
     }
   }
