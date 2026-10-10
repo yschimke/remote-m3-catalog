@@ -6,16 +6,21 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
 import androidx.compose.remote.creation.compose.layout.RemoteArrangement
+import androidx.compose.remote.creation.compose.layout.RemoteColumn
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.layout.RemoteRow
 import androidx.compose.remote.creation.compose.layout.RemoteText
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.fillMaxSize
+import androidx.compose.remote.creation.compose.modifier.size
 import androidx.compose.remote.creation.compose.state.RemoteColor
+import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.remote.creation.compose.state.rsp
 import androidx.compose.remote.creation.compose.widgets.RemoteComposeWidget
+import androidx.compose.remote.foundation.layout.RemoteSpacer
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.style.TextAlign
 
 /**
  * The worked sample: AndroidX's `MyWidget` demo (`compose/remote/integration-tests/
@@ -67,15 +72,60 @@ fun CounterContent(
   onDecrement: (() -> Unit)? = null,
   onIncrement: (() -> Unit)? = null,
 ) {
-  WidgetSurface {
-    RemoteRow(
-      RemoteModifier.fillMaxSize(),
-      horizontalArrangement = RemoteArrangement.Center,
-      verticalAlignment = RemoteAlignment.CenterVertically,
-    ) {
-      WidgetButton("-", RemoteModifier.weight(1f), onClick = onDecrement)
-      RemoteText("$count".rs, color = RemoteColor(WidgetColors.OnSurface), fontSize = 48.rsp)
-      WidgetButton("+", RemoteModifier.weight(1f), onClick = onIncrement)
+  AdaptiveWidget(
+    setOf(
+      WidgetSize.S2x1.dpSize,
+      WidgetSize.S2x2.dpSize,
+      WidgetSize.S3x1.dpSize,
+      WidgetSize.S3x2.dpSize,
+    )
+  ) {
+    val size = LocalWidgetSize.current
+    val narrow = size.width < WidgetSize.S3x1.dpSize.width
+    val tall = size.height >= WidgetSize.S2x2.dpSize.height
+    WidgetSurface {
+      if (tall) {
+        RemoteColumn(
+          RemoteModifier.fillMaxSize(),
+          verticalArrangement = RemoteArrangement.SpaceEvenly,
+          horizontalAlignment = RemoteAlignment.CenterHorizontally,
+        ) {
+          WidgetTitle("Counter")
+          RemoteText(
+            "$count".rs,
+            color = RemoteColor(WidgetColors.OnSurface),
+            fontSize = 48.rsp,
+            maxLines = 1,
+          )
+          RemoteRow(verticalAlignment = RemoteAlignment.CenterVertically) {
+            WidgetButton("−", contentDescription = "Decrease count", onClick = onDecrement)
+            RemoteSpacer(RemoteModifier.size(8.rdp))
+            WidgetButton("+", contentDescription = "Increase count", onClick = onIncrement)
+          }
+        }
+      } else {
+        RemoteRow(
+          RemoteModifier.fillMaxSize(),
+          horizontalArrangement = RemoteArrangement.Center,
+          verticalAlignment = RemoteAlignment.CenterVertically,
+        ) {
+          // At 2x1, retain the primary action instead of squeezing two targets and the value.
+          if (!narrow) {
+            WidgetButton("−", contentDescription = "Decrease count", onClick = onDecrement)
+            RemoteSpacer(RemoteModifier.size(8.rdp))
+          }
+          RemoteText(
+            "$count".rs,
+            modifier = RemoteModifier.weight(1f),
+            color = RemoteColor(WidgetColors.OnSurface),
+            fontSize = (if (narrow) 32 else 48).rsp,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+          )
+          RemoteSpacer(RemoteModifier.size(8.rdp))
+          WidgetButton("+", contentDescription = "Increase count", onClick = onIncrement)
+        }
+      }
     }
   }
 }

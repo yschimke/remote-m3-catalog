@@ -9,8 +9,13 @@ import androidx.compose.remote.creation.compose.layout.RemoteText
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.background
 import androidx.compose.remote.creation.compose.modifier.clip
+import androidx.compose.remote.creation.compose.modifier.contentDescription
 import androidx.compose.remote.creation.compose.modifier.fillMaxSize
+import androidx.compose.remote.creation.compose.modifier.heightIn
 import androidx.compose.remote.creation.compose.modifier.padding
+import androidx.compose.remote.creation.compose.modifier.role
+import androidx.compose.remote.creation.compose.modifier.semantics
+import androidx.compose.remote.creation.compose.modifier.widthIn
 import androidx.compose.remote.creation.compose.shapes.RemoteRoundedCornerShape
 import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.rc
@@ -20,6 +25,7 @@ import androidx.compose.remote.creation.compose.state.rsp
 import androidx.compose.remote.creation.compose.widgets.onClick
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 
 // ---------------------------------------------------------------------------------------------
@@ -54,15 +60,8 @@ object WidgetColors {
 }
 
 /**
- * The corner radius a widget's own surface is drawn with: 16dp, Android 12's
- * `system_app_widget_background_radius` default. The launcher clips the whole widget to its own
- * radius regardless, so this matters for an inner surface and for a launcher that does not clip.
- */
-const val WIDGET_CORNER_RADIUS_DP = 16
-
-/**
- * The widget's background: fills the cell the launcher gave it, rounds it to
- * [WIDGET_CORNER_RADIUS_DP] and pads its content. The root of almost every widget body.
+ * The widget's background fills the launcher bounds, with padding inside the surface. The launcher
+ * owns its outer corner radius; the document must not impose a second rounded clip.
  */
 @RemoteComposable
 @Composable
@@ -73,11 +72,7 @@ fun WidgetSurface(
   content: @Composable @RemoteComposable () -> Unit,
 ) {
   RemoteBox(
-    modifier
-      .fillMaxSize()
-      .clip(RemoteRoundedCornerShape(WIDGET_CORNER_RADIUS_DP.rdp))
-      .background(color.rc)
-      .padding(12.rdp),
+    modifier.fillMaxSize().background(color.rc).padding(12.rdp),
     contentAlignment = contentAlignment,
     content = content,
   )
@@ -129,18 +124,24 @@ fun WidgetButton(
   modifier: RemoteModifier = RemoteModifier,
   containerColor: Color = WidgetColors.Accent,
   contentColor: Color = WidgetColors.OnAccent,
+  contentDescription: String = text,
   onClick: (() -> Unit)? = null,
 ) {
   val shaped =
     modifier
-      .padding(4.rdp)
-      .clip(RemoteRoundedCornerShape(20.rdp))
+      .widthIn(min = 48.rdp)
+      .heightIn(min = 48.rdp)
+      .clip(RemoteRoundedCornerShape(24.rdp))
       .background(containerColor.rc)
+      .semantics(mergeDescendants = true) {
+        this.contentDescription = contentDescription.rs
+        role = Role.Button
+      }
       .padding(start = 16.rdp, top = 8.rdp, end = 16.rdp, bottom = 8.rdp)
   RemoteBox(
     if (onClick != null) shaped.onClick(onClick) else shaped,
     contentAlignment = RemoteAlignment.Center,
   ) {
-    RemoteText(text.rs, color = RemoteColor(contentColor), fontSize = 20.rsp)
+    RemoteText(text.rs, color = RemoteColor(contentColor), fontSize = 16.rsp, maxLines = 1)
   }
 }

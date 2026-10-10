@@ -51,7 +51,8 @@ private const val NO_KIT = "No published design kit covers Remote Compose launch
   noReference = NO_KIT,
   caption =
     "The worked sample: AndroidX's MyWidget counter rebuilt from this sheet's WidgetSurface and " +
-      "WidgetButton, drawn at 3x2 and resized across the grid as a launcher would.",
+      "WidgetButton. The smallest size keeps the increment action; taller sizes add a title " +
+      "and both controls, all with 48dp targets.",
 )
 @WidgetSizes
 @Composable
@@ -149,8 +150,8 @@ fun WidgetGridSticker() {
   group = "Containment",
   noReference = NO_KIT,
   caption =
-    "The widget background: fills the cell, rounds it to Android 12's 16dp widget radius and " +
-      "pads its content by 12dp.",
+    "The widget background: fills the cell and pads its content by 12dp, leaving the outer " +
+      "corner radius to the launcher.",
 )
 @Widget2x1
 @Composable
@@ -225,7 +226,7 @@ fun RemoteTextSticker() = WidgetSticker {
 fun RemoteBasicTextSticker() = WidgetSticker {
   WidgetSurface {
     RemoteBasicText(
-      "RemoteBasicText".rs,
+      "Basic text".rs,
       color = RemoteColor(WidgetColors.OnSurface),
       fontSize = 24.rsp,
     )
@@ -237,8 +238,8 @@ fun RemoteBasicTextSticker() = WidgetSticker {
 /** A filled square, so a layout specimen shows where its children went. */
 @RemoteComposable
 @Composable
-private fun Swatch(color: Color, modifier: RemoteModifier = RemoteModifier) {
-  RemoteBox(modifier.size(32.rdp).clip(RemoteRoundedCornerShape(8.rdp)).background(color.rc))
+private fun Swatch(color: Color, modifier: RemoteModifier = RemoteModifier.size(32.rdp)) {
+  RemoteBox(modifier.clip(RemoteRoundedCornerShape(8.rdp)).background(color.rc))
 }
 
 @CatalogComponent(
@@ -275,6 +276,7 @@ fun RemoteColumnSticker() = WidgetSticker {
   WidgetSurface(contentAlignment = RemoteAlignment.TopStart) {
     RemoteColumn(RemoteModifier.fillMaxSize(), verticalArrangement = RemoteArrangement.Top) {
       WidgetTitle("Today")
+      RemoteSpacer(RemoteModifier.size(4.rdp))
       WidgetLabel("3 events")
       RemoteSpacer(RemoteModifier.size(8.rdp))
       Swatch(WidgetColors.Accent)
@@ -293,8 +295,8 @@ fun RemoteColumnSticker() = WidgetSticker {
 fun RemoteBoxSticker() = WidgetSticker {
   WidgetSurface {
     RemoteBox(contentAlignment = RemoteAlignment.Center) {
-      Swatch(WidgetColors.AccentContainer, RemoteModifier.size(40.rdp))
-      Swatch(WidgetColors.Accent, RemoteModifier.size(20.rdp))
+      Swatch(WidgetColors.AccentContainer)
+      Swatch(WidgetColors.Accent, RemoteModifier.size(16.rdp))
     }
   }
 }
