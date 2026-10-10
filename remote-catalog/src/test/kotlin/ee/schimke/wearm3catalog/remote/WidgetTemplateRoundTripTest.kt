@@ -14,7 +14,7 @@ import org.junit.runners.Parameterized
  * own classpath**.
  *
  * [WidgetExportRoundTripTest] proves the round trip for one hand-built design; this proves it for
- * the four `templates` entries in `ui-builder.policy.json` — the documents a new design opens as,
+ * the five `templates` entries in `ui-builder.policy.json` — the documents a new design opens as,
  * transcribed from compose-ui-builder's Kotlin seed builders. A template is the one document nobody
  * authored, so nothing else catches a property the catalog does not declare or an emitter
  * regression a seed needs: this does, at the same gate — the goldens beside this file are Kotlin in
@@ -40,7 +40,13 @@ class WidgetTemplateRoundTripTest(private val templateId: String) {
     @Parameterized.Parameters(name = "{0}")
     @JvmStatic
     fun templates(): List<String> =
-      listOf("wear-widget-small", "wear-widget-large", "hello-widget", "weather-widget")
+      listOf(
+        "wear-widget-small",
+        "wear-widget-large",
+        "wear-widget-adaptive",
+        "hello-widget",
+        "weather-widget",
+      )
 
     private val designsDir = "remote-catalog/ui-builder/designs"
 
@@ -112,6 +118,16 @@ class WidgetTemplateRoundTripTest(private val templateId: String) {
       "wear-widget-large" -> {
         assertThat(source).contains("WearWidgetDocument(background = WearWidgetBrush)")
         assertThat(source).contains("SquircleLargeWidgetPreviewParams")
+      }
+      "wear-widget-adaptive" -> {
+        // Authored once, resolved twice: the generated widget switches on `large`, and only the
+        // Large branch keeps the supporting line — `AdaptiveWearWidget.resolve` drops it at Small.
+        assertThat(source).contains("fun WearWidgetContent(large: Boolean)")
+        assertThat(source).contains("SquircleLargeWidgetPreviewParams")
+        assertThat(source).contains("SquircleSmallWidgetPreviewParams")
+        assertThat(source.split("text = \"Next meeting\".rs")).hasSize(3)
+        assertThat(source.split("text = \"10:30 · Room 4\".rs")).hasSize(2)
+        assertThat(source.split("RemoteText(text = \"Join\".rs)")).hasSize(3)
       }
       "hello-widget" -> {
         // The widget's own background is the scaffold's, painted by the host as the round rect —
