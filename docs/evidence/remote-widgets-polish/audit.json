@@ -1,0 +1,395 @@
+{
+  "catalog": "remote-widgets",
+  "rulesVersion": 2,
+  "rulesFile": "widget-catalog/ui-builder.guidelines.json",
+  "reviewMethod": "Manual, keyless Compose preview review by Codex in the current session; no provider run simulated.",
+  "verdict": "pass with notes",
+  "sourceBase": "709368028c97e1854ba045fa90bbceb20dc99cd3",
+  "baselineArtifactCommit": "df78eab1ee2d81fba2b28fdbade921fdfa532d24",
+  "coverage": {
+    "catalogRendersInspected": 39,
+    "widgetSubjects": [
+      "LauncherWidget/Counter",
+      "LauncherWidget/Adaptive",
+      "LauncherWidget/AdaptiveFixed"
+    ],
+    "specimensInspected": "All remaining Grid, containment, text and layout specimens. Widget-only rules are judged on the worked widget subjects; isolated components are not expected to behave as complete widgets.",
+    "rulesAsked": 18,
+    "rulesAnswered": 18,
+    "uncheckedRules": [],
+    "fontScale": 1.0,
+    "density": 2.75
+  },
+  "checks": [
+    {
+      "ruleId": "launcher.purpose.single-use-case",
+      "severity": "info",
+      "source": "https://developer.android.com/design/ui/mobile/guides/widgets",
+      "verdict": "pass",
+      "reason": "Counter and destinations each serve one focused use case."
+    },
+    {
+      "ruleId": "launcher.purpose.glanceable-snack",
+      "severity": "warning",
+      "source": "https://developer.android.com/develop/ui/views/appwidgets/overview",
+      "verdict": "pass",
+      "reason": "Short values and destination actions; no app navigation or dense content."
+    },
+    {
+      "ruleId": "launcher.gestures.tap-and-vertical-swipe",
+      "severity": "warning",
+      "source": "https://developer.android.com/develop/ui/views/appwidgets/overview",
+      "verdict": "pass",
+      "reason": "Source offers tap callbacks only."
+    },
+    {
+      "ruleId": "launcher.layout.fills-bounds",
+      "severity": "warning",
+      "source": "https://developer.android.com/docs/quality-guidelines/widget-quality",
+      "verdict": "pass",
+      "reason": "WidgetSurface fills every frame; padding follows the background."
+    },
+    {
+      "ruleId": "launcher.layout.no-outer-padding",
+      "severity": "warning",
+      "source": "https://developer.android.com/design/ui/mobile/guides/widgets/sizing",
+      "verdict": "pass",
+      "reason": "Root background uses fillMaxSize; 12dp padding is inside it."
+    },
+    {
+      "ruleId": "launcher.shape.system-corner-radius",
+      "severity": "warning",
+      "source": "https://developer.android.com/design/ui/mobile/guides/widgets/style",
+      "verdict": "pass",
+      "reason": "WidgetSurface does not clip the document. WidgetSticker models the launcher in its Compose host using the Android system radius."
+    },
+    {
+      "ruleId": "launcher.shape.content-clear-of-corners",
+      "severity": "warning",
+      "source": "https://developer.android.com/develop/ui/compose/glance/create-app-widget",
+      "verdict": "pass",
+      "reason": "Inspected all 39 default-size renders. Content remains inside the rounded preview host."
+    },
+    {
+      "ruleId": "launcher.content.not-cropped",
+      "severity": "warning",
+      "source": "https://developer.android.com/docs/quality-guidelines/widget-quality",
+      "verdict": "pass",
+      "reason": "Inspected all 39 renders; shortened the BasicText specimen, kept the counter controls in bounds, and spaced the destination buttons."
+    },
+    {
+      "ruleId": "launcher.sizing.minimum-offers-value",
+      "severity": "warning",
+      "source": "https://developer.android.com/docs/quality-guidelines/widget-quality",
+      "verdict": "pass",
+      "reason": "Counter 2x1 retains its value and increment; destinations 2x1 retains Home. Buttons use 48dp minimum dimensions."
+    },
+    {
+      "ruleId": "launcher.sizing.breakpoints",
+      "severity": "warning",
+      "source": "https://developer.android.com/design/ui/mobile/guides/widgets/sizing",
+      "verdict": "pass",
+      "reason": "Counter changes from compact value/increment to a row with both actions or a titled column. Destinations adds Work and then title/supporting text."
+    },
+    {
+      "ruleId": "launcher.sizing.no-blank-space",
+      "severity": "info",
+      "source": "https://developer.android.com/docs/quality-guidelines/widget-quality",
+      "verdict": "pass",
+      "reason": "Tall counter distributes title, value and controls vertically. Larger destinations layouts add useful information."
+    },
+    {
+      "ruleId": "launcher.sizing.prioritise-actions",
+      "severity": "info",
+      "source": "https://developer.android.com/design/ui/mobile/guides/widgets/layouts",
+      "verdict": "pass",
+      "reason": "Counter 2x1 hides decrement; narrow destinations hides Work."
+    },
+    {
+      "ruleId": "launcher.actions.touch-target-48dp",
+      "severity": "warning",
+      "source": "https://developer.android.com/docs/quality-guidelines/widget-quality",
+      "verdict": "pass",
+      "reason": "WidgetButton enforces widthIn/heightIn minimum 48dp with no outer padding. Raster button heights are 48dp; visible widths are at least 47.27dp, within 1dp edge antialiasing of the source bounds. Pixel silhouette is corroboration, not a clickable-node measurement."
+    },
+    {
+      "ruleId": "launcher.color.contrast",
+      "severity": "warning",
+      "source": "https://developer.android.com/docs/quality-guidelines/widget-quality",
+      "verdict": "pass",
+      "reason": "Calculated contrast from the literal WidgetColors palette; all text pairs exceed 4.5:1."
+    },
+    {
+      "ruleId": "launcher.type.hierarchy",
+      "severity": "info",
+      "source": "https://developer.android.com/design/ui/mobile/guides/widgets/style",
+      "verdict": "pass",
+      "reason": "Counter value is 32sp compact/48sp tall or wide, titles 20sp medium, supporting labels 14sp and button labels 16sp."
+    },
+    {
+      "ruleId": "launcher.type.min-size",
+      "severity": "warning",
+      "source": "https://developer.android.com/design/ui/mobile/guides/foundations/accessibility",
+      "verdict": "pass",
+      "reason": "All declared text is in sp, at least 14sp."
+    },
+    {
+      "ruleId": "launcher.type.concise-text",
+      "severity": "info",
+      "source": "https://developer.android.com/design/ui/mobile/guides/widgets/layouts",
+      "verdict": "pass",
+      "reason": "Visible content is limited to titles, values and short supporting labels."
+    },
+    {
+      "ruleId": "launcher.states.empty-zero",
+      "severity": "info",
+      "source": "https://developer.android.com/docs/quality-guidelines/widget-quality",
+      "verdict": "not_applicable",
+      "reason": "Published samples show count 3 and populated destinations; no empty/signed-out state is shown."
+    }
+  ],
+  "contrast": [
+    {
+      "foreground": "#1D1B20",
+      "background": "#F3EDF7",
+      "ratio": 14.85
+    },
+    {
+      "foreground": "#49454F",
+      "background": "#F3EDF7",
+      "ratio": 8.13
+    },
+    {
+      "foreground": "#FFFFFF",
+      "background": "#6750A4",
+      "ratio": 6.44
+    },
+    {
+      "foreground": "#4A4458",
+      "background": "#E8DEF8",
+      "ratio": 7.19
+    }
+  ],
+  "buttonMeasurements": [
+    {
+      "component": "LauncherWidget/Adaptive",
+      "size": "2x1",
+      "buttonBounds": [
+        {
+          "widthDp": 74.18,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/Adaptive",
+      "size": "3x1",
+      "buttonBounds": [
+        {
+          "widthDp": 74.18,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/Adaptive",
+      "size": "4x1",
+      "buttonBounds": [
+        {
+          "widthDp": 68.0,
+          "heightDp": 48.0
+        },
+        {
+          "widthDp": 74.18,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/Adaptive",
+      "size": "4x2",
+      "buttonBounds": [
+        {
+          "widthDp": 68.0,
+          "heightDp": 48.0
+        },
+        {
+          "widthDp": 74.18,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/Adaptive",
+      "size": "5x2",
+      "buttonBounds": [
+        {
+          "widthDp": 68.0,
+          "heightDp": 48.0
+        },
+        {
+          "widthDp": 74.18,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/AdaptiveFixed",
+      "size": "2x1",
+      "buttonBounds": [
+        {
+          "widthDp": 74.18,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/AdaptiveFixed",
+      "size": "3x1",
+      "buttonBounds": [
+        {
+          "widthDp": 74.18,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/AdaptiveFixed",
+      "size": "4x1",
+      "buttonBounds": [
+        {
+          "widthDp": 68.0,
+          "heightDp": 48.0
+        },
+        {
+          "widthDp": 74.18,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/AdaptiveFixed",
+      "size": "4x2",
+      "buttonBounds": [
+        {
+          "widthDp": 68.0,
+          "heightDp": 48.0
+        },
+        {
+          "widthDp": 74.18,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/AdaptiveFixed",
+      "size": "5x2",
+      "buttonBounds": [
+        {
+          "widthDp": 68.0,
+          "heightDp": 48.0
+        },
+        {
+          "widthDp": 74.18,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/Counter",
+      "size": "2x1",
+      "buttonBounds": [
+        {
+          "widthDp": 47.27,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/Counter",
+      "size": "2x2",
+      "buttonBounds": [
+        {
+          "widthDp": 47.27,
+          "heightDp": 48.0
+        },
+        {
+          "widthDp": 47.27,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/Counter",
+      "size": "3x2",
+      "buttonBounds": [
+        {
+          "widthDp": 47.27,
+          "heightDp": 48.0
+        },
+        {
+          "widthDp": 47.27,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/Counter",
+      "size": "4x1",
+      "buttonBounds": [
+        {
+          "widthDp": 47.27,
+          "heightDp": 48.0
+        },
+        {
+          "widthDp": 47.27,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "LauncherWidget/Counter",
+      "size": "4x2",
+      "buttonBounds": [
+        {
+          "widthDp": 47.27,
+          "heightDp": 48.0
+        },
+        {
+          "widthDp": 47.27,
+          "heightDp": 48.0
+        }
+      ]
+    },
+    {
+      "component": "WidgetButton",
+      "size": "2x1",
+      "buttonBounds": [
+        {
+          "widthDp": 69.09,
+          "heightDp": 48.0
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "unitTests": {
+      "passed": 32,
+      "failed": 0
+    },
+    "renderedPreviews": 39,
+    "fixedVersusAdaptivePixelEquality": "All five destination size pairs identical",
+    "format": "passed",
+    "noRemoteMaterial3": "passed"
+  },
+  "limitations": [
+    "Hosted MCP audit results could not be read or recorded: connector requires reauthentication.",
+    "The preview site was blocked by network policy; inspected its commit-pinned published GitHub artifacts and fresh local Android renders.",
+    "No ATF, live launcher clicks, font-scale overrides, translations or RTL renders were run. Those are not claimed as passed.",
+    "Counter 2x1 intentionally offers only increment; decrement remains available at larger sizes."
+  ],
+  "evidence": {
+    "before": "before.png",
+    "after": "after.png"
+  }
+}

@@ -14,7 +14,10 @@ import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.layout.RemoteRow
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.fillMaxSize
+import androidx.compose.remote.creation.compose.modifier.size
+import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.widgets.RemoteComposeWidget
+import androidx.compose.remote.foundation.layout.RemoteSpacer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.unit.DpSize
@@ -100,11 +103,12 @@ fun DestinationsContent(onDestination: ((String) -> Unit)? = null) {
           verticalAlignment = RemoteAlignment.CenterVertically,
         ) {
           val destinations = if (wide) listOf("Home", "Work") else listOf("Home")
-          destinations.forEach { destination ->
+          destinations.forEachIndexed { index, destination ->
+            if (index > 0) RemoteSpacer(RemoteModifier.size(8.rdp))
             WidgetButton(destination, onClick = onDestination?.let { { it(destination) } })
           }
         }
-        if (tall) WidgetLabel("Travel times by Example Transit")
+        if (tall) WidgetLabel("Example Transit · Travel times")
       }
     }
   }

@@ -2,6 +2,7 @@
 
 package ee.schimke.remotewidgets
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
 import androidx.compose.remote.creation.compose.layout.RemoteBox
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
@@ -9,6 +10,10 @@ import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.fillMaxSize
 import androidx.compose.remote.creation.profile.RcPlatformProfiles
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import ee.schimke.composeai.daemon.RemoteOverridablePreview
 
 /**
@@ -29,7 +34,15 @@ import ee.schimke.composeai.daemon.RemoteOverridablePreview
  */
 @Composable
 fun WidgetSticker(content: @Composable @RemoteComposable () -> Unit) {
-  RemoteOverridablePreview(profile = RcPlatformProfiles.WIDGETS_V6) {
+  // Simulate the launcher's clip in the preview host, not in the reusable widget surface.
+  val resources = LocalContext.current.resources
+  val radiusId = resources.getIdentifier("system_app_widget_background_radius", "dimen", "android")
+  val radiusDp =
+    if (radiusId == 0) 0f else resources.getDimension(radiusId) / resources.displayMetrics.density
+  RemoteOverridablePreview(
+    profile = RcPlatformProfiles.WIDGETS_V6,
+    modifier = Modifier.clip(RoundedCornerShape(radiusDp.dp)),
+  ) {
     RemoteBox(
       modifier = RemoteModifier.fillMaxSize(),
       contentAlignment = RemoteAlignment.Center,
