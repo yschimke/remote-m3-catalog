@@ -50,6 +50,8 @@ import androidx.compose.remote.creation.compose.modifier.width
 import androidx.compose.remote.creation.compose.modifier.widthIn
 import androidx.compose.remote.creation.compose.modifier.wrapContentSize
 import androidx.compose.remote.creation.compose.modifier.zIndex
+import androidx.compose.remote.creation.compose.painter.RemotePainter
+import androidx.compose.remote.creation.compose.painter.painterRemoteImageBitmap
 import androidx.compose.remote.creation.compose.shaders.RemoteBrush
 import androidx.compose.remote.creation.compose.shaders.horizontalGradient
 import androidx.compose.remote.creation.compose.shaders.verticalGradient
@@ -541,6 +543,18 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
   }
 
   /**
+   * The picture a button's or card's `containerImageKey` names, as the export's
+   * `painterRemoteImageBitmap(…)`; null, for the plain container, when there is no key or the
+   * editor has not inlined that asset's bytes.
+   */
+  @Composable
+  private fun containerImagePainter(node: UiBuilderNode): RemotePainter? {
+    val bytes = document.embeddedAssetBytes(node.string("containerImageKey"))
+    val bitmap = remember(bytes) { bytes?.let(::decodeDesignAssetBitmap) }
+    return remember(bitmap) { bitmap?.let { painterRemoteImageBitmap(it.rb) } }
+  }
+
+  /**
    * One node, entered from the container it sits in.
    *
    * [row] and [column] are that container's scope, because `weight` is a member of it rather than a
@@ -684,14 +698,27 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
           style = node.textStyle().withFontFeatures(node),
           fontVariationSettings = node.fontVariationSettings(),
         )
-      "remote-m3/remote-button" ->
-        RemoteButton(
-          onClick = values.action(node, "click"),
-          modifier = modifier,
-          enabled = node.enabled(),
-        ) {
-          entry.slot("content").forEach { RenderNode(it) }
+      "remote-m3/remote-button" -> {
+        val containerPainter = containerImagePainter(node)
+        if (containerPainter == null) {
+          RemoteButton(
+            onClick = values.action(node, "click"),
+            modifier = modifier,
+            enabled = node.enabled(),
+          ) {
+            entry.slot("content").forEach { RenderNode(it) }
+          }
+        } else {
+          RemoteButton(
+            onClick = values.action(node, "click"),
+            containerPainter = containerPainter,
+            modifier = modifier,
+            enabled = node.enabled(),
+          ) {
+            entry.slot("content").forEach { RenderNode(it) }
+          }
         }
+      }
       // The icon the published catalog maps onto the canvas's `wear-m3/icon`: its `imageVector` is
       // that adapter's `iconKey`, with the same `addCircle` default, so both surfaces draw the same
       // glyph. Without this branch the pane drew the red "Unsupported" text, which a round button
@@ -703,20 +730,40 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
         } else {
           RemoteIcon(
             imageVector = vector.toRemoteImageVector(),
-            contentDescription = node.string("contentDescription").ifEmpty { null }?.rs,
+            // A literal goes through `string` so an empty one is no description; a state, binding
+            // or computed description has no literal `value` and resolves through the document.
+            contentDescription =
+              if (node.value("contentDescription") != null) {
+                node.string("contentDescription").ifEmpty { null }?.rs
+              } else {
+                values.string(node.properties["contentDescription"])
+              },
             modifier = modifier,
             tint = node.remoteColor("tint") ?: LocalRemoteContentColor.current,
           )
         }
       }
-      "remote-m3/remote-card" ->
-        RemoteCard(
-          onClick = values.action(node, "click"),
-          modifier = modifier,
-          enabled = node.enabled(),
-        ) {
-          entry.slot("content").forEach { RenderNode(it) }
+      "remote-m3/remote-card" -> {
+        val containerPainter = containerImagePainter(node)
+        if (containerPainter == null) {
+          RemoteCard(
+            onClick = values.action(node, "click"),
+            modifier = modifier,
+            enabled = node.enabled(),
+          ) {
+            entry.slot("content").forEach { RenderNode(it) }
+          }
+        } else {
+          RemoteCard(
+            onClick = values.action(node, "click"),
+            containerPainter = containerPainter,
+            modifier = modifier,
+            enabled = node.enabled(),
+          ) {
+            entry.slot("content").forEach { RenderNode(it) }
+          }
         }
+      }
       "remote-m3/remote-circular-progress-indicator" ->
         RemoteCircularProgressIndicator(
           progress = values.float(node.properties["progress"]) ?: 0f.rf,
@@ -901,6 +948,8 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
           secondaryLabel = entry.rowSlotContent("secondaryLabel"),
           icon = entry.slotContent("icon"),
           enabled = node.enabled(),
+          containerPainter = containerImagePainter(node),
+          borderColor = node.remoteColor("borderColor"),
           label = entry.rowSlotContent("label") ?: {},
         )
       // The overridden roles over the enclosing scheme, as the export's `colorScheme.copy(…)`.
