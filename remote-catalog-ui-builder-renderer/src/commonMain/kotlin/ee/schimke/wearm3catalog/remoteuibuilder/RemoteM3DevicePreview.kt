@@ -141,6 +141,7 @@ import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
 import ee.schimke.composeai.uibuilder.export.UiBuilderNode
 import ee.schimke.composeai.uibuilder.export.UiDrawing
+import ee.schimke.composeai.uibuilder.export.UiExpressions
 import ee.schimke.composeai.uibuilder.export.UiRemoteTheme
 import ee.schimke.composeai.uibuilder.export.UiTimeText
 import ee.schimke.composeai.uibuilder.export.WearScreenTheme
@@ -730,13 +731,14 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
         } else {
           RemoteIcon(
             imageVector = vector.toRemoteImageVector(),
-            // A literal goes through `string` so an empty one is no description; a state, binding
-            // or computed description has no literal `value` and resolves through the document.
+            // A state, binding or computed description resolves through the document (a binding
+            // carries its key in `value`, so the wrapper's type decides, not `value`); a literal
+            // goes through `string` so an empty one is no description.
             contentDescription =
-              if (node.value("contentDescription") != null) {
-                node.string("contentDescription").ifEmpty { null }?.rs
-              } else {
+              if (node.isDynamic("contentDescription")) {
                 values.string(node.properties["contentDescription"])
+              } else {
+                node.string("contentDescription").ifEmpty { null }?.rs
               },
             modifier = modifier,
             tint = node.remoteColor("tint") ?: LocalRemoteContentColor.current,
@@ -1092,6 +1094,13 @@ private fun UiBuilderDocument.playerTheme(): RcPlayerTheme =
 
 private fun UiBuilderNode.value(name: String): JsonPrimitive? =
   ((properties[name] as? JsonObject)?.get("value") as? JsonPrimitive)
+
+/** Whether [name] is a state read, a binding or a computed expression rather than a literal. */
+private fun UiBuilderNode.isDynamic(name: String): Boolean {
+  val wrapper = properties[name] as? JsonObject ?: return false
+  val type = (wrapper["type"] as? JsonPrimitive)?.contentOrNull
+  return type == "state" || type == "binding" || UiExpressions.isComputed(wrapper)
+}
 
 private fun UiBuilderNode.string(name: String): String = value(name)?.contentOrNull.orEmpty()
 
