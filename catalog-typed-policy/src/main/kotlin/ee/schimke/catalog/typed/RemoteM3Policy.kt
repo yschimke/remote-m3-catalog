@@ -15,6 +15,7 @@ import ee.schimke.composeai.uibuilder.protocol.SlotCardinalityV1
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -194,6 +195,15 @@ private fun policyColorTokens(): JsonElement = buildJsonObject {
 private fun componentRemoteAppCard(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(
+          slots =
+            mapOf(
+              "appName" to listOf(seedText("App")),
+              "title" to listOf(seedText("Title")),
+              "content" to listOf(seedText("Card")),
+            )
+        )
       record = "remote-catalog/androidx.wear.compose.remote.material3.RemoteAppCardKt.RemoteAppCard"
       group = "Containment"
       canvas = "wear-m3/card"
@@ -221,6 +231,8 @@ private fun componentRemoteAppCard(): UiBuilderAuthoredComponent =
 private fun componentRemoteButtonGroup(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(slots = mapOf("content" to listOf(seedButton("Button"), seedButton("Button"))))
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteButtonGroupKt.RemoteButtonGroup"
       group = "Buttons"
@@ -237,6 +249,8 @@ private fun componentRemoteButtonGroup(): UiBuilderAuthoredComponent =
 private fun componentRemoteText(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(properties = mapOf("text" to seedValue("string", JsonPrimitive("Text"))))
       record = "remote-catalog/androidx.wear.compose.remote.material3.RemoteTextKt.RemoteText"
       group = "Text"
       canvas = "wear-m3/text"
@@ -471,6 +485,8 @@ private fun componentRemoteVerticalPageIndicator(): UiBuilderAuthoredComponent =
 private fun componentRemoteCircularProgressIndicator(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(properties = mapOf("progress" to seedValue("float", JsonPrimitive(0.6))))
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteCircularProgressIndicatorKt.RemoteCircularProgressIndicator"
       group = "Communication"
@@ -495,6 +511,8 @@ private fun componentRemoteCircularProgressIndicator(): UiBuilderAuthoredCompone
 private fun componentRemoteLinearProgressIndicator(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(properties = mapOf("progress" to seedValue("float", JsonPrimitive(0.6))))
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteLinearProgressIndicatorKt.RemoteLinearProgressIndicator"
       group = "Communication"
@@ -519,6 +537,8 @@ private fun componentRemoteLinearProgressIndicator(): UiBuilderAuthoredComponent
 private fun componentRemoteCurvedProgressIndicator(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(properties = mapOf("progress" to seedValue("float", JsonPrimitive(0.6))))
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteCurvedProgressIndicatorKt.RemoteCurvedProgressIndicator"
       group = "Communication"
@@ -543,6 +563,7 @@ private fun componentRemoteCurvedProgressIndicator(): UiBuilderAuthoredComponent
 private fun componentRemoteButton(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent = insertSeeds(slots = mapOf("content" to listOf(seedText("Button"))))
       record = "remote-catalog/androidx.wear.compose.remote.material3.RemoteButtonKt.RemoteButton"
       group = "Buttons"
       canvas = "wear-m3/button"
@@ -576,6 +597,7 @@ private fun componentRemoteButton(): UiBuilderAuthoredComponent =
 private fun componentRemoteCompactButton(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent = insertSeeds(slots = mapOf("label" to listOf(seedText("Compact"))))
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteButtonKt.RemoteCompactButton"
       group = "Buttons"
@@ -604,6 +626,7 @@ private fun componentRemoteCompactButton(): UiBuilderAuthoredComponent =
 private fun componentRemoteCard(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent = insertSeeds(slots = mapOf("content" to listOf(seedText("Card"))))
       record = "remote-catalog/androidx.wear.compose.remote.material3.RemoteCardKt.RemoteCard"
       group = "Containment"
       canvas = "wear-m3/card"
@@ -637,6 +660,7 @@ private fun componentRemoteCard(): UiBuilderAuthoredComponent =
 private fun componentRemoteOutlinedCard(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent = insertSeeds(slots = mapOf("content" to listOf(seedText("Card"))))
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteCardKt.RemoteOutlinedCard"
       group = "Containment"
@@ -661,6 +685,11 @@ private fun componentRemoteOutlinedCard(): UiBuilderAuthoredComponent =
 private fun componentRemoteCheckboxButton(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(
+          properties = mapOf("checked" to seedValue("bool", JsonPrimitive(true))),
+          slots = mapOf("label" to listOf(seedText("Checkbox"))),
+        )
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteCheckboxButtonKt.RemoteCheckboxButton"
       group = "Selection buttons"
@@ -671,6 +700,11 @@ private fun componentRemoteCheckboxButton(): UiBuilderAuthoredComponent =
 private fun componentRemoteSwitchButton(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(
+          properties = mapOf("checked" to seedValue("bool", JsonPrimitive(true))),
+          slots = mapOf("label" to listOf(seedText("Switch"))),
+        )
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteSwitchButtonKt.RemoteSwitchButton"
       group = "Selection buttons"
@@ -681,6 +715,11 @@ private fun componentRemoteSwitchButton(): UiBuilderAuthoredComponent =
 private fun componentRemoteRadioButton(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(
+          properties = mapOf("selected" to seedValue("bool", JsonPrimitive(true))),
+          slots = mapOf("label" to listOf(seedText("Option"))),
+        )
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteRadioButtonKt.RemoteRadioButton"
       group = "Selection buttons"
@@ -691,6 +730,11 @@ private fun componentRemoteRadioButton(): UiBuilderAuthoredComponent =
 private fun componentRemoteSplitCheckboxButton(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(
+          properties = mapOf("checked" to seedValue("bool", JsonPrimitive(true))),
+          slots = mapOf("label" to listOf(seedText("Checkbox"))),
+        )
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteSplitCheckboxButtonKt.RemoteSplitCheckboxButton"
       group = "Selection buttons"
@@ -701,6 +745,11 @@ private fun componentRemoteSplitCheckboxButton(): UiBuilderAuthoredComponent =
 private fun componentRemoteSplitSwitchButton(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(
+          properties = mapOf("checked" to seedValue("bool", JsonPrimitive(true))),
+          slots = mapOf("label" to listOf(seedText("Switch"))),
+        )
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteSplitSwitchButtonKt.RemoteSplitSwitchButton"
       group = "Selection buttons"
@@ -711,6 +760,11 @@ private fun componentRemoteSplitSwitchButton(): UiBuilderAuthoredComponent =
 private fun componentRemoteSplitRadioButton(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(
+          properties = mapOf("selected" to seedValue("bool", JsonPrimitive(true))),
+          slots = mapOf("label" to listOf(seedText("Option"))),
+        )
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteSplitRadioButtonKt.RemoteSplitRadioButton"
       group = "Selection buttons"
@@ -721,6 +775,8 @@ private fun componentRemoteSplitRadioButton(): UiBuilderAuthoredComponent =
 private fun componentRemoteSlider(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(properties = mapOf("value" to seedValue("float", JsonPrimitive(0.5))))
       record = "remote-catalog/androidx.wear.compose.remote.material3.RemoteSliderKt.RemoteSlider"
       group = "Sliders"
       canvas = "wear-m3/slider"
@@ -751,6 +807,8 @@ private fun componentRemoteSlider(): UiBuilderAuthoredComponent =
 private fun componentRemoteStepper(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(properties = mapOf("value" to seedValue("float", JsonPrimitive(0.5))))
       record = "remote-catalog/androidx.wear.compose.remote.material3.RemoteStepperKt.RemoteStepper"
       group = "Steppers"
       canvas = "wear-m3/stepper"
@@ -781,6 +839,7 @@ private fun componentRemoteStepper(): UiBuilderAuthoredComponent =
 private fun componentRemoteEdgeButton(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent = insertSeeds(slots = mapOf("content" to listOf(seedText("Done"))))
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteEdgeButtonKt.RemoteEdgeButton"
       group = "Edge-hugging buttons"
@@ -797,6 +856,7 @@ private fun componentRemoteEdgeButton(): UiBuilderAuthoredComponent =
 private fun componentRemoteIconButton(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent = insertSeeds(slots = mapOf("content" to listOf(seedText("+"))))
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteIconButtonKt.RemoteIconButton"
       group = "Buttons"
@@ -821,6 +881,7 @@ private fun componentRemoteIconButton(): UiBuilderAuthoredComponent =
 private fun componentRemoteTextButton(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent = insertSeeds(slots = mapOf("content" to listOf(seedText("OK"))))
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteTextButtonKt.RemoteTextButton"
       group = "Buttons"
@@ -845,6 +906,10 @@ private fun componentRemoteTextButton(): UiBuilderAuthoredComponent =
 private fun componentRemoteTitleCard(): UiBuilderAuthoredComponent =
   UiBuilderAuthoredComponent.Builder()
     .apply {
+      insertContent =
+        insertSeeds(
+          slots = mapOf("title" to listOf(seedText("Title")), "content" to listOf(seedText("Card")))
+        )
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteTitleCardKt.RemoteTitleCard"
       group = "Containment"
@@ -1558,6 +1623,15 @@ private fun builtinWidgetContainerLarge(): UiBuilderBuiltin =
 private fun builtinWidgetContainerAdaptive(): UiBuilderBuiltin =
   UiBuilderBuiltin.Builder("screen-root")
     .apply {
+      insertContent =
+        insertSeeds(
+          slots =
+            mapOf(
+              "headline" to listOf(seedText("Headline")),
+              "supporting" to listOf(seedText("Supporting text")),
+              "action" to listOf(seedButton("Open")),
+            )
+        )
       displayName = "Wear widget · Adaptive (experimental)"
       group = "Widget Container"
       canvas = "widget-container"
@@ -1696,6 +1770,38 @@ private fun policySupersedes(): JsonElement = buildJsonObject {
       )
     },
   )
+}
+
+// Insert seeds: what the builder places inside a component dropped from the palette, read ahead of
+// compose-ui-builder's `StarterContent` table. Labels are `remote-m3/remote-text`, which this
+// catalog offers, never `m3/text`, which it supersedes.
+private fun insertSeeds(
+  properties: Map<String, JsonElement> = emptyMap(),
+  slots: Map<String, List<JsonElement>> = emptyMap(),
+): JsonElement = seed(componentId = null, properties, slots)
+
+private fun seedText(text: String): JsonElement =
+  seed(
+    "remote-m3/remote-text",
+    properties = mapOf("text" to seedValue("string", JsonPrimitive(text))),
+  )
+
+private fun seedButton(label: String): JsonElement =
+  seed("remote-m3/remote-button", slots = mapOf("content" to listOf(seedText(label))))
+
+private fun seedValue(type: String, value: JsonPrimitive): JsonElement = buildJsonObject {
+  put("type", JsonPrimitive(type))
+  put("value", value)
+}
+
+private fun seed(
+  componentId: String?,
+  properties: Map<String, JsonElement> = emptyMap(),
+  slots: Map<String, List<JsonElement>> = emptyMap(),
+): JsonElement = buildJsonObject {
+  componentId?.let { put("componentId", JsonPrimitive(it)) }
+  if (properties.isNotEmpty()) put("properties", JsonObject(properties))
+  if (slots.isNotEmpty()) put("slots", JsonObject(slots.mapValues { JsonArray(it.value) }))
 }
 
 private fun property(
