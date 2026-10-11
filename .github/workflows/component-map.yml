@@ -70,6 +70,16 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           ref: ${{ github.event.repository.default_branch }}
+      # The Wear sheet's annotations, which `scripts/component-map.mjs` reads from
+      # `.wear-m3-catalog/catalog/src` by default. Its default branch, NOT the
+      # `.github/ci/wear-m3-catalog-ref` pin the pairing gate in ci.yml uses: this is a record of
+      # both sheets as they stand, not a gate (see the header). `.wear-m3-catalog/` is gitignored, so
+      # the `git add` below cannot pick it up.
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: yschimke/wear-m3-catalog
+          path: .wear-m3-catalog
+          persist-credentials: false
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: 24.21.0
