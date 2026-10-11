@@ -17,10 +17,10 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 class AuthoredPolicyTest {
-  private val json = Json {
-    ignoreUnknownKeys = true
-    encodeDefaults = true
-  }
+  // Strict: a policy field the pinned protocol does not model must fail the equivalence check
+  // rather than be dropped from both sides before they are compared. Only the documented
+  // `$comment*` keys are removed, and they are removed from the raw JSON first ([withoutComments]).
+  private val json = Json { encodeDefaults = true }
 
   @Test
   fun `Kotlin policy preserves the complete production vocabulary`() {
@@ -48,9 +48,13 @@ class AuthoredPolicyTest {
     }
     authoredPolicies().forEach { authored ->
       val production =
-        json.decodeFromString(
+        json.decodeFromJsonElement(
           UiBuilderPolicyFile.serializer(),
-          File(System.getProperty("catalogRoot"), authored.baseline).readText(),
+          withoutComments(
+            json.parseToJsonElement(
+              File(System.getProperty("catalogRoot"), authored.baseline).readText()
+            )
+          ),
         )
       assertEquals(canonical(production), canonical(authored.policy), authored.outputName)
       assertEquals(production.components.keys.toList(), authored.policy.components.keys.toList())

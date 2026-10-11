@@ -50,6 +50,8 @@ import androidx.compose.remote.creation.compose.modifier.width
 import androidx.compose.remote.creation.compose.modifier.widthIn
 import androidx.compose.remote.creation.compose.modifier.wrapContentSize
 import androidx.compose.remote.creation.compose.modifier.zIndex
+import androidx.compose.remote.creation.compose.painter.RemotePainter
+import androidx.compose.remote.creation.compose.painter.painterRemoteImageBitmap
 import androidx.compose.remote.creation.compose.shaders.RemoteBrush
 import androidx.compose.remote.creation.compose.shaders.horizontalGradient
 import androidx.compose.remote.creation.compose.shaders.verticalGradient
@@ -139,6 +141,7 @@ import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
 import ee.schimke.composeai.uibuilder.export.UiBuilderNode
 import ee.schimke.composeai.uibuilder.export.UiDrawing
+import ee.schimke.composeai.uibuilder.export.UiExpressions
 import ee.schimke.composeai.uibuilder.export.UiRemoteTheme
 import ee.schimke.composeai.uibuilder.export.UiTimeText
 import ee.schimke.composeai.uibuilder.export.WearScreenTheme
@@ -541,6 +544,18 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
   }
 
   /**
+   * The picture a button's or card's `containerImageKey` names, as the export's
+   * `painterRemoteImageBitmap(…)`; null, for the plain container, when there is no key or the
+   * editor has not inlined that asset's bytes.
+   */
+  @Composable
+  private fun containerImagePainter(node: UiBuilderNode): RemotePainter? {
+    val bytes = document.embeddedAssetBytes(node.string("containerImageKey"))
+    val bitmap = remember(bytes) { bytes?.let(::decodeDesignAssetBitmap) }
+    return remember(bitmap) { bitmap?.let { painterRemoteImageBitmap(it.rb) } }
+  }
+
+  /**
    * One node, entered from the container it sits in.
    *
    * [row] and [column] are that container's scope, because `weight` is a member of it rather than a
@@ -684,14 +699,27 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
           style = node.textStyle().withFontFeatures(node),
           fontVariationSettings = node.fontVariationSettings(),
         )
-      "remote-m3/remote-button" ->
-        RemoteButton(
-          onClick = values.action(node, "click"),
-          modifier = modifier,
-          enabled = node.enabled(),
-        ) {
-          entry.slot("content").forEach { RenderNode(it) }
+      "remote-m3/remote-button" -> {
+        val containerPainter = containerImagePainter(node)
+        if (containerPainter == null) {
+          RemoteButton(
+            onClick = values.action(node, "click"),
+            modifier = modifier,
+            enabled = node.enabled(),
+          ) {
+            entry.slot("content").forEach { RenderNode(it) }
+          }
+        } else {
+          RemoteButton(
+            onClick = values.action(node, "click"),
+            containerPainter = containerPainter,
+            modifier = modifier,
+            enabled = node.enabled(),
+          ) {
+            entry.slot("content").forEach { RenderNode(it) }
+          }
         }
+      }
       // The icon the published catalog maps onto the canvas's `wear-m3/icon`: its `imageVector` is
       // that adapter's `iconKey`, with the same `addCircle` default, so both surfaces draw the same
       // glyph. Without this branch the pane drew the red "Unsupported" text, which a round button
@@ -703,20 +731,41 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
         } else {
           RemoteIcon(
             imageVector = vector.toRemoteImageVector(),
-            contentDescription = node.string("contentDescription").ifEmpty { null }?.rs,
+            // A state, binding or computed description resolves through the document (a binding
+            // carries its key in `value`, so the wrapper's type decides, not `value`); a literal
+            // goes through `string` so an empty one is no description.
+            contentDescription =
+              if (node.isDynamic("contentDescription")) {
+                values.string(node.properties["contentDescription"])
+              } else {
+                node.string("contentDescription").ifEmpty { null }?.rs
+              },
             modifier = modifier,
             tint = node.remoteColor("tint") ?: LocalRemoteContentColor.current,
           )
         }
       }
-      "remote-m3/remote-card" ->
-        RemoteCard(
-          onClick = values.action(node, "click"),
-          modifier = modifier,
-          enabled = node.enabled(),
-        ) {
-          entry.slot("content").forEach { RenderNode(it) }
+      "remote-m3/remote-card" -> {
+        val containerPainter = containerImagePainter(node)
+        if (containerPainter == null) {
+          RemoteCard(
+            onClick = values.action(node, "click"),
+            modifier = modifier,
+            enabled = node.enabled(),
+          ) {
+            entry.slot("content").forEach { RenderNode(it) }
+          }
+        } else {
+          RemoteCard(
+            onClick = values.action(node, "click"),
+            containerPainter = containerPainter,
+            modifier = modifier,
+            enabled = node.enabled(),
+          ) {
+            entry.slot("content").forEach { RenderNode(it) }
+          }
         }
+      }
       "remote-m3/remote-circular-progress-indicator" ->
         RemoteCircularProgressIndicator(
           progress = values.float(node.properties["progress"]) ?: 0f.rf,
@@ -901,6 +950,8 @@ private class RemoteDocumentTree(private val document: UiBuilderDocument) {
           secondaryLabel = entry.rowSlotContent("secondaryLabel"),
           icon = entry.slotContent("icon"),
           enabled = node.enabled(),
+          containerPainter = containerImagePainter(node),
+          borderColor = node.remoteColor("borderColor"),
           label = entry.rowSlotContent("label") ?: {},
         )
       // The overridden roles over the enclosing scheme, as the export's `colorScheme.copy(…)`.
@@ -1043,6 +1094,13 @@ private fun UiBuilderDocument.playerTheme(): RcPlayerTheme =
 
 private fun UiBuilderNode.value(name: String): JsonPrimitive? =
   ((properties[name] as? JsonObject)?.get("value") as? JsonPrimitive)
+
+/** Whether [name] is a state read, a binding or a computed expression rather than a literal. */
+private fun UiBuilderNode.isDynamic(name: String): Boolean {
+  val wrapper = properties[name] as? JsonObject ?: return false
+  val type = (wrapper["type"] as? JsonPrimitive)?.contentOrNull
+  return type == "state" || type == "binding" || UiExpressions.isComputed(wrapper)
+}
 
 private fun UiBuilderNode.string(name: String): String = value(name)?.contentOrNull.orEmpty()
 
