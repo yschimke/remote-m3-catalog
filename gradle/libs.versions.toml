@@ -196,6 +196,7 @@ robolectric = "4.17"
 junit = "4.13.2"
 
 [libraries]
+composeai-tools-bom = { module = "ee.schimke.composeai:compose-ai-tools-bom", version.ref = "composePreviewPlugin" }
 composeai-contracts-bom = { module = "ee.schimke.composeai:compose-preview-contracts-bom", version.ref = "composePreviewContracts" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 compose-ui = { module = "androidx.compose.ui:ui" }
