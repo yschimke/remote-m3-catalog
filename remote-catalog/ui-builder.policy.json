@@ -90,6 +90,7 @@
   "$comment_components": "Where a component sits on the shelf when the id it derives from does not say. One id per SYMBOL means a component lands on whichever catalog id sorts first: RemoteText is drawn by 29 stickers and arrived under Containment via AppCard, leaving the Text shelf empty. Canvas adapters are an approximate editing projection only: every one below is admitted by a `parallel` relationship to the sibling Wear catalog, while the authored properties and slots remain the Remote API's and the exported `.rc` Browser Preview plus generated Remote source remain authoritative. A canvasMapping translates only the names the Wear counterpart reads and never mutates the stored design or either export.",
   "components": {
     "remote-m3/remote-app-card": {
+      "insertContent": {"slots": {"appName": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "App"}}}], "title": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Title"}}}], "content": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Card"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteAppCardKt.RemoteAppCard",
       "group": "Containment",
       "canvas": "wear-m3/card",
@@ -99,6 +100,7 @@
       }
     },
     "remote-m3/remote-button-group": {
+      "insertContent": {"slots": {"content": [{"componentId": "remote-m3/remote-button", "slots": {"content": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Button"}}}]}}, {"componentId": "remote-m3/remote-button", "slots": {"content": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Button"}}}]}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteButtonGroupKt.RemoteButtonGroup",
       "group": "Buttons",
       "canvas": "wear-m3/button-group",
@@ -107,6 +109,7 @@
       }
     },
     "remote-m3/remote-text": {
+      "insertContent": {"properties": {"text": {"type": "string", "value": "Text"}}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteTextKt.RemoteText",
       "group": "Text",
       "canvas": "wear-m3/text",
@@ -244,6 +247,7 @@
       ]
     },
     "remote-m3/remote-circular-progress-indicator": {
+      "insertContent": {"properties": {"progress": {"type": "float", "value": 0.6}}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteCircularProgressIndicatorKt.RemoteCircularProgressIndicator",
       "group": "Communication",
       "canvas": "wear-m3/progress-indicator",
@@ -252,6 +256,7 @@
       }
     },
     "remote-m3/remote-linear-progress-indicator": {
+      "insertContent": {"properties": {"progress": {"type": "float", "value": 0.6}}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteLinearProgressIndicatorKt.RemoteLinearProgressIndicator",
       "group": "Communication",
       "canvas": "wear-m3/progress-indicator",
@@ -260,6 +265,7 @@
       }
     },
     "remote-m3/remote-curved-progress-indicator": {
+      "insertContent": {"properties": {"progress": {"type": "float", "value": 0.6}}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteCurvedProgressIndicatorKt.RemoteCurvedProgressIndicator",
       "group": "Communication",
       "canvas": "wear-m3/progress-indicator",
@@ -268,6 +274,7 @@
       }
     },
     "remote-m3/remote-button": {
+      "insertContent": {"slots": {"content": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Button"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteButtonKt.RemoteButton",
       "group": "Buttons",
       "canvas": "wear-m3/button",
@@ -284,6 +291,7 @@
       ]
     },
     "remote-m3/remote-compact-button": {
+      "insertContent": {"slots": {"label": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Compact"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteButtonKt.RemoteCompactButton",
       "group": "Buttons",
       "canvas": "wear-m3/button",
@@ -293,6 +301,7 @@
       }
     },
     "remote-m3/remote-card": {
+      "insertContent": {"slots": {"content": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Card"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteCardKt.RemoteCard",
       "group": "Containment",
       "canvas": "wear-m3/card",
@@ -309,6 +318,7 @@
       ]
     },
     "remote-m3/remote-outlined-card": {
+      "insertContent": {"slots": {"content": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Card"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteCardKt.RemoteOutlinedCard",
       "group": "Containment",
       "canvas": "wear-m3/card",
@@ -317,36 +327,43 @@
       }
     },
     "remote-m3/remote-checkbox-button": {
+      "insertContent": {"properties": {"checked": {"type": "bool", "value": true}}, "slots": {"label": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Checkbox"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteCheckboxButtonKt.RemoteCheckboxButton",
       "group": "Selection buttons",
       "canvas": "wear-m3/checkbox-button"
     },
     "remote-m3/remote-switch-button": {
+      "insertContent": {"properties": {"checked": {"type": "bool", "value": true}}, "slots": {"label": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Switch"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteSwitchButtonKt.RemoteSwitchButton",
       "group": "Selection buttons",
       "canvas": "wear-m3/switch-button"
     },
     "remote-m3/remote-radio-button": {
+      "insertContent": {"properties": {"selected": {"type": "bool", "value": true}}, "slots": {"label": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Option"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteRadioButtonKt.RemoteRadioButton",
       "group": "Selection buttons",
       "canvas": "wear-m3/radio-button"
     },
     "remote-m3/remote-split-checkbox-button": {
+      "insertContent": {"properties": {"checked": {"type": "bool", "value": true}}, "slots": {"label": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Checkbox"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteSplitCheckboxButtonKt.RemoteSplitCheckboxButton",
       "group": "Selection buttons",
       "canvas": "wear-m3/checkbox-button"
     },
     "remote-m3/remote-split-switch-button": {
+      "insertContent": {"properties": {"checked": {"type": "bool", "value": true}}, "slots": {"label": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Switch"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteSplitSwitchButtonKt.RemoteSplitSwitchButton",
       "group": "Selection buttons",
       "canvas": "wear-m3/switch-button"
     },
     "remote-m3/remote-split-radio-button": {
+      "insertContent": {"properties": {"selected": {"type": "bool", "value": true}}, "slots": {"label": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Option"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteSplitRadioButtonKt.RemoteSplitRadioButton",
       "group": "Selection buttons",
       "canvas": "wear-m3/radio-button"
     },
     "remote-m3/remote-slider": {
+      "insertContent": {"properties": {"value": {"type": "float", "value": 0.5}}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteSliderKt.RemoteSlider",
       "group": "Sliders",
       "canvas": "wear-m3/slider",
@@ -358,6 +375,7 @@
       }
     },
     "remote-m3/remote-stepper": {
+      "insertContent": {"properties": {"value": {"type": "float", "value": 0.5}}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteStepperKt.RemoteStepper",
       "group": "Steppers",
       "canvas": "wear-m3/stepper",
@@ -369,6 +387,7 @@
       }
     },
     "remote-m3/remote-edge-button": {
+      "insertContent": {"slots": {"content": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Done"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteEdgeButtonKt.RemoteEdgeButton",
       "group": "Edge-hugging buttons",
       "canvas": "wear-m3/edge-button",
@@ -377,6 +396,7 @@
       }
     },
     "remote-m3/remote-icon-button": {
+      "insertContent": {"slots": {"content": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "+"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteIconButtonKt.RemoteIconButton",
       "group": "Buttons",
       "canvas": "wear-m3/icon-button",
@@ -385,6 +405,7 @@
       }
     },
     "remote-m3/remote-text-button": {
+      "insertContent": {"slots": {"content": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "OK"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteTextButtonKt.RemoteTextButton",
       "group": "Buttons",
       "canvas": "wear-m3/text-button",
@@ -393,6 +414,7 @@
       }
     },
     "remote-m3/remote-title-card": {
+      "insertContent": {"slots": {"title": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Title"}}}], "content": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Card"}}}]}},
       "record": "remote-catalog/androidx.wear.compose.remote.material3.RemoteTitleCardKt.RemoteTitleCard",
       "group": "Containment",
       "canvas": "wear-m3/card",
@@ -917,6 +939,7 @@
       "modifierCapabilities": []
     },
     "remote-m3/widget-container-adaptive": {
+      "insertContent": {"slots": {"headline": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Headline"}}}], "supporting": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Supporting text"}}}], "action": [{"componentId": "remote-m3/remote-button", "slots": {"content": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Open"}}}]}}]}},
       "role": "screen-root",
       "displayName": "Wear widget · Adaptive (experimental)",
       "group": "Widget Container",
