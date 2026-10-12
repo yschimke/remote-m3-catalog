@@ -1,0 +1,105 @@
+{
+  "schema": "compose-ui-builder-document/v1-candidate",
+  "id": "list-sub-header",
+  "title": "KitListSubHeaderRemote",
+  "revision": 0,
+  "catalogPin": {
+    "systemId": "remote-m3",
+    "catalogRevision": "candidate",
+    "capabilityDigest": "candidate",
+    "nativeRuntimeId": "candidate"
+  },
+  "environment": {
+    "widthDp": 192,
+    "heightDp": 192,
+    "density": 2.0,
+    "theme": "dark",
+    "locale": "en-US",
+    "fontScale": 1,
+    "layoutDirection": "ltr"
+  },
+  "roots": [
+    "place"
+  ],
+  "components": {
+    "list-sub-header": {
+      "name": "KitListSubHeaderRemote",
+      "root": "row"
+    }
+  },
+  "nodes": {
+    "place": {
+      "id": "place",
+      "componentId": "design/component-instance",
+      "component": {
+        "componentKey": "list-sub-header",
+        "arguments": {
+          "label": {
+            "type": "string",
+            "value": "Subtitle"
+          }
+        }
+      }
+    },
+    "row": {
+      "id": "row",
+      "componentId": "layout/row",
+      "properties": {
+        "verticalAlignment": {
+          "type": "enum",
+          "value": "center"
+        }
+      },
+      "slots": {
+        "children": [
+          "label"
+        ]
+      },
+      "modifiers": [
+        {
+          "type": "width",
+          "widthDp": 180
+        },
+        {
+          "type": "heightIn",
+          "minDp": 48
+        },
+        {
+          "type": "padding",
+          "startDp": 14,
+          "topDp": 16,
+          "endDp": 14,
+          "bottomDp": 8
+        }
+      ]
+    },
+    "label": {
+      "id": "label",
+      "componentId": "remote-m3/remote-text",
+      "properties": {
+        "text": {
+          "type": "binding",
+          "value": "label"
+        },
+        "style": {
+          "type": "enum",
+          "value": "titleSmall"
+        },
+        "color": {
+          "type": "enum",
+          "value": "onSurface"
+        },
+        "textAlign": {
+          "type": "enum",
+          "value": "start"
+        }
+      },
+      "slots": {},
+      "modifiers": [
+        {
+          "type": "fillMaxWidth"
+        }
+      ]
+    }
+  }
+}

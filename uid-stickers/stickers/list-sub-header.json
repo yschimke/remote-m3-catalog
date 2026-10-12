@@ -1,0 +1,164 @@
+{
+  "variants": {
+    "Centred": [
+      {
+        "type": "setProperty",
+        "nodeId": "label",
+        "property": "textAlign",
+        "value": {
+          "type": "enum",
+          "value": "center"
+        }
+      }
+    ],
+    "Icon centred": [
+      {
+        "type": "deleteNode",
+        "nodeId": "label"
+      },
+      {
+        "type": "addNode",
+        "parentId": "row",
+        "slot": "children",
+        "node": {
+          "id": "icon",
+          "componentId": "remote-m3/remote-icon",
+          "properties": {
+            "imageVector": {
+              "type": "enum",
+              "value": "add"
+            },
+            "tint": {
+              "type": "enum",
+              "value": "onSurface"
+            }
+          },
+          "slots": {},
+          "modifiers": [
+            {
+              "type": "size",
+              "widthDp": 24,
+              "heightDp": 24
+            },
+            {
+              "type": "padding",
+              "startDp": 0,
+              "topDp": 0,
+              "endDp": 6,
+              "bottomDp": 0
+            }
+          ]
+        }
+      },
+      {
+        "type": "addNode",
+        "parentId": "row",
+        "slot": "children",
+        "node": {
+          "id": "label",
+          "componentId": "remote-m3/remote-text",
+          "properties": {
+            "text": {
+              "type": "binding",
+              "value": "label"
+            },
+            "style": {
+              "type": "enum",
+              "value": "titleSmall"
+            },
+            "color": {
+              "type": "enum",
+              "value": "onSurface"
+            },
+            "textAlign": {
+              "type": "enum",
+              "value": "center"
+            }
+          },
+          "slots": {},
+          "modifiers": [
+            {
+              "type": "fillMaxWidth"
+            }
+          ]
+        }
+      }
+    ],
+    "Icon": [
+      {
+        "type": "deleteNode",
+        "nodeId": "label"
+      },
+      {
+        "type": "addNode",
+        "parentId": "row",
+        "slot": "children",
+        "node": {
+          "id": "icon",
+          "componentId": "remote-m3/remote-icon",
+          "properties": {
+            "imageVector": {
+              "type": "enum",
+              "value": "add"
+            },
+            "tint": {
+              "type": "enum",
+              "value": "onSurface"
+            }
+          },
+          "slots": {},
+          "modifiers": [
+            {
+              "type": "size",
+              "widthDp": 24,
+              "heightDp": 24
+            },
+            {
+              "type": "padding",
+              "startDp": 0,
+              "topDp": 0,
+              "endDp": 6,
+              "bottomDp": 0
+            }
+          ]
+        }
+      },
+      {
+        "type": "addNode",
+        "parentId": "row",
+        "slot": "children",
+        "node": {
+          "id": "label",
+          "componentId": "remote-m3/remote-text",
+          "properties": {
+            "text": {
+              "type": "binding",
+              "value": "label"
+            },
+            "style": {
+              "type": "enum",
+              "value": "titleSmall"
+            },
+            "color": {
+              "type": "enum",
+              "value": "onSurface"
+            },
+            "textAlign": {
+              "type": "enum",
+              "value": "start"
+            }
+          },
+          "slots": {},
+          "modifiers": [
+            {
+              "type": "fillMaxWidth"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "pairs": {
+    "ListSubHeaderRemote": "ListSubHeaderRemote"
+  }
+}

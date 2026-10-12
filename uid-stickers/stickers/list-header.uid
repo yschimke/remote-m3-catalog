@@ -1,0 +1,105 @@
+{
+  "schema": "compose-ui-builder-document/v1-candidate",
+  "id": "list-header",
+  "title": "KitListHeaderRemote",
+  "revision": 0,
+  "catalogPin": {
+    "systemId": "remote-m3",
+    "catalogRevision": "candidate",
+    "capabilityDigest": "candidate",
+    "nativeRuntimeId": "candidate"
+  },
+  "environment": {
+    "widthDp": 192,
+    "heightDp": 192,
+    "density": 2.0,
+    "theme": "dark",
+    "locale": "en-US",
+    "fontScale": 1,
+    "layoutDirection": "ltr"
+  },
+  "roots": [
+    "place"
+  ],
+  "components": {
+    "list-header": {
+      "name": "KitListHeaderRemote",
+      "root": "frame"
+    }
+  },
+  "nodes": {
+    "place": {
+      "id": "place",
+      "componentId": "design/component-instance",
+      "component": {
+        "componentKey": "list-header",
+        "arguments": {
+          "label": {
+            "type": "string",
+            "value": "Title"
+          }
+        }
+      }
+    },
+    "frame": {
+      "id": "frame",
+      "componentId": "layout/box",
+      "properties": {
+        "contentAlignment": {
+          "type": "enum",
+          "value": "center"
+        }
+      },
+      "slots": {
+        "children": [
+          "title"
+        ]
+      },
+      "modifiers": [
+        {
+          "type": "width",
+          "widthDp": 180
+        },
+        {
+          "type": "heightIn",
+          "minDp": 48
+        },
+        {
+          "type": "padding",
+          "startDp": 14,
+          "topDp": 16,
+          "endDp": 14,
+          "bottomDp": 12
+        }
+      ]
+    },
+    "title": {
+      "id": "title",
+      "componentId": "remote-m3/remote-text",
+      "properties": {
+        "text": {
+          "type": "binding",
+          "value": "label"
+        },
+        "style": {
+          "type": "enum",
+          "value": "titleMedium"
+        },
+        "color": {
+          "type": "enum",
+          "value": "onBackground"
+        },
+        "textAlign": {
+          "type": "enum",
+          "value": "center"
+        }
+      },
+      "slots": {},
+      "modifiers": [
+        {
+          "type": "fillMaxWidth"
+        }
+      ]
+    }
+  }
+}

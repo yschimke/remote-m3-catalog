@@ -171,3 +171,9 @@ include(":vendor:remote-write-core")
 include(":remote-wasm")
 
 include(":remote-desktop")
+
+// The shadow catalog: Remote stickers whose body is a UI builder document
+// (`uid-stickers/README.md`).
+if (providers.gradleProperty("uidStickers").orNull == "true") {
+  include(":uid-stickers")
+}

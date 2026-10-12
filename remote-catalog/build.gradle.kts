@@ -323,3 +323,22 @@ tasks.withType<Test>().configureEach {
     systemProperty("composeai.fonts.cacheDir", it)
   }
 }
+
+// ── The shadow catalog (`-PuidStickers=true`) ────────────────────────────────────────────────────
+//
+// `:uid-stickers` exports UI builder documents to Remote Compose Kotlin, and its shells carry the
+// hand-written stickers' annotations over those generated bodies. Compiled here, beside the
+// stickers they shadow, so ONE render draws both and `uid-stickers/compare-local.py` pairs them
+// capture for capture. Off by default: nothing ships from it and the published inventory is
+// unchanged.
+if (providers.gradleProperty("uidStickers").orNull == "true") {
+  android {
+    sourceSets.getByName("main").kotlin.directories.apply {
+      add(rootProject.file("uid-stickers/shells/kotlin").path)
+      add(rootProject.file("uid-stickers/build/generated/uid/kotlin").path)
+    }
+  }
+  tasks
+    .matching { it.name.startsWith("compile") && it.name.contains("Kotlin") }
+    .configureEach { dependsOn(":uid-stickers:generateUidStickers") }
+}
