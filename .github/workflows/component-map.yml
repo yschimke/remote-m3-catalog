@@ -80,7 +80,7 @@ jobs:
           repository: yschimke/wear-m3-catalog
           path: .wear-m3-catalog
           persist-credentials: false
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: 24.21.0
 
