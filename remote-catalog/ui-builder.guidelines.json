@@ -2,7 +2,7 @@
   "schema": "compose-ui-builder/catalog-guidelines/v1",
   "catalog": "remote-m3",
   "platform": "wear",
-  "version": 1,
+  "version": 2,
   "about": "Wear OS widget design guidance from developer.android.com, for Remote Compose Wear widgets.",
   "frames": [
     {
@@ -57,7 +57,7 @@
       "kind": "structure",
       "severity": "warning",
       "guidance": "Color roles come in pairs (container and on-container) that provide a minimum of 3:1 color contrast. Custom colors should keep that contrast.",
-      "check": "Where the design overrides colors, does it pair each container color with its matching content (on-) role, or with colors that are clearly high contrast?",
+      "check": "Where the design overrides colors or uses semantic domain colors (such as weather conditions, heart-rate zones or status levels), does it pair each container color with its matching content (on-) role, or with foreground colors that have clear contrast (at least 4.5:1 for small text and 3:1 for large text and icons)?",
       "source": "https://developer.android.com/design/ui/wear/guides/styles/color/roles-tokens",
       "profiles": [
         "wear-widgets"
@@ -183,7 +183,7 @@
       "kind": "structure",
       "severity": "warning",
       "guidance": "Tokens assign an element's type style by a configurable value, rather than a set value, making managing styles and themes considerably easier.",
-      "check": "Do text nodes set a style rather than fontSizeSp, lineHeightSp or letterSpacingSp, and do colours come from the theme's colour roles rather than hex values on individual components? Typography set once on the widget root (remote-m3/widget-container-small, remote-m3/widget-container-large or remote-m3/widget-container-adaptive) through its themeDisplayTypeface, themeTitleTypeface, themeBodyTypeface, themeLabelTypeface or themeTextStyle properties is the theme, and is fine.",
+      "check": "Do text nodes set a style rather than fontSizeSp, lineHeightSp or letterSpacingSp, and do colours come from the theme's colour roles or named semantic domain colours (such as weather conditions, heart-rate zones or status levels) paired for contrast, rather than ad-hoc hex values on individual components? Typography set once on the widget root (remote-m3/widget-container-small, remote-m3/widget-container-large or remote-m3/widget-container-adaptive) through its themeDisplayTypeface, themeTitleTypeface, themeBodyTypeface, themeLabelTypeface or themeTextStyle properties is the theme, and is fine.",
       "source": "https://developer.android.com/design/ui/wear/guides/styles/typography",
       "profiles": [
         "wear-widgets"
