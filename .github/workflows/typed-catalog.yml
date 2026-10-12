@@ -13,6 +13,10 @@ on:
       - 'ui-builder.policy.json'
       - 'gradle/libs.versions.toml'
       - 'scripts/validate-typed-m3-policies.sh'
+      - 'scripts/validate-typed-remote-pilot.sh'
+      - 'settings.gradle.kts'
+      - 'remote-catalog/ui-builder/designs/**'
+      - 'vendor/**'
       - '.github/workflows/typed-catalog.yml'
 
 permissions:
@@ -46,3 +50,35 @@ jobs:
             catalog-typed-generator/build/reports/tests/
             catalog-typed-policy/build/catalog/
             catalog-typed-policy/build/reports/tests/
+
+  # The typed-export pilot (docs/design/TYPED_REMOTE_PILOT.md): real-record definitions on the
+  # Remote Compose composables, the hidden `remote-m3-typed-pilot` pair, and every committed remote
+  # design exported through compose-ui-builder's generic `compose-component-records` export, each
+  # refusal pinned. Opt-in (`-PtypedRemoteCatalog=true`); nothing here publishes.
+  remote-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7.0.1
+      # The pilot resolves the compose-ai-tools v2.52.0 (9310fba0) and compose-ui-builder v3.109.0
+      # (34701265) RELEASES, pinned in catalog-typed-adapters/build.gradle.kts. A tools source
+      # composite cannot share this build with `:remote-catalog`'s versioned preview plugin; see
+      # settings.gradle.kts.
+      - uses: actions/setup-java@v6.0.1
+        with:
+          distribution: temurin
+          java-version: |
+            17
+            21
+      - uses: gradle/actions/setup-gradle@v6.4.0
+        with:
+          cache-read-only: ${{ github.event_name == 'pull_request' }}
+      - name: Validate the typed Remote export pilot
+        run: scripts/validate-typed-remote-pilot.sh
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: typed-remote-pilot
+          path: |
+            catalog-typed-adapters/build/catalog/
+            catalog-typed-adapters/build/reports/tests/

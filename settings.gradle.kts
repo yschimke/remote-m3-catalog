@@ -126,6 +126,22 @@ if (providers.gradleProperty("composeUiBuilderDir").isPresent) {
   include(":ui-builder-wear-adapters")
 }
 
+// The typed-export pilot: Kotlin adapter definitions on the real Remote Compose composables,
+// published as a hidden `remote-m3-typed-pilot` pair beside production `remote-m3` and exported
+// through compose-ui-builder's generic `compose-component-records` export. Nothing in ordinary
+// discovery, rendering or delivery reads it (docs/design/TYPED_REMOTE_PILOT.md):
+//
+//   ./gradlew -PtypedRemoteCatalog=true :catalog-typed-adapters:test
+//
+// It resolves compose-ai-tools 2.52.0 and compose-ui-builder 3.109.0 as RELEASED, pinned in its
+// build file. Not as a compose-ai-tools source composite, as wear-m3-catalog's pilot does: that
+// build carries the `ee.schimke.composeai.preview` plugin, and putting it on this build's
+// classpath breaks `:remote-catalog`'s versioned request for the same plugin ("already on the
+// classpath with an unknown version"). The released artifacts are those tags' own outputs.
+if (providers.gradleProperty("typedRemoteCatalog").orNull == "true") {
+  include(":catalog-typed-adapters")
+}
+
 // The Remote Compose rendition of the M3 Wear OS Apps Design Kit — the `remote-m3` system. Its
 // Wear Compose sibling, the `wear-m3-catalog` system, lives in yschimke/wear-m3-catalog; the two
 // pair component by component through `parallel` (scripts/parallel-map.sh). See
