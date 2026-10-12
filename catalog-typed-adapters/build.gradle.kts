@@ -6,7 +6,7 @@ plugins { id("org.jetbrains.kotlin.jvm") }
 // included under `-PtypedRemoteCatalog=true` (settings.gradle.kts); production discovery,
 // rendering and delivery never read it. docs/design/TYPED_REMOTE_PILOT.md.
 
-// The two releases the pilot is written against, pinned to the tags `typed-catalog.yml` checks out
+// The two releases the pilot is written against, pinned to the release tags
 // (compose-ai-tools v2.52.0 = 9310fba0, compose-ui-builder v3.109.0 = 34701265). Deliberately NOT
 // the catalog's Renovate-owned `composePreviewPlugin` / `composePreviewServer`: the projections are
 // written against these APIs, and a pilot moving with production would stop measuring anything.
@@ -31,7 +31,7 @@ sourceSets.named("main") {
 dependencies {
   // The typed adapter API (`TypedComponentAdapter`, `ExportProjection`, `ScreenGenerator`) and the
   // library-metadata discovery the real records are read with, at the compose-ai-tools release
-  // the pilot is written against. `-PcomposeAiToolsDir` substitutes a source checkout instead.
+  // the pilot is written against.
   implementation(platform(libs.composeai.contracts.bom))
   implementation(platform("ee.schimke.composeai:compose-ai-tools-bom:$pilotTools"))
   implementation("ee.schimke.composeai:screen-model")

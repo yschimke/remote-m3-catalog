@@ -261,28 +261,28 @@ not in the default build:
   and column with nothing Remote-valued emit `RemoteBox(contentAlignment = RemoteAlignment.Center) {
   RemoteColumn { … } }`.
 
-Run it with `scripts/validate-typed-remote-pilot.sh [<compose-ai-tools> <compose-ui-builder>]`. CI
-runs it in `typed-catalog.yml`'s `remote-pilot` job, against source checkouts of both repositories
-at the pinned tags.
+Run it with `scripts/validate-typed-remote-pilot.sh`. CI runs it in `typed-catalog.yml`'s
+`remote-pilot` job.
 
-## Publishing: not done, and why
+The module resolves compose-ai-tools 2.52.0 and compose-ui-builder 3.109.0 as released artifacts,
+pinned in its build file. It does not build them from source checkouts the way wear-m3-catalog's
+pilot does. A compose-ai-tools source composite puts that build's `ee.schimke.composeai.preview`
+plugin on this build's classpath. `:remote-catalog`'s versioned request for the same plugin then
+fails with "already on the classpath with an unknown version". That is the first CI run of this
+job, on d13dd42. The released artifacts at those tags are the same code.
 
-The pilot builds, but no publish lane to `yschimke/remote-m3-catalog-out`
-`design-artifacts/remote-m3-typed-pilot` is added, for two reasons:
+## Publishing: through the reusable workflow, later
 
-1. **Nothing would be A/B tested.** Every committed design is refused by the pilot's export. A served
-   pilot would offer the builder a Kotlin export that refuses everything, against production's that
-   writes everything.
-2. **The reusable workflow cannot publish a generated pair.** compose-ai-tools'
-   `design-artifacts-reusable.yml` derives the catalog from the module's spec and its committed
-   `ui-builder.policy.json`. No input substitutes a generated policy, record and catalog id. This
-   repository's rule (AGENTS.md) is that such a capability becomes a generic input upstream, never
-   a forked pipeline here.
+This change adds no publish lane and no repository-local pipeline or assembler. Publishing to
+`yschimke/remote-m3-catalog-out` `design-artifacts/remote-m3-typed-pilot` will go through
+compose-ai-tools' `design-artifacts-reusable.yml`, using the generic typed-pilot publish mode being
+added there, with the existing secrets. This repository's rule (AGENTS.md) is that a capability any
+catalog could want is a generic input on that workflow, never a forked pipeline here.
 
-Once gaps 1 to 5 land and at least one design emits, the lane is the production `remote` job
-plus an upstream input, for example `ui-builder-pair-artifact`, that points at
-`catalog-typed-adapters/build/catalog/remote-m3-typed-pilot`. It would publish with `system:
-remote-m3-typed-pilot` and reuse the existing secrets.
+`generateTypedPilot` writes the pair that mode will publish, under
+`catalog-typed-adapters/build/catalog/remote-m3-typed-pilot/`. Until gaps 1 to 5 land, every
+committed design is refused by the pilot's export, so a served pilot would have nothing to A/B test
+against production.
 
 ## Order
 
@@ -291,5 +291,5 @@ remote-m3-typed-pilot` and reuse the existing secrets.
 2. Gaps 3 and 4 in compose-ui-builder. Then `weather` and the starters lower, apart from the frame.
 3. Gap 5 (and 6) across both. Then the four non-adaptive designs emit through a per-container
    frame.
-4. The publish lane, then the shelf beyond the five designs, then cutover. Cutover is the
+4. Publishing through the reusable workflow's typed-pilot mode, then the shelf beyond the five designs, then cutover. Cutover is the
    production policy's `composeSourceExport` switching in the same change as the runtime.

@@ -60,19 +60,10 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7.0.1
-      # The two releases the pilot's projections are written against, as source. Pinned to the
-      # tags, never `main`: a pilot floating on either head would go red for a change nobody here
-      # made.
-      - uses: actions/checkout@v7.0.1
-        with:
-          repository: yschimke/compose-ui-builder
-          ref: 34701265c982e3fb50f7d2f91332a705cff84bd7 # v3.109.0
-          path: .typed-builder
-      - uses: actions/checkout@v7.0.1
-        with:
-          repository: yschimke/compose-ai-tools
-          ref: 9310fba0525c3d146736f23aa95626cac5ac8e21 # v2.52.0
-          path: .typed-tools
+      # The pilot resolves the compose-ai-tools v2.52.0 (9310fba0) and compose-ui-builder v3.109.0
+      # (34701265) RELEASES, pinned in catalog-typed-adapters/build.gradle.kts. A tools source
+      # composite cannot share this build with `:remote-catalog`'s versioned preview plugin; see
+      # settings.gradle.kts.
       - uses: actions/setup-java@v6.0.1
         with:
           distribution: temurin
@@ -83,7 +74,7 @@ jobs:
         with:
           cache-read-only: ${{ github.event_name == 'pull_request' }}
       - name: Validate the typed Remote export pilot
-        run: scripts/validate-typed-remote-pilot.sh .typed-tools .typed-builder
+        run: scripts/validate-typed-remote-pilot.sh
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:

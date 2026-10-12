@@ -22,7 +22,3 @@ __pycache__/
 # See docs/PARITY_LOCAL.md.
 .design-parity/
 .wear-m3-catalog/
-
-# The typed pilot's pinned source checkouts in CI (typed-catalog.yml, remote-pilot).
-.typed-tools/
-.typed-builder/

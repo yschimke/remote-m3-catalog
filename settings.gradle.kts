@@ -133,18 +133,12 @@ if (providers.gradleProperty("composeUiBuilderDir").isPresent) {
 //
 //   ./gradlew -PtypedRemoteCatalog=true :catalog-typed-adapters:test
 //
-// It resolves compose-ai-tools 2.52.0 and compose-ui-builder 3.109.0 as released; pass
-// `-PcomposeAiToolsDir=<checkout>` to build the tools API from source instead (CI does, at the
-// pinned tag), as the builder's own checkout already substitutes under `-PcomposeUiBuilderDir`.
+// It resolves compose-ai-tools 2.52.0 and compose-ui-builder 3.109.0 as RELEASED, pinned in its
+// build file. Not as a compose-ai-tools source composite, as wear-m3-catalog's pilot does: that
+// build carries the `ee.schimke.composeai.preview` plugin, and putting it on this build's
+// classpath breaks `:remote-catalog`'s versioned request for the same plugin ("already on the
+// classpath with an unknown version"). The released artifacts are those tags' own outputs.
 if (providers.gradleProperty("typedRemoteCatalog").orNull == "true") {
-  providers.gradleProperty("composeAiToolsDir").orNull?.let { path ->
-    val tools = file(path).canonicalFile
-    require(tools.resolve("settings.gradle.kts").isFile) {
-      "-PcomposeAiToolsDir names $tools, which is not a compose-ai-tools Gradle checkout."
-    }
-    logger.lifecycle("Composite build: tools -> $tools")
-    includeBuild(tools)
-  }
   include(":catalog-typed-adapters")
 }
 
