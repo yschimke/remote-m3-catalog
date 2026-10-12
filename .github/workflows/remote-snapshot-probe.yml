@@ -189,7 +189,7 @@ jobs:
 
       - name: Keep the rendered sheet for this run
         if: steps.gate.outputs.run == 'true' && steps.render.outcome == 'success'
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: remote-m3-snapshot-${{ steps.resolve.outputs.buildId }}
           path: remote-catalog/build/compose-previews/renders/*.png
