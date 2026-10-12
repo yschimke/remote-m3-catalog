@@ -28,22 +28,37 @@ class TypedRemotePair(
 
 /**
  * The pilot pair over [discovered], production's discovery of `:remote-catalog`: its inventory and
- * signatures unchanged, the real export targets beside them, and the pilot policy. An unexpected
- * generation diagnostic refuses the pair; the only expected one is each export target and layout
- * kept off the shelf, exactly as asked.
+ * signatures unchanged, the real export targets beside them, and the pilot policy. Generation
+ * diagnostics are held to production's: the same discovery under the authored production policy
+ * already reports some (a snapshot-lane component's policy with no record on the released lane, a
+ * canvas no adapter claims), and the pilot may add only its own export targets and layouts kept off
+ * the shelf, exactly as asked. Anything else refuses the pair.
  */
 fun generateTypedPilot(
   discovered: ComponentRecordFile,
   real: RealRemotePublication = RealRemotePublication(),
 ): TypedRemotePair {
-  val policy = TypedRemotePilot.policy(remoteM3Policy(), real)
+  val base = remoteM3Policy()
+  val policy = TypedRemotePilot.policy(base, real)
   val record = TypedRemotePilot.record(discovered, real)
   val cover = UiBuilderCatalogs.CoverSheet(TYPED_REMOTE_CATALOG_ID, "Remote M3 — typed pilot")
   val catalog = requireNotNull(UiBuilderCatalogs.generate(record, cover, policy))
+  val production =
+    requireNotNull(
+        UiBuilderCatalogs.generate(
+          discovered,
+          UiBuilderCatalogs.CoverSheet(TYPED_REMOTE_CATALOG_ID, "Remote M3 — production baseline"),
+          base.newBuilder().apply { catalogId = TYPED_REMOTE_CATALOG_ID }.build(),
+        )
+      )
+      .diagnostics
+      .map { it.code to it.subject }
+      .toSet()
   val offShelf = policy.components.filterValues { it.excluded != null }.keys
   val unexpected =
     catalog.diagnostics.filterNot {
-      it.code == UiBuilderCatalogs.Diagnostics.COMPONENT_EXCLUDED && it.subject in offShelf
+      (it.code to it.subject) in production ||
+        (it.code == UiBuilderCatalogs.Diagnostics.COMPONENT_EXCLUDED && it.subject in offShelf)
     }
   check(unexpected.isEmpty()) {
     "$TYPED_REMOTE_CATALOG_ID: " + unexpected.joinToString { "${it.code}: ${it.message}" }
