@@ -94,7 +94,14 @@ for side in sorted(glob.glob(os.path.join(HERE, "stickers/*.json"))):
         print(f"{'SAME' if ok else 'FAIL'}  {shell} == {hand}: {len(theirs) - len(missing) - len(diffs)}/{len(theirs)} captures"
               + (f"; missing {missing[:5]}" if missing else "") + (f"; extra {extra[:5]}" if extra else "")
               + (f"; different {list(diffs.items())[:3]}" if diffs else ""))
+# A selection that names no pair, or nothing to compare at all, certifies nothing: fail rather
+# than report 0/0.
+unknown = sorted((ONLY or set()) - set(report))
+if unknown:
+    print(f"FAIL  --only names no pair: {', '.join(unknown)}"); failed += 1
+if not report:
+    print("FAIL  no pairs compared"); failed += 1
 if "--report" in sys.argv:
     json.dump(report, open(sys.argv[sys.argv.index("--report") + 1], "w"), indent=2)
-print(f"{len(report) - failed}/{len(report)} stickers ready to cut over")
+print(f"{len(report) - min(failed, len(report))}/{len(report)} stickers ready to cut over")
 sys.exit(1 if failed else 0)
