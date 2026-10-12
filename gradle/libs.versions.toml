@@ -190,7 +190,7 @@ compose-material-icons = "1.7.8"
 activity-compose = "1.13.0"
 truth = "1.4.5"
 # `:widget-catalog`'s tests read the module's own `ui-builder.policy.json` and `catalog.spec.json`.
-kotlinx-serialization-json = "1.9.0"
+kotlinx-serialization-json = "1.11.0"
 
 robolectric = "4.17"
 junit = "4.13.2"
