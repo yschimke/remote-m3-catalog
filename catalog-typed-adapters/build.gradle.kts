@@ -10,7 +10,7 @@ plugins { id("org.jetbrains.kotlin.jvm") }
 // (compose-ai-tools v2.52.0 = 9310fba0, compose-ui-builder v3.109.0 = 34701265). Deliberately NOT
 // the catalog's Renovate-owned `composePreviewPlugin` / `composePreviewServer`: the projections are
 // written against these APIs, and a pilot moving with production would stop measuring anything.
-val pilotTools = "2.52.0"
+val pilotTools = "2.54.0"
 val pilotBuilder = "3.109.0"
 
 kotlin {
