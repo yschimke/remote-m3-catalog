@@ -1,0 +1,75 @@
+{
+  "schema": "compose-ui-builder-document/v1-candidate",
+  "id": "card",
+  "title": "KitCardRemote",
+  "revision": 0,
+  "catalogPin": {
+    "systemId": "remote-m3",
+    "catalogRevision": "candidate",
+    "capabilityDigest": "candidate",
+    "nativeRuntimeId": "candidate"
+  },
+  "environment": {
+    "widthDp": 192,
+    "heightDp": 192,
+    "density": 2.0,
+    "theme": "dark",
+    "locale": "en-US",
+    "fontScale": 1,
+    "layoutDirection": "ltr"
+  },
+  "roots": [
+    "place"
+  ],
+  "components": {
+    "card": {
+      "name": "KitCardRemote",
+      "root": "card"
+    }
+  },
+  "nodes": {
+    "place": {
+      "id": "place",
+      "componentId": "design/component-instance",
+      "component": {
+        "componentKey": "card",
+        "arguments": {
+          "content": {
+            "type": "string",
+            "value": "Content"
+          }
+        }
+      }
+    },
+    "card": {
+      "id": "card",
+      "componentId": "remote-m3/remote-card",
+      "properties": {},
+      "slots": {
+        "content": [
+          "content"
+        ]
+      },
+      "modifiers": [
+        {
+          "type": "width",
+          "widthDp": 172
+        }
+      ],
+      "eventBindings": {
+        "click": []
+      }
+    },
+    "content": {
+      "id": "content",
+      "componentId": "remote-m3/remote-text",
+      "properties": {
+        "text": {
+          "type": "binding",
+          "value": "content"
+        }
+      },
+      "slots": {}
+    }
+  }
+}

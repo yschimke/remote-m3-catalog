@@ -1,0 +1,77 @@
+{
+  "schema": "compose-ui-builder-document/v1-candidate",
+  "id": "circular-progress",
+  "title": "KitCircularProgressRemote",
+  "revision": 0,
+  "catalogPin": {
+    "systemId": "remote-m3",
+    "catalogRevision": "candidate",
+    "capabilityDigest": "candidate",
+    "nativeRuntimeId": "candidate"
+  },
+  "environment": {
+    "widthDp": 192,
+    "heightDp": 192,
+    "density": 2.0,
+    "theme": "dark",
+    "locale": "en-US",
+    "fontScale": 1,
+    "layoutDirection": "ltr"
+  },
+  "roots": [
+    "place"
+  ],
+  "components": {
+    "circular-progress": {
+      "name": "KitCircularProgressRemote",
+      "root": "ring"
+    }
+  },
+  "nodes": {
+    "place": {
+      "id": "place",
+      "componentId": "design/component-instance",
+      "component": {
+        "componentKey": "circular-progress",
+        "arguments": {
+          "progress": {
+            "type": "float",
+            "value": 0.6
+          },
+          "enabled": {
+            "type": "bool",
+            "value": true
+          },
+          "strokeWidth": {
+            "type": "int",
+            "value": 8
+          }
+        }
+      }
+    },
+    "ring": {
+      "id": "ring",
+      "componentId": "remote-m3/remote-circular-progress-indicator",
+      "properties": {
+        "progress": {
+          "type": "binding",
+          "value": "progress"
+        },
+        "enabled": {
+          "type": "binding",
+          "value": "enabled"
+        },
+        "strokeWidth": {
+          "type": "binding",
+          "value": "strokeWidth"
+        }
+      },
+      "slots": {},
+      "modifiers": [
+        {
+          "type": "fillMaxSize"
+        }
+      ]
+    }
+  }
+}

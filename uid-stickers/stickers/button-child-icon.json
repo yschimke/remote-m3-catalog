@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "Large": [
+      {
+        "type": "setModifiers",
+        "nodeId": "icon",
+        "modifiers": [
+          {
+            "type": "size",
+            "widthDp": 32,
+            "heightDp": 32
+          }
+        ]
+      }
+    ],
+    "Extra large": [
+      {
+        "type": "setModifiers",
+        "nodeId": "icon",
+        "modifiers": [
+          {
+            "type": "size",
+            "widthDp": 36,
+            "heightDp": 36
+          }
+        ]
+      }
+    ]
+  },
+  "pairs": {}
+}
