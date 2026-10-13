@@ -29,7 +29,8 @@ scripts/agent-gradle.sh --exclusive -PuidStickers=true -PremoteSnapshot= \
 python3 uid-stickers/compare-local.py
 ```
 
-The generator uses the released exporter, compose-ui-builder 3.112.0 (`-PuidExportVersion=` picks another,
+The generator uses the released exporter, the `composePreviewServer` pin in `gradle/libs.versions.toml`
+(Renovate raises it; `-PuidExportVersion=` picks another,
 and a `-SNAPSHOT` one resolves from Maven local).
 
 `compare-local.py` passes when every capture a hand-written sticker publishes (modes, override

@@ -29,10 +29,10 @@ repositories {
 val generator by sourceSets.creating
 
 dependencies {
-  "generatorImplementation"(
-    "ee.schimke.composeai:compose-preview-ui-builder-export-jvm:" +
-      exportVersion.getOrElse("3.112.0")
-  )
+  // `composePreviewServer` in gradle/libs.versions.toml, which Renovate owns.
+  "generatorImplementation"(libs.composeai.ui.builder.export) {
+    exportVersion.orNull?.let { version { strictly(it) } }
+  }
 }
 
 val generatedDir = layout.buildDirectory.dir("generated/uid/kotlin")
