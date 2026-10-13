@@ -16,11 +16,12 @@ plugins {
 
 kotlin { jvmToolchain(21) }
 
-// `exportComponents` for Remote is not in a released exporter yet, so this resolves from Maven
-// local: publish yschimke/compose-ui-builder's branch with `:ui-builder-export:publishToMavenLocal`
-// (`-PuidExportVersion=` picks another).
+// The released exporter: `InlineRemoteContentExporter.exportComponents` since compose-ui-builder
+// 3.111. `-PuidExportVersion=<x>-SNAPSHOT` tries an unreleased one from Maven local.
+val exportVersion = providers.gradleProperty("uidExportVersion")
+
 repositories {
-  mavenLocal()
+  if (exportVersion.isPresent) mavenLocal()
   mavenCentral()
   google()
 }
@@ -30,7 +31,7 @@ val generator by sourceSets.creating
 dependencies {
   "generatorImplementation"(
     "ee.schimke.composeai:compose-preview-ui-builder-export-jvm:" +
-      providers.gradleProperty("uidExportVersion").getOrElse("3.110.1-SNAPSHOT")
+      exportVersion.getOrElse("3.112.0")
   )
 }
 
