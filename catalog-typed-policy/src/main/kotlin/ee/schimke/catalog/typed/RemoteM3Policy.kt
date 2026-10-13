@@ -505,6 +505,16 @@ private fun componentRemoteCircularProgressIndicator(): UiBuilderAuthoredCompone
           },
         )
       }
+      propertyCapabilities =
+        listOf(
+          property(
+            "indeterminate",
+            JsonValueTypeV1.BOOLEAN,
+            required = false,
+            notes =
+              "Draws the indeterminate `RemoteCircularProgressIndicator`, the overload without `progress`: the record carries only the determinate one, so this is stated rather than derived. Takes no `progress` or `enabled`.",
+          )
+        )
     }
     .build()
 
@@ -590,7 +600,7 @@ private fun componentRemoteButton(): UiBuilderAuthoredComponent =
             notes =
               "The key of an asset to fill the container with, as `asset/image`'s `assetKey`: written as the `containerPainter` overload, `containerPainter = painterRemoteImageBitmap(…)`. A plain container when absent. The record carries the overload without a painter, so this is stated rather than derived.",
           )
-        )
+        ) + buttonColorRoles()
     }
     .build()
 
@@ -679,6 +689,22 @@ private fun componentRemoteOutlinedCard(): UiBuilderAuthoredComponent =
           },
         )
       }
+      propertyCapabilities =
+        listOf(
+          property(
+            "borderColor",
+            JsonValueTypeV1.STRING,
+            required = false,
+            notes =
+              "The outline's colour, written as `border = RemoteBorderStroke(borderWidthDp.rdp, …)`: a theme role (`outline`), `transparent` or `#AARRGGBB`. Absent, the card keeps `RemoteCardDefaults.outlinedCardBorder()`.",
+          ),
+          property(
+            "borderWidthDp",
+            JsonValueTypeV1.NUMBER,
+            required = false,
+            notes = "The outline's width in dp, with `borderColor`; 1dp when absent.",
+          ),
+        )
     }
     .build()
 
@@ -1060,7 +1086,12 @@ private fun builtinRemoteLabelButton(): UiBuilderBuiltin =
             notes =
               "The key of an asset to fill the container with, as `asset/image`'s `assetKey`: written as the `containerPainter` overload, `containerPainter = painterRemoteImageBitmap(…)`. A plain container when absent.",
           ),
-        )
+          property(
+            "border",
+            JsonValueTypeV1.NUMBER,
+            notes = "`RemoteButton`'s `border: RemoteDp?`, the outline's width in dp.",
+          ),
+        ) + buttonColorRoles()
       wasm =
         UiBuilderBuiltinWasm.Builder()
           .apply {
@@ -1803,6 +1834,28 @@ private fun seed(
   if (properties.isNotEmpty()) put("properties", JsonObject(properties))
   if (slots.isNotEmpty()) put("slots", JsonObject(slots.mapValues { JsonArray(it.value) }))
 }
+
+/** The colour roles `RemoteButtonDefaults.buttonColors` takes, each a property a node may set. */
+private fun buttonColorRoles(): List<JsonElement> =
+  listOf(
+      "containerColor",
+      "contentColor",
+      "secondaryContentColor",
+      "iconColor",
+      "disabledContainerColor",
+      "disabledContentColor",
+      "disabledSecondaryContentColor",
+      "disabledIconColor",
+    )
+    .map { role ->
+      property(
+        role,
+        JsonValueTypeV1.STRING,
+        required = false,
+        notes =
+          "`RemoteButtonDefaults.buttonColors`' `$role`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type.",
+      )
+    }
 
 private fun property(
   name: String,
