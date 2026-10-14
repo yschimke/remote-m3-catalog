@@ -1,0 +1,84 @@
+{
+  "schema": "compose-ui-builder-document/v1-candidate",
+  "id": "outlined-card",
+  "title": "KitOutlinedCardRemote",
+  "revision": 0,
+  "catalogPin": {
+    "systemId": "remote-m3",
+    "catalogRevision": "candidate",
+    "capabilityDigest": "candidate",
+    "nativeRuntimeId": "candidate"
+  },
+  "environment": {
+    "widthDp": 192,
+    "heightDp": 192,
+    "density": 2.0,
+    "theme": "dark",
+    "locale": "en-US",
+    "fontScale": 1,
+    "layoutDirection": "ltr"
+  },
+  "roots": [
+    "place"
+  ],
+  "components": {
+    "outlined-card": {
+      "name": "KitOutlinedCardRemote",
+      "root": "card"
+    }
+  },
+  "nodes": {
+    "place": {
+      "id": "place",
+      "componentId": "design/component-instance",
+      "component": {
+        "componentKey": "outlined-card",
+        "arguments": {
+          "content": {
+            "type": "string",
+            "value": "Content"
+          }
+        }
+      }
+    },
+    "card": {
+      "id": "card",
+      "componentId": "remote-m3/remote-outlined-card",
+      "properties": {
+        "borderColor": {
+          "type": "colorToken",
+          "value": "outline"
+        }
+      },
+      "slots": {
+        "content": [
+          "content"
+        ]
+      },
+      "modifiers": [
+        {
+          "type": "width",
+          "widthDp": 172
+        }
+      ],
+      "eventBindings": {
+        "click": []
+      }
+    },
+    "content": {
+      "id": "content",
+      "componentId": "remote-m3/remote-text",
+      "properties": {
+        "text": {
+          "type": "binding",
+          "value": "content"
+        },
+        "color": {
+          "type": "colorToken",
+          "value": "onSurface"
+        }
+      },
+      "slots": {}
+    }
+  }
+}

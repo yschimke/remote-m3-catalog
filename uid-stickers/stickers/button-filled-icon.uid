@@ -1,0 +1,113 @@
+{
+  "schema": "compose-ui-builder-document/v1-candidate",
+  "id": "button-filled-icon",
+  "title": "KitFilledButtonRemoteIcon",
+  "revision": 0,
+  "catalogPin": {
+    "systemId": "remote-m3",
+    "catalogRevision": "candidate",
+    "capabilityDigest": "candidate",
+    "nativeRuntimeId": "candidate"
+  },
+  "environment": {
+    "widthDp": 192,
+    "heightDp": 192,
+    "density": 2.0,
+    "theme": "dark",
+    "locale": "en-US",
+    "fontScale": 1,
+    "layoutDirection": "ltr"
+  },
+  "roots": [
+    "place"
+  ],
+  "components": {
+    "button-filled-icon": {
+      "name": "KitFilledButtonRemoteIcon",
+      "root": "button"
+    }
+  },
+  "nodes": {
+    "place": {
+      "id": "place",
+      "componentId": "design/component-instance",
+      "component": {
+        "componentKey": "button-filled-icon",
+        "arguments": {
+          "label": {
+            "type": "string",
+            "value": "Primary label"
+          },
+          "enabled": {
+            "type": "bool",
+            "value": true
+          }
+        }
+      }
+    },
+    "button": {
+      "id": "button",
+      "componentId": "remote-m3/remote-label-button",
+      "properties": {
+        "enabled": {
+          "type": "binding",
+          "value": "enabled"
+        }
+      },
+      "slots": {
+        "label": [
+          "label"
+        ],
+        "secondaryLabel": [
+          "secondary"
+        ],
+        "icon": [
+          "icon"
+        ]
+      },
+      "eventBindings": {
+        "click": []
+      }
+    },
+    "label": {
+      "id": "label",
+      "componentId": "remote-m3/remote-text",
+      "properties": {
+        "text": {
+          "type": "binding",
+          "value": "label"
+        }
+      },
+      "slots": {}
+    },
+    "secondary": {
+      "id": "secondary",
+      "componentId": "remote-m3/remote-text",
+      "properties": {
+        "text": {
+          "type": "string",
+          "value": "Secondary label"
+        }
+      },
+      "slots": {}
+    },
+    "icon": {
+      "id": "icon",
+      "componentId": "remote-m3/remote-icon",
+      "properties": {
+        "imageVector": {
+          "type": "enum",
+          "value": "add"
+        }
+      },
+      "slots": {},
+      "modifiers": [
+        {
+          "type": "size",
+          "widthDp": 26,
+          "heightDp": 26
+        }
+      ]
+    }
+  }
+}

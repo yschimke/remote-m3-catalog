@@ -1,0 +1,120 @@
+{
+  "schema": "compose-ui-builder-document/v1-candidate",
+  "id": "button-outlined",
+  "title": "KitOutlinedButtonRemote",
+  "revision": 0,
+  "catalogPin": {
+    "systemId": "remote-m3",
+    "catalogRevision": "candidate",
+    "capabilityDigest": "candidate",
+    "nativeRuntimeId": "candidate"
+  },
+  "environment": {
+    "widthDp": 192,
+    "heightDp": 192,
+    "density": 2.0,
+    "theme": "dark",
+    "locale": "en-US",
+    "fontScale": 1,
+    "layoutDirection": "ltr"
+  },
+  "roots": [
+    "place"
+  ],
+  "components": {
+    "button-outlined": {
+      "name": "KitOutlinedButtonRemote",
+      "root": "button"
+    }
+  },
+  "nodes": {
+    "place": {
+      "id": "place",
+      "componentId": "design/component-instance",
+      "component": {
+        "componentKey": "button-outlined",
+        "arguments": {
+          "label": {
+            "type": "string",
+            "value": "Primary label"
+          },
+          "enabled": {
+            "type": "bool",
+            "value": true
+          },
+          "borderColor": {
+            "type": "color",
+            "value": "#FF938F99"
+          }
+        }
+      }
+    },
+    "button": {
+      "id": "button",
+      "componentId": "remote-m3/remote-button",
+      "properties": {
+        "enabled": {
+          "type": "binding",
+          "value": "enabled"
+        },
+        "containerColor": {
+          "type": "color",
+          "value": "transparent"
+        },
+        "contentColor": {
+          "type": "colorToken",
+          "value": "onSurface"
+        },
+        "secondaryContentColor": {
+          "type": "colorToken",
+          "value": "onSurfaceVariant"
+        },
+        "iconColor": {
+          "type": "colorToken",
+          "value": "primary"
+        },
+        "border": {
+          "type": "int",
+          "value": 1
+        },
+        "borderColor": {
+          "type": "binding",
+          "value": "borderColor"
+        }
+      },
+      "slots": {
+        "content": [
+          "label"
+        ]
+      },
+      "modifiers": [
+        {
+          "type": "widthIn",
+          "minDp": 12
+        },
+        {
+          "type": "heightIn",
+          "minDp": 52
+        },
+        {
+          "type": "width",
+          "widthDp": 172
+        }
+      ],
+      "eventBindings": {
+        "click": []
+      }
+    },
+    "label": {
+      "id": "label",
+      "componentId": "remote-m3/remote-text",
+      "properties": {
+        "text": {
+          "type": "binding",
+          "value": "label"
+        }
+      },
+      "slots": {}
+    }
+  }
+}
