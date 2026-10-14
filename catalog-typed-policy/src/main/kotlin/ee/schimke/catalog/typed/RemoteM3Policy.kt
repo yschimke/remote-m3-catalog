@@ -926,6 +926,16 @@ private fun componentRemoteTextButton(): UiBuilderAuthoredComponent =
           },
         )
       }
+      propertyCapabilities =
+        colorRoles(
+          "RemoteTextButtonDefaults.textButtonColors",
+          listOf(
+            "containerColor",
+            "contentColor",
+            "disabledContainerColor",
+            "disabledContentColor",
+          ),
+        )
     }
     .build()
 
@@ -1837,7 +1847,9 @@ private fun seed(
 
 /** The colour roles `RemoteButtonDefaults.buttonColors` takes, each a property a node may set. */
 private fun buttonColorRoles(): List<JsonElement> =
-  listOf(
+  colorRoles(
+    "RemoteButtonDefaults.buttonColors",
+    listOf(
       "containerColor",
       "contentColor",
       "secondaryContentColor",
@@ -1846,16 +1858,24 @@ private fun buttonColorRoles(): List<JsonElement> =
       "disabledContentColor",
       "disabledSecondaryContentColor",
       "disabledIconColor",
+    ),
+  )
+
+/**
+ * A colours factory's roles as properties: a literal colour or theme role, or a computed one (a
+ * colour `lerp` across a component argument, the player's colour `tween`).
+ */
+private fun colorRoles(factory: String, roles: List<String>): List<JsonElement> =
+  roles.map { role ->
+    property(
+      role,
+      JsonValueTypeV1.STRING,
+      JsonValueTypeV1.OBJECT,
+      required = false,
+      notes =
+        "`$factory`' `$role`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type.",
     )
-    .map { role ->
-      property(
-        role,
-        JsonValueTypeV1.STRING,
-        required = false,
-        notes =
-          "`RemoteButtonDefaults.buttonColors`' `$role`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type.",
-      )
-    }
+  }
 
 private fun property(
   name: String,

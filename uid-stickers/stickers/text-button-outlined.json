@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "Small": [
+      {
+        "type": "setModifiers",
+        "nodeId": "button",
+        "modifiers": [
+          {
+            "type": "size",
+            "widthDp": 48,
+            "heightDp": 48
+          }
+        ]
+      }
+    ],
+    "Large": [
+      {
+        "type": "setModifiers",
+        "nodeId": "button",
+        "modifiers": [
+          {
+            "type": "size",
+            "widthDp": 60,
+            "heightDp": 60
+          }
+        ]
+      },
+      {
+        "type": "setProperty",
+        "nodeId": "label",
+        "property": "style",
+        "value": {
+          "type": "enum",
+          "value": "labelLarge"
+        }
+      }
+    ]
+  },
+  "pairs": {}
+}
