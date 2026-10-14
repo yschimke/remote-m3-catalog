@@ -298,51 +298,51 @@
         },
         {
           "name": "containerColor",
-          "jsonType": "string",
+          "jsonType": ["string", "object"],
           "required": false,
-          "notes": "`RemoteButtonDefaults.buttonColors`' `containerColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "notes": "`RemoteButtonDefaults.buttonColors`' `containerColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "contentColor",
-          "jsonType": "string",
+          "jsonType": ["string", "object"],
           "required": false,
-          "notes": "`RemoteButtonDefaults.buttonColors`' `contentColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "notes": "`RemoteButtonDefaults.buttonColors`' `contentColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "secondaryContentColor",
-          "jsonType": "string",
+          "jsonType": ["string", "object"],
           "required": false,
-          "notes": "`RemoteButtonDefaults.buttonColors`' `secondaryContentColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "notes": "`RemoteButtonDefaults.buttonColors`' `secondaryContentColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "iconColor",
-          "jsonType": "string",
+          "jsonType": ["string", "object"],
           "required": false,
-          "notes": "`RemoteButtonDefaults.buttonColors`' `iconColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "notes": "`RemoteButtonDefaults.buttonColors`' `iconColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "disabledContainerColor",
-          "jsonType": "string",
+          "jsonType": ["string", "object"],
           "required": false,
-          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledContainerColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledContainerColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "disabledContentColor",
-          "jsonType": "string",
+          "jsonType": ["string", "object"],
           "required": false,
-          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledContentColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledContentColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "disabledSecondaryContentColor",
-          "jsonType": "string",
+          "jsonType": ["string", "object"],
           "required": false,
-          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledSecondaryContentColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledSecondaryContentColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "disabledIconColor",
-          "jsonType": "string",
+          "jsonType": ["string", "object"],
           "required": false,
-          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledIconColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledIconColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         }
       ]
     },
@@ -481,7 +481,33 @@
       "canvas": "wear-m3/text-button",
       "canvasMapping": {
         "defaults": { "variant": { "type": "enum", "value": "standard" } }
-      }
+      },
+      "propertyCapabilities": [
+        {
+          "name": "containerColor",
+          "jsonType": ["string", "object"],
+          "required": false,
+          "notes": "`RemoteTextButtonDefaults.textButtonColors`' `containerColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+        },
+        {
+          "name": "contentColor",
+          "jsonType": ["string", "object"],
+          "required": false,
+          "notes": "`RemoteTextButtonDefaults.textButtonColors`' `contentColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+        },
+        {
+          "name": "disabledContainerColor",
+          "jsonType": ["string", "object"],
+          "required": false,
+          "notes": "`RemoteTextButtonDefaults.textButtonColors`' `disabledContainerColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+        },
+        {
+          "name": "disabledContentColor",
+          "jsonType": ["string", "object"],
+          "required": false,
+          "notes": "`RemoteTextButtonDefaults.textButtonColors`' `disabledContentColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+        }
+      ]
     },
     "remote-m3/remote-title-card": {
       "insertContent": {"slots": {"title": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Title"}}}], "content": [{"componentId": "remote-m3/remote-text", "properties": {"text": {"type": "string", "value": "Card"}}}]}},
@@ -576,43 +602,43 @@
         },
         {
           "name": "containerColor",
-          "jsonType": "string",
-          "notes": "`RemoteButtonDefaults.buttonColors`' `containerColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "jsonType": ["string", "object"],
+          "notes": "`RemoteButtonDefaults.buttonColors`' `containerColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "contentColor",
-          "jsonType": "string",
-          "notes": "`RemoteButtonDefaults.buttonColors`' `contentColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "jsonType": ["string", "object"],
+          "notes": "`RemoteButtonDefaults.buttonColors`' `contentColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "secondaryContentColor",
-          "jsonType": "string",
-          "notes": "`RemoteButtonDefaults.buttonColors`' `secondaryContentColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "jsonType": ["string", "object"],
+          "notes": "`RemoteButtonDefaults.buttonColors`' `secondaryContentColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "iconColor",
-          "jsonType": "string",
-          "notes": "`RemoteButtonDefaults.buttonColors`' `iconColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "jsonType": ["string", "object"],
+          "notes": "`RemoteButtonDefaults.buttonColors`' `iconColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "disabledContainerColor",
-          "jsonType": "string",
-          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledContainerColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "jsonType": ["string", "object"],
+          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledContainerColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "disabledContentColor",
-          "jsonType": "string",
-          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledContentColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "jsonType": ["string", "object"],
+          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledContentColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "disabledSecondaryContentColor",
-          "jsonType": "string",
-          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledSecondaryContentColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "jsonType": ["string", "object"],
+          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledSecondaryContentColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         },
         {
           "name": "disabledIconColor",
-          "jsonType": "string",
-          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledIconColor`: a theme role (`primary`), `transparent` or `#AARRGGBB`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
+          "jsonType": ["string", "object"],
+          "notes": "`RemoteButtonDefaults.buttonColors`' `disabledIconColor`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type."
         }
       ],
       "wasm": {

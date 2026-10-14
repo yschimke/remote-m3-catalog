@@ -1,0 +1,118 @@
+{
+  "schema": "compose-ui-builder-document/v1-candidate",
+  "id": "text-button-child",
+  "title": "KitTextButtonChildRemote",
+  "revision": 0,
+  "catalogPin": {
+    "systemId": "remote-m3",
+    "catalogRevision": "candidate",
+    "capabilityDigest": "candidate",
+    "nativeRuntimeId": "candidate"
+  },
+  "environment": {
+    "widthDp": 192,
+    "heightDp": 192,
+    "density": 2.0,
+    "theme": "dark",
+    "locale": "en-US",
+    "fontScale": 1,
+    "layoutDirection": "ltr"
+  },
+  "roots": [
+    "place"
+  ],
+  "components": {
+    "text-button-child": {
+      "name": "KitTextButtonChildRemote",
+      "root": "button"
+    }
+  },
+  "nodes": {
+    "place": {
+      "id": "place",
+      "componentId": "design/component-instance",
+      "component": {
+        "componentKey": "text-button-child",
+        "arguments": {
+          "enabled": {
+            "type": "bool",
+            "value": true
+          },
+          "on": {
+            "type": "float",
+            "value": 0
+          }
+        }
+      }
+    },
+    "button": {
+      "id": "button",
+      "componentId": "remote-m3/remote-text-button",
+      "properties": {
+        "enabled": {
+          "type": "binding",
+          "value": "enabled"
+        },
+        "containerColor": {
+          "type": "expr",
+          "op": "lerp",
+          "args": [
+            {
+              "type": "color",
+              "value": "#00000000"
+            },
+            {
+              "type": "colorToken",
+              "value": "primary"
+            },
+            {
+              "type": "binding",
+              "value": "on"
+            }
+          ]
+        },
+        "contentColor": {
+          "type": "expr",
+          "op": "lerp",
+          "args": [
+            {
+              "type": "colorToken",
+              "value": "onSurface"
+            },
+            {
+              "type": "colorToken",
+              "value": "onPrimary"
+            },
+            {
+              "type": "binding",
+              "value": "on"
+            }
+          ]
+        }
+      },
+      "slots": {
+        "content": [
+          "label"
+        ]
+      },
+      "eventBindings": {
+        "click": []
+      }
+    },
+    "label": {
+      "id": "label",
+      "componentId": "remote-m3/remote-text",
+      "properties": {
+        "text": {
+          "type": "string",
+          "value": "MMM"
+        },
+        "style": {
+          "type": "enum",
+          "value": "labelMedium"
+        }
+      },
+      "slots": {}
+    }
+  }
+}

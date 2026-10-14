@@ -121,9 +121,7 @@ private fun pruneArguments(doc: JsonObject): JsonObject {
   val reads = components.mapValues { (_, c) ->
     descendants(nodes, c.jsonObject.string("root"))
       .flatMap { id -> nodes[id]?.jsonObject?.get("properties")?.jsonObject?.values.orEmpty() }
-      .mapNotNull { v ->
-        v.jsonObject.takeIf { it["type"]?.jsonPrimitive?.content == "binding" }?.string("value")
-      }
+      .flatMap(::bindingKeys)
       .toSet()
   }
   val pruned = nodes.mapValues { (_, n) ->
@@ -134,6 +132,16 @@ private fun pruneArguments(doc: JsonObject): JsonObject {
   }
   return doc.with("nodes", JsonObject(pruned))
 }
+
+/** The binding keys [value] reads, at any depth: a property, or an operand of an expression. */
+private fun bindingKeys(value: JsonElement): List<String> =
+  when (value) {
+    is JsonObject ->
+      if (value["type"]?.jsonPrimitive?.content == "binding") listOf(value.string("value"))
+      else value.values.flatMap(::bindingKeys)
+    is JsonArray -> value.flatMap(::bindingKeys)
+    else -> emptyList()
+  }
 
 private fun apply(doc: JsonObject, op: JsonObject): JsonObject {
   val nodes = doc.getValue("nodes").jsonObject
