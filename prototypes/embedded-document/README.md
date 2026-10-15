@@ -76,6 +76,38 @@ plan below.
    the seam is the whole `RemoteWriter` interface rather than `WriterOp`. It is also why a session
    must start every render from a fresh writer.
 
+## The Browser Preview on rc-players' live player
+
+The plan below moved forward in yschimke/rc-players#672: creation lives there now. It is split into a
+fork that keeps AndroidX's package and an rc-players layer: `RcHostBridge` and
+`RcEmbeddedPlayer`. Build against an rc-players checkout to try it here:
+
+```
+./gradlew -PcomposeUiBuilderDir=../compose-ui-builder -PrcPlayersDir=../rc-players \
+  :remote-catalog-ui-builder-renderer:jvmTest
+```
+
+`-PrcPlayersDir` makes two changes:
+
+- It substitutes the `ee.schimke.remotecompose` port and the `rc-player-*` modules with rc-players'
+  projects (`settings.gradle.kts`).
+- It builds the renderer's Browser Preview from `src/embeddedPreview` instead of
+  `src/capturePreview` (`remote-catalog-ui-builder-renderer/build.gradle.kts`).
+
+The default build, and CI with it, keeps the capture path.
+
+| Path | Each edit | `RemoteM3DevicePreview*` suites here |
+| --- | --- | --- |
+| `src/capturePreview` (default) | records a fresh document (`captureCommonRemoteDocument`) and plays it | 25 of 26 |
+| `src/embeddedPreview` (`-PrcPlayersDir`) | recomposes the retained remote tree and plays its document (`RcEmbeddedPlayer`) | 25 of 26 |
+
+The failure is the same on both: `RemoteM3DeviceFontSettingsUiTest` reads a `Roboto-Regular.ttf`
+the compose-ui-builder checkout does not have. In about one run in six, the live path also timed out
+`a settled pane holds the wall clock` under full-suite load; it passed every isolated re-run.
+
+The vendored writer has the custom-component id bug fixed in rc-players: `startCustom`'s content
+section reuses the layout's component id.
+
 ## Upstream (AndroidX) status, as of 2026-10-15
 
 - **Published:** `androidx.compose.remote:*` `1.0.0-alpha21`, Wear `remote-material3` `1.0.0-alpha13`.

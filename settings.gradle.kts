@@ -117,6 +117,37 @@ providers.gradleProperty("composeUiBuilderDir").orNull?.let { path ->
   }
 }
 
+// PROTOTYPE: build against an rc-players checkout, for changes that span the creation fork, the
+// player and this catalog. The Remote Compose port and the player resolve to rc-players' projects;
+// the renderer then plays its Browser Preview live (`RcEmbeddedPlayer`):
+//
+//   ./gradlew -PcomposeUiBuilderDir=../compose-ui-builder -PrcPlayersDir=../rc-players \
+//     :remote-catalog-ui-builder-renderer:jvmTest
+providers.gradleProperty("rcPlayersDir").orNull?.let { path ->
+  val directory = file(path).canonicalFile
+  require(directory.resolve("settings.gradle.kts").isFile) {
+    "-PrcPlayersDir names $directory, which is not an rc-players Gradle checkout."
+  }
+  logger.lifecycle("Composite build: rcPlayers -> $directory")
+  includeBuild(directory) {
+    dependencySubstitution {
+      substitute(module("ee.schimke.remotecompose:remote-write-core"))
+        .using(project(":third-party-remote-creation-writer"))
+      // The fork carries foundation in the same module as creation.
+      substitute(module("ee.schimke.remotecompose:remote-creation-compose"))
+        .using(project(":third-party-remote-creation-compose"))
+      substitute(module("ee.schimke.remotecompose:remote-foundation"))
+        .using(project(":third-party-remote-creation-compose"))
+      listOf("trace", "protocol", "runtime", "compose").forEach { name ->
+        substitute(module("ee.schimke.composeai:rc-player-$name"))
+          .using(project(":rc-player-$name"))
+      }
+      substitute(module("ee.schimke.composeai:rc-player-embedded"))
+        .using(project(":rc-player-embedded"))
+    }
+  }
+}
+
 // The renderer links the source-only SDK. Keep it outside ordinary catalog builds: without the
 // composite there is deliberately no Maven fallback for that coordinate.
 if (providers.gradleProperty("composeUiBuilderDir").isPresent) {

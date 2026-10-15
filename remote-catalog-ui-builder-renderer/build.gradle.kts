@@ -86,6 +86,11 @@ val generateRuntimePolicy by
     outputDirectory.set(generatedRuntimePolicy)
   }
 
+// PROTOTYPE: `-PrcPlayersDir=../rc-players` plays the Browser Preview live, through rc-players'
+// `RcEmbeddedPlayer` and its creation fork (settings.gradle.kts substitutes both); without it the
+// preview records a fresh document per edit, as it ships.
+val livePreview = providers.gradleProperty("rcPlayersDir").isPresent
+
 kotlin {
   jvm()
 
@@ -97,7 +102,11 @@ kotlin {
   }
 
   sourceSets {
+    commonMain {
+      kotlin.srcDir(if (livePreview) "src/embeddedPreview/kotlin" else "src/capturePreview/kotlin")
+    }
     commonMain.dependencies {
+      if (livePreview) implementation("ee.schimke.composeai:rc-player-embedded")
       implementation(libs.composeai.ui.builder.renderer.sdk.source)
       implementation(libs.remotecompose.write.core)
       implementation(libs.remotecompose.creation.compose)
