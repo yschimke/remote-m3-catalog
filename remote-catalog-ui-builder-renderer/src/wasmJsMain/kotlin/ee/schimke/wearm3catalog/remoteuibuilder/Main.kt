@@ -227,7 +227,12 @@ private fun SemanticCanvas(
         // `DeviceDrawCanvas` and the exported `RemoteCanvas` draw them, never entered as nodes.
         UiDrawing.CANVAS -> UiBuilderDrawCanvas(entry, prepared.modifier) { resolveWearColor(it) }
         in UiDrawing.BY_ID -> Unit
-        else -> UnsupportedComponent(node.componentId, prepared.modifier)
+        else -> {
+          // Says so, in the reply's `undrawn` list: the editor's status bar names it and the
+          // coverage gate fails on it, rather than a red box being the only sign.
+          ReportUndrawn()
+          UnsupportedComponent(node.componentId, prepared.modifier)
+        }
       }
     }
   }
