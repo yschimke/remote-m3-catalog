@@ -519,6 +519,10 @@
         "defaults": { "variant": { "type": "enum", "value": "title" } }
       }
     },
+    "remote-m3/theme-specimen": {
+      "record": "remote-catalog/ee.schimke.wearm3catalog.remote.RemoteThemeSpecimensKt.ThemeSpecimen",
+      "excluded": "the catalog's theme showcase, not an authorable Remote Compose component: it is a preview specimen that the design exporter cannot write."
+    },
     "remote-m3/remote-sticker": {
       "record": "remote-catalog/ee.schimke.wearm3catalog.remote.CatalogThemeKt.RemoteSticker",
       "excluded": "the catalog's own preview frame, not a Remote Compose component: every sticker is drawn inside one and nobody places one in a design."
