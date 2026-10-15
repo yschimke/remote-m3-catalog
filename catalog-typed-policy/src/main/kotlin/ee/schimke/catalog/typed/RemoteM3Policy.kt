@@ -89,6 +89,7 @@ fun remoteM3Policy(): UiBuilderPolicyFile =
           "remote-m3/remote-icon-button" to componentRemoteIconButton(),
           "remote-m3/remote-text-button" to componentRemoteTextButton(),
           "remote-m3/remote-title-card" to componentRemoteTitleCard(),
+          "remote-m3/theme-specimen" to componentThemeSpecimen(),
           "remote-m3/remote-sticker" to componentRemoteSticker(),
           "remote-m3/capturing-wear-widget-preview" to componentCapturingWearWidgetPreview(),
         )
@@ -968,6 +969,15 @@ private fun componentRemoteTitleCard(): UiBuilderAuthoredComponent =
           },
         )
       }
+    }
+    .build()
+
+private fun componentThemeSpecimen(): UiBuilderAuthoredComponent =
+  UiBuilderAuthoredComponent.Builder()
+    .apply {
+      record = "remote-catalog/ee.schimke.wearm3catalog.remote.RemoteThemeSpecimensKt.ThemeSpecimen"
+      excluded =
+        "the catalog's theme showcase, not an authorable Remote Compose component: it is a preview specimen that the design exporter cannot write."
     }
     .build()
 
