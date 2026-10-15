@@ -62,13 +62,7 @@ class RemoteM3ThreeSurfaceContractTest {
             "wearm3catalog/remoteuibuilder/Main.kt",
         )
         .readText()
-    val device =
-      File(
-          root,
-          "remote-catalog-ui-builder-renderer/src/commonMain/kotlin/ee/schimke/" +
-            "wearm3catalog/remoteuibuilder/RemoteM3DevicePreview.kt",
-        )
-        .readText()
+    val device = devicePreviewSources()
 
     assertThat(runtime).contains("UiBuilderRendererSurfaceModeV2.AUTHORING_UNROLLED")
     assertThat(runtime).contains("SemanticCanvas(")
@@ -98,13 +92,7 @@ class RemoteM3ThreeSurfaceContractTest {
 
   @Test
   fun `first Remote M3 adapter preserves button properties and content slot`() {
-    val device =
-      File(
-          root,
-          "remote-catalog-ui-builder-renderer/src/commonMain/kotlin/ee/schimke/" +
-            "wearm3catalog/remoteuibuilder/RemoteM3DevicePreview.kt",
-        )
-        .readText()
+    val device = devicePreviewSources()
 
     assertThat(device).contains("\"remote-m3/remote-button\"")
     // Enabled reads a state or computed value when one is bound, else the literal (default on).
@@ -155,13 +143,7 @@ class RemoteM3ThreeSurfaceContractTest {
 
   @Test
   fun `device adapter preserves canonical layout and widget host properties`() {
-    val device =
-      File(
-          root,
-          "remote-catalog-ui-builder-renderer/src/commonMain/kotlin/ee/schimke/" +
-            "wearm3catalog/remoteuibuilder/RemoteM3DevicePreview.kt",
-        )
-        .readText()
+    val device = devicePreviewSources()
 
     // The host frame comes from the shape's spec, never from properties on the container.
     assertThat(device).contains("hostSpec?.cornerRadiusDp")
@@ -223,4 +205,16 @@ class RemoteM3ThreeSurfaceContractTest {
     }
     error("could not find repository root from ${File(".").absolutePath}")
   }
+
+  /**
+   * The device surface as the default build compiles it: the shared document tree, and the Browser
+   * Preview's capture path (`src/capturePreview`), which records a fresh document per edit.
+   */
+  private fun devicePreviewSources(): String =
+    listOf(
+        "src/commonMain/kotlin/ee/schimke/wearm3catalog/remoteuibuilder/RemoteM3DevicePreview.kt",
+        "src/capturePreview/kotlin/ee/schimke/wearm3catalog/remoteuibuilder/" +
+          "RemoteM3DevicePreviewSurface.kt",
+      )
+      .joinToString("\n") { File(root, "remote-catalog-ui-builder-renderer/$it").readText() }
 }
