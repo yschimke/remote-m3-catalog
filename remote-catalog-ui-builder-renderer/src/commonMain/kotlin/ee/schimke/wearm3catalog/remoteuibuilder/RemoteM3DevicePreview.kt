@@ -47,6 +47,8 @@ import androidx.compose.remote.creation.compose.shaders.verticalGradient
 import androidx.compose.remote.creation.compose.shapes.RemoteRoundedCornerShape
 import androidx.compose.remote.creation.compose.state.RemoteBoolean
 import androidx.compose.remote.creation.compose.state.RemoteColor
+import androidx.compose.remote.creation.compose.state.RemoteConfiguration
+import androidx.compose.remote.creation.compose.state.RemoteDp
 import androidx.compose.remote.creation.compose.state.RemoteInt
 import androidx.compose.remote.creation.compose.state.asRemoteTextUnit
 import androidx.compose.remote.creation.compose.state.rb
@@ -90,6 +92,7 @@ import androidx.wear.compose.remote.material3.RemoteIconButton
 import androidx.wear.compose.remote.material3.RemoteLinearProgressIndicator
 import androidx.wear.compose.remote.material3.RemoteMaterialTheme
 import androidx.wear.compose.remote.material3.RemoteOutlinedCard
+import androidx.wear.compose.remote.material3.RemoteProgressIndicatorDefaults
 import androidx.wear.compose.remote.material3.RemoteRadioButton
 import androidx.wear.compose.remote.material3.RemoteSlider
 import androidx.wear.compose.remote.material3.RemoteSliderDefaults
@@ -541,11 +544,15 @@ internal class RemoteDocumentTree(
         RemoteCircularProgressIndicator(
           progress = values.float(node.properties["progress"]) ?: 0f.rf,
           modifier = modifier,
-          startAngle = values.float(node.properties["startAngle"]) ?: 0f.rf,
+          // The library's own defaults, as the exported call leaves them: from the top.
+          startAngle =
+            values.float(node.properties["startAngle"])
+              ?: RemoteProgressIndicatorDefaults.StartAngle,
           endAngle =
             values.float(node.properties["endAngle"])
               ?: values.float(node.properties["startAngle"])
-              ?: 0f.rf,
+              ?: RemoteProgressIndicatorDefaults.StartAngle,
+          strokeWidth = node.circularStrokeWidth(),
         )
       "remote-m3/remote-linear-progress-indicator" ->
         RemoteLinearProgressIndicator(
@@ -876,6 +883,15 @@ private fun UiBuilderNode.isDynamic(name: String): Boolean {
 internal fun UiBuilderNode.string(name: String): String = value(name)?.contentOrNull.orEmpty()
 
 private fun UiBuilderNode.number(name: String): Float? = value(name)?.floatOrNull
+
+/**
+ * The ring's authored width, or the screen-sized default the export writes when there is none:
+ * `largeStrokeWidth` of the window, 8dp under 225dp wide and 12dp otherwise. The library's own
+ * default is a flat 12dp, which reads as heavy on a widget-sized ring.
+ */
+internal fun UiBuilderNode.circularStrokeWidth(): RemoteDp =
+  number("strokeWidth")?.rdp
+    ?: RemoteProgressIndicatorDefaults.largeStrokeWidth(RemoteConfiguration.windowWidth)
 
 private fun UiBuilderNode.integer(name: String): Int? = value(name)?.intOrNull
 
