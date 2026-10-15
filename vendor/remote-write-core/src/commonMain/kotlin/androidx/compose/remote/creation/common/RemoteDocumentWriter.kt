@@ -466,8 +466,10 @@ public class RemoteDocumentWriter(
       }
     }
     modifier.writeTo(this)
-    operation(LayoutContent)
-    buffer.writeInt(lastComponentId)
+    // As upstream's `addContentStart`: the content section takes a component id of its own. Reusing
+    // the custom layout's id gave two components one id, which a player that indexes components by
+    // id (rc-players') rejects as a duplicate.
+    contentSection()
   }
 
   override fun endCustom() {
