@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.remote.creation.compose.capture.RemoteCreationDisplayInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,12 +16,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.Density
 import androidx.wear.compose.material3.Text
+import ee.schimke.composeai.rccreation.bridge.RcComponentIds
+import ee.schimke.composeai.rcplayer.compose.LocalRcComponentCoordinates
+import ee.schimke.composeai.rcplayer.compose.RcComponentCoordinatesListener
 import ee.schimke.composeai.rcplayer.compose.RcTypefaceLoader
 import ee.schimke.composeai.rcplayer.embedded.RcEmbeddedPlayer
 import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
@@ -49,6 +55,7 @@ internal fun RemoteM3DevicePreview(
   widthDp: Float,
   heightDp: Float,
   typefaceFallback: RcTypefaceLoader = RcTypefaceLoader.Default,
+  authoring: AuthoringInspection? = null,
   onReady: () -> Unit,
 ) {
   val root = document.roots.singleOrNull()?.let(document.nodes::get)
@@ -135,30 +142,39 @@ internal fun RemoteM3DevicePreview(
       onRendered: () -> Unit,
       content: @Composable () -> Unit,
     ) {
-      RcEmbeddedPlayer(
-        display = display,
-        modifier = modifier,
-        theme = design.playerTheme(),
-        typefaces = fonts,
-        encodePng = ::encodeDesignAssetPng,
-        onRendered = {
-          failure = null
-          onRendered()
-        },
-        // A failed render still settles the design, as a failed recording does in the capture
-        // variant: the pane reports Failed, and [onReady] is told once.
-        onFailure = {
-          failure = it
-          onRendered()
-        },
-        key = design,
-      ) {
-        RemotePreviewContent(widthDp, heightDp, density, roleNames, textRole, content)
+      CompositionLocalProvider(LocalRcComponentCoordinates provides authoring?.listener) {
+        RcEmbeddedPlayer(
+          display = display,
+          modifier = modifier,
+          theme = design.playerTheme(),
+          typefaces = fonts,
+          encodePng = ::encodeDesignAssetPng,
+          onRendered = {
+            failure = null
+            onRendered()
+          },
+          // A failed render still settles the design, as a failed recording does in the capture
+          // variant: the pane reports Failed, and [onReady] is told once.
+          onFailure = {
+            failure = it
+            onRendered()
+          },
+          key = design,
+        ) {
+          RemotePreviewContent(widthDp, heightDp, density, roleNames, textRole, content)
+        }
       }
     }
 
     ProvideDevicePreviewTime(design) {
-      val tree = remember(design) { RemoteDocumentTree(design) }
+      val tree =
+        remember(design, authoring) {
+          if (authoring == null) RemoteDocumentTree(design)
+          else
+            RemoteDocumentTree(design) { node, modifier ->
+              authoring.ids.component(modifier, node.id)
+            }
+        }
       val contentDisplay =
         remember(contentWidth, contentHeight, density) {
           displayInfo(contentWidth, contentHeight, density)
@@ -176,7 +192,12 @@ internal fun RemoteM3DevicePreview(
       } else {
         val background = root.color("background") ?: Color(39, 36, 48)
         WearWidgetContainerFrame(
-          modifier = Modifier.testTag(REMOTE_M3_WIDGET_HOST_TEST_TAG),
+          // The container draws no remote component of its own; in authoring it is the frame.
+          modifier =
+            Modifier.testTag(REMOTE_M3_WIDGET_HOST_TEST_TAG).let { frame ->
+              if (authoring == null) frame
+              else frame.onGloballyPositioned { authoring.onBounds(root.id, it) }
+            },
           contentWidthDp = contentWidth,
           contentHeightDp = contentHeight,
           horizontalPaddingDp = horizontalPadding,
@@ -225,3 +246,16 @@ private fun displayInfo(widthDp: Float, heightDp: Float, density: Density) =
     (heightDp * density.density).roundToInt(),
     (160 * density.density).roundToInt(),
   )
+
+/**
+ * What an authoring surface needs from the preview: each authored node tagged with a component id
+ * from [ids], and the geometry the player then reports for it, by node id.
+ */
+internal class AuthoringInspection(
+  val ids: RcComponentIds,
+  val onBounds: (nodeId: String, coordinates: LayoutCoordinates) -> Unit,
+) {
+  val listener = RcComponentCoordinatesListener { id, coordinates ->
+    (ids.keyFor(id) as? String)?.let { onBounds(it, coordinates) }
+  }
+}

@@ -146,7 +146,14 @@ fun main() {
               }
             )
             Box(Modifier.requiredSize(surface.widthDp.dp, surface.heightDp.dp)) {
-              if (surface.mode == UiBuilderRendererSurfaceModeV2.AUTHORING_UNROLLED) {
+              val remoteAuthoring = remoteAuthoringSurface
+              if (
+                surface.mode == UiBuilderRendererSurfaceModeV2.AUTHORING_UNROLLED &&
+                  remoteAuthoring != null
+              ) {
+                // PROTOTYPE (-PrcPlayersDir): the editor's surface is the real recording, played.
+                remoteAuthoring(document, surface.widthDp, surface.heightDp, onInspectionSnapshot)
+              } else if (surface.mode == UiBuilderRendererSurfaceModeV2.AUTHORING_UNROLLED) {
                 SemanticCanvas(
                   document = document,
                   mode = mode,

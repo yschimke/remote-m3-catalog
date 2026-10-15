@@ -51,6 +51,7 @@ import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
 import ee.schimke.composeai.uibuilder.export.hostSpec
 import ee.schimke.composeai.uibuilder.renderer.sdk.GoogleMaterialIconVectors
+import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderInspectionSnapshot
 import ee.schimke.wearm3catalog.uibuilder.WearWidgetContainerFrame
 import ee.schimke.wearm3catalog.uibuilder.wearWidgetHostShape
 import kotlin.math.roundToInt
@@ -276,3 +277,14 @@ private suspend fun captureDocument(
     }
   return RcDocumentCodec.decode(bytes)
 }
+
+/** The capture path has no Remote Compose authoring surface; the Visual Editor uses stand-ins. */
+internal val remoteAuthoringSurface:
+  (@Composable
+  (
+    document: UiBuilderDocument,
+    widthDp: Float,
+    heightDp: Float,
+    onInspectionSnapshot: (UiBuilderInspectionSnapshot) -> Unit,
+  ) -> Unit)? =
+  null

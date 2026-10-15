@@ -174,7 +174,19 @@ internal fun RemotePreviewContent(
   }
 }
 
-internal class RemoteDocumentTree(private val document: UiBuilderDocument) {
+/**
+ * The design as remote content.
+ *
+ * [tagNode] decorates each authored node's own remote modifier. The Browser Preview leaves it as it
+ * is; an authoring surface tags each node with a component id it can map back to the node, so the
+ * player's geometry becomes the editor's per-node bounds.
+ */
+internal class RemoteDocumentTree(
+  private val document: UiBuilderDocument,
+  private val tagNode: (UiBuilderNode, RemoteModifier) -> RemoteModifier = { _, modifier ->
+    modifier
+  },
+) {
   // Computed values stay expressions: the recorded document plays them, through [DocumentValues],
   // rather than drawing the value they have at the preview state.
   private val tree =
@@ -333,8 +345,7 @@ internal class RemoteDocumentTree(private val document: UiBuilderDocument) {
   ) {
     val node = entry.node
     val modifier =
-      node
-        .remoteModifier(values, row, column, collapsibleColumn, collapsibleRow)
+      tagNode(node, node.remoteModifier(values, row, column, collapsibleColumn, collapsibleRow))
         .let { if (fillFrame) it.fillMaxSize() else it }
         .let { base ->
           // A layout's own click, long press and double tap, as the export writes them.
