@@ -101,3 +101,10 @@ public val RemoteCreationDisplayInfo.widthDp: Dp
 /** The height of the display in [Dp] units. */
 public val RemoteCreationDisplayInfo.heightDp: Dp
     get() = with(density) { size.height.toDp() }
+
+/**
+ * PROTOTYPE (embedded documents): the header's density-behavior word, so a writer other than the
+ * byte encoder can describe the same display.
+ */
+public val RemoteDensityBehavior.wireValue: Int
+    get() = value

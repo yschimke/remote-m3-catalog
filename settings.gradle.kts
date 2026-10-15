@@ -172,6 +172,9 @@ include(":remote-wasm")
 
 include(":remote-desktop")
 
+// PROTOTYPE — embedded documents (see prototypes/embedded-document/README.md). Not for landing.
+include(":prototypes:embedded-document")
+
 // The shadow catalog: Remote stickers whose body is a UI builder document
 // (`uid-stickers/README.md`).
 if (providers.gradleProperty("uidStickers").orNull == "true") {
