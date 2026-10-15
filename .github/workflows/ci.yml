@@ -389,3 +389,89 @@ jobs:
       # cannot have.
       - run: python3 scripts/test_remote_snapshot_probe.py
         if: needs.changes.outputs.inert != 'true'
+
+  # THE AUTHORING CANVAS DRAWS EVERY STICKER. The editor's canvas is this catalog's runtime
+  # (`:remote-catalog-ui-builder-renderer`), and it fell back to a red box for a component it could
+  # not draw while the export and the device preview drew the real thing (#134). Its fallback now
+  # says so (`ReportUndrawn()`), and this job reads what it says: compose-ui-builder's coverage gate
+  # serves the released editor and this runtime, draws each `uid-stickers/stickers/*.uid` on the
+  # authoring surface, and fails on any component the canvas could not draw, on a runtime that did
+  # not report, or on one that laid nothing out. The probe is the negative control: it must fail for
+  # exactly its unknown component, so a gate that stopped seeing anything cannot pass.
+  #
+  # The compose-ui-builder ref is read from `design-artifacts.yml`'s `ui-builder-runtime-source-ref`,
+  # the runtime that publish ships, so the gate and the published runtime cannot drift apart.
+  runtime-coverage:
+    name: Authoring canvas coverage
+    needs: changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7.0.1
+        if: needs.changes.outputs.inert != 'true'
+        with:
+          persist-credentials: false
+      - id: ref
+        if: needs.changes.outputs.inert != 'true'
+        run: |
+          set -euo pipefail
+          ref="$(sed -nE "s/^ *ui-builder-runtime-source-ref: '([^']+)'.*/\1/p" .github/workflows/design-artifacts.yml)"
+          test -n "$ref"
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+          echo "version=${ref#v}" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v7.0.1
+        if: needs.changes.outputs.inert != 'true'
+        with:
+          repository: yschimke/compose-ui-builder
+          ref: ${{ steps.ref.outputs.ref }}
+          path: .compose-ui-builder
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+        if: needs.changes.outputs.inert != 'true'
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+      - name: Build this catalog's runtime against that compose-ui-builder
+        if: needs.changes.outputs.inert != 'true'
+        run: |
+          set -euo pipefail
+          ./gradlew -PcomposeUiBuilderDir=.compose-ui-builder \
+            :remote-catalog-ui-builder-renderer:rendererArchive --stacktrace
+          mkdir -p build/coverage/runtime
+          unzip -q remote-catalog-ui-builder-renderer/build/distributions/remote-m3-ui-builder-renderer.zip \
+            -d build/coverage/runtime
+      - name: Fetch the released editor
+        if: needs.changes.outputs.inert != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.ref.outputs.version }}
+        run: |
+          set -euo pipefail
+          gh release download "v$VERSION" -R yschimke/compose-ui-builder \
+            -p "compose-preview-ui-builder-web-$VERSION.zip" -p "compose-preview-ui-builder-web-$VERSION.zip.sha256" \
+            -D build/coverage
+          (cd build/coverage && sha256sum -c "compose-preview-ui-builder-web-$VERSION.zip.sha256")
+          mkdir -p build/coverage/editor
+          unzip -q "build/coverage/compose-preview-ui-builder-web-$VERSION.zip" -d build/coverage/editor
+      - uses: actions/setup-node@v7.1.0
+        if: needs.changes.outputs.inert != 'true'
+        with:
+          node-version: 24.22.0
+      - name: Install the gate
+        if: needs.changes.outputs.inert != 'true'
+        working-directory: .compose-ui-builder/scripts/ui-builder-web-smoke
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Every sticker is drawn by the authoring canvas
+        if: needs.changes.outputs.inert != 'true'
+        working-directory: .compose-ui-builder/scripts/ui-builder-web-smoke
+        run: |
+          node runtime-coverage.mjs "$GITHUB_WORKSPACE/build/coverage/editor" \
+            "$GITHUB_WORKSPACE/build/coverage/runtime" "$GITHUB_WORKSPACE"/uid-stickers/stickers/*.uid
+      - name: An unknown component is reported (negative control)
+        if: needs.changes.outputs.inert != 'true'
+        working-directory: .compose-ui-builder/scripts/ui-builder-web-smoke
+        run: |
+          node runtime-coverage.mjs "$GITHUB_WORKSPACE/build/coverage/editor" \
+            "$GITHUB_WORKSPACE/build/coverage/runtime" fixtures/undrawn-probe.uid \
+            --expect-unsupported nowhere/mystery
