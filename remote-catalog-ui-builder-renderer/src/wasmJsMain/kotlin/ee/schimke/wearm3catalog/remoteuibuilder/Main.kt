@@ -25,12 +25,14 @@ import ee.schimke.composeai.uibuilder.LocalUiBuilderFontFamilies
 import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
 import ee.schimke.composeai.uibuilder.LocalUiBuilderFontVariants
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
+import ee.schimke.composeai.uibuilder.export.UiDrawing
 import ee.schimke.composeai.uibuilder.protocol.CanvasAdapterMappingV1
 import ee.schimke.composeai.uibuilder.protocol.UiBuilderRendererSurfaceModeV2
 import ee.schimke.composeai.uibuilder.renderer.sdk.CATALOG_RUNTIME_CAPABILITY_HORIZONTAL_UNROLL
 import ee.schimke.composeai.uibuilder.renderer.sdk.CanvasDocumentHost
 import ee.schimke.composeai.uibuilder.renderer.sdk.CanvasMode
 import ee.schimke.composeai.uibuilder.renderer.sdk.RenderCanvasNode
+import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderDrawCanvas
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderInspectionCollector
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderInspectionSnapshot
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderSemanticActionController
@@ -221,6 +223,10 @@ private fun SemanticCanvas(
         "asset/image" -> DesignAssetImage(document, node, prepared.modifier)
         "shape/linear-gradient" ->
           DesignLinearGradient(node, prepared.modifier) { resolveWearColor(it) }
+        // A drawing: its operations are drawn by the canvas, as the device preview's
+        // `DeviceDrawCanvas` and the exported `RemoteCanvas` draw them, never entered as nodes.
+        UiDrawing.CANVAS -> UiBuilderDrawCanvas(entry, prepared.modifier) { resolveWearColor(it) }
+        in UiDrawing.BY_ID -> Unit
         else -> UnsupportedComponent(node.componentId, prepared.modifier)
       }
     }
