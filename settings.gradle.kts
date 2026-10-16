@@ -117,9 +117,8 @@ providers.gradleProperty("composeUiBuilderDir").orNull?.let { path ->
   }
 }
 
-// PROTOTYPE: build against an rc-players checkout, for changes that span the creation fork, the
-// player and this catalog. The Remote Compose port and the player resolve to rc-players' projects;
-// the renderer then plays its Browser Preview live (`RcEmbeddedPlayer`):
+// Build against an rc-players checkout, for changes that span its player or creation fork and this
+// catalog. The players resolve to rc-players' projects instead of the published release:
 //
 //   ./gradlew -PcomposeUiBuilderDir=../compose-ui-builder -PrcPlayersDir=../rc-players \
 //     :remote-catalog-ui-builder-renderer:jvmTest
@@ -131,19 +130,19 @@ providers.gradleProperty("rcPlayersDir").orNull?.let { path ->
   logger.lifecycle("Composite build: rcPlayers -> $directory")
   includeBuild(directory) {
     dependencySubstitution {
-      substitute(module("ee.schimke.remotecompose:remote-write-core"))
-        .using(project(":third-party-remote-creation-writer"))
-      // The fork carries foundation in the same module as creation.
-      substitute(module("ee.schimke.remotecompose:remote-creation-compose"))
-        .using(project(":third-party-remote-creation-compose"))
-      substitute(module("ee.schimke.remotecompose:remote-foundation"))
-        .using(project(":third-party-remote-creation-compose"))
-      listOf("trace", "protocol", "runtime", "compose").forEach { name ->
+      substitute(module("ee.schimke.composeai:rc-players-bom")).using(project(":bom"))
+      listOf("trace", "protocol", "runtime", "compose", "embedded").forEach { name ->
         substitute(module("ee.schimke.composeai:rc-player-$name"))
           .using(project(":rc-player-$name"))
       }
-      substitute(module("ee.schimke.composeai:rc-player-embedded"))
-        .using(project(":rc-player-embedded"))
+      substitute(module("ee.schimke.composeai:third-party-rc-embedded-player"))
+        .using(project(":third-party-rc-embedded-player"))
+      substitute(module("ee.schimke.composeai:rc-creation-bridge"))
+        .using(project(":rc-creation-bridge"))
+      listOf("writer", "compose").forEach { name ->
+        substitute(module("ee.schimke.composeai:third-party-remote-creation-$name"))
+          .using(project(":third-party-remote-creation-$name"))
+      }
     }
   }
 }

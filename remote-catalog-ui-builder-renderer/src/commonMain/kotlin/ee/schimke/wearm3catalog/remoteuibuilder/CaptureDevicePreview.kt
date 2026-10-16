@@ -1,7 +1,5 @@
-// The Browser Preview as it ships: each edit records a fresh document
-// (`captureCommonRemoteDocument`)
-// and plays it. The default; `src/embeddedPreview` is the live alternative selected by
-// `-PrcPlayersDir` (see build.gradle.kts).
+// The capture engine (`PreviewEngine.Capture`): each edit records a fresh document
+// (`captureCommonRemoteDocument`) and plays it. The default; see PreviewEngine.kt.
 package ee.schimke.wearm3catalog.remoteuibuilder
 
 import androidx.compose.animation.core.LinearEasing
@@ -51,7 +49,6 @@ import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
 import ee.schimke.composeai.uibuilder.export.hostSpec
 import ee.schimke.composeai.uibuilder.renderer.sdk.GoogleMaterialIconVectors
-import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderInspectionSnapshot
 import ee.schimke.wearm3catalog.uibuilder.WearWidgetContainerFrame
 import ee.schimke.wearm3catalog.uibuilder.wearWidgetHostShape
 import kotlin.math.roundToInt
@@ -59,13 +56,14 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 
 /**
- * Real Remote M3 creation and playback for the read-only browser device surface.
+ * Real Remote M3 creation and playback for the read-only browser device surface, recorded afresh on
+ * every edit.
  *
  * [typefaceFallback] answers for every family the runtime's font registry does not: the player's
  * own default face unless a test stands in for the browser's.
  */
 @Composable
-internal fun RemoteM3DevicePreview(
+internal fun CaptureDevicePreview(
   document: UiBuilderDocument,
   widthDp: Float,
   heightDp: Float,
@@ -277,14 +275,3 @@ private suspend fun captureDocument(
     }
   return RcDocumentCodec.decode(bytes)
 }
-
-/** The capture path has no Remote Compose authoring surface; the Visual Editor uses stand-ins. */
-internal val remoteAuthoringSurface:
-  (@Composable
-  (
-    document: UiBuilderDocument,
-    widthDp: Float,
-    heightDp: Float,
-    onInspectionSnapshot: (UiBuilderInspectionSnapshot) -> Unit,
-  ) -> Unit)? =
-  null

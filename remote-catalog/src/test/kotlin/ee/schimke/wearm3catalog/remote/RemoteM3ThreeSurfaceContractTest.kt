@@ -207,14 +207,13 @@ class RemoteM3ThreeSurfaceContractTest {
   }
 
   /**
-   * The device surface as the default build compiles it: the shared document tree, and the Browser
-   * Preview's capture path (`src/capturePreview`), which records a fresh document per edit.
+   * The device surface: the shared document tree, and the Browser Preview's capture engine, which
+   * records a fresh document per edit and is the default.
    */
   private fun devicePreviewSources(): String =
     listOf(
         "src/commonMain/kotlin/ee/schimke/wearm3catalog/remoteuibuilder/RemoteM3DevicePreview.kt",
-        "src/capturePreview/kotlin/ee/schimke/wearm3catalog/remoteuibuilder/" +
-          "RemoteM3DevicePreviewSurface.kt",
+        "src/commonMain/kotlin/ee/schimke/wearm3catalog/remoteuibuilder/CaptureDevicePreview.kt",
       )
       .joinToString("\n") { File(root, "remote-catalog-ui-builder-renderer/$it").readText() }
 }

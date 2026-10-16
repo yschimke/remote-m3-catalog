@@ -135,6 +135,8 @@
         "ee.schimke.composeai:rc-players-bom",
         "/^ee\\.schimke\\.composeai:rc-player-/",
         "/^ee\\.schimke\\.composeai:third-party-rc-embedded-player($|-)/",
+        "/^ee\\.schimke\\.composeai:rc-creation-/",
+        "/^ee\\.schimke\\.composeai:third-party-remote-creation-/",
         "ee.schimke.composeai:remote-compose-player-js-dist"
       ],
       "groupName": "rc-players",

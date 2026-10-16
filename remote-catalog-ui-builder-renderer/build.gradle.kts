@@ -79,6 +79,10 @@ check(libs.versions.remote.compose.cmp.get() == remoteComposeWriterVersion) {
 
 val rcPlayerVersion = libs.versions.rcPlayers.get()
 
+// What records the document: the port's Remote M3 layer over rc-players' creation fork (see the
+// exclusions above), so the runtime contract names both.
+val runtimeWriterVersion = "$remoteComposeWriterVersion+rc-players-$rcPlayerVersion"
+
 val generatedRuntimePolicy = layout.buildDirectory.dir("generated/uiBuilderRuntimePolicy")
 val generateRuntimePolicy by
   tasks.registering(GenerateRuntimePolicy::class) {
@@ -86,10 +90,16 @@ val generateRuntimePolicy by
     outputDirectory.set(generatedRuntimePolicy)
   }
 
-// PROTOTYPE: `-PrcPlayersDir=../rc-players` plays the Browser Preview live, through rc-players'
-// `RcEmbeddedPlayer` and its creation fork (settings.gradle.kts substitutes both); without it the
-// preview records a fresh document per edit, as it ships.
-val livePreview = providers.gradleProperty("rcPlayersDir").isPresent
+// The renderer draws Remote Compose through rc-players' creation fork (`rc-player-embedded` brings
+// it, with `RcHostBridge`), which both preview engines share (see PreviewEngine.kt). The fork is
+// AndroidX's creation and foundation modules in their own package, so the published port's copies
+// of those layers must not come along with `remote-material3`: a second copy of every class.
+// `remote-material3` stays the port's and links against the fork.
+configurations.configureEach {
+  exclude(group = "ee.schimke.remotecompose", module = "remote-write-core")
+  exclude(group = "ee.schimke.remotecompose", module = "remote-creation-compose")
+  exclude(group = "ee.schimke.remotecompose", module = "remote-foundation")
+}
 
 kotlin {
   jvm()
@@ -102,20 +112,14 @@ kotlin {
   }
 
   sourceSets {
-    commonMain {
-      kotlin.srcDir(if (livePreview) "src/embeddedPreview/kotlin" else "src/capturePreview/kotlin")
-    }
     // rc-players' creation layer and the player's geometry hook are experimental API.
-    if (livePreview)
-      all {
-        languageSettings.optIn("ee.schimke.composeai.rccreation.bridge.ExperimentalRcCreationApi")
-        languageSettings.optIn("ee.schimke.composeai.rcplayer.compose.ExperimentalRcPlayerApi")
-      }
+    all {
+      languageSettings.optIn("ee.schimke.composeai.rccreation.bridge.ExperimentalRcCreationApi")
+      languageSettings.optIn("ee.schimke.composeai.rcplayer.compose.ExperimentalRcPlayerApi")
+    }
     commonMain.dependencies {
-      if (livePreview) implementation("ee.schimke.composeai:rc-player-embedded")
       implementation(libs.composeai.ui.builder.renderer.sdk.source)
-      implementation(libs.remotecompose.write.core)
-      implementation(libs.remotecompose.creation.compose)
+      implementation(libs.composeai.rc.player.embedded)
       implementation(libs.remotecompose.material3)
       implementation(project(":ui-builder-foundation-adapters"))
       implementation(project(":ui-builder-material-adapters"))
@@ -144,7 +148,26 @@ kotlin {
 // UnsupportedClassVersionError, every capture landed as "Failed" and the player never drew. The
 // tests run on the JDK this repository's CI is pinned to (.github/actions/setup) instead of
 // whichever JDK happens to launch Gradle.
-tasks.named<Test>("jvmTest") {
+// The same suite again under the live engine: a design that names no engine is drawn by whichever
+// the JVM's `remoteM3.previewEngine` says (see PreviewEngine.kt), so every device-preview test
+// covers both.
+val jvmTestLive =
+  tasks.register<Test>("jvmTestLive") {
+    description = "Runs the JVM tests with the live preview engine as the default."
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    val jvmTest = tasks.named<Test>("jvmTest").get()
+    testClassesDirs = jvmTest.testClassesDirs
+    classpath = jvmTest.classpath
+    systemProperty("remoteM3.previewEngine", "live")
+    // Not beside it: both drive desktop Compose UI tests against the wall clock.
+    mustRunAfter(jvmTest)
+    reports.html.outputLocation.set(layout.buildDirectory.dir("reports/tests/jvmTestLive"))
+    reports.junitXml.outputLocation.set(layout.buildDirectory.dir("test-results/jvmTestLive"))
+  }
+
+tasks.named("check") { dependsOn(jvmTestLive) }
+
+tasks.withType<Test>().configureEach {
   javaLauncher.set(javaToolchains.launcherFor { languageVersion.set(JavaLanguageVersion.of(21)) })
   // The runtime's vendored faces, which `RegistryTypefaceLoaderTest` loads to prove the player's
   // axes reach a variable face. The same directory the runtime archive copies into `fonts/`.
@@ -255,7 +278,7 @@ val wasmRendererDist =
     dependsOn(runtimeAssets)
     assetsDirectory.set(layout.buildDirectory.dir("runtimeAssets"))
     runtimeId.set(runtimeIdentity)
-    writerVersion.set(remoteComposeWriterVersion)
+    writerVersion.set(runtimeWriterVersion)
     playerVersion.set(rcPlayerVersion)
     outputDirectory.set(layout.buildDirectory.dir("wasmRendererDist"))
   }
@@ -334,7 +357,7 @@ tasks.register<VerifyCatalogRendererRuntime>("verifyRendererRuntime") {
   dependsOn(rendererArchive, "jvmTest")
   archiveFile.set(rendererArchive.flatMap { it.archiveFile })
   expectedRuntimeId.set(runtimeIdentity)
-  expectedWriterVersion.set(remoteComposeWriterVersion)
+  expectedWriterVersion.set(runtimeWriterVersion)
   expectedPlayerVersion.set(rcPlayerVersion)
 }
 

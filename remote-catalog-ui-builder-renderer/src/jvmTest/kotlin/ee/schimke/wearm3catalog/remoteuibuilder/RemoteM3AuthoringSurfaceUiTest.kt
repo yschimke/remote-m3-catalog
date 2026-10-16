@@ -17,7 +17,7 @@ import kotlin.test.assertTrue
 import kotlinx.serialization.json.Json
 
 /**
- * The Visual Editor's surface on real Remote Compose (live variant only): every authored node of
+ * The Visual Editor's surface on real Remote Compose (the live engine's): every authored node of
  * the golden designs gets bounds from the player, nested as the design nests them.
  */
 @OptIn(ExperimentalTestApi::class)
@@ -25,12 +25,11 @@ class RemoteM3AuthoringSurfaceUiTest {
 
   @Test
   fun `every authored node of the golden designs is measured by the player`() {
-    val surface = remoteAuthoringSurface ?: return // capture variant: no remote authoring surface
     listOf("golden-tiles-news", "golden-tiles-timer-1", "golden-tiles-goal").forEach { id ->
       val design = fixture(id)
       runDesktopComposeUiTest(width = 480, height = 320) {
         var last: UiBuilderInspectionSnapshot? = null
-        setContent { surface(design, 240f, 240f) { last = it } }
+        setContent { RemoteM3AuthoringSurface(design, 240f, 240f) { last = it } }
         try {
           waitUntil(timeoutMillis = 10_000) {
             last?.generation?.measuredNodeIds?.size == design.nodes.size
@@ -64,12 +63,11 @@ class RemoteM3AuthoringSurfaceUiTest {
 
   @Test
   fun `a new revision is measured again to the same geometry`() {
-    val surface = remoteAuthoringSurface ?: return
     val design = fixture("golden-tiles-timer-1")
     runDesktopComposeUiTest(width = 480, height = 320) {
       var current by mutableStateOf(design)
       var last: UiBuilderInspectionSnapshot? = null
-      setContent { surface(current, 240f, 240f) { last = it } }
+      setContent { RemoteM3AuthoringSurface(current, 240f, 240f) { last = it } }
       waitUntil(timeoutMillis = 10_000) {
         last?.generation?.measuredNodeIds?.size == design.nodes.size
       }

@@ -1,5 +1,5 @@
-// PROTOTYPE: the Visual Editor's surface on real Remote Compose, played live, instead of Compose UI
-// stand-ins. Selected with the live preview by `-PrcPlayersDir` (see build.gradle.kts).
+// The Visual Editor's surface on real Remote Compose, played live, instead of Compose UI stand-ins.
+// Used only under `PreviewEngine.Live`; see PreviewEngine.kt.
 package ee.schimke.wearm3catalog.remoteuibuilder
 
 import androidx.compose.runtime.Composable
@@ -27,18 +27,6 @@ import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderInspectionSnapshot
  * Not yet carried over from the stand-in surface: text layout records (baselines), semantic actions
  * (`activate`, `scrollBy`), horizontal unrolling, and placeholders for empty slots.
  */
-internal val remoteAuthoringSurface:
-  (@Composable
-  (
-    document: UiBuilderDocument,
-    widthDp: Float,
-    heightDp: Float,
-    onInspectionSnapshot: (UiBuilderInspectionSnapshot) -> Unit,
-  ) -> Unit)? =
-  { document, widthDp, heightDp, onInspectionSnapshot ->
-    RemoteM3AuthoringSurface(document, widthDp, heightDp, onInspectionSnapshot)
-  }
-
 @Composable
 internal fun RemoteM3AuthoringSurface(
   document: UiBuilderDocument,
@@ -73,7 +61,7 @@ internal fun RemoteM3AuthoringSurface(
   LaunchedEffect(collector) {
     snapshotFlow { invalidations.intValue }.collect { currentOnSnapshot(collector.snapshot()) }
   }
-  RemoteM3DevicePreview(
+  LiveDevicePreview(
     document = document,
     widthDp = widthDp,
     heightDp = heightDp,

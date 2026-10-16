@@ -1,5 +1,5 @@
-// PROTOTYPE: the Browser Preview on rc-players' live player (`RcEmbeddedPlayer`). Selected only by
-// `-PrcPlayersDir` (see build.gradle.kts); `src/capturePreview` is the default.
+// The live engine (`PreviewEngine.Live`): the Browser Preview on rc-players' live player
+// (`RcEmbeddedPlayer`). See PreviewEngine.kt.
 package ee.schimke.wearm3catalog.remoteuibuilder
 
 import androidx.compose.foundation.layout.Box
@@ -50,7 +50,7 @@ import kotlin.math.roundToInt
  * own default face unless a test stands in for the browser's.
  */
 @Composable
-internal fun RemoteM3DevicePreview(
+internal fun LiveDevicePreview(
   document: UiBuilderDocument,
   widthDp: Float,
   heightDp: Float,
