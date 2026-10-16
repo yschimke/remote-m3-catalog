@@ -13,6 +13,7 @@ class PreviewEngineTest {
       """
       {"schema": "compose-ui-builder-document/v1-candidate", "id": "engine", "title": "Engine",
        "revision": 1, "catalogPin": {"systemId": "remote-m3"}, "environment": {},
+       "stateVariables": {},
        "roots": [], "nodes": {}}
       """
     )
