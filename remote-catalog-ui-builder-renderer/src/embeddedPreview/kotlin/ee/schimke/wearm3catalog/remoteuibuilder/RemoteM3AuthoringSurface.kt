@@ -48,7 +48,7 @@ internal fun RemoteM3AuthoringSurface(
 ) {
   val currentOnSnapshot by rememberUpdatedState(onInspectionSnapshot)
   // One registry for the surface's life: a node keeps its component id across edits.
-  val ids = remember { RcComponentIds() }
+  val ids = remember { RcComponentIds<String>() }
   // Every bounds report invalidates; snapshots are published once per settled batch.
   val invalidations = remember(document) { mutableIntStateOf(0) }
   val collector =

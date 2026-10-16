@@ -105,6 +105,12 @@ kotlin {
     commonMain {
       kotlin.srcDir(if (livePreview) "src/embeddedPreview/kotlin" else "src/capturePreview/kotlin")
     }
+    // rc-players' creation layer and the player's geometry hook are experimental API.
+    if (livePreview)
+      all {
+        languageSettings.optIn("ee.schimke.composeai.rccreation.bridge.ExperimentalRcCreationApi")
+        languageSettings.optIn("ee.schimke.composeai.rcplayer.compose.ExperimentalRcPlayerApi")
+      }
     commonMain.dependencies {
       if (livePreview) implementation("ee.schimke.composeai:rc-player-embedded")
       implementation(libs.composeai.ui.builder.renderer.sdk.source)

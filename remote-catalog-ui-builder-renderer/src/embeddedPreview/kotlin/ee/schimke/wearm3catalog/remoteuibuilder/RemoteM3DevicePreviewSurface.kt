@@ -252,10 +252,10 @@ private fun displayInfo(widthDp: Float, heightDp: Float, density: Density) =
  * from [ids], and the geometry the player then reports for it, by node id.
  */
 internal class AuthoringInspection(
-  val ids: RcComponentIds,
+  val ids: RcComponentIds<String>,
   val onBounds: (nodeId: String, coordinates: LayoutCoordinates) -> Unit,
 ) {
   val listener = RcComponentCoordinatesListener { id, coordinates ->
-    (ids.keyFor(id) as? String)?.let { onBounds(it, coordinates) }
+    ids.keyFor(id)?.let { onBounds(it, coordinates) }
   }
 }
