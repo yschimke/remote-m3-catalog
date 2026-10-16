@@ -113,7 +113,10 @@ internal fun LiveDevicePreview(
   // [onReady] is told once per design, as the capture variant tells it once per recording.
   var contentRendered by remember { mutableStateOf<UiBuilderDocument?>(null) }
   var backgroundRendered by remember { mutableStateOf<UiBuilderDocument?>(null) }
-  var failure by remember { mutableStateOf<Throwable?>(null) }
+  // Each player's own: one player rendering must not clear the other's failure.
+  var contentFailure by remember { mutableStateOf<Throwable?>(null) }
+  var backgroundFailure by remember { mutableStateOf<Throwable?>(null) }
+  val failure = contentFailure ?: backgroundFailure.takeIf { hasBackground }
   val ready =
     design != null &&
       contentRendered === design &&
@@ -139,7 +142,7 @@ internal fun LiveDevicePreview(
       widthDp: Float,
       heightDp: Float,
       modifier: Modifier,
-      onRendered: () -> Unit,
+      onSettled: (failure: Throwable?) -> Unit,
       content: @Composable () -> Unit,
     ) {
       CompositionLocalProvider(LocalRcComponentCoordinates provides authoring?.listener) {
@@ -149,16 +152,10 @@ internal fun LiveDevicePreview(
           theme = design.playerTheme(),
           typefaces = fonts,
           encodePng = ::encodeDesignAssetPng,
-          onRendered = {
-            failure = null
-            onRendered()
-          },
+          onRendered = { onSettled(null) },
           // A failed render still settles the design, as a failed recording does in the capture
           // variant: the pane reports Failed, and [onReady] is told once.
-          onFailure = {
-            failure = it
-            onRendered()
-          },
+          onFailure = { onSettled(it) },
           key = design,
         ) {
           RemotePreviewContent(widthDp, heightDp, density, roleNames, textRole, content)
@@ -185,7 +182,10 @@ internal fun LiveDevicePreview(
           contentWidth,
           contentHeight,
           Modifier.fillMaxSize(),
-          onRendered = { contentRendered = design },
+          onSettled = {
+            contentFailure = it
+            contentRendered = design
+          },
         ) {
           tree.Render(widgetSize != null)
         }
@@ -217,7 +217,10 @@ internal fun LiveDevicePreview(
                 frameWidth,
                 frameHeight,
                 Modifier.fillMaxSize().clip(shape).testTag(REMOTE_M3_WIDGET_BACKGROUND_TEST_TAG),
-                onRendered = { backgroundRendered = design },
+                onSettled = {
+                  backgroundFailure = it
+                  backgroundRendered = design
+                },
               ) {
                 tree.RenderRootSlot("background")
               }
@@ -229,7 +232,10 @@ internal fun LiveDevicePreview(
             contentWidth,
             contentHeight,
             Modifier.fillMaxSize().testTag(REMOTE_M3_WIDGET_CONTENT_TEST_TAG),
-            onRendered = { contentRendered = design },
+            onSettled = {
+              contentFailure = it
+              contentRendered = design
+            },
           ) {
             tree.Render(widgetSize != null)
           }

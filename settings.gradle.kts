@@ -202,8 +202,12 @@ include(":remote-wasm")
 
 include(":remote-desktop")
 
-// PROTOTYPE — embedded documents (see prototypes/embedded-document/README.md). Not for landing.
-include(":prototypes:embedded-document")
+// Research behind the live preview engine: building an RcDocument straight from a remote
+// composition (prototypes/embedded-document/README.md). Its findings now live in rc-players'
+// RcEmbeddedPlayer, so ordinary builds leave it out: -PembeddedDocumentPrototype=true.
+if (providers.gradleProperty("embeddedDocumentPrototype").orNull == "true") {
+  include(":prototypes:embedded-document")
+}
 
 // The shadow catalog: Remote stickers whose body is a UI builder document
 // (`uid-stickers/README.md`).
