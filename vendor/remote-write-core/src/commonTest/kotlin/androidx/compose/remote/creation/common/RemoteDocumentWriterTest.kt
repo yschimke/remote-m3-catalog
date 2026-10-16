@@ -2,6 +2,8 @@ package androidx.compose.remote.creation.common
 
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 
 class RemoteDocumentWriterTest {
   @Test
@@ -15,7 +17,39 @@ class RemoteDocumentWriterTest {
     assertContentEquals(ExpectedDocument, document)
   }
 
+  @Test
+  fun customLayoutContentHasItsOwnComponentId() {
+    val writer = RemoteDocumentWriter(width = 192, height = 192)
+    val headerSize = writer.encodeToByteArray().size
+    writer.root {
+      startCustom(RemoteModifierData(), configId = 42, properties = emptyList())
+      endCustom()
+    }
+    val bytes = writer.encodeToByteArray()
+    val body = bytes.copyOfRange(headerSize, bytes.size)
+
+    // Root (opcode, id), then LAYOUT_CUSTOM (opcode, id, animation id, config id, property count),
+    // then its LAYOUT_CONTENT (opcode, id).
+    val custom = 1 + 4
+    assertEquals(LayoutCustom, body[custom].toInt() and 0xff)
+    val customId = body.intAt(custom + 1)
+    val content = custom + 1 + 4 * 4
+    assertEquals(LayoutContent, body[content].toInt() and 0xff)
+    val contentId = body.intAt(content + 1)
+
+    assertNotEquals(customId, contentId, "the custom layout and its content share component id $customId")
+  }
+
+  private fun ByteArray.intAt(index: Int): Int =
+    (this[index].toInt() and 0xff shl 24) or
+      (this[index + 1].toInt() and 0xff shl 16) or
+      (this[index + 2].toInt() and 0xff shl 8) or
+      (this[index + 3].toInt() and 0xff)
+
   private companion object {
+    const val LayoutCustom = 93
+    const val LayoutContent = 201
+
     val ExpectedDocument =
       """
       00 04 8c 00 01 00 00 00 01 00 00 00 00 00 00 00

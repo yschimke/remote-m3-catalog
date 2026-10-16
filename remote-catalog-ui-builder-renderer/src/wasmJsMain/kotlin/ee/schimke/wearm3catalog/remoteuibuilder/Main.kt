@@ -101,7 +101,8 @@ fun main() {
     onFulfilled = {
       startCatalogRenderer(
         actions,
-        capabilities = setOf(CATALOG_RUNTIME_CAPABILITY_HORIZONTAL_UNROLL),
+        capabilities =
+          setOf(CATALOG_RUNTIME_CAPABILITY_HORIZONTAL_UNROLL, PreviewEngine.CAPABILITY),
       ) { document, surface, renderSessionId, onInspectionSnapshot ->
         val hostDensity = LocalDensity.current
         val density =
@@ -148,7 +149,19 @@ fun main() {
               }
             )
             Box(Modifier.requiredSize(surface.widthDp.dp, surface.heightDp.dp)) {
-              if (surface.mode == UiBuilderRendererSurfaceModeV2.AUTHORING_UNROLLED) {
+              val engine = PreviewEngine.of(document)
+              if (
+                surface.mode == UiBuilderRendererSurfaceModeV2.AUTHORING_UNROLLED &&
+                  engine == PreviewEngine.Live
+              ) {
+                // The editor's surface is the real recording, played; see [PreviewEngine].
+                RemoteM3AuthoringSurface(
+                  document,
+                  surface.widthDp,
+                  surface.heightDp,
+                  onInspectionSnapshot,
+                )
+              } else if (surface.mode == UiBuilderRendererSurfaceModeV2.AUTHORING_UNROLLED) {
                 SemanticCanvas(
                   document = document,
                   mode = mode,
@@ -162,6 +175,7 @@ fun main() {
                   document = document,
                   widthDp = surface.widthDp,
                   heightDp = surface.heightDp,
+                  engine = engine,
                   onReady = {
                     // DEVICE is read-only, so the host only needs document identity to correlate
                     // the frame. Bounds and semantic actions belong to AUTHORING_UNROLLED and must

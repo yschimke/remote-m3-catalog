@@ -78,6 +78,15 @@ the vendored JVM applier and writes the encoded document to
 `remote-desktop/build/desktop-sample.rc`; it does not use Robolectric or any Android API.
 `DesktopCaptureTest` repeats the capture and checks that its bytes are non-empty and deterministic.
 
+## Port fixes
+
+- `remote-write-core`'s `RemoteDocumentWriter.startCustom` gave a custom layout's content section
+  the layout's own component id. Upstream's `RemoteComposeWriter.startCustom` allocates it a fresh
+  one (`addContentStart`), and a player that indexes components by id (rc-players') rejected the
+  duplicate. `ProtocolParityTest.customLayoutMatchesAndroidxCore` had accepted the duplicate: its
+  AndroidX buffer allocated the content id from a separate counter, whose first id happened to match
+  the layout's.
+
 ## Write-only core extraction
 
 `:vendor:remote-core` begins phase 3 by merging the JVM writer stack that AndroidX publishes as

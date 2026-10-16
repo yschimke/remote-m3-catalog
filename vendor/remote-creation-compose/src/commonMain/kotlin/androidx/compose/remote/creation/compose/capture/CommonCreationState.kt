@@ -31,13 +31,19 @@ import androidx.compose.ui.unit.LayoutDirection
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public open class RemoteComposeCreationState(
     public val creationDisplayInfo: RemoteCreationDisplayInfo,
-    public final override val writer: RemoteWriter,
+    writer: RemoteWriter,
     public override var remoteDensity: RemoteDensity = RemoteDensity.from(creationDisplayInfo),
     public override var layoutDirection: LayoutDirection = LayoutDirection.Ltr,
     public val supportedOperations: Set<Int> = emptySet(),
     private val platformImageProvider: PlatformImageProvider = NoOpPlatformImageProvider,
     internal var platformState: Any? = null,
 ) : RemoteComposeCreationContext {
+    // PROTOTYPE (embedded documents): settable so a live session can render each frame into a
+    // fresh writer while the composition, and every node in it, stays alive. Upstream's Android
+    // capture loop does the same by replacing `legacyDocument` before each render.
+    public final override var writer: RemoteWriter = writer
+        internal set
+
     override val parentScope: RemoteComposeCreationState
         get() = this
 
@@ -68,6 +74,15 @@ public open class RemoteComposeCreationState(
         private set
 
     internal fun allocateComponentId(): Int = nextComponentId--
+
+    /**
+     * PROTOTYPE (embedded documents): restarts component ids, so re-rendering the same retained
+     * tree gives the same ids. Without it every render of a live composition shifts all of them,
+     * and nothing keyed on a component id (editor bounds, player state) survives an edit.
+     */
+    internal fun resetComponentIds() {
+        nextComponentId = -1_000_000
+    }
 
     internal fun enterComponentScope(componentId: Int): Int {
         val previous = componentCacheKey

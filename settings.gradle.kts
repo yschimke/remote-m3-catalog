@@ -117,6 +117,36 @@ providers.gradleProperty("composeUiBuilderDir").orNull?.let { path ->
   }
 }
 
+// Build against an rc-players checkout, for changes that span its player or creation fork and this
+// catalog. The players resolve to rc-players' projects instead of the published release:
+//
+//   ./gradlew -PcomposeUiBuilderDir=../compose-ui-builder -PrcPlayersDir=../rc-players \
+//     :remote-catalog-ui-builder-renderer:jvmTest
+providers.gradleProperty("rcPlayersDir").orNull?.let { path ->
+  val directory = file(path).canonicalFile
+  require(directory.resolve("settings.gradle.kts").isFile) {
+    "-PrcPlayersDir names $directory, which is not an rc-players Gradle checkout."
+  }
+  logger.lifecycle("Composite build: rcPlayers -> $directory")
+  includeBuild(directory) {
+    dependencySubstitution {
+      substitute(module("ee.schimke.composeai:rc-players-bom")).using(project(":bom"))
+      listOf("trace", "protocol", "runtime", "compose", "embedded").forEach { name ->
+        substitute(module("ee.schimke.composeai:rc-player-$name"))
+          .using(project(":rc-player-$name"))
+      }
+      substitute(module("ee.schimke.composeai:third-party-rc-embedded-player"))
+        .using(project(":third-party-rc-embedded-player"))
+      substitute(module("ee.schimke.composeai:rc-creation-bridge"))
+        .using(project(":rc-creation-bridge"))
+      listOf("writer", "compose").forEach { name ->
+        substitute(module("ee.schimke.composeai:third-party-remote-creation-$name"))
+          .using(project(":third-party-remote-creation-$name"))
+      }
+    }
+  }
+}
+
 // The renderer links the source-only SDK. Keep it outside ordinary catalog builds: without the
 // composite there is deliberately no Maven fallback for that coordinate.
 if (providers.gradleProperty("composeUiBuilderDir").isPresent) {
@@ -171,6 +201,13 @@ include(":vendor:remote-write-core")
 include(":remote-wasm")
 
 include(":remote-desktop")
+
+// Research behind the live preview engine: building an RcDocument straight from a remote
+// composition (prototypes/embedded-document/README.md). Its findings now live in rc-players'
+// RcEmbeddedPlayer, so ordinary builds leave it out: -PembeddedDocumentPrototype=true.
+if (providers.gradleProperty("embeddedDocumentPrototype").orNull == "true") {
+  include(":prototypes:embedded-document")
+}
 
 // The shadow catalog: Remote stickers whose body is a UI builder document
 // (`uid-stickers/README.md`).

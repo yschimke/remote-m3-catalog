@@ -514,7 +514,14 @@ private fun componentRemoteCircularProgressIndicator(): UiBuilderAuthoredCompone
             required = false,
             notes =
               "Draws the indeterminate `RemoteCircularProgressIndicator`, the overload without `progress`: the record carries only the determinate one, so this is stated rather than derived. Takes no `progress` or `enabled`.",
-          )
+          ),
+          property(
+            "strokeWidth",
+            JsonValueTypeV1.NUMBER,
+            required = false,
+            notes =
+              "`RemoteCircularProgressIndicator`'s `strokeWidth: RemoteDp`, the ring's width in dp. When absent, `RemoteProgressIndicatorDefaults.largeStrokeWidth(RemoteConfiguration.windowWidth)`: 8dp in a window narrower than 225dp, 12dp otherwise, as Wear Material 3 sizes its own indicator. Not for the indeterminate indicator, which keeps its 3dp.",
+          ),
         )
     }
     .build()

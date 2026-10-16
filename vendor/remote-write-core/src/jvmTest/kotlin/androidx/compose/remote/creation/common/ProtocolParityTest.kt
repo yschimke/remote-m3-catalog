@@ -575,7 +575,11 @@ class ProtocolParityTest {
         ),
       ),
     )
-    expected.addContentStart()
+    // Upstream's RemoteComposeWriter.startCustom follows the layout with `addContentStart`, which
+    // allocates the content section a fresh id from the same counter: the layout's next. A bare
+    // buffer's `addContentStart` would draw from a separate counter whose first id (-2) only
+    // coincides with the layout's, which is how this test once accepted the two sharing one.
+    androidx.compose.remote.core.operations.layout.LayoutComponentContent.apply(expected.buffer, -3)
     expected.addContainerEnd()
     expected.addContainerEnd()
 
