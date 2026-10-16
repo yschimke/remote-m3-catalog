@@ -46,10 +46,20 @@ class RemoteM3DevicePreviewTimeUiTest {
   /** Each bar's left edge, sampled twice a quarter of a second of real and frame time apart. */
   private fun ComposeUiTest.edges(document: UiBuilderDocument): Pair<List<Int>, List<Int>> {
     var ready = 0
-    setContent { RemoteM3DevicePreview(document, widthDp = 216f, heightDp = 124f) { ready++ } }
-    waitUntil(timeoutMillis = 15_000) { ready == 1 }
-    // A running clock asks for a frame every frame, so from here frames are advanced by hand.
+    // Frames are advanced by hand from before the first composition. The document reads the
+    // player's animation clock, which runs even in a settled pane, so the player asks for a frame
+    // every frame and recomposes its layout on each; with the clock advancing on its own,
+    // `setContent`'s wait for idle raced that loop and, whenever the loop won, never returned.
     mainClock.autoAdvance = false
+    setContent { RemoteM3DevicePreview(document, widthDp = 216f, heightDp = 124f) { ready++ } }
+    // The recording (or the live session) runs off this clock, so real time passes between frames.
+    val deadline = System.currentTimeMillis() + 15_000
+    while (ready == 0) {
+      check(System.currentTimeMillis() < deadline) { "the preview never became ready" }
+      mainClock.advanceTimeByFrame()
+      Thread.sleep(10)
+    }
+    assertEquals(1, ready)
     onAllNodesWithText("Remote M3 preview failed", substring = true).fetchSemanticsNodes().let {
       assertEquals(0, it.size, "the preview failed to record")
     }
