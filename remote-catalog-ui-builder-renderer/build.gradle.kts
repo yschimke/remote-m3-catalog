@@ -95,47 +95,6 @@ val generateRuntimePolicy by
 // AndroidX's creation and foundation modules in their own package, so the published port's copies
 // of those layers must not come along with `remote-material3`: a second copy of every class.
 // `remote-material3` stays the port's and links against the fork.
-// rc-players 2.13.0 published the fork's variants with the root module's capability in place of
-// each platform module's own, so no variant of `third-party-remote-creation-compose-<platform>` can
-// be selected (rc-players#676). This restores the metadata the fix publishes: every module offers
-// its own coordinates, and only the Android variants also offer AndroidX's. It touches 2.13.0
-// alone, so it goes inert with the next rc-players release and can then be deleted.
-abstract class RcPlayers2130CreationCapabilities : ComponentMetadataRule {
-  override fun execute(context: ComponentMetadataContext) {
-    val id = context.details.id
-    if (id.version != "2.13.0") return
-    context.details.allVariants {
-      withCapabilities {
-        if (id.name == "$CREATION_COMPOSE-android") {
-          addCapability(id.group, id.name, id.version)
-        } else {
-          removeCapability("androidx.compose.remote", "remote-creation-compose")
-          removeCapability("androidx.compose.remote.foundation", "foundation")
-          if (id.name != CREATION_COMPOSE) {
-            removeCapability(id.group, CREATION_COMPOSE)
-            addCapability(id.group, id.name, id.version)
-          }
-        }
-      }
-    }
-  }
-
-  companion object {
-    const val CREATION_COMPOSE = "third-party-remote-creation-compose"
-  }
-}
-
-dependencies {
-  components {
-    listOf("", "-jvm", "-wasm-js", "-android", "-iosarm64", "-iossimulatorarm64", "-macosarm64")
-      .forEach {
-        withModule<RcPlayers2130CreationCapabilities>(
-          "ee.schimke.composeai:${RcPlayers2130CreationCapabilities.CREATION_COMPOSE}$it"
-        )
-      }
-  }
-}
-
 configurations.configureEach {
   exclude(group = "ee.schimke.remotecompose", module = "remote-write-core")
   exclude(group = "ee.schimke.remotecompose", module = "remote-creation-compose")
