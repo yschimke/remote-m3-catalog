@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
@@ -109,8 +110,15 @@ class RemoteM3DevicePreviewUiTest {
       mainClock.advanceTimeByFrame()
       current = edited(4, "Two")
       mainClock.autoAdvance = true
+      // The pane ready on the last edit, and no indicator left. The live engine shows no indicator
+      // at all, so its absence alone settles nothing there.
       waitUntil(timeoutMillis = 10_000) {
-        onAllNodesWithTag(REMOTE_M3_REFRESHING_TEST_TAG).fetchSemanticsNodes().isEmpty()
+        readyCalls >= 2 &&
+          onAllNodesWithTag(REMOTE_M3_REFRESHING_TEST_TAG).fetchSemanticsNodes().isEmpty() &&
+          onNodeWithTag(REMOTE_M3_DEVICE_PREVIEW_TEST_TAG)
+            .fetchSemanticsNode()
+            .config
+            .getOrNull(SemanticsProperties.StateDescription) == "Ready"
       }
 
       // Settled on the last edit: drawn, no indicator left behind, and at most one report per
