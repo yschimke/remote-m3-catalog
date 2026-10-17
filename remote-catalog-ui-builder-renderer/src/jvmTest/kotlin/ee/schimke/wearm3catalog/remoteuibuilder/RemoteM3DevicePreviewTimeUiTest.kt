@@ -17,8 +17,9 @@ import kotlin.time.Duration.Companion.seconds
 import kotlinx.serialization.json.Json
 
 /**
- * A device pane plays the design's wall clock only when the editor lets time run. Settled, the
- * clock is pinned at `fixedTime`, like every other render of the design.
+ * A device pane plays the design's clocks only when the editor lets time run. Settled, the wall
+ * clock is pinned at `fixedTime` and animation time holds at the first frame, like every other
+ * render of the design.
  *
  * The red bar's left edge is `10 + (time.continuousSecond % 1) * 100` dp, so it moves only with the
  * wall clock. The green bar's is `10 + time.animation * 40` dp, the player's own clock, which a
@@ -29,10 +30,11 @@ class RemoteM3DevicePreviewTimeUiTest {
   private val settled: UiBuilderDocument = Json.decodeFromString(DOCUMENT)
 
   @Test
-  fun `a settled pane holds the wall clock at its fixed time`() =
+  fun `a settled pane holds the wall clock and animation time`() =
     runDesktopComposeUiTest(width = 432, height = 248, testTimeout = 90.seconds) {
-      val (wall, _) = edges(settled)
+      val (wall, animation) = edges(settled)
       assertEquals(wall[0], wall[1], "a settled pane moved with the wall clock: $wall")
+      assertEquals(animation[0], animation[1], "a settled pane played animation time: $animation")
     }
 
   @Test
@@ -46,9 +48,9 @@ class RemoteM3DevicePreviewTimeUiTest {
   /** Each bar's left edge, sampled twice a quarter of a second of real and frame time apart. */
   private fun ComposeUiTest.edges(document: UiBuilderDocument): Pair<List<Int>, List<Int>> {
     var ready = 0
-    // The document reads the player's animation clock, which runs even in a settled pane. The
-    // player asks for those frames as an infinite animation, which a test with the clock advancing
-    // on its own refuses, so waiting for the recording (or the live session) to be ready goes idle.
+    // The document reads the player's animation clock. The player asks for those frames as an
+    // infinite animation, which a settled pane pauses and a test with the clock advancing on its
+    // own refuses, so waiting for the recording (or the live session) to be ready goes idle.
     setContent { RemoteM3DevicePreview(document, widthDp = 216f, heightDp = 124f) { ready++ } }
     waitUntil(timeoutMillis = 15_000) { ready > 0 }
     // Frames by hand from here: the player's clock runs only on frames the test advances.
