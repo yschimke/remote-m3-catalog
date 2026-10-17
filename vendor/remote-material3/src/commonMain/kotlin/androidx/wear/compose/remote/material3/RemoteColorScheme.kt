@@ -16,9 +16,14 @@
 
 package androidx.wear.compose.remote.material3
 
+import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.state.RemoteColor
-import androidx.compose.remote.creation.compose.state.RemoteColor.Companion.createNamedRemoteColor
+import androidx.compose.runtime.Composable
 import androidx.wear.compose.material3.ColorScheme
+import androidx.wear.compose.remote.material3.internal.RemoteColorRole
+import androidx.wear.compose.remote.material3.internal.RemoteColorSource
+import androidx.wear.compose.remote.material3.internal.SystemColorToken
+import androidx.wear.compose.remote.material3.internal.dynamicRemoteColorSource
 
 /**
  * Represents the color scheme for the Wear Material 3 theme in a remote context.
@@ -56,9 +61,9 @@ import androidx.wear.compose.material3.ColorScheme
  *   top of [tertiaryContainer].
  * @property surfaceContainerLow A surface color used for large containment components such as Card
  *   and Button with low prominence.
- * @property surfaceContainer The main surface color that affect surfaces of components with large
+ * @property surfaceContainer The main surface color that affects surfaces of components with large
  *   containment areas, such as Card and Button.
- * @property surfaceContainerHigh A surface color used for large containment components such Card
+ * @property surfaceContainerHigh A surface color used for large containment components such as Card
  *   and Button with high prominence.
  * @property onSurface Color used for text and icons displayed on top of the surface color.
  * @property onSurfaceVariant The color for secondary text and icons on top of [surfaceContainer].
@@ -74,7 +79,7 @@ import androidx.wear.compose.material3.ColorScheme
  *   failed dialog overlays or stop buttons.
  * @property errorContainer A less prominent container color than [error], for components using the
  *   error state. Can also indicate an active error state which feels less interactive than a filled
- *   state, such as an active emergency sharing button, or on a failed overlay dialog..
+ *   state, such as an active emergency sharing button, or on a failed overlay dialog.
  * @property onError Color used for text and icons displayed on top of the error color.
  * @property onErrorContainer Color used for text and icons on the errorContainer color.
  */
@@ -120,46 +125,62 @@ public class RemoteColorScheme(
      */
     public constructor(
         colorScheme: ColorScheme = ColorScheme()
+    ) : this(colorScheme = colorScheme, source = RemoteColorSource.Named)
+
+    /**
+     * Creates a [RemoteColorScheme] from a standard [ColorScheme], resolving each color role from
+     * [source].
+     *
+     * @param colorScheme The local [ColorScheme] to retrieve fallback/default colors from.
+     * @param source Whether colors are named colors or follow the Android system colors.
+     */
+    internal constructor(
+        colorScheme: ColorScheme,
+        source: RemoteColorSource,
     ) : this(
-        primary = createNamedRemoteColor(PRIMARY, colorScheme.primary),
-        primaryDim = createNamedRemoteColor(PRIMARY_DIM, colorScheme.primaryDim),
-        primaryContainer = createNamedRemoteColor(PRIMARY_CONTAINER, colorScheme.primaryContainer),
-        onPrimary = createNamedRemoteColor(ON_PRIMARY, colorScheme.onPrimary),
+        primary = source.resolve(WearColorRoles.Primary, colorScheme.primary),
+        primaryDim = source.resolve(WearColorRoles.PrimaryDim, colorScheme.primaryDim),
+        primaryContainer =
+            source.resolve(WearColorRoles.PrimaryContainer, colorScheme.primaryContainer),
+        onPrimary = source.resolve(WearColorRoles.OnPrimary, colorScheme.onPrimary),
         onPrimaryContainer =
-            createNamedRemoteColor(ON_PRIMARY_CONTAINER, colorScheme.onPrimaryContainer),
-        secondary = createNamedRemoteColor(SECONDARY, colorScheme.secondary),
-        secondaryDim = createNamedRemoteColor(SECONDARY_DIM, colorScheme.secondaryDim),
+            source.resolve(WearColorRoles.OnPrimaryContainer, colorScheme.onPrimaryContainer),
+        secondary = source.resolve(WearColorRoles.Secondary, colorScheme.secondary),
+        secondaryDim = source.resolve(WearColorRoles.SecondaryDim, colorScheme.secondaryDim),
         secondaryContainer =
-            createNamedRemoteColor(SECONDARY_CONTAINER, colorScheme.secondaryContainer),
-        onSecondary = createNamedRemoteColor(ON_SECONDARY, colorScheme.onSecondary),
+            source.resolve(WearColorRoles.SecondaryContainer, colorScheme.secondaryContainer),
+        onSecondary = source.resolve(WearColorRoles.OnSecondary, colorScheme.onSecondary),
         onSecondaryContainer =
-            createNamedRemoteColor(ON_SECONDARY_CONTAINER, colorScheme.onSecondaryContainer),
-        tertiary = createNamedRemoteColor(TERTIARY, colorScheme.tertiary),
-        tertiaryDim = createNamedRemoteColor(TERTIARY_DIM, colorScheme.tertiaryDim),
+            source.resolve(WearColorRoles.OnSecondaryContainer, colorScheme.onSecondaryContainer),
+        tertiary = source.resolve(WearColorRoles.Tertiary, colorScheme.tertiary),
+        tertiaryDim = source.resolve(WearColorRoles.TertiaryDim, colorScheme.tertiaryDim),
         tertiaryContainer =
-            createNamedRemoteColor(TERTIARY_CONTAINER, colorScheme.tertiaryContainer),
-        onTertiary = createNamedRemoteColor(ON_TERTIARY, colorScheme.onTertiary),
+            source.resolve(WearColorRoles.TertiaryContainer, colorScheme.tertiaryContainer),
+        onTertiary = source.resolve(WearColorRoles.OnTertiary, colorScheme.onTertiary),
         onTertiaryContainer =
-            createNamedRemoteColor(ON_TERTIARY_CONTAINER, colorScheme.onTertiaryContainer),
+            source.resolve(WearColorRoles.OnTertiaryContainer, colorScheme.onTertiaryContainer),
         surfaceContainerLow =
-            createNamedRemoteColor(SURFACE_CONTAINER_LOW, colorScheme.surfaceContainerLow),
-        surfaceContainer = createNamedRemoteColor(SURFACE_CONTAINER, colorScheme.surfaceContainer),
+            source.resolve(WearColorRoles.SurfaceContainerLow, colorScheme.surfaceContainerLow),
+        surfaceContainer =
+            source.resolve(WearColorRoles.SurfaceContainer, colorScheme.surfaceContainer),
         surfaceContainerHigh =
-            createNamedRemoteColor(SURFACE_CONTAINER_HIGH, colorScheme.surfaceContainerHigh),
-        onSurface = createNamedRemoteColor(ON_SURFACE, colorScheme.onSurface),
-        onSurfaceVariant = createNamedRemoteColor(ON_SURFACE_VARIANT, colorScheme.onSurfaceVariant),
-        outline = createNamedRemoteColor(OUTLINE, colorScheme.outline),
-        outlineVariant = createNamedRemoteColor(OUTLINE_VARIANT, colorScheme.outlineVariant),
-        background = createNamedRemoteColor(BACKGROUND, colorScheme.background),
-        onBackground = createNamedRemoteColor(ON_BACKGROUND, colorScheme.onBackground),
-        error = createNamedRemoteColor(ERROR, colorScheme.error),
-        errorDim = createNamedRemoteColor(ERROR_DIM, colorScheme.errorDim),
-        errorContainer = createNamedRemoteColor(ERROR_CONTAINER, colorScheme.errorContainer),
-        onError = createNamedRemoteColor(ON_ERROR, colorScheme.onError),
-        onErrorContainer = createNamedRemoteColor(ON_ERROR_CONTAINER, colorScheme.onErrorContainer),
+            source.resolve(WearColorRoles.SurfaceContainerHigh, colorScheme.surfaceContainerHigh),
+        onSurface = source.resolve(WearColorRoles.OnSurface, colorScheme.onSurface),
+        onSurfaceVariant =
+            source.resolve(WearColorRoles.OnSurfaceVariant, colorScheme.onSurfaceVariant),
+        outline = source.resolve(WearColorRoles.Outline, colorScheme.outline),
+        outlineVariant = source.resolve(WearColorRoles.OutlineVariant, colorScheme.outlineVariant),
+        background = source.resolve(WearColorRoles.Background, colorScheme.background),
+        onBackground = source.resolve(WearColorRoles.OnBackground, colorScheme.onBackground),
+        error = source.resolve(WearColorRoles.Error, colorScheme.error),
+        errorDim = source.resolve(WearColorRoles.ErrorDim, colorScheme.errorDim),
+        errorContainer = source.resolve(WearColorRoles.ErrorContainer, colorScheme.errorContainer),
+        onError = source.resolve(WearColorRoles.OnError, colorScheme.onError),
+        onErrorContainer =
+            source.resolve(WearColorRoles.OnErrorContainer, colorScheme.onErrorContainer),
     )
 
-    /** Returns a copy of this RemoteColorScheme, optionally overriding some of the values. */
+    /** Returns a copy of this [RemoteColorScheme], optionally overriding some of the values. */
     public fun copy(
         primary: RemoteColor = this.primary,
         primaryDim: RemoteColor = this.primaryDim,
@@ -222,38 +243,108 @@ public class RemoteColorScheme(
             onError = onError,
             onErrorContainer = onErrorContainer,
         )
-
-    private companion object {
-        private const val PRIMARY = "WearM3.primary"
-        private const val PRIMARY_DIM = "WearM3.primaryDim"
-        private const val PRIMARY_CONTAINER = "WearM3.primaryContainer"
-        private const val ON_PRIMARY = "WearM3.onPrimary"
-        private const val ON_PRIMARY_CONTAINER = "WearM3.onPrimaryContainer"
-        private const val SECONDARY = "WearM3.secondary"
-        private const val SECONDARY_DIM = "WearM3.secondaryDim"
-        private const val SECONDARY_CONTAINER = "WearM3.secondaryContainer"
-        private const val ON_SECONDARY = "WearM3.onSecondary"
-        private const val ON_SECONDARY_CONTAINER = "WearM3.onSecondaryContainer"
-        private const val TERTIARY = "WearM3.tertiary"
-        private const val TERTIARY_DIM = "WearM3.tertiaryDim"
-        private const val TERTIARY_CONTAINER = "WearM3.tertiaryContainer"
-        private const val ON_TERTIARY = "WearM3.onTertiary"
-        private const val ON_TERTIARY_CONTAINER = "WearM3.onTertiaryContainer"
-        private const val SURFACE_CONTAINER_LOW = "WearM3.surfaceContainerLow"
-        private const val SURFACE_CONTAINER = "WearM3.surfaceContainer"
-        private const val SURFACE_CONTAINER_HIGH = "WearM3.surfaceContainerHigh"
-        private const val ON_SURFACE = "WearM3.onSurface"
-        private const val ON_SURFACE_VARIANT = "WearM3.onSurfaceVariant"
-        private const val OUTLINE = "WearM3.outline"
-        private const val OUTLINE_VARIANT = "WearM3.outlineVariant"
-        private const val BACKGROUND = "WearM3.background"
-        private const val ON_BACKGROUND = "WearM3.onBackground"
-        private const val ERROR = "WearM3.error"
-        private const val ERROR_DIM = "WearM3.errorDim"
-        private const val ERROR_CONTAINER = "WearM3.errorContainer"
-        private const val ON_ERROR = "WearM3.onError"
-        private const val ON_ERROR_CONTAINER = "WearM3.onErrorContainer"
-    }
 }
+
+/**
+ * The Wear Material 3 color roles, with their `"WearM3.*"` named color and the Android system color
+ * token used for dynamic colors. Wear is always dark, so each role uses its dark token.
+ */
+private object WearColorRoles {
+    val Primary = RemoteColorRole("WearM3.primary", SystemColorToken.SYSTEM_PRIMARY_DARK)
+    // Gap: Android framework lacks a dynamic system_primary_dim_dark token;
+    // system_primary_fixed_dim is the only primary dim token available.
+    val PrimaryDim = RemoteColorRole("WearM3.primaryDim", SystemColorToken.SYSTEM_PRIMARY_FIXED_DIM)
+    val PrimaryContainer =
+        RemoteColorRole("WearM3.primaryContainer", SystemColorToken.SYSTEM_PRIMARY_CONTAINER_DARK)
+    val OnPrimary = RemoteColorRole("WearM3.onPrimary", SystemColorToken.SYSTEM_ON_PRIMARY_DARK)
+    val OnPrimaryContainer =
+        RemoteColorRole(
+            "WearM3.onPrimaryContainer",
+            SystemColorToken.SYSTEM_ON_PRIMARY_CONTAINER_DARK,
+        )
+    val Secondary = RemoteColorRole("WearM3.secondary", SystemColorToken.SYSTEM_SECONDARY_DARK)
+    // Gap: Android framework lacks a dynamic system_secondary_dim_dark token;
+    // system_secondary_fixed_dim is the only secondary dim token available.
+    val SecondaryDim =
+        RemoteColorRole("WearM3.secondaryDim", SystemColorToken.SYSTEM_SECONDARY_FIXED_DIM)
+    val SecondaryContainer =
+        RemoteColorRole(
+            "WearM3.secondaryContainer",
+            SystemColorToken.SYSTEM_SECONDARY_CONTAINER_DARK,
+        )
+    val OnSecondary =
+        RemoteColorRole("WearM3.onSecondary", SystemColorToken.SYSTEM_ON_SECONDARY_DARK)
+    val OnSecondaryContainer =
+        RemoteColorRole(
+            "WearM3.onSecondaryContainer",
+            SystemColorToken.SYSTEM_ON_SECONDARY_CONTAINER_DARK,
+        )
+    val Tertiary = RemoteColorRole("WearM3.tertiary", SystemColorToken.SYSTEM_TERTIARY_DARK)
+    // Gap: Android framework lacks a dynamic system_tertiary_dim_dark token;
+    // system_tertiary_fixed_dim is the only tertiary dim token available.
+    val TertiaryDim =
+        RemoteColorRole("WearM3.tertiaryDim", SystemColorToken.SYSTEM_TERTIARY_FIXED_DIM)
+    val TertiaryContainer =
+        RemoteColorRole("WearM3.tertiaryContainer", SystemColorToken.SYSTEM_TERTIARY_CONTAINER_DARK)
+    val OnTertiary = RemoteColorRole("WearM3.onTertiary", SystemColorToken.SYSTEM_ON_TERTIARY_DARK)
+    val OnTertiaryContainer =
+        RemoteColorRole(
+            "WearM3.onTertiaryContainer",
+            SystemColorToken.SYSTEM_ON_TERTIARY_CONTAINER_DARK,
+        )
+    val SurfaceContainerLow =
+        RemoteColorRole(
+            "WearM3.surfaceContainerLow",
+            SystemColorToken.SYSTEM_SURFACE_CONTAINER_LOW_DARK,
+        )
+    val SurfaceContainer =
+        RemoteColorRole("WearM3.surfaceContainer", SystemColorToken.SYSTEM_SURFACE_CONTAINER_DARK)
+    val SurfaceContainerHigh =
+        RemoteColorRole(
+            "WearM3.surfaceContainerHigh",
+            SystemColorToken.SYSTEM_SURFACE_CONTAINER_HIGH_DARK,
+        )
+    val OnSurface = RemoteColorRole("WearM3.onSurface", SystemColorToken.SYSTEM_ON_SURFACE_DARK)
+    val OnSurfaceVariant =
+        RemoteColorRole("WearM3.onSurfaceVariant", SystemColorToken.SYSTEM_ON_SURFACE_VARIANT_DARK)
+    val Outline = RemoteColorRole("WearM3.outline", SystemColorToken.SYSTEM_OUTLINE_DARK)
+    val OutlineVariant =
+        RemoteColorRole("WearM3.outlineVariant", SystemColorToken.SYSTEM_OUTLINE_VARIANT_DARK)
+    val Background = RemoteColorRole("WearM3.background", SystemColorToken.SYSTEM_BACKGROUND_DARK)
+    val OnBackground =
+        RemoteColorRole("WearM3.onBackground", SystemColorToken.SYSTEM_ON_BACKGROUND_DARK)
+    val Error = RemoteColorRole("WearM3.error", SystemColorToken.SYSTEM_ERROR_DARK)
+    // Gap: Android framework has NO system_error_fixed_dim or system_error_dim semantic token.
+    // Uses tonal palette system_error_300 (tone 70, approximating Wear M3's tone 68 errorDim).
+    val ErrorDim = RemoteColorRole("WearM3.errorDim", SystemColorToken.SYSTEM_ERROR_300)
+    val ErrorContainer =
+        RemoteColorRole("WearM3.errorContainer", SystemColorToken.SYSTEM_ERROR_CONTAINER_DARK)
+    val OnError = RemoteColorRole("WearM3.onError", SystemColorToken.SYSTEM_ON_ERROR_DARK)
+    val OnErrorContainer =
+        RemoteColorRole("WearM3.onErrorContainer", SystemColorToken.SYSTEM_ON_ERROR_CONTAINER_DARK)
+}
+
+/**
+ * Creates a [RemoteColorScheme] whose colors follow the player's Android system (dynamic) colors.
+ *
+ * Each color role is mapped to the corresponding Android system color token (e.g.
+ * `android.SystemColorToken.SYSTEM_PRIMARY_DARK`), so the player resolves it against the device's
+ * dynamic colors. Wear is always dark, so only the dark system tokens are used.
+ *
+ * If the current document profile does not support themed colors (e.g. Wear widgets), the named
+ * `"WearM3.*"` color scheme is returned instead.
+ *
+ * Use with [RemoteMaterialTheme] to opt in, e.g. `RemoteMaterialTheme(colorScheme =
+ * dynamicRemoteColorScheme()) { ... }`.
+ *
+ * @param fallbackColorScheme The [ColorScheme] used for fallback values when a system color cannot
+ *   be resolved, and for the named colors on profiles without themed color support.
+ */
+@Composable
+@RemoteComposable
+public fun dynamicRemoteColorScheme(
+    fallbackColorScheme: ColorScheme = ColorScheme()
+): RemoteColorScheme =
+    RemoteColorScheme(colorScheme = fallbackColorScheme, source = dynamicRemoteColorSource())
 
 internal const val DisabledContentAlpha = 0.38f

@@ -145,6 +145,7 @@ public class TextLayout extends LayoutManager implements VariableSupport, Access
     @Override
     public void updateVariables(@NonNull RemoteContext context) {
         float prevFontSize = mFontSizeValue;
+        mTextAlignValue = (short) (mTextAlign & 0xFFFF);
         if (isAtLeastVersion7(context)) {
             mFontSizeValue =
                     Float.isNaN(mFontSize)
@@ -155,7 +156,6 @@ public class TextLayout extends LayoutManager implements VariableSupport, Access
                 mFontSizeValue *= context.getDensity();
             }
 
-            mTextAlignValue = (short) (mTextAlign & 0xFFFF);
             if (mIsDynamicColorEnabled) {
                 int prevColorValue = mColorValue;
                 mColorValue = context.getColor(mColor);
@@ -174,7 +174,6 @@ public class TextLayout extends LayoutManager implements VariableSupport, Access
                 mFontSizeValue *= context.getDensity();
             }
             mColorValue = mColor;
-            mTextAlignValue = mTextAlign;
         }
         if (prevFontSize != mFontSizeValue && mComputedTextLayout != null) {
             invalidateMeasure();
@@ -245,6 +244,7 @@ public class TextLayout extends LayoutManager implements VariableSupport, Access
         mFontWeight = fontWeight;
         mFontFamilyId = fontFamilyId;
         mTextAlign = textAlign;
+        mTextAlignValue = (short) (mTextAlign & 0xFFFF);
         mOverflow = overflow;
         mMaxLines = maxLines;
     }
@@ -530,12 +530,14 @@ public class TextLayout extends LayoutManager implements VariableSupport, Access
             mBaseline = -bounds[1];
         }
         if (forceComplex || (bounds[2] - bounds[1] > maxWidth && mMaxLines > 1 && maxWidth > 0f)) {
+            // Pass mTextAlignValue (masked with 0xFFFF) to exclude upper-bit flags packed into
+            // mTextAlign.
             mComputedTextLayout =
                     context.layoutComplexText(
                             mTextId,
                             0,
                             mCachedString.length(),
-                            mTextAlign,
+                            mTextAlignValue,
                             mOverflow,
                             mMaxLines,
                             maxWidth,
@@ -729,5 +731,45 @@ public class TextLayout extends LayoutManager implements VariableSupport, Access
         serializer.add("textAlign", mTextAlign);
         serializer.add("overflow", mOverflow);
         serializer.add("maxLines", mMaxLines);
+    }
+
+    /** Returns {@code mColorValue}. */
+    public int getColorValue() {
+        return mColorValue;
+    }
+
+    /** Returns {@code mType}. */
+    public int getType() {
+        return mType;
+    }
+
+    /** Returns {@code mFontWeight}. */
+    public float getFontWeight() {
+        return mFontWeight;
+    }
+
+    /** Returns {@code mTextAlignValue}. */
+    public int getTextAlignValue() {
+        return mTextAlignValue;
+    }
+
+    /** Returns {@code mOverflow}. */
+    public int getOverflow() {
+        return mOverflow;
+    }
+
+    /** Returns {@code mMaxLines}. */
+    public int getMaxLines() {
+        return mMaxLines;
+    }
+
+    /** Returns {@code mIsDynamicColorEnabled}. */
+    public boolean isDynamicColorEnabled() {
+        return mIsDynamicColorEnabled;
+    }
+
+    /** Returns {@code mColor}. */
+    public int getColor() {
+        return mColor;
     }
 }
