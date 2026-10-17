@@ -13,7 +13,9 @@ import androidx.compose.remote.creation.compose.modifier.size
 import androidx.compose.remote.creation.compose.modifier.width
 import androidx.compose.remote.creation.compose.state.RemoteFloat
 import androidx.compose.remote.creation.compose.state.RemoteInt
+import androidx.compose.remote.creation.compose.state.RemoteTimeVariables
 import androidx.compose.remote.creation.compose.state.animateRemoteFloat
+import androidx.compose.remote.creation.compose.state.min
 import androidx.compose.remote.creation.compose.state.rb
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rememberMutableRemoteInt
@@ -652,8 +654,11 @@ fun PageIndicatorMotionRemote() = RemoteSticker {
     object : RemotePageIndicatorState {
       override val pageCount: Int = 4
       override val selectedPage: RemoteInt = 0.ri
+      // Driven by the remote clock rather than `animateRemoteFloat(1f.rf, initialValue = 0f)`. An
+      // animation keyed on a constant never starts in a capture, so every frame held offset 0 and
+      // the worm never moved. One-second period to match `durationMs`: travel for 0.8s, rest 0.2s.
       override val pageOffset: RemoteFloat =
-        animateRemoteFloat(1f.rf, duration = 0.8f, initialValue = 0f)
+        min((RemoteTimeVariables.continuousSeconds % 1f) / 0.8f, 1f)
     }
   RemoteHorizontalPageIndicator(state = state, modifier = RemoteModifier.fillMaxSize())
 }
