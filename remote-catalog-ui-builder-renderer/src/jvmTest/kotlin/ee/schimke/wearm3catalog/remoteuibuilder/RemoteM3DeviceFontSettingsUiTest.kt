@@ -54,21 +54,23 @@ class RemoteM3DeviceFontSettingsUiTest {
     )
 
   /**
-   * The face a text with no family falls to, standing in for the browser runtime's default: static
-   * Roboto, which has `frac` and `tnum`. The JVM's own `FontFamily.SansSerif` is whatever the host
-   * has installed (DejaVu Sans here), which has no `frac`, so it would show nothing either way.
+   * The face a text with no family falls to, standing in for the browser runtime's default: a sans
+   * face with `frac` and `tnum`, as the browser's Roboto has. The runtime's vendored Inter is one,
+   * at its default (Regular) instance; compose-ui-builder ships no static Roboto. The JVM's own
+   * `FontFamily.SansSerif` is whatever the host has installed (DejaVu Sans here), which has no
+   * `frac`, so it would show nothing either way.
    */
   private val platformDefault =
     object : RcTypefaceLoader {
-      private val roboto =
+      private val sans =
         FontFamily(
-          Font("test:Roboto", File(fonts, "Roboto-Regular.ttf").readBytes(), FontWeight.Normal)
+          Font("test:Inter", File(fonts, "inter-variable.ttf").readBytes(), FontWeight.Normal)
         )
 
       override val families = setOf("default", "sans-serif")
 
       override fun typeface(family: String, variations: RcFontVariations?): FontFamily? =
-        roboto.takeIf {
+        sans.takeIf {
           family in families
         }
     }
@@ -117,11 +119,12 @@ class RemoteM3DeviceFontSettingsUiTest {
       "font settings ink widths (px at 2x): plain=$plain features=$features axes=$axes " +
         "wght800=$boldWidth"
     )
-    // A frac glyph is a reduced numerator and denominator around a fraction slash; the line
-    // reads narrower than "1/2" set at full size.
+    // The features change the line's width: `frac` sets "1/2" as a reduced fraction, and `tnum`
+    // gives every digit one advance (in Inter that widens the 1s more than `frac` narrows the
+    // fraction). A text moved onto Roboto Flex, which has neither, draws the plain width.
     assertTrue(
       abs(features - plain) >= 4,
-      "the features line draws its fraction: plain $plain px, features $features px",
+      "the features line draws its features: plain $plain px, features $features px",
     )
     // `wdth 75` reaches the face. The vendored Roboto Flex (3.200) narrows this string's advances
     // by only 3.2% there at `wght 800` (19406 to 18786 units, read off the font's own HVAR), so the

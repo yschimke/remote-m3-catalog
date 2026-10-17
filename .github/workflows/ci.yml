@@ -31,6 +31,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       inert: ${{ steps.scope.outputs.inert }}
+      runtime: ${{ steps.scope.outputs.runtime }}
     steps:
       # `fetch-depth: 2` is what makes the diff below possible and is the whole reason this job is
       # separate from the ones it gates: on a pull request the checked-out commit is the MERGE of
@@ -63,6 +64,12 @@ jobs:
             echo 'inert=false' >> "$GITHUB_OUTPUT"
             echo 'Change set unavailable or empty: running everything.'
             exit 0
+          fi
+          # The compose-ui-builder ref the runtime is built and tested against lives in
+          # `design-artifacts.yml`, a sibling workflow that is otherwise inert. A change to it runs
+          # `Authoring canvas coverage`, and only that, whatever the rest of the change set is.
+          if grep -qx '\.github/workflows/design-artifacts\.yml' <<<"$files"; then
+            echo 'runtime=true' >> "$GITHUB_OUTPUT"
           fi
           # THE TWO EXCEPTIONS COME FIRST, because both are matched by the inert patterns below and
           # both are real inputs to this workflow. `docs/KIT_COVERAGE.md` is GENERATED and gated in
@@ -406,13 +413,15 @@ jobs:
     needs: changes
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      RUN: ${{ needs.changes.outputs.inert != 'true' || needs.changes.outputs.runtime == 'true' }}
     steps:
       - uses: actions/checkout@v7.0.1
-        if: needs.changes.outputs.inert != 'true'
+        if: env.RUN == 'true'
         with:
           persist-credentials: false
       - id: ref
-        if: needs.changes.outputs.inert != 'true'
+        if: env.RUN == 'true'
         run: |
           set -euo pipefail
           ref="$(sed -nE "s/^ *ui-builder-runtime-source-ref: '([^']+)'.*/\1/p" .github/workflows/design-artifacts.yml)"
@@ -420,18 +429,18 @@ jobs:
           echo "ref=$ref" >> "$GITHUB_OUTPUT"
           echo "version=${ref#v}" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v7.0.1
-        if: needs.changes.outputs.inert != 'true'
+        if: env.RUN == 'true'
         with:
           repository: yschimke/compose-ui-builder
           ref: ${{ steps.ref.outputs.ref }}
           path: .compose-ui-builder
           persist-credentials: false
       - uses: ./.github/actions/setup
-        if: needs.changes.outputs.inert != 'true'
+        if: env.RUN == 'true'
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
       - name: Build this catalog's runtime against that compose-ui-builder
-        if: needs.changes.outputs.inert != 'true'
+        if: env.RUN == 'true'
         run: |
           set -euo pipefail
           ./gradlew -PcomposeUiBuilderDir=.compose-ui-builder \
@@ -439,8 +448,24 @@ jobs:
           mkdir -p build/coverage/runtime
           unzip -q remote-catalog-ui-builder-renderer/build/distributions/remote-m3-ui-builder-renderer.zip \
             -d build/coverage/runtime
+      # The runtime's own tests, under both preview engines: `jvmTest` with capture, `jvmTestLive`
+      # with a live session (PreviewEngine.kt). They need compose-ui-builder's source and fonts, so
+      # they run here rather than in `Unit tests`, whose build does not include this module.
+      - name: The runtime's tests, under both preview engines
+        if: env.RUN == 'true'
+        run: |
+          ./gradlew -PcomposeUiBuilderDir=.compose-ui-builder --continue --stacktrace \
+            :remote-catalog-ui-builder-renderer:jvmTest :remote-catalog-ui-builder-renderer:jvmTestLive
+      - if: always() && env.RUN == 'true'
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: runtime-test-reports
+          path: |
+            remote-catalog-ui-builder-renderer/build/reports/tests/**
+            remote-catalog-ui-builder-renderer/build/test-results/**
+          if-no-files-found: ignore
       - name: Fetch the released editor
-        if: needs.changes.outputs.inert != 'true'
+        if: env.RUN == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.ref.outputs.version }}
@@ -453,23 +478,23 @@ jobs:
           mkdir -p build/coverage/editor
           unzip -q "build/coverage/compose-preview-ui-builder-web-$VERSION.zip" -d build/coverage/editor
       - uses: actions/setup-node@v7.1.0
-        if: needs.changes.outputs.inert != 'true'
+        if: env.RUN == 'true'
         with:
           node-version: 24.22.0
       - name: Install the gate
-        if: needs.changes.outputs.inert != 'true'
+        if: env.RUN == 'true'
         working-directory: .compose-ui-builder/scripts/ui-builder-web-smoke
         run: |
           npm ci
           npx playwright install --with-deps chromium
       - name: Every sticker is drawn by the authoring canvas
-        if: needs.changes.outputs.inert != 'true'
+        if: env.RUN == 'true'
         working-directory: .compose-ui-builder/scripts/ui-builder-web-smoke
         run: |
           node runtime-coverage.mjs "$GITHUB_WORKSPACE/build/coverage/editor" \
             "$GITHUB_WORKSPACE/build/coverage/runtime" "$GITHUB_WORKSPACE"/uid-stickers/stickers/*.uid
       - name: An unknown component is reported (negative control)
-        if: needs.changes.outputs.inert != 'true'
+        if: env.RUN == 'true'
         working-directory: .compose-ui-builder/scripts/ui-builder-web-smoke
         run: |
           node runtime-coverage.mjs "$GITHUB_WORKSPACE/build/coverage/editor" \
