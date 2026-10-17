@@ -35,6 +35,7 @@ import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
 import ee.schimke.composeai.uibuilder.export.FontSettings
 import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
+import ee.schimke.composeai.uibuilder.export.UiBuilderInstancePath
 import ee.schimke.composeai.uibuilder.export.UiBuilderNode
 import ee.schimke.composeai.uibuilder.export.hostSpec
 import ee.schimke.composeai.uibuilder.renderer.sdk.GoogleMaterialIconVectors
@@ -256,7 +257,8 @@ private fun displayInfo(widthDp: Float, heightDp: Float, density: Density) =
  * a click the editor can run — and every node the preview could only draw as a diagnostic.
  */
 internal class AuthoringInspection(
-  val ids: RcComponentIds<String>,
+  /** By instance path, not node id: a repeat or a second placement draws one node twice. */
+  val ids: RcComponentIds<UiBuilderInstancePath>,
   val onBounds: (nodeId: String, coordinates: LayoutCoordinates) -> Unit,
   val onText: (nodeId: String, content: LayoutCoordinates, layout: TextLayoutResult) -> Unit =
     { _, _, _ ->
@@ -269,7 +271,7 @@ internal class AuthoringInspection(
   val listener =
     object : RcComponentCoordinatesListener {
       override fun onPositioned(componentId: Int, coordinates: LayoutCoordinates) {
-        ids.keyFor(componentId)?.let { onBounds(it, coordinates) }
+        ids.keyFor(componentId)?.let { onBounds(it.nodeId, coordinates) }
       }
 
       override fun onTextLaidOut(
@@ -277,15 +279,15 @@ internal class AuthoringInspection(
         content: LayoutCoordinates,
         layout: TextLayoutResult,
       ) {
-        ids.keyFor(componentId)?.let { onText(it, content, layout) }
+        ids.keyFor(componentId)?.let { onText(it.nodeId, content, layout) }
       }
 
       override fun onClickActionAdded(componentId: Int, click: () -> Unit) {
-        ids.keyFor(componentId)?.let { onClick(it, click, true) }
+        ids.keyFor(componentId)?.let { onClick(it.nodeId, click, true) }
       }
 
       override fun onClickActionRemoved(componentId: Int, click: () -> Unit) {
-        ids.keyFor(componentId)?.let { onClick(it, click, false) }
+        ids.keyFor(componentId)?.let { onClick(it.nodeId, click, false) }
       }
     }
 

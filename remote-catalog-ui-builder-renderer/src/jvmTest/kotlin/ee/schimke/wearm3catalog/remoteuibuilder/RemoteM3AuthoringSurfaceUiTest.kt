@@ -188,6 +188,79 @@ class RemoteM3AuthoringSurfaceUiTest {
     }
   }
 
+  @Test
+  fun `a placed component and a repeat are drawn and measured`() {
+    // The shape every sticker has: a component instance as the root, its body a remote button.
+    val design =
+      lenient.decodeFromString<UiBuilderDocument>(
+        """
+        {
+          "schema": "compose-ui-builder-document/v1-candidate",
+          "id": "remote-m3-authoring-structure", "title": "Structure", "revision": 1,
+          "catalogPin": {
+            "systemId": "remote-m3", "catalogRevision": "test", "capabilityDigest": "test",
+            "nativeRuntimeId": "remote-m3-test-runtime"
+          },
+          "environment": { "widthDp": 192, "heightDp": 192, "density": 1, "fontScale": 1 },
+          "stateVariables": {},
+          "roots": ["column"],
+          "components": { "chip": { "name": "Chip", "root": "button" } },
+          "nodes": {
+            "column": {
+              "id": "column", "componentId": "layout/column", "properties": {},
+              "modifiers": [], "slots": { "children": ["place", "rows"] }
+            },
+            "place": {
+              "id": "place", "componentId": "design/component-instance",
+              "component": {
+                "componentKey": "chip",
+                "arguments": { "label": { "type": "string", "value": "Placed" } }
+              }
+            },
+            "button": {
+              "id": "button", "componentId": "remote-m3/remote-button", "properties": {},
+              "modifiers": [], "slots": { "content": ["label"] }
+            },
+            "label": {
+              "id": "label", "componentId": "remote-m3/remote-text",
+              "properties": { "text": { "type": "binding", "value": "label" } }, "slots": {}
+            },
+            "rows": {
+              "id": "rows", "componentId": "layout/for-each",
+              "properties": {
+                "data": { "type": "list", "values": [
+                  { "type": "object", "fields": { "name": { "type": "string", "value": "One" } } },
+                  { "type": "object", "fields": { "name": { "type": "string", "value": "Two" } } }
+                ] }
+              },
+              "slots": { "template": ["row"] }
+            },
+            "row": {
+              "id": "row", "componentId": "remote-m3/remote-text",
+              "properties": { "text": { "type": "binding", "value": "name" } }, "slots": {}
+            }
+          }
+        }
+        """
+      )
+    val key = undrawnGenerationKey(design.id, design.revision)
+    runDesktopComposeUiTest(width = 480, height = 320) {
+      var last: UiBuilderInspectionSnapshot? = null
+      setContent { RemoteM3AuthoringSurface(design, 192f, 192f) { last = it } }
+      waitUntil(timeoutMillis = 10_000) {
+        last?.generation?.measuredNodeIds?.size == design.nodes.size
+      }
+      assertEquals(emptyList(), UiBuilderUndrawnNodes.forGeneration(key))
+      // The placement is its body's box; the repeat holds both copies of its row.
+      val place = requireNotNull(last!!.bounds("place"))
+      val button = requireNotNull(last!!.bounds("button"))
+      assertEquals(place, button)
+      val rows = requireNotNull(last!!.bounds("rows"))
+      val row = requireNotNull(last!!.bounds("row"))
+      assertTrue(rows.height >= 2 * row.height - 1f, "two rows in $rows, one is $row")
+    }
+  }
+
   private fun UiBuilderInspectionSnapshot.bounds(nodeId: String): UiBuilderPixelBounds? =
     nodes.singleOrNull { it.nodeId == nodeId }?.bounds
 

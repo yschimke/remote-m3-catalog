@@ -12,6 +12,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
 import ee.schimke.composeai.rccreation.bridge.RcComponentIds
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
+import ee.schimke.composeai.uibuilder.export.UiBuilderInstancePath
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderInspectionCollector
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderInspectionSnapshot
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderPixelBounds
@@ -20,6 +21,7 @@ import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderSemanticActionEntry
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderUndrawnNode
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderUndrawnNodes
 import ee.schimke.composeai.uibuilder.renderer.sdk.undrawnGenerationKey
+import kotlinx.coroutines.flow.drop
 
 /**
  * The Visual Editor's surface: the design recorded and played as the device would, with every
@@ -52,7 +54,7 @@ internal fun RemoteM3AuthoringSurface(
 ) {
   val currentOnSnapshot by rememberUpdatedState(onInspectionSnapshot)
   // One registry for the surface's life: a node keeps its component id across edits.
-  val ids = remember { RcComponentIds<String>() }
+  val ids = remember { RcComponentIds<UiBuilderInstancePath>() }
   // Every report invalidates; snapshots are published once per settled batch.
   val invalidations = remember(document) { mutableIntStateOf(0) }
   val collector =
@@ -71,8 +73,13 @@ internal fun RemoteM3AuthoringSurface(
     remember(collector, actions, viewport) {
       LiveInspection(document, collector, ids, actions, viewport)
     }
+  // Nothing until the player has reported: the runtime answers the editor's render with the first
+  // snapshot that holds still, and an empty one sent before the player has laid anything out would
+  // be that answer — a render that "measured no node".
   LaunchedEffect(collector) {
-    snapshotFlow { invalidations.intValue }.collect { currentOnSnapshot(collector.snapshot()) }
+    snapshotFlow { invalidations.intValue }
+      .drop(1)
+      .collect { currentOnSnapshot(collector.snapshot()) }
   }
   RemoteM3DevicePreview(
     document = document,
@@ -87,7 +94,7 @@ internal fun RemoteM3AuthoringSurface(
 private class LiveInspection(
   private val document: UiBuilderDocument,
   private val collector: UiBuilderInspectionCollector,
-  ids: RcComponentIds<String>,
+  ids: RcComponentIds<UiBuilderInstancePath>,
   private val actions: UiBuilderSemanticActionController?,
   private val viewport: UiBuilderPixelBounds,
 ) {
