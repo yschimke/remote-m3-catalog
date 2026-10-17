@@ -1,5 +1,4 @@
-// The Visual Editor's surface on real Remote Compose, played live, instead of Compose UI stand-ins.
-// Used only under `PreviewEngine.Live`; see PreviewEngine.kt.
+// The Visual Editor's surface on real Remote Compose, played live.
 package ee.schimke.wearm3catalog.remoteuibuilder
 
 import androidx.compose.runtime.Composable
@@ -23,23 +22,24 @@ import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderUndrawnNodes
 import ee.schimke.composeai.uibuilder.renderer.sdk.undrawnGenerationKey
 
 /**
- * The authoring surface: the design recorded and played as the device would, with every authored
- * node tagged with a component id, so what the player reports becomes the editor's inspection.
+ * The Visual Editor's surface: the design recorded and played as the device would, with every
+ * authored node tagged with a component id, so what the player reports becomes the editor's
+ * inspection.
  * - **Bounds** are the component's box in the root, from all four of its corners, so a scaled or
  *   rotated node keeps a true axis-aligned box. Selection, hit-testing, drop planning and the
  *   editor's empty-slot placeholders read them unchanged.
  * - **Text layout**: each remote text's line count and baselines, in its own bounds.
  * - **Activate**: a node with a click binding can be activated through [actions], which runs the
  *   click the player holds for it, as a tap would.
- * - **Undrawn**: a component the tree can only draw as a diagnostic is reported for the generation,
- *   as the stand-in canvas's `ReportUndrawn` does, so the coverage gate sees it.
+ * - **Undrawn**: a component the tree can only draw as a diagnostic is reported for the generation
+ *   (`UiBuilderUndrawnNodes`), so the editor notes it and the coverage gate fails on it.
  *
- * Scroll modifiers are dropped, as the stand-in canvas drops them: a scrolling container plays as a
- * plain one, and a popped-out horizontal one widens with the editor's budget until it fits.
+ * Scroll modifiers are dropped: a scrolling container plays as a plain one, and a popped-out
+ * horizontal one widens with the editor's budget until it fits.
  *
- * Not carried over: the inspection's `selected` follows the design's initial state, since the
- * player keeps the live state; and `scrollBy` and `revealNode`, which the editor sends only to the
- * device view.
+ * Not reported: the inspection's `selected` follows the design's initial state, since the player
+ * keeps the live state; and `scrollBy` and `revealNode`, which the editor sends only to the device
+ * view.
  */
 @Composable
 internal fun RemoteM3AuthoringSurface(
@@ -74,7 +74,7 @@ internal fun RemoteM3AuthoringSurface(
   LaunchedEffect(collector) {
     snapshotFlow { invalidations.intValue }.collect { currentOnSnapshot(collector.snapshot()) }
   }
-  LiveDevicePreview(
+  RemoteM3DevicePreview(
     document = document,
     widthDp = widthDp,
     heightDp = heightDp,
@@ -174,7 +174,7 @@ private class LiveInspection(
 }
 
 /**
- * The remote components the tree draws as one remote text, by the text adapter the stand-in canvas
- * drew them with: what makes a node a text node to the inspection.
+ * The remote components the tree draws as one remote text, by a text adapter id the inspection
+ * knows: what makes a node a text node to it.
  */
 private val TEXT_ADAPTERS = mapOf("remote-m3/remote-text" to "wear-m3/text")

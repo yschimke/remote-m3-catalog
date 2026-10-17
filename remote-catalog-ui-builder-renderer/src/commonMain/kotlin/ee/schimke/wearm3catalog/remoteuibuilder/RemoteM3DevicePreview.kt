@@ -140,7 +140,6 @@ internal const val REMOTE_M3_DEVICE_PREVIEW_TEST_TAG = "remote-m3-device-preview
 internal const val REMOTE_M3_WIDGET_HOST_TEST_TAG = "remote-m3-widget-host"
 internal const val REMOTE_M3_WIDGET_BACKGROUND_TEST_TAG = "remote-m3-widget-background"
 internal const val REMOTE_M3_WIDGET_CONTENT_TEST_TAG = "remote-m3-widget-content"
-internal const val REMOTE_M3_REFRESHING_TEST_TAG = "remote-m3-refreshing"
 
 /**
  * The round buttons' own circle, as a fixed radius: the default `RemoteCircleShape` is a 50% corner
@@ -185,8 +184,8 @@ internal fun RemotePreviewContent(
  *
  * The Browser Preview plays it as it is. An [authoring] surface tags each node with a component id
  * it can map back to the node, so the player's geometry becomes the editor's per-node bounds; hears
- * of every node drawn as a diagnostic rather than as itself; and drops scroll modifiers, as the
- * stand-in canvas does, so a scrolling container plays as a plain one.
+ * of every node drawn as a diagnostic rather than as itself; and drops scroll modifiers, so a
+ * scrolling container plays as a plain one.
  */
 internal class RemoteDocumentTree(
   private val document: UiBuilderDocument,
@@ -1013,7 +1012,7 @@ private fun UiBuilderNode.remoteModifier(
         "alignVertical",
         "alignHorizontal" -> result
         RemoteModifierVocabulary.TYPE -> result.remoteCall(modifier, values)
-        // The device scrolls; an authoring surface drops the scroll, as the stand-in canvas did.
+        // The device scrolls; an authoring surface drops the scroll.
         "verticalScroll" ->
           if (unrolled) result else result.verticalScroll(rememberRemoteScrollState())
         "horizontalScroll" ->

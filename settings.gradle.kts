@@ -15,8 +15,8 @@ dependencyResolutionManagement {
     // `ee.schimke.wearcmp:*` — Wear Compose Material 3 / Foundation compiled for Compose
     // Multiplatform, published to the `wear-compose-cmp-maven` branch of
     // `yschimke/wear-m3-catalog-out` by the port lane of yschimke/wear-m3-catalog. Only the
-    // UI-builder adapters and the browser renderer link it (the Wear frame and Material canvas
-    // stand-ins the Remote renderer draws around a document); `:remote-catalog` never does.
+    // UI-builder adapters and the browser renderer link it (the Wear frame the Remote renderer
+    // draws around a document); `:remote-catalog` never does.
     //
     // Fenced to the one group it can legitimately answer for: `ee.schimke.wearcmp` is a coordinate
     // namespace nothing else in this build or on Maven Central uses, so this repository can never
@@ -151,8 +151,6 @@ providers.gradleProperty("rcPlayersDir").orNull?.let { path ->
 // composite there is deliberately no Maven fallback for that coordinate.
 if (providers.gradleProperty("composeUiBuilderDir").isPresent) {
   include(":remote-catalog-ui-builder-renderer")
-  include(":ui-builder-foundation-adapters")
-  include(":ui-builder-material-adapters")
   include(":ui-builder-wear-adapters")
 }
 

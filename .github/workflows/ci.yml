@@ -448,14 +448,13 @@ jobs:
           mkdir -p build/coverage/runtime
           unzip -q remote-catalog-ui-builder-renderer/build/distributions/remote-m3-ui-builder-renderer.zip \
             -d build/coverage/runtime
-      # The runtime's own tests, under both preview engines: `jvmTest` with capture, `jvmTestLive`
-      # with a live session (PreviewEngine.kt). They need compose-ui-builder's source and fonts, so
-      # they run here rather than in `Unit tests`, whose build does not include this module.
-      - name: The runtime's tests, under both preview engines
+      # The runtime's own tests. They need compose-ui-builder's source and fonts, so they run here
+      # rather than in `Unit tests`, whose build does not include this module.
+      - name: The runtime's tests
         if: env.RUN == 'true'
         run: |
           ./gradlew -PcomposeUiBuilderDir=.compose-ui-builder --continue --stacktrace \
-            :remote-catalog-ui-builder-renderer:jvmTest :remote-catalog-ui-builder-renderer:jvmTestLive
+            :remote-catalog-ui-builder-renderer:jvmTest
       - if: always() && env.RUN == 'true'
         uses: actions/upload-artifact@v7.0.2
         with:

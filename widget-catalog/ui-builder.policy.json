@@ -11,7 +11,7 @@
       "reason": "The generated RemoteComposeWidget Kotlin, compiled against this module's own classpath (remote-creation-compose + remote-foundation, the vendored port) and rasterised by the real player under the WIDGETS_V6 profile a launcher widget records with."
     }
   },
-  "$comment_previewSurfaces": "No `wasm` surface yet. remote-m3's Visual Editor draws Wear Compose CMP stand-ins and its Browser Preview is a catalog-owned runtime (:remote-catalog-ui-builder-renderer); a launcher-widget runtime would reuse that renderer's foundation adapters and CMP writer/player pair but not its Wear and Material adapters, and is the next step rather than part of this initial system.",
+  "$comment_previewSurfaces": "No `wasm` surface yet. remote-m3's Visual Editor and Browser Preview both play the design live in a catalog-owned runtime (:remote-catalog-ui-builder-renderer); a launcher-widget runtime would reuse that renderer's CMP writer/player pair but not its Wear widget frame, and is the next step rather than part of this initial system.",
   "frame": {
     "$comment_adapter": "A launcher widget is drawn into the rectangle the launcher gives it, measured in grid cells. `frame/launcher-widget`, not remote-m3's `frame/widget-host` (a Wear host container) nor a device frame.",
     "adapter": "frame/launcher-widget",

@@ -1,5 +1,5 @@
-// The live engine (`PreviewEngine.Live`): the Browser Preview on rc-players' live player
-// (`RcEmbeddedPlayer`). See PreviewEngine.kt.
+// The Browser Preview and the Visual Editor's surface, on rc-players' live player
+// (`RcEmbeddedPlayer`).
 package ee.schimke.wearm3catalog.remoteuibuilder
 
 import androidx.compose.foundation.layout.Box
@@ -43,17 +43,18 @@ import ee.schimke.wearm3catalog.uibuilder.wearWidgetHostShape
 import kotlin.math.roundToInt
 
 /**
- * Real Remote M3 creation and playback for the read-only browser device surface, played live.
+ * Real Remote M3 creation and playback for the browser device surface, played live.
  *
- * The capture variant records a fresh document per edit. Here the design's remote composition is
- * kept alive under the preview: an edit recomposes only what changed and re-renders the retained
- * tree. There is no recording step to wait for, so there is no refreshing scrim either.
+ * The design's remote composition is kept alive under the preview: an edit recomposes only what
+ * changed and re-renders the retained tree, rather than recording a fresh document and playing it.
+ * There is no recording step to wait for, so there is no refreshing scrim either. With [authoring]
+ * it is the Visual Editor's surface too ([RemoteM3AuthoringSurface]).
  *
  * [typefaceFallback] answers for every family the runtime's font registry does not: the player's
  * own default face unless a test stands in for the browser's.
  */
 @Composable
-internal fun LiveDevicePreview(
+internal fun RemoteM3DevicePreview(
   document: UiBuilderDocument,
   widthDp: Float,
   heightDp: Float,
@@ -113,7 +114,7 @@ internal fun LiveDevicePreview(
 
   val hasBackground = hostSpec != null && root?.slots?.get("background").orEmpty().isNotEmpty()
   // Which design each player has rendered. The pane is Ready once both show the current one, and
-  // [onReady] is told once per design, as the capture variant tells it once per recording.
+  // [onReady] is told once per design.
   var contentRendered by remember { mutableStateOf<UiBuilderDocument?>(null) }
   var backgroundRendered by remember { mutableStateOf<UiBuilderDocument?>(null) }
   // Each player's own: one player rendering must not clear the other's failure.
@@ -156,8 +157,8 @@ internal fun LiveDevicePreview(
           typefaces = fonts,
           encodePng = ::encodeDesignAssetPng,
           onRendered = { onSettled(null) },
-          // A failed render still settles the design, as a failed recording does in the capture
-          // variant: the pane reports Failed, and [onReady] is told once.
+          // A failed render still settles the design: the pane reports Failed, and [onReady] is
+          // told once.
           onFailure = { onSettled(it) },
           key = design,
         ) {

@@ -23,8 +23,8 @@ import kotlin.test.assertTrue
 import kotlinx.serialization.json.Json
 
 /**
- * The Visual Editor's surface on real Remote Compose (the live engine's): every authored node of
- * the golden designs gets bounds from the player, nested as the design nests them.
+ * The Visual Editor's surface on real Remote Compose: every authored node of the golden designs
+ * gets bounds from the player, nested as the design nests them.
  */
 @OptIn(ExperimentalTestApi::class)
 class RemoteM3AuthoringSurfaceUiTest {
@@ -180,7 +180,7 @@ class RemoteM3AuthoringSurfaceUiTest {
       val empty = requireNotNull(snapshot.bounds("empty"))
       assertTrue(empty.width > 0f && empty.height == 40f, "empty column $empty")
       assertEquals(null, snapshot.slots.single { it.parentNodeId == "empty" }.bounds)
-      // The scroll is dropped, as on the stand-in canvas: every item is measured where a plain
+      // The scroll is dropped on the authoring surface: every item is measured where a plain
       // column puts it, in order, rather than the preview failing on the modifier.
       val first = requireNotNull(snapshot.bounds("item0"))
       val third = requireNotNull(snapshot.bounds("item2"))

@@ -12,7 +12,7 @@
   "previewSurfaces": {
     "wasm": {
       "fidelity": "approximate",
-      "reason": "The selectable Visual Editor draws Wear Compose CMP stand-ins. The read-only Browser Preview is a separate DEVICE surface: CMP Remote M3 records a real .rc document in Wasm and the pinned CMP RcComposePlayer plays it in each selected host frame. Approximate describes authoring only, never the Browser Preview."
+      "reason": "The selectable Visual Editor and the read-only Browser Preview both play the design as real Remote Compose: CMP Remote M3 composed in Wasm under the pinned rc-players RcEmbeddedPlayer, in each selected host frame. Approximate means against the Android writer and player, which remain authoritative."
     },
     "native": {
       "fidelity": "authoritative",

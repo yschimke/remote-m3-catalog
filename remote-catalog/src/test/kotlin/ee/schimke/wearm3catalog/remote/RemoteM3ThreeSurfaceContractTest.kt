@@ -54,7 +54,7 @@ class RemoteM3ThreeSurfaceContractTest {
   }
 
   @Test
-  fun `runtime routes authoring to stand-ins and device preview to RC playback`() {
+  fun `runtime plays both the authoring surface and the device preview as Remote Compose`() {
     val runtime =
       File(
           root,
@@ -65,29 +65,11 @@ class RemoteM3ThreeSurfaceContractTest {
     val device = devicePreviewSources()
 
     assertThat(runtime).contains("UiBuilderRendererSurfaceModeV2.AUTHORING_UNROLLED")
-    assertThat(runtime).contains("SemanticCanvas(")
+    assertThat(runtime).contains("RemoteM3AuthoringSurface(")
     assertThat(runtime).contains("RemoteM3DevicePreview(")
-    assertThat(device).contains("captureCommonRemoteDocument(")
-    assertThat(device).contains("RcComposePlayer(")
-  }
-
-  @Test
-  fun `authoring colour literals use the sRGB Color constructor`() {
-    // The wear-m3 adapters' `parseArgb` is wear-m3-catalog's source now, fetched at the pinned
-    // commit rather than kept here, so only this repository's own adapter is read.
-    val materialAdapter =
-      File(
-          root,
-          "ui-builder-material-adapters/src/wasmJsMain/kotlin/ee/schimke/" +
-            "wearm3catalog/uibuilder/MaterialCanvasAdapters.kt",
-        )
-        .readText()
-
-    // Color(ULong) treats the value as a packed wide-gamut colour whose low bits name a colour
-    // space. UI Builder literals are ordinary ARGB values and must select Color(Long) instead.
-    assertThat(materialAdapter).contains("private fun parseMaterialArgb(value: String): Long")
-    assertThat(materialAdapter)
-      .doesNotContain("private fun parseMaterialArgb(value: String): ULong")
+    // No Compose UI stand-ins: the editor's surface is the same recording, played.
+    assertThat(runtime).doesNotContain("CanvasDocumentHost(")
+    assertThat(device).contains("RcEmbeddedPlayer(")
   }
 
   @Test
@@ -206,14 +188,11 @@ class RemoteM3ThreeSurfaceContractTest {
     error("could not find repository root from ${File(".").absolutePath}")
   }
 
-  /**
-   * The device surface: the shared document tree, and the Browser Preview's capture engine, which
-   * records a fresh document per edit and is the default.
-   */
+  /** The device surface: the shared document tree, and the live player both surfaces play it in. */
   private fun devicePreviewSources(): String =
     listOf(
         "src/commonMain/kotlin/ee/schimke/wearm3catalog/remoteuibuilder/RemoteM3DevicePreview.kt",
-        "src/commonMain/kotlin/ee/schimke/wearm3catalog/remoteuibuilder/CaptureDevicePreview.kt",
+        "src/commonMain/kotlin/ee/schimke/wearm3catalog/remoteuibuilder/DevicePlayer.kt",
       )
       .joinToString("\n") { File(root, "remote-catalog-ui-builder-renderer/$it").readText() }
 }

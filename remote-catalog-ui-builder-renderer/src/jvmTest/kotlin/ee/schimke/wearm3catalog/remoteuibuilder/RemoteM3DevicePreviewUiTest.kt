@@ -76,7 +76,6 @@ class RemoteM3DevicePreviewUiTest {
       var current by mutableStateOf(document())
       setContent { RemoteM3DevicePreview(current, widthDp = 216f, heightDp = 76f) { readyCalls++ } }
       waitUntil(timeoutMillis = 10_000) { readyCalls == 1 }
-      onNodeWithTag(REMOTE_M3_REFRESHING_TEST_TAG).assertDoesNotExist()
 
       // Each edit used to drop the frame for a placeholder until the new document was recorded.
       current =
@@ -91,7 +90,6 @@ class RemoteM3DevicePreviewUiTest {
       }
 
       assertFalse(blank, "the previous drawing stayed up while the edit was recorded")
-      onNodeWithTag(REMOTE_M3_REFRESHING_TEST_TAG).assertDoesNotExist()
       onNodeWithTag(REMOTE_M3_DEVICE_PREVIEW_TEST_TAG)
         .assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "Ready"))
     }
@@ -110,19 +108,17 @@ class RemoteM3DevicePreviewUiTest {
       mainClock.advanceTimeByFrame()
       current = edited(4, "Two")
       mainClock.autoAdvance = true
-      // The pane ready on the last edit, and no indicator left. The live engine shows no indicator
-      // at all, so its absence alone settles nothing there.
+      // The pane ready on the last edit.
       waitUntil(timeoutMillis = 10_000) {
         readyCalls >= 2 &&
-          onAllNodesWithTag(REMOTE_M3_REFRESHING_TEST_TAG).fetchSemanticsNodes().isEmpty() &&
           onNodeWithTag(REMOTE_M3_DEVICE_PREVIEW_TEST_TAG)
             .fetchSemanticsNode()
             .config
             .getOrNull(SemanticsProperties.StateDescription) == "Ready"
       }
 
-      // Settled on the last edit: drawn, no indicator left behind, and at most one report per
-      // recording that finished (a cancelled one reports nothing).
+      // Settled on the last edit: drawn, and at most one report per render that finished (a
+      // superseded one reports nothing).
       assertTrue(readyCalls in 2..3, "ready reported $readyCalls times")
       onNodeWithTag(REMOTE_M3_WIDGET_CONTENT_TEST_TAG).assertIsDisplayed()
       onNodeWithTag(REMOTE_M3_DEVICE_PREVIEW_TEST_TAG)
