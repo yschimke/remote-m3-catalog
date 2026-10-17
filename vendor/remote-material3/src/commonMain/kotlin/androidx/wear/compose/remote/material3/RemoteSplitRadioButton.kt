@@ -108,7 +108,7 @@ public fun RemoteSplitRadioButton(
     val progress =
         animateRemoteFloatAsState(
             targetValue = selected.select(1f.rf, 0f.rf),
-            animationSpec = SelectionAnimationSpec,
+            animationSpec = RemoteMaterialTheme.motionScheme.fastEffectsSpec(),
         )
     val (startSectionShape, endSectionShape) =
         splitSectionShapes(shape, RemoteSplitRadioButtonDefaults.splitSectionsShape)
@@ -501,7 +501,7 @@ public class RemoteSplitRadioButtonColors(
             disabledSelectedControlColor =
                 disabledSelectedControlColor ?: this.disabledSelectedControlColor,
             disabledUnselectedContainerColor =
-                disabledUnselectedContainerColor ?: this.disabledUncheckedContainerColor,
+                disabledUnselectedContainerColor ?: this.disabledUnselectedContainerColor,
             disabledUnselectedContentColor =
                 disabledUnselectedContentColor ?: this.disabledUnselectedContentColor,
             disabledUnselectedSecondaryContentColor =
@@ -512,9 +512,6 @@ public class RemoteSplitRadioButtonColors(
             disabledUnselectedControlColor =
                 disabledUnselectedControlColor ?: this.disabledUnselectedControlColor,
         )
-
-    private val disabledUncheckedContainerColor: RemoteColor
-        get() = disabledUnselectedContainerColor
 
     @Stable
     internal fun containerColor(

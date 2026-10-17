@@ -54,10 +54,10 @@ import kotlin.math.PI
  * @sample androidx.wear.compose.remote.material3.samples.RemoteCircularProgressIndicatorAnimatedSample
  * @param progress The progress of this progress indicator where 0.0 represents no progress and 1.0
  *   represents completion.
- * @param modifier Modifier to be applied to the CircularProgressIndicator.
+ * @param modifier Modifier to be applied to the [RemoteCircularProgressIndicator].
  * @param enabled controls the enabled state. When enabled is `false`, this component will appear
- *   visually disabled. Note that only solid colors are when [enabled] is an expression, otherwise
- *   it must be a constant.
+ *   visually disabled. Note that only solid colors are supported when [enabled] is an expression,
+ *   otherwise it must be a constant.
  * @param startAngle The starting position of the progress arc, measured clockwise in degrees. For
  *   example, 0 is 3 o'clock.
  * @param endAngle The ending position of the progress arc.
@@ -65,7 +65,7 @@ import kotlin.math.PI
  *   track color.
  * @param strokeWidth The stroke width for the progress indicator. Defaults to
  *   [RemoteProgressIndicatorDefaults.DefaultStrokeWidth].
- * @param gapSize The size (in RemoteDp) of the gap between the ends of the progress indicator and
+ * @param gapSize The size (in [RemoteDp]) of the gap between the ends of the progress indicator and
  *   the track. The stroke endcaps are not included in this distance.
  */
 @RemoteComposable
@@ -95,11 +95,11 @@ public fun RemoteCircularProgressIndicator(
  * Example of indeterminate circular progress indicator:
  *
  * @sample androidx.wear.compose.remote.material3.samples.RemoteIndeterminateCircularProgressIndicatorSample
- * @param modifier Modifier to be applied to the CircularProgressIndicator.
+ * @param modifier Modifier to be applied to the [RemoteCircularProgressIndicator].
  * @param colors [RemoteProgressIndicatorColors] that will be used to resolve the indicator and
  *   track color.
  * @param strokeWidth The stroke width for the progress indicator.
- * @param gapSize The size (in RemoteDp) of the gap between the ends of the progress indicator and
+ * @param gapSize The size (in [RemoteDp]) of the gap between the ends of the progress indicator and
  *   the track.
  */
 @RemoteComposable
@@ -278,10 +278,26 @@ public object RemoteProgressIndicatorDefaults {
     @RemoteComposable
     public fun colors(): RemoteProgressIndicatorColors = defaultProgressIndicatorColors()
 
-    /** Returns recommended size of the gap based on `strokeWidth`. */
+    /**
+     * Returns recommended size of the gap based on [strokeWidth].
+     *
+     * @param strokeWidth The stroke width of the progress indicator.
+     */
     public fun calculateRecommendedGapSize(strokeWidth: RemoteDp): RemoteDp = strokeWidth / 3f.rf
 
-    /** Creates a [RemoteProgressIndicatorColors] with modified colors. */
+    /**
+     * Creates a [RemoteProgressIndicatorColors] with modified colors.
+     *
+     * @param indicatorColor The indicator color when enabled, or `null` to use the theme default.
+     * @param trackColor The track color when enabled, or `null` to use the theme default.
+     * @param overflowTrackColor The overflow track color when enabled, or `null` to use the theme
+     *   default.
+     * @param disabledIndicatorColor The indicator color when disabled, or `null` to use the theme
+     *   default.
+     * @param disabledTrackColor The track color when disabled, or `null` to use the theme default.
+     * @param disabledOverflowTrackColor The overflow track color when disabled, or `null` to use
+     *   the theme default.
+     */
     @Composable
     @RemoteComposable
     public fun colors(
@@ -312,7 +328,17 @@ public object RemoteProgressIndicatorDefaults {
         )
     }
 
-    /** Creates a [RemoteProgressIndicatorColors] with modified brushes. */
+    /**
+     * Creates a [RemoteProgressIndicatorColors] with modified brushes.
+     *
+     * @param indicatorBrush The [RemoteBrush] used to draw the indicator when enabled.
+     * @param trackBrush The [RemoteBrush] used to draw the track when enabled.
+     * @param overflowTrackBrush The [RemoteBrush] used to draw the overflow track when enabled.
+     * @param disabledIndicatorBrush The [RemoteBrush] used to draw the indicator when disabled.
+     * @param disabledTrackBrush The [RemoteBrush] used to draw the track when disabled.
+     * @param disabledOverflowTrackBrush The [RemoteBrush] used to draw the overflow track when
+     *   disabled.
+     */
     @Composable
     @RemoteComposable
     public fun colors(
@@ -355,7 +381,17 @@ public object RemoteProgressIndicatorDefaults {
     }
 }
 
-/** Represents the indicator and track colors used in progress indicator in a remote context. */
+/**
+ * Represents the indicator and track colors used in progress indicator in a remote context.
+ *
+ * @param indicatorBrush The [RemoteBrush] used to draw the indicator when enabled.
+ * @param trackBrush The [RemoteBrush] used to draw the track when enabled.
+ * @param overflowTrackBrush The [RemoteBrush] used to draw the overflow track when enabled.
+ * @param disabledIndicatorBrush The [RemoteBrush] used to draw the indicator when disabled.
+ * @param disabledTrackBrush The [RemoteBrush] used to draw the track when disabled.
+ * @param disabledOverflowTrackBrush The [RemoteBrush] used to draw the overflow track when
+ *   disabled.
+ */
 public class RemoteProgressIndicatorColors(
     public val indicatorBrush: RemoteBrush,
     public val trackBrush: RemoteBrush,
@@ -416,11 +452,11 @@ public class RemoteProgressIndicatorColors(
     private fun resolveRemoteBrush(
         enabled: RemoteBoolean,
         enabledBrush: RemoteBrush,
-        disableBrush: RemoteBrush,
+        disabledBrush: RemoteBrush,
     ): RemoteBrush {
         // Always returns the enabled brush if enabled is not constant
         return enabled.constantValueOrNull?.let { isEnabled ->
-            if (isEnabled) enabledBrush else disableBrush
+            if (isEnabled) enabledBrush else disabledBrush
         } ?: enabledBrush
     }
 }

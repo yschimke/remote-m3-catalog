@@ -69,7 +69,7 @@ import androidx.compose.ui.layout.ContentScale
  * @param border A [RemoteBorderStroke] used for drawing the card's outline border
  * @param contentPadding The spacing values to apply internally between the container and the
  *   content
- * @param content The main slot for a content of this card
+ * @param content The main slot for the content of this card
  */
 @RemoteComposable
 @Composable
@@ -120,7 +120,7 @@ public fun RemoteCard(
  * @param border A [RemoteBorderStroke] used for drawing the card's outline border
  * @param contentPadding The spacing values to apply internally between the container and the
  *   content
- * @param content The main slot for a content of this card
+ * @param content The main slot for the content of this card
  */
 @RemoteComposable
 @Composable
@@ -163,7 +163,7 @@ public fun RemoteCard(
  *   content
  * @param colors [RemoteCardColors] that will be used to resolve the colors used for this card. See
  *   [RemoteCardDefaults.outlinedCardColors].
- * @param content The main slot for a content of this card
+ * @param content The main slot for the content of this card
  */
 @RemoteComposable
 @Composable
@@ -236,7 +236,7 @@ public object RemoteCardDefaults {
 
     /**
      * Creates a [RemoteCardColors] that represents the default container and content colors used in
-     * an [RemoteOutlinedCard], outlined [RemoteAppCard] or [RemoteTitleCard].
+     * a [RemoteOutlinedCard], outlined [RemoteAppCard] or [RemoteTitleCard].
      */
     @Composable
     @RemoteComposable
@@ -245,7 +245,7 @@ public object RemoteCardDefaults {
 
     /**
      * Creates a [RemoteCardColors] that represents the default container and content colors used in
-     * an [RemoteOutlinedCard], outlined [RemoteAppCard] or [RemoteTitleCard].
+     * a [RemoteOutlinedCard], outlined [RemoteAppCard] or [RemoteTitleCard].
      *
      * @param contentColor the content color of this [RemoteOutlinedCard].
      * @param appNameColor the color used for appName, only applies to [RemoteAppCard].
@@ -273,7 +273,7 @@ public object RemoteCardDefaults {
 
     /** The default border color used for outlined cards. */
     public val outlinedCardBorderColor: RemoteColor
-        @Composable @RemoteComposable get() = outlinedCardColors().contentColor
+        @Composable @RemoteComposable get() = RemoteMaterialTheme.colorScheme.outline
 
     /** The default size of the border for [RemoteOutlinedCard] */
     public val OutlinedBorderSize: RemoteDp = 1.rdp
@@ -294,7 +294,7 @@ public object RemoteCardDefaults {
     /** The default content padding used by [RemoteCard] */
     public val ContentPadding: RemotePaddingValues = RemotePaddingValues(12.rdp)
 
-    /** Additional bottom padding added for TitleCard with an image background */
+    /** Additional bottom padding added for [RemoteTitleCard] with an image background */
     public val ImageBottomPadding: RemoteDp = 12.rdp
 
     /**
@@ -408,6 +408,8 @@ public object RemoteCardDefaults {
      * increase its height to accommodate the contents, if necessary.
      */
     public val Height: RemoteDp = 64.rdp
+
+    /** The default width of [RemoteCard], [RemoteAppCard] and [RemoteTitleCard]. */
     public val Width: RemoteDp = 80.rdp
 
     private val RemoteColorScheme.defaultCardColors: RemoteCardColors
@@ -472,6 +474,16 @@ public class RemoteCardColors(
     public val titleColor: RemoteColor,
     public val subtitleColor: RemoteColor,
 ) {
+    /**
+     * Returns a copy of this [RemoteCardColors], optionally overriding some of the values.
+     *
+     * @param containerColor the background color of this [RemoteCard]
+     * @param contentColor the content color of this [RemoteCard]
+     * @param appNameColor the color used for appName, only applies to [RemoteAppCard]
+     * @param timeColor the color used for time, applies to [RemoteAppCard] and [RemoteTitleCard]
+     * @param titleColor the color used for title, applies to [RemoteAppCard] and [RemoteTitleCard]
+     * @param subtitleColor the color used for subtitle, applies to [RemoteTitleCard]
+     */
     public fun copy(
         containerColor: RemoteColor? = null,
         contentColor: RemoteColor? = null,

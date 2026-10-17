@@ -37,6 +37,7 @@ import ee.schimke.composeai.overrides.previewOverrideChoice
 import ee.schimke.composeai.overrides.previewOverrideInt
 import ee.schimke.composeai.preview.AnimatedPreview
 import ee.schimke.composeai.preview.CatalogComponent
+import ee.schimke.composeai.preview.MotionFormat
 import ee.schimke.composeai.preview.OverrideVariant
 
 // What is LEFT of the variant matrix, after #116 folded most of it away.
@@ -317,6 +318,7 @@ fun OutlinedRemoteIconButton() = RemoteSticker {
   durationMs = 2000,
   frameIntervalMs = 50,
   showCurves = false,
+  format = MotionFormat.Apng,
   caption = "The indeterminate arc rotates and changes sweep continuously on the remote clock.",
 )
 @Composable
@@ -641,6 +643,7 @@ fun InteractivePageIndicatorRemote() = RemoteSticker {
   durationMs = 1000,
   frameIntervalMs = 33,
   showCurves = false,
+  format = MotionFormat.Apng,
   caption = "The selected-page worm expands, travels, and contracts between adjacent pages.",
 )
 @Composable

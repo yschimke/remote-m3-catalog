@@ -1976,4 +1976,14 @@ public class PaintBundle implements Serializable {
 
         return ret;
     }
+
+    /** Returns {@code mArray}. */
+    public int @NonNull [] getArray() {
+        return mArray;
+    }
+
+    /** Returns {@code mPos}. */
+    public int getPos() {
+        return mPos;
+    }
 }

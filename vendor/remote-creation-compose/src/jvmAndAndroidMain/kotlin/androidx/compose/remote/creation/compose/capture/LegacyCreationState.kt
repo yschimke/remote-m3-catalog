@@ -17,6 +17,9 @@ internal var RemoteComposeCreationState.legacyDocument: RemoteComposeWriter
         platformState = current.copy(document = value)
     }
 
+internal val RemoteComposeCreationState.legacyProfile: Profile
+    get() = checkNotNull((platformState as? LegacyPlatformState)?.profile)
+
 internal val RemoteComposeCreationState.platform: RcPlatformServices
     get() = checkNotNull((platformState as? LegacyPlatformState)?.profile?.platform)
 

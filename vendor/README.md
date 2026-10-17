@@ -15,8 +15,8 @@ These modules are copied from AndroidX change
 ## Later upstream changes
 
 Since that patch set, the modules have taken the upstream delta between androidx.dev snapshot builds
-16427341 and 16547072, in two refreshes (16427341 → 16480970, then 16480970 → 16547072), each
-applied onto the port rather than re-copied.
+16427341 and 16639771, in three refreshes (16427341 → 16480970, 16480970 → 16547072, then
+16547072 → 16639771), each applied onto the port rather than re-copied.
 
 16427341 → 16480970:
 
@@ -62,6 +62,56 @@ applied onto the port rather than re-copied.
   `AddMesh2D` / `Mesh2DGenerator` changes) is not taken, because the port never carried
   `AddMesh2D`; nor are the JSON importer and the Android `RcPlatformProfiles` annotation.
 
+16547072 → 16639771:
+
+- `remote-material3`, colour: `RemoteColorScheme` resolves each role through `RemoteColorRole`, and
+  the new `dynamicRemoteColorScheme()` follows the player's Android system (dynamic) colours, falling
+  back to the named `"WearM3.*"` scheme on profiles without themed colours (Wear widgets); the default
+  scheme stays named. Button icons take `iconColor` (now `primary`, was `onSurface`) through
+  `provideScopeContent`; the checked checkbox mark is `primaryContainer` (was `onPrimary`) and its
+  disabled mark derives from `background`; the outlined card border is `outline`; the page
+  indicator's selected/unselected dots are `onBackground` and `onBackground` at 0.3 alpha (were
+  `onSurface` / `onSurfaceVariant`). Upstream stores `android.R.color` ids in `RemoteColorRole`; the
+  port carries a common `SystemColorToken` and maps it to the resource id in the Android actual of
+  `themedRemoteColor`, while the JVM and Wasm actuals return the named colour, since only an Android
+  profile reports themed-colour support.
+- `remote-material3`, other: `RemoteMotionScheme` (`RemoteMaterialTheme.motionScheme`), which the
+  selection controls now take their spring from, and the slider's tween from `RemoteMotionTokens`,
+  which is taken now that something needs it; the timer overload of `RemoteCurvedProgressIndicator` becomes
+  `RemoteIntroOutroCurvedProgressIndicator`, with the intro/outro springs played over the plain
+  progress geometry instead of a separate timer arc; `RemoteTypography` takes a default font family;
+  `RemoteEdgeButton`'s ellipsis/ellipse rename. `RemoteIconToggleButton`, `RemoteTextToggleButton`,
+  `RemoteToggleButtonShape`, `RemoteSegmentedCircularProgressIndicator` and
+  `RemoteOneHandedGestureClickIndicator` changed upstream but are still not carried, as before.
+- `remote-creation-compose`: `RemoteProfileCapabilities` (`currentProfileSupportsThemedColors`,
+  `currentProfileSupportsTouchModifiers`), read from the port's `supportedOperations` with the
+  operation ids spelled out, since commonMain cannot read the Java `Operations`; `hostAction(id,
+  metadata)` / `hostAction(name, RemoteBoolean)`; `pendingIntentAction` extras, written as an id
+  action (`FIRST_ACTION_ID` + index) for launcher widgets and for extras outside Wear widgets, plus
+  `PendingIntentActionHandler`, which the snapshot embedded `RcPlayer` links against this module;
+  `RCWidget` registering those id actions; `RemoteCustomComponent` content children and image-bitmap
+  properties; `animateEnterExit` no longer writing animation id 0, which the player reads as
+  "disabled"; the `RemoteBoolean.select` peepholes; and `RemoteTextStyle.fromTextStyle` picking
+  the variation settings of the font that best matches the style's weight and style. Upstream's
+  next step of decoupling the API from Compose UI types is not mirrored: `RemoteDp` becoming a
+  `BaseRemoteState<Float>`, `graphicsLayer` taking a `RemoteShape` (which also replaces the
+  hardcoded 40px rounded-layer radius), the `RemoteBlendMode` / `RemoteTileMode` / `RemoteFontWeight`
+  / `RemoteFontStyle` / `RemoteContentScale` value types with the Compose-typed overloads moved to
+  `*Android.kt` files, the remaining move of `RecordingCanvas` onto `RemoteCanvas`, and the
+  promotion of the cache-key classes to restricted public API. That is an API break for every
+  caller here, and the blend-mode and tile-mode values it encodes are the same `PaintBundle`
+  constants, so documents do not change. Nor is the capture loop's rework (a Context-free
+  `captureRemoteDocumentImpl` with `HeadlessFrameClock`, saved-state and retained-values plumbing,
+  and a single capture that throws on content that never settles): the port keeps the 16547072 loop,
+  since the new failure mode would change how animated catalog stickers capture and needs its own
+  change.
+- `remote-core`: the text-align fix in `CoreText` / `TextLayout` (complex text layout gets the
+  alignment masked to its low 16 bits, so flags packed above it no longer break wrapped alignment),
+  `PathData.markPathChanged`, the NaN-id-aware `RemoteFloatEquality` used by the DSL's `RcFloat`
+  equality, and the read-side getters and widened visibility the embedded player now uses instead of
+  reflection. The JSON importer change and the Android `RcPlatformProfiles` rewrite are not taken,
+  as before.
+
 The copied Kotlin sources started as upstream bytes; the port then moved the portable Creation,
 Foundation, and Material 3 closure to `commonMain`. Local build files expose Android, JVM, and Wasm
 targets. Narrow actuals retain Android/JVM time, display, image, and legacy-writer integration.
@@ -105,7 +155,7 @@ Compose artifacts.
 ## Published artifacts
 
 The five vendored modules publish under `ee.schimke.remotecompose` at
-`4307936-ps17-cmp09`. The version is derived from `remote-compose-upstream.json`; bump its
+`4307936-ps17-cmp10`. The version is derived from `remote-compose-upstream.json`; bump its
 `portRevision` whenever published bytes change without moving to a newer AndroidX patch set.
 
 [`publish-remote-compose.yml`](../.github/workflows/publish-remote-compose.yml) publishes to GitHub
@@ -120,7 +170,7 @@ repositories {
 }
 
 dependencies {
-  implementation("ee.schimke.remotecompose:remote-material3:4307936-ps17-cmp09")
+  implementation("ee.schimke.remotecompose:remote-material3:4307936-ps17-cmp10")
 }
 ```
 
