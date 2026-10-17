@@ -159,6 +159,8 @@ fun main() {
                   document,
                   surface.widthDp,
                   surface.heightDp,
+                  renderSessionId,
+                  actions,
                   onInspectionSnapshot,
                 )
               } else if (surface.mode == UiBuilderRendererSurfaceModeV2.AUTHORING_UNROLLED) {

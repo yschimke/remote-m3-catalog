@@ -31,10 +31,13 @@ import androidx.compose.remote.creation.compose.modifier.fillMaxSize
 import androidx.compose.remote.creation.compose.modifier.fillMaxWidth
 import androidx.compose.remote.creation.compose.modifier.height
 import androidx.compose.remote.creation.compose.modifier.heightIn
+import androidx.compose.remote.creation.compose.modifier.horizontalScroll
 import androidx.compose.remote.creation.compose.modifier.offset
 import androidx.compose.remote.creation.compose.modifier.padding
+import androidx.compose.remote.creation.compose.modifier.rememberRemoteScrollState
 import androidx.compose.remote.creation.compose.modifier.rotate
 import androidx.compose.remote.creation.compose.modifier.scale
+import androidx.compose.remote.creation.compose.modifier.verticalScroll
 import androidx.compose.remote.creation.compose.modifier.width
 import androidx.compose.remote.creation.compose.modifier.widthIn
 import androidx.compose.remote.creation.compose.modifier.wrapContentSize
@@ -180,15 +183,14 @@ internal fun RemotePreviewContent(
 /**
  * The design as remote content.
  *
- * [tagNode] decorates each authored node's own remote modifier. The Browser Preview leaves it as it
- * is; an authoring surface tags each node with a component id it can map back to the node, so the
- * player's geometry becomes the editor's per-node bounds.
+ * The Browser Preview plays it as it is. An [authoring] surface tags each node with a component id
+ * it can map back to the node, so the player's geometry becomes the editor's per-node bounds; hears
+ * of every node drawn as a diagnostic rather than as itself; and drops scroll modifiers, as the
+ * stand-in canvas does, so a scrolling container plays as a plain one.
  */
 internal class RemoteDocumentTree(
   private val document: UiBuilderDocument,
-  private val tagNode: (UiBuilderNode, RemoteModifier) -> RemoteModifier = { _, modifier ->
-    modifier
-  },
+  private val authoring: AuthoringInspection? = null,
 ) {
   // Computed values stay expressions: the recorded document plays them, through [DocumentValues],
   // rather than drawing the value they have at the preview state.
@@ -348,7 +350,16 @@ internal class RemoteDocumentTree(
   ) {
     val node = entry.node
     val modifier =
-      tagNode(node, node.remoteModifier(values, row, column, collapsibleColumn, collapsibleRow))
+      node
+        .remoteModifier(
+          values,
+          row,
+          column,
+          collapsibleColumn,
+          collapsibleRow,
+          unrolled = authoring != null,
+        )
+        .let { authoring?.ids?.component(it, node.id) ?: it }
         .let { if (fillFrame) it.fillMaxSize() else it }
         .let { base ->
           // A layout's own click, long press and double tap, as the export writes them.
@@ -815,13 +826,15 @@ internal class RemoteDocumentTree(
         // A draw layer declares no size modifiers: it fills whatever it is placed in.
         RemoteBox(modifier = modifier.fillMaxSize().background(brush))
       }
-      else ->
+      else -> {
+        authoring?.ReportUndrawn(node)
         RemoteText(
           text = "Unsupported: ${node.componentId}".rs,
           modifier = modifier,
           color = Color.Red.rc,
           fontSize = 10.sp.asRemoteTextUnit(),
         )
+      }
     }
   }
 }
@@ -905,6 +918,7 @@ private fun UiBuilderNode.remoteModifier(
   column: RemoteColumnScope? = null,
   collapsibleColumn: RemoteCollapsibleColumnScope? = null,
   collapsibleRow: RemoteCollapsibleRowScope? = null,
+  unrolled: Boolean = false,
 ): RemoteModifier {
   var result: RemoteModifier = RemoteModifier
   modifiers.forEach { element ->
@@ -999,6 +1013,11 @@ private fun UiBuilderNode.remoteModifier(
         "alignVertical",
         "alignHorizontal" -> result
         RemoteModifierVocabulary.TYPE -> result.remoteCall(modifier, values)
+        // The device scrolls; an authoring surface drops the scroll, as the stand-in canvas did.
+        "verticalScroll" ->
+          if (unrolled) result else result.verticalScroll(rememberRemoteScrollState())
+        "horizontalScroll" ->
+          if (unrolled) result else result.horizontalScroll(rememberRemoteScrollState())
         else -> error("Unsupported Remote Compose modifier '$type' on ${componentId}")
       }
   }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.remote.creation.compose.capture.RemoteCreationDisplayInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +23,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
 import androidx.wear.compose.material3.Text
 import ee.schimke.composeai.rccreation.bridge.RcComponentIds
@@ -33,6 +35,7 @@ import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
 import ee.schimke.composeai.uibuilder.export.FontSettings
 import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
+import ee.schimke.composeai.uibuilder.export.UiBuilderNode
 import ee.schimke.composeai.uibuilder.export.hostSpec
 import ee.schimke.composeai.uibuilder.renderer.sdk.GoogleMaterialIconVectors
 import ee.schimke.wearm3catalog.uibuilder.WearWidgetContainerFrame
@@ -164,14 +167,7 @@ internal fun LiveDevicePreview(
     }
 
     ProvideDevicePreviewTime(design) {
-      val tree =
-        remember(design, authoring) {
-          if (authoring == null) RemoteDocumentTree(design)
-          else
-            RemoteDocumentTree(design) { node, modifier ->
-              authoring.ids.component(modifier, node.id)
-            }
-        }
+      val tree = remember(design, authoring) { RemoteDocumentTree(design, authoring) }
       val contentDisplay =
         remember(contentWidth, contentHeight, density) {
           displayInfo(contentWidth, contentHeight, density)
@@ -255,13 +251,49 @@ private fun displayInfo(widthDp: Float, heightDp: Float, density: Density) =
 
 /**
  * What an authoring surface needs from the preview: each authored node tagged with a component id
- * from [ids], and the geometry the player then reports for it, by node id.
+ * from [ids], and what the player then reports for it, by node id — its geometry, a text's layout,
+ * a click the editor can run — and every node the preview could only draw as a diagnostic.
  */
 internal class AuthoringInspection(
   val ids: RcComponentIds<String>,
   val onBounds: (nodeId: String, coordinates: LayoutCoordinates) -> Unit,
+  val onText: (nodeId: String, content: LayoutCoordinates, layout: TextLayoutResult) -> Unit =
+    { _, _, _ ->
+    },
+  /** A click the player holds for a node, [added] or taken back. */
+  val onClick: (nodeId: String, click: () -> Unit, added: Boolean) -> Unit = { _, _, _ -> },
+  /** A node drawn as an "Unsupported" diagnostic ([drawn] false), or no longer ([drawn] true). */
+  val onUndrawn: (node: UiBuilderNode, drawn: Boolean) -> Unit = { _, _ -> },
 ) {
-  val listener = RcComponentCoordinatesListener { id, coordinates ->
-    ids.keyFor(id)?.let { onBounds(it, coordinates) }
+  val listener =
+    object : RcComponentCoordinatesListener {
+      override fun onPositioned(componentId: Int, coordinates: LayoutCoordinates) {
+        ids.keyFor(componentId)?.let { onBounds(it, coordinates) }
+      }
+
+      override fun onTextLaidOut(
+        componentId: Int,
+        content: LayoutCoordinates,
+        layout: TextLayoutResult,
+      ) {
+        ids.keyFor(componentId)?.let { onText(it, content, layout) }
+      }
+
+      override fun onClickActionAdded(componentId: Int, click: () -> Unit) {
+        ids.keyFor(componentId)?.let { onClick(it, click, true) }
+      }
+
+      override fun onClickActionRemoved(componentId: Int, click: () -> Unit) {
+        ids.keyFor(componentId)?.let { onClick(it, click, false) }
+      }
+    }
+
+  /** Called where the tree draws [node] as a diagnostic, for as long as it does. */
+  @Composable
+  fun ReportUndrawn(node: UiBuilderNode) {
+    DisposableEffect(node.id, node.componentId) {
+      onUndrawn(node, false)
+      onDispose { onUndrawn(node, true) }
+    }
   }
 }
