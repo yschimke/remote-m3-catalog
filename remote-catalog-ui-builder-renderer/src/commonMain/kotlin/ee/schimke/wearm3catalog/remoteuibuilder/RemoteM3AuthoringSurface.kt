@@ -21,7 +21,7 @@ import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderSemanticActionEntry
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderUndrawnNode
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderUndrawnNodes
 import ee.schimke.composeai.uibuilder.renderer.sdk.undrawnGenerationKey
-import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filter
 
 /**
  * The Visual Editor's surface: the design recorded and played as the device would, with every
@@ -55,8 +55,9 @@ internal fun RemoteM3AuthoringSurface(
   val currentOnSnapshot by rememberUpdatedState(onInspectionSnapshot)
   // One registry for the surface's life: a node keeps its component id across edits.
   val ids = remember { RcComponentIds<UiBuilderInstancePath>() }
-  // Every report invalidates; snapshots are published once per settled batch.
-  val invalidations = remember(document) { mutableIntStateOf(0) }
+  // Every report invalidates; snapshots are published once per settled batch. Counted per
+  // collector, so a new one starts from no reports.
+  val invalidations = remember(document, renderSessionId) { mutableIntStateOf(0) }
   val collector =
     remember(document, renderSessionId) {
       UiBuilderInspectionCollector(
@@ -75,10 +76,11 @@ internal fun RemoteM3AuthoringSurface(
     }
   // Nothing until the player has reported: the runtime answers the editor's render with the first
   // snapshot that holds still, and an empty one sent before the player has laid anything out would
-  // be that answer — a render that "measured no node".
+  // be that answer — a render that "measured no node". The player can report before this starts
+  // observing, so only the count's initial zero is skipped, not its first value.
   LaunchedEffect(collector) {
     snapshotFlow { invalidations.intValue }
-      .drop(1)
+      .filter { it > 0 }
       .collect { currentOnSnapshot(collector.snapshot()) }
   }
   RemoteM3DevicePreview(
