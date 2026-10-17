@@ -116,7 +116,7 @@ composePreviewContracts = "3.35.0"
 # The release BOM advances even when the plugin is unchanged. Never share these refs:
 # BOM 2.67.0 names compose-preview-plugin 2.66.0; a marker at 2.67.0 does not exist.
 composeAiTools = "2.67.0"
-composePreviewPlugin = "2.66.0"
+composePreviewPlugin = "2.68.2"
 composePreviewCore = "2.61.2"
 composePreviewDaemon = "3.17.1"
 # compose-preview-daemon's release guard publishes each module only when it changed, so ITS OWN
