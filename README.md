@@ -128,9 +128,9 @@ renamed in two places. The
 [contract](https://github.com/yschimke/compose-preview-server/blob/main/docs/design/UI_BUILDER_CATALOG_CONTRACT.md)
 explains the split, and each file's `$comment` fields explain the decisions in it. The `remote-m3`
 runtime follows the explicit three-surface contract in
-[`docs/design/REMOTE_M3_UI_BUILDER.md`](docs/design/REMOTE_M3_UI_BUILDER.md): editable Wear CMP
-stand-ins, a real CMP/Wasm Remote M3 document and player for Browser Preview, and authoritative
-AndroidX Remote M3 creation/playback for Native / Live.
+[`docs/design/REMOTE_M3_UI_BUILDER.md`](docs/design/REMOTE_M3_UI_BUILDER.md): real CMP/Wasm Remote
+M3, played live, for both the Visual Editor and Browser Preview, and authoritative AndroidX Remote
+M3 creation/playback for Native / Live.
 
 The four **template designs** a new design opens as — the two widget host frames and the two worked
 widget samples — are under `remote-catalog/ui-builder/designs/`, gated by

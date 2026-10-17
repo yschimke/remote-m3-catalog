@@ -3,12 +3,11 @@ import javax.inject.Inject
 /**
  * wear-m3-catalog's `ui-builder-wear-adapters` sources at one commit, sparse-fetched.
  *
- * The visual editor draws every remote-m3 component with its Wear Compose stand-in
- * (docs/design/REMOTE_M3_UI_BUILDER.md), so those stand-ins are wear-m3-catalog's adapters, not a
- * copy of them: a copy drifted, and remote-m3's canvas lost the button, icon-button and progress
- * colours wear-m3 draws. The commit is the one the parallel gate already pins,
- * `.github/ci/wear-m3-catalog-ref`, so an adapter change lands in wear-m3-catalog first and reaches
- * this canvas with the pin bump, as an id rename does.
+ * The runtime draws the Glance Wear widget frame around the player with wear-m3-catalog's
+ * `WearWidgetContainerFrame` and host shapes (docs/design/REMOTE_M3_UI_BUILDER.md), so they are its
+ * sources, not a copy: a copy drifts. The commit is the one the parallel gate already pins,
+ * `.github/ci/wear-m3-catalog-ref`, so a frame change lands in wear-m3-catalog first and reaches the
+ * runtime with the pin bump.
  *
  * Fetched by the build rather than by a workflow step, because the renderer runtime is built inside
  * compose-ai-tools' reusable workflow, which checks out only this repository.

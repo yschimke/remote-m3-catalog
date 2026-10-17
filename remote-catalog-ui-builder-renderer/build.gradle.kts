@@ -1,58 +1,6 @@
 import java.security.MessageDigest
 import java.util.zip.ZipFile
 
-abstract class GenerateRuntimePolicy : DefaultTask() {
-  @get:InputFile abstract val policy: RegularFileProperty
-
-  @get:OutputDirectory abstract val outputDirectory: DirectoryProperty
-
-  @TaskAction
-  fun generate() {
-    @Suppress("UNCHECKED_CAST")
-    val source =
-      groovy.json.JsonSlurper().parseText(policy.get().asFile.readText()) as Map<String, Any?>
-    fun projected(section: String): Map<String, Any?> =
-      (source[section] as? Map<String, Any?>)
-        .orEmpty()
-        .mapNotNull { (id, raw) ->
-          val entry = raw as? Map<String, Any?> ?: return@mapNotNull null
-          val canvas = entry["canvas"] ?: return@mapNotNull null
-          id to
-            buildMap<String, Any?> {
-              put("canvas", canvas)
-              entry["canvasMapping"]?.let { put("canvasMapping", it) }
-            }
-        }
-        .toMap()
-    val runtimePolicy =
-      groovy.json.JsonOutput.toJson(
-        mapOf("builtins" to projected("builtins"), "components" to projected("components"))
-      )
-    val encoded =
-      runtimePolicy
-        .replace("\\", "\\\\")
-        .replace("$", "\\$")
-        .replace("\"", "\\\"")
-        .replace("\r", "\\r")
-        .replace("\n", "\\n")
-    outputDirectory
-      .get()
-      .file("ee/schimke/wearm3catalog/uibuilder/GeneratedRuntimePolicy.kt")
-      .asFile
-      .apply {
-        parentFile.mkdirs()
-        writeText(
-          """
-        package ee.schimke.wearm3catalog.remoteuibuilder
-
-        internal const val catalogUiBuilderPolicyJson = "$encoded"
-        """
-            .trimIndent()
-        )
-      }
-  }
-}
-
 plugins {
   id("org.jetbrains.kotlin.multiplatform")
   alias(libs.plugins.compose.multiplatform)
@@ -83,15 +31,8 @@ val rcPlayerVersion = libs.versions.rcPlayers.get()
 // exclusions above), so the runtime contract names both.
 val runtimeWriterVersion = "$remoteComposeWriterVersion+rc-players-$rcPlayerVersion"
 
-val generatedRuntimePolicy = layout.buildDirectory.dir("generated/uiBuilderRuntimePolicy")
-val generateRuntimePolicy by
-  tasks.registering(GenerateRuntimePolicy::class) {
-    policy.set(rootProject.layout.projectDirectory.file("remote-catalog/ui-builder.policy.json"))
-    outputDirectory.set(generatedRuntimePolicy)
-  }
-
 // The renderer draws Remote Compose through rc-players' creation fork (`rc-player-embedded` brings
-// it, with `RcHostBridge`), which both preview engines share (see PreviewEngine.kt). The fork is
+// it, with `RcHostBridge`), which the device preview and the editor's surface play. The fork is
 // AndroidX's creation and foundation modules in their own package, so the published port's copies
 // of those layers must not come along with `remote-material3`: a second copy of every class.
 // `remote-material3` stays the port's and links against the fork.
@@ -121,8 +62,6 @@ kotlin {
       implementation(libs.composeai.ui.builder.renderer.sdk.source)
       implementation(libs.composeai.rc.player.embedded)
       implementation(libs.remotecompose.material3)
-      implementation(project(":ui-builder-foundation-adapters"))
-      implementation(project(":ui-builder-material-adapters"))
       implementation(project(":ui-builder-wear-adapters"))
       implementation(project.dependencies.platform(libs.composeai.rc.players.bom))
       implementation(libs.composeai.rc.player.compose)
@@ -137,36 +76,16 @@ kotlin {
       implementation(compose.uiTest)
       implementation(compose.desktop.currentOs)
     }
-    wasmJsMain { kotlin.srcDir(generateRuntimePolicy) }
   }
 }
 
 // The published Remote Compose port's JVM variants are Java 21 bytecode (class file 65): its KMP
 // `jvm()` targets set no `jvmTarget`, so they inherit the JDK 21 the publish job runs on, and their
 // Gradle metadata declares no `org.gradle.jvm.version` to stop a Java 17 consumer at resolution.
-// Run on a Java 17 test JVM, the first `captureCommonRemoteDocument` call threw
-// UnsupportedClassVersionError, every capture landed as "Failed" and the player never drew. The
+// Run on a Java 17 test JVM, the first recording threw UnsupportedClassVersionError, every preview
+// landed as "Failed" and the player never drew. The
 // tests run on the JDK this repository's CI is pinned to (.github/actions/setup) instead of
 // whichever JDK happens to launch Gradle.
-// The same suite again under the live engine: a design that names no engine is drawn by whichever
-// the JVM's `remoteM3.previewEngine` says (see PreviewEngine.kt), so every device-preview test
-// covers both.
-val jvmTestLive =
-  tasks.register<Test>("jvmTestLive") {
-    description = "Runs the JVM tests with the live preview engine as the default."
-    group = LifecycleBasePlugin.VERIFICATION_GROUP
-    val jvmTest = tasks.named<Test>("jvmTest").get()
-    testClassesDirs = jvmTest.testClassesDirs
-    classpath = jvmTest.classpath
-    systemProperty("remoteM3.previewEngine", "live")
-    // Not beside it: both drive desktop Compose UI tests against the wall clock.
-    mustRunAfter(jvmTest)
-    reports.html.outputLocation.set(layout.buildDirectory.dir("reports/tests/jvmTestLive"))
-    reports.junitXml.outputLocation.set(layout.buildDirectory.dir("test-results/jvmTestLive"))
-  }
-
-tasks.named("check") { dependsOn(jvmTestLive) }
-
 tasks.withType<Test>().configureEach {
   javaLauncher.set(javaToolchains.launcherFor { languageVersion.set(JavaLanguageVersion.of(21)) })
   // The runtime's vendored faces, which `RegistryTypefaceLoaderTest` loads to prove the player's

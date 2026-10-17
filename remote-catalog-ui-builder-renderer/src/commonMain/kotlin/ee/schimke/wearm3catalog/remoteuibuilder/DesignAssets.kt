@@ -1,14 +1,5 @@
 package ee.schimke.wearm3catalog.remoteuibuilder
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
@@ -56,48 +47,3 @@ internal fun UiBuilderNode.assetContentScale(): ContentScale =
     "inside" -> ContentScale.Inside
     else -> ContentScale.Crop
   }
-
-/** `asset/image` on the authoring canvas: the embedded picture, or a plain placeholder frame. */
-@Composable
-internal fun DesignAssetImage(
-  document: UiBuilderDocument,
-  node: UiBuilderNode,
-  modifier: Modifier,
-) {
-  val bytes = document.embeddedAssetBytes(node.assetKey())
-  val bitmap = remember(bytes) { bytes?.let(::decodeDesignAssetBitmap) }
-  if (bitmap == null) {
-    Box(modifier.background(Color(0x33808080)))
-    return
-  }
-  Image(
-    bitmap = bitmap,
-    contentDescription = node.propertyText("contentDescription").ifEmpty { null },
-    modifier = modifier,
-    contentScale = node.assetContentScale(),
-  )
-}
-
-/**
- * `shape/linear-gradient` on the authoring canvas: a draw layer that fills whatever it is placed
- * in, which is what makes it usable as a scrim in a widget container's background slot.
- */
-@Composable
-internal fun DesignLinearGradient(
-  node: UiBuilderNode,
-  modifier: Modifier,
-  resolveColor: @Composable (String) -> Color,
-) {
-  val colors =
-    listOf(node.propertyText("startColor"), node.propertyText("endColor"))
-      .filter(String::isNotEmpty)
-      .map { resolveColor(it) }
-  if (colors.size < 2) {
-    Box(modifier.fillMaxSize())
-    return
-  }
-  val brush =
-    if (node.propertyText("direction") == "horizontal") Brush.horizontalGradient(colors)
-    else Brush.verticalGradient(colors)
-  Box(modifier.fillMaxSize().background(brush))
-}

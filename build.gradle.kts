@@ -70,8 +70,6 @@ dependencies { uiBuilderRendererKtfmt(libs.ktfmt.cli) }
 val uiBuilderRendererKotlinSources =
   files(
     fileTree("remote-catalog-ui-builder-renderer") { include("src/**/*.kt") },
-    fileTree("ui-builder-foundation-adapters") { include("src/**/*.kt") },
-    fileTree("ui-builder-material-adapters") { include("src/**/*.kt") },
     fileTree("ui-builder-wear-adapters") { include("src/**/*.kt") },
   )
 val ktfmtCheckUiBuilderRendererSources by

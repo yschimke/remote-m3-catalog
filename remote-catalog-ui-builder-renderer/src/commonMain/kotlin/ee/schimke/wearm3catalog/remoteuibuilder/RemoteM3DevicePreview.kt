@@ -31,10 +31,13 @@ import androidx.compose.remote.creation.compose.modifier.fillMaxSize
 import androidx.compose.remote.creation.compose.modifier.fillMaxWidth
 import androidx.compose.remote.creation.compose.modifier.height
 import androidx.compose.remote.creation.compose.modifier.heightIn
+import androidx.compose.remote.creation.compose.modifier.horizontalScroll
 import androidx.compose.remote.creation.compose.modifier.offset
 import androidx.compose.remote.creation.compose.modifier.padding
+import androidx.compose.remote.creation.compose.modifier.rememberRemoteScrollState
 import androidx.compose.remote.creation.compose.modifier.rotate
 import androidx.compose.remote.creation.compose.modifier.scale
+import androidx.compose.remote.creation.compose.modifier.verticalScroll
 import androidx.compose.remote.creation.compose.modifier.width
 import androidx.compose.remote.creation.compose.modifier.widthIn
 import androidx.compose.remote.creation.compose.modifier.wrapContentSize
@@ -126,6 +129,7 @@ import ee.schimke.composeai.uibuilder.renderer.sdk.CanvasRenderNode
 import ee.schimke.composeai.uibuilder.renderer.sdk.CanvasRenderTree
 import ee.schimke.composeai.uibuilder.renderer.sdk.googleMaterialIconImageVector
 import kotlin.math.roundToInt
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
@@ -137,7 +141,6 @@ internal const val REMOTE_M3_DEVICE_PREVIEW_TEST_TAG = "remote-m3-device-preview
 internal const val REMOTE_M3_WIDGET_HOST_TEST_TAG = "remote-m3-widget-host"
 internal const val REMOTE_M3_WIDGET_BACKGROUND_TEST_TAG = "remote-m3-widget-background"
 internal const val REMOTE_M3_WIDGET_CONTENT_TEST_TAG = "remote-m3-widget-content"
-internal const val REMOTE_M3_REFRESHING_TEST_TAG = "remote-m3-refreshing"
 
 /**
  * The round buttons' own circle, as a fixed radius: the default `RemoteCircleShape` is a 50% corner
@@ -180,15 +183,14 @@ internal fun RemotePreviewContent(
 /**
  * The design as remote content.
  *
- * [tagNode] decorates each authored node's own remote modifier. The Browser Preview leaves it as it
- * is; an authoring surface tags each node with a component id it can map back to the node, so the
- * player's geometry becomes the editor's per-node bounds.
+ * The Browser Preview plays it as it is. An [authoring] surface tags each node with a component id
+ * it can map back to the node, so the player's geometry becomes the editor's per-node bounds; hears
+ * of every node drawn as a diagnostic rather than as itself; and drops scroll modifiers, so a
+ * scrolling container plays as a plain one.
  */
 internal class RemoteDocumentTree(
   private val document: UiBuilderDocument,
-  private val tagNode: (UiBuilderNode, RemoteModifier) -> RemoteModifier = { _, modifier ->
-    modifier
-  },
+  private val authoring: AuthoringInspection? = null,
 ) {
   // Computed values stay expressions: the recorded document plays them, through [DocumentValues],
   // rather than drawing the value they have at the preview state.
@@ -308,6 +310,32 @@ internal class RemoteDocumentTree(
       .takeIf { it.isNotEmpty() }
       ?.let { children -> { children.forEach { RenderNode(it, row = this) } } }
 
+  /**
+   * The body a `design/component-instance` places: the component's root, entered with the
+   * placement's arguments, each one that binds an argument of the enclosing scope resolved against
+   * it. Null for a missing or unknown component.
+   */
+  private fun CanvasRenderNode.placedComponent(): CanvasRenderNode? {
+    val placement = node.component ?: return null
+    val key = (placement["componentKey"] as? JsonPrimitive)?.contentOrNull ?: return null
+    val root =
+      ((document.components[key] as? JsonObject)?.get("root") as? JsonPrimitive)
+        ?.contentOrNull
+        ?.takeIf(document.nodes::containsKey) ?: return null
+    val declared = placement["arguments"] as? JsonObject ?: JsonObject(emptyMap())
+    val arguments =
+      JsonObject(
+        declared.mapValues { (_, value) ->
+          val binding = value as? JsonObject ?: return@mapValues value
+          if ((binding["type"] as? JsonPrimitive)?.contentOrNull != "binding")
+            return@mapValues value
+          val name = (binding["value"] as? JsonPrimitive)?.contentOrNull ?: return@mapValues value
+          bindingArguments[name] ?: value
+        }
+      )
+    return placementChild(root, arguments)
+  }
+
   /** `enabled`, which may read Boolean state or be computed. */
   private fun UiBuilderNode.enabled(): RemoteBoolean =
     values.bool(properties["enabled"]) ?: boolean("enabled", true).rb
@@ -348,7 +376,16 @@ internal class RemoteDocumentTree(
   ) {
     val node = entry.node
     val modifier =
-      tagNode(node, node.remoteModifier(values, row, column, collapsibleColumn, collapsibleRow))
+      node
+        .remoteModifier(
+          values,
+          row,
+          column,
+          collapsibleColumn,
+          collapsibleRow,
+          unrolled = authoring != null,
+        )
+        .let { authoring?.ids?.component(it, entry.path) ?: it }
         .let { if (fillFrame) it.fillMaxSize() else it }
         .let { base ->
           // A layout's own click, long press and double tap, as the export writes them.
@@ -381,6 +418,37 @@ internal class RemoteDocumentTree(
             children.sharedAlignment("align")?.boxAlignment() ?: node.boxAlignment(),
         ) {
           children.forEach { RenderNode(it) }
+        }
+      }
+      // A placed design component: its body, entered with the placement's arguments, in a box
+      // that is the placement's own node.
+      "design/component-instance" -> {
+        val body = entry.placedComponent()
+        if (body == null) {
+          authoring?.ReportUndrawn(node)
+          RemoteText(
+            text = "Unsupported: ${node.componentId}".rs,
+            modifier = modifier,
+            color = Color.Red.rc,
+            fontSize = 10.sp.asRemoteTextUnit(),
+          )
+        } else {
+          RemoteBox(modifier = modifier) { RenderNode(body) }
+        }
+      }
+      // A repeat: its template once per row of `data`, each copy with that row's arguments.
+      "layout/for-each" -> {
+        val template = node.slots["template"].orEmpty().firstOrNull()
+        RemoteColumn(
+          modifier = modifier,
+          verticalArrangement =
+            RemoteArrangement.spacedBy((node.number("verticalSpacingDp") ?: 0f).rdp),
+        ) {
+          if (template != null) {
+            node.forEachRows().forEachIndexed { index, row ->
+              entry.occurrenceChild(template, index, row)?.let { RenderNode(it, column = this) }
+            }
+          }
         }
       }
       "layout/column" -> {
@@ -815,13 +883,15 @@ internal class RemoteDocumentTree(
         // A draw layer declares no size modifiers: it fills whatever it is placed in.
         RemoteBox(modifier = modifier.fillMaxSize().background(brush))
       }
-      else ->
+      else -> {
+        authoring?.ReportUndrawn(node)
         RemoteText(
           text = "Unsupported: ${node.componentId}".rs,
           modifier = modifier,
           color = Color.Red.rc,
           fontSize = 10.sp.asRemoteTextUnit(),
         )
+      }
     }
   }
 }
@@ -882,6 +952,18 @@ private fun UiBuilderNode.isDynamic(name: String): Boolean {
 
 internal fun UiBuilderNode.string(name: String): String = value(name)?.contentOrNull.orEmpty()
 
+/** A `layout/for-each`'s rows: each an object of the arguments its copy of the template binds. */
+private fun UiBuilderNode.forEachRows(): List<JsonObject> {
+  val data = properties["data"] as? JsonObject ?: return emptyList()
+  if ((data["type"] as? JsonPrimitive)?.contentOrNull != "list") return emptyList()
+  val values = data["values"] as? JsonArray ?: return emptyList()
+  return values.mapNotNull { row ->
+    val value = row as? JsonObject ?: return@mapNotNull null
+    if ((value["type"] as? JsonPrimitive)?.contentOrNull != "object") return@mapNotNull null
+    value["fields"] as? JsonObject
+  }
+}
+
 private fun UiBuilderNode.number(name: String): Float? = value(name)?.floatOrNull
 
 /**
@@ -905,6 +987,7 @@ private fun UiBuilderNode.remoteModifier(
   column: RemoteColumnScope? = null,
   collapsibleColumn: RemoteCollapsibleColumnScope? = null,
   collapsibleRow: RemoteCollapsibleRowScope? = null,
+  unrolled: Boolean = false,
 ): RemoteModifier {
   var result: RemoteModifier = RemoteModifier
   modifiers.forEach { element ->
@@ -999,6 +1082,11 @@ private fun UiBuilderNode.remoteModifier(
         "alignVertical",
         "alignHorizontal" -> result
         RemoteModifierVocabulary.TYPE -> result.remoteCall(modifier, values)
+        // The device scrolls; an authoring surface drops the scroll.
+        "verticalScroll" ->
+          if (unrolled) result else result.verticalScroll(rememberRemoteScrollState())
+        "horizontalScroll" ->
+          if (unrolled) result else result.horizontalScroll(rememberRemoteScrollState())
         else -> error("Unsupported Remote Compose modifier '$type' on ${componentId}")
       }
   }

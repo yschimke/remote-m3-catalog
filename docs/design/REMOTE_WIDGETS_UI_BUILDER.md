@@ -61,9 +61,8 @@ on, labelled `3x2` and so on, ahead of any device. That is compose-ui-builder's
 - **The builder's generic Remote Compose palette.** `layout/box`, `layout/row`, `layout/column` and
   the rest are the builder's donor vocabulary for any `remote-compose` catalog, so neither policy
   re-declares them.
-- **What the browser renderer is built from.** That is the CMP writer/player pair and
-  `:ui-builder-foundation-adapters`. A `remote-widgets` Browser Preview would reuse them; see
-  below.
+- **What the browser renderer is built from.** That is the CMP writer/player pair. A
+  `remote-widgets` Browser Preview would reuse it; see below.
 - **The publishing pipeline.** It uses the same reusable `design-artifacts` workflow and the same
   output repository, with its own delivery branch.
 
@@ -163,9 +162,9 @@ call, `AdaptiveLayout(compact = { … }, medium = { … })`.
 
 - **Visual Editor and Browser Preview.** The policy declares only the native surface. The
   editor's canvas draws the layouts through the generic donor adapters. A catalog-owned runtime
-  would add a launcher-widget frame and record and play the document in the browser. It would
-  reuse `:remote-catalog-ui-builder-renderer`'s CMP pair and foundation adapters, but not its Wear
-  and Material ones.
+  would add a launcher-widget frame and play the document live in the browser, for both surfaces.
+  It would reuse `:remote-catalog-ui-builder-renderer`'s CMP pair and live player, but not its Wear
+  widget frame.
 - **New-design templates.** The builder's built-in seed offers only `hello-widget` for this
   catalog. The policy's other two templates, `launcher-widget-2x1` and `counter-widget`, are
   served once the catalog-owned cutover reads the policy's `templates`

@@ -6,10 +6,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runDesktopComposeUiTest
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
+import ee.schimke.composeai.uibuilder.renderer.sdk.CatalogRuntimeAction
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderInspectionSnapshot
 import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderPixelBounds
+import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderSemanticActionController
+import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderSemanticActionResult
+import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderUndrawnNode
+import ee.schimke.composeai.uibuilder.renderer.sdk.UiBuilderUndrawnNodes
 import ee.schimke.composeai.uibuilder.renderer.sdk.bottom
 import ee.schimke.composeai.uibuilder.renderer.sdk.right
+import ee.schimke.composeai.uibuilder.renderer.sdk.undrawnGenerationKey
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -17,8 +23,8 @@ import kotlin.test.assertTrue
 import kotlinx.serialization.json.Json
 
 /**
- * The Visual Editor's surface on real Remote Compose (the live engine's): every authored node of
- * the golden designs gets bounds from the player, nested as the design nests them.
+ * The Visual Editor's surface on real Remote Compose: every authored node of the golden designs
+ * gets bounds from the player, nested as the design nests them.
  */
 @OptIn(ExperimentalTestApi::class)
 class RemoteM3AuthoringSurfaceUiTest {
@@ -83,6 +89,267 @@ class RemoteM3AuthoringSurfaceUiTest {
       assertEquals(before, last!!.nodes.associate { it.nodeId to it.bounds })
       assertNotEquals(null, before[text.id])
     }
+  }
+
+  @Test
+  fun `every remote text reports its lines and baselines inside its bounds`() {
+    val design = fixture("golden-tiles-timer-1")
+    runDesktopComposeUiTest(width = 480, height = 320) {
+      var last: UiBuilderInspectionSnapshot? = null
+      setContent { RemoteM3AuthoringSurface(design, 240f, 240f) { last = it } }
+      val texts = design.nodes.values.filter { it.componentId == "remote-m3/remote-text" }
+      assertTrue(texts.isNotEmpty(), "the fixture has no remote text")
+      waitUntil(timeoutMillis = 10_000) {
+        val generation = last?.generation ?: return@waitUntil false
+        generation.measuredTextNodeIds.toSet() == texts.map { it.id }.toSet()
+      }
+      val snapshot = requireNotNull(last)
+      assertEquals(texts.map { it.id }.sorted(), snapshot.generation.expectedAuthoredTextNodeIds)
+      snapshot.nodes
+        .filter { it.nodeId in snapshot.generation.measuredTextNodeIds }
+        .forEach { node ->
+          val bounds = requireNotNull(node.bounds)
+          val text = requireNotNull(node.text) { node.nodeId }
+          assertTrue(text.lineCount >= 1, "${node.nodeId}: ${text.lineCount} lines")
+          assertTrue(
+            text.firstBaselineY > bounds.y && text.lastBaselineY <= bounds.bottom + 1f,
+            "${node.nodeId}: baselines ${text.firstBaselineY}..${text.lastBaselineY} in $bounds",
+          )
+        }
+    }
+  }
+
+  @Test
+  fun `activating a node runs its click in the player`() {
+    val design = interactive()
+    val actions = UiBuilderSemanticActionController()
+    runDesktopComposeUiTest(width = 480, height = 320) {
+      var last: UiBuilderInspectionSnapshot? = null
+      setContent { RemoteM3AuthoringSurface(design, 240f, 240f, actions = actions) { last = it } }
+      waitUntil(timeoutMillis = 10_000) { last?.bounds("mode") != null }
+      val before = requireNotNull(last!!.bounds("mode"))
+
+      // The editor's message, as the runtime endpoint hands it on.
+      fun activate(nodeId: String) =
+        actions.dispatch(
+          CatalogRuntimeAction(design.id, design.revision, nodeId, "activate"),
+          last,
+        )
+      waitUntil(timeoutMillis = 10_000) {
+        activate("toggle") is UiBuilderSemanticActionResult.Applied
+      }
+      // The click flipped `expanded`, so the switch shows its other, taller branch.
+      waitUntil(timeoutMillis = 10_000) {
+        last?.bounds("mode")?.let { it.height > before.height } == true
+      }
+      // A node with no click has nothing to run.
+      assertTrue(activate("mode") is UiBuilderSemanticActionResult.Rejected)
+    }
+  }
+
+  @Test
+  fun `a component the tree cannot draw is reported undrawn for its generation`() {
+    val design = interactive()
+    val key = undrawnGenerationKey(design.id, design.revision)
+    runDesktopComposeUiTest(width = 480, height = 320) {
+      var last: UiBuilderInspectionSnapshot? = null
+      var shown by mutableStateOf(true)
+      setContent { if (shown) RemoteM3AuthoringSurface(design, 240f, 240f) { last = it } }
+      waitUntil(timeoutMillis = 10_000) { last?.bounds("ghost") != null }
+      assertEquals(
+        listOf(UiBuilderUndrawnNode("ghost", "nowhere/mystery", UiBuilderUndrawnNode.UNSUPPORTED)),
+        UiBuilderUndrawnNodes.forGeneration(key),
+      )
+      // Gone with the surface that drew it.
+      shown = false
+      waitUntil(timeoutMillis = 10_000) { UiBuilderUndrawnNodes.forGeneration(key).isEmpty() }
+    }
+  }
+
+  @Test
+  fun `an empty container keeps its own box, and a scrolling one plays as a plain one`() {
+    val design = interactive()
+    runDesktopComposeUiTest(width = 480, height = 320) {
+      var last: UiBuilderInspectionSnapshot? = null
+      setContent { RemoteM3AuthoringSurface(design, 240f, 240f) { last = it } }
+      waitUntil(timeoutMillis = 10_000) {
+        last?.generation?.measuredNodeIds?.containsAll(listOf("empty", "list", "item2")) == true
+      }
+      val snapshot = requireNotNull(last)
+      // What the editor places an empty slot's drop placeholder in.
+      val empty = requireNotNull(snapshot.bounds("empty"))
+      assertTrue(empty.width > 0f && empty.height == 40f, "empty column $empty")
+      assertEquals(null, snapshot.slots.single { it.parentNodeId == "empty" }.bounds)
+      // The scroll is dropped on the authoring surface: every item is measured where a plain
+      // column puts it, in order, rather than the preview failing on the modifier.
+      val first = requireNotNull(snapshot.bounds("item0"))
+      val third = requireNotNull(snapshot.bounds("item2"))
+      assertTrue(third.y >= first.bottom, "item2 $third after item0 $first")
+    }
+  }
+
+  @Test
+  fun `a placed component and a repeat are drawn and measured`() {
+    // The shape every sticker has: a component instance as the root, its body a remote button.
+    val design =
+      lenient.decodeFromString<UiBuilderDocument>(
+        """
+        {
+          "schema": "compose-ui-builder-document/v1-candidate",
+          "id": "remote-m3-authoring-structure", "title": "Structure", "revision": 1,
+          "catalogPin": {
+            "systemId": "remote-m3", "catalogRevision": "test", "capabilityDigest": "test",
+            "nativeRuntimeId": "remote-m3-test-runtime"
+          },
+          "environment": { "widthDp": 192, "heightDp": 192, "density": 1, "fontScale": 1 },
+          "stateVariables": {},
+          "roots": ["column"],
+          "components": { "chip": { "name": "Chip", "root": "button" } },
+          "nodes": {
+            "column": {
+              "id": "column", "componentId": "layout/column", "properties": {},
+              "modifiers": [], "slots": { "children": ["place", "rows"] }
+            },
+            "place": {
+              "id": "place", "componentId": "design/component-instance",
+              "component": {
+                "componentKey": "chip",
+                "arguments": { "label": { "type": "string", "value": "Placed" } }
+              }
+            },
+            "button": {
+              "id": "button", "componentId": "remote-m3/remote-button", "properties": {},
+              "modifiers": [], "slots": { "content": ["label"] }
+            },
+            "label": {
+              "id": "label", "componentId": "remote-m3/remote-text",
+              "properties": { "text": { "type": "binding", "value": "label" } }, "slots": {}
+            },
+            "rows": {
+              "id": "rows", "componentId": "layout/for-each",
+              "properties": {
+                "data": { "type": "list", "values": [
+                  { "type": "object", "fields": { "name": { "type": "string", "value": "One" } } },
+                  { "type": "object", "fields": { "name": { "type": "string", "value": "Two" } } }
+                ] }
+              },
+              "slots": { "template": ["row"] }
+            },
+            "row": {
+              "id": "row", "componentId": "remote-m3/remote-text",
+              "properties": { "text": { "type": "binding", "value": "name" } }, "slots": {}
+            }
+          }
+        }
+        """
+      )
+    val key = undrawnGenerationKey(design.id, design.revision)
+    runDesktopComposeUiTest(width = 480, height = 320) {
+      var last: UiBuilderInspectionSnapshot? = null
+      setContent { RemoteM3AuthoringSurface(design, 192f, 192f) { last = it } }
+      waitUntil(timeoutMillis = 10_000) {
+        last?.generation?.measuredNodeIds?.size == design.nodes.size
+      }
+      assertEquals(emptyList(), UiBuilderUndrawnNodes.forGeneration(key))
+      // The placement is its body's box; the repeat holds both copies of its row.
+      val place = requireNotNull(last!!.bounds("place"))
+      val button = requireNotNull(last!!.bounds("button"))
+      assertEquals(place, button)
+      val rows = requireNotNull(last!!.bounds("rows"))
+      val row = requireNotNull(last!!.bounds("row"))
+      assertTrue(rows.height >= 2 * row.height - 1f, "two rows in $rows, one is $row")
+    }
+  }
+
+  private fun UiBuilderInspectionSnapshot.bounds(nodeId: String): UiBuilderPixelBounds? =
+    nodes.singleOrNull { it.nodeId == nodeId }?.bounds
+
+  /**
+   * A small widget with a button that flips a show-by-state switch between a short and a tall
+   * branch, a component no canvas knows, an empty column and a scrolling one.
+   */
+  private fun interactive(): UiBuilderDocument {
+    fun text(id: String, value: String, size: Int) =
+      """
+      "$id": {
+        "id": "$id", "componentId": "remote-m3/remote-text",
+        "properties": {
+          "text": { "type": "string", "value": "$value" },
+          "fontSize": { "type": "float", "value": $size }
+        },
+        "modifiers": [], "slots": {}
+      }
+      """
+    return lenient.decodeFromString(
+      """
+      {
+        "schema": "compose-ui-builder-document/v1-candidate",
+        "id": "remote-m3-authoring-interactive",
+        "title": "Remote M3 authoring",
+        "revision": 1,
+        "catalogPin": {
+          "systemId": "remote-m3", "catalogRevision": "test", "capabilityDigest": "test",
+          "nativeRuntimeId": "remote-m3-test-runtime"
+        },
+        "environment": {
+          "widthDp": 240, "heightDp": 240, "density": 1, "theme": "dark", "fontScale": 1,
+          "layoutDirection": "ltr"
+        },
+        "stateVariables": { "expanded": { "initialValue": false, "valueType": "bool" } },
+        "roots": ["root"],
+        "nodes": {
+          "root": {
+            "id": "root", "componentId": "remote-m3/widget-container-large",
+            "properties": {}, "modifiers": [], "slots": { "background": [], "content": ["column"] }
+          },
+          "column": {
+            "id": "column", "componentId": "layout/column", "properties": {},
+            "modifiers": [{ "type": "fillMaxSize" }],
+            "slots": { "children": ["toggle", "mode", "ghost", "empty", "list"] }
+          },
+          "toggle": {
+            "id": "toggle", "componentId": "remote-m3/remote-button", "properties": {},
+            "modifiers": [{ "type": "height", "heightDp": 24 }],
+            "slots": { "content": ["label"] },
+            "eventBindings": { "click": [{ "type": "toggle", "variable": "expanded" }] }
+          },
+          ${text("label", "Toggle", 10)},
+          "mode": {
+            "id": "mode", "componentId": "layout/box",
+            "properties": {
+              "showByState": { "type": "object", "fields": {
+                "selector": { "type": "state", "variable": "expanded" },
+                "cases": { "type": "object", "fields": {
+                  "short": { "type": "bool", "value": false },
+                  "tall": { "type": "bool", "value": true }
+                } }
+              } }
+            },
+            "modifiers": [], "slots": { "children": ["short", "tall"] }
+          },
+          ${text("short", "Short", 8)},
+          ${text("tall", "Tall", 24)},
+          "ghost": {
+            "id": "ghost", "componentId": "nowhere/mystery", "properties": {},
+            "modifiers": [], "slots": {}
+          },
+          "empty": {
+            "id": "empty", "componentId": "layout/column", "properties": {},
+            "modifiers": [{ "type": "fillMaxWidth" }, { "type": "height", "heightDp": 40 }],
+            "slots": { "children": [] }
+          },
+          "list": {
+            "id": "list", "componentId": "layout/column", "properties": {},
+            "modifiers": [{ "type": "height", "heightDp": 30 }, { "type": "verticalScroll" }],
+            "slots": { "children": ["item0", "item1", "item2"] }
+          },
+          ${text("item0", "First", 12)},
+          ${text("item1", "Second", 12)},
+          ${text("item2", "Third", 12)}
+        }
+      }
+      """
+    )
   }
 
   private fun UiBuilderPixelBounds.contains(other: UiBuilderPixelBounds): Boolean {

@@ -12,7 +12,7 @@ as JSON use Kotlin JSON builders, rather than duplicating another consumer's sch
 never reads the old policy; the baseline paths are used only by the independent equivalence test.
 Documentation comments are omitted, while capability notes and all executable policy data remain.
 
-The widget-host geometry, component mappings, structural builtins, template order, source-export routing and supersedes rules are preserved. The three rendering surfaces remain separate: editable Wear CMP stand-ins, real Remote CMP creation/playback for Browser Preview, and authoritative Android Native/Live. The launcher-widget catalog is a separate system and is outside this M3 change.
+The widget-host geometry, component mappings, structural builtins, template order, source-export routing and supersedes rules are preserved. The rendering surfaces are real Remote CMP creation/playback for the Visual Editor and Browser Preview, and authoritative Android Native/Live. The launcher-widget catalog is a separate system and is outside this M3 change.
 
 ## Validate
 

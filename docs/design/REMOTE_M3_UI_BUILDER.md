@@ -1,48 +1,44 @@
 # Remote M3 UI Builder rendering contract
 
-`remote-m3` deliberately has three rendering surfaces. They share one semantic UI Builder document,
-but they do not share a renderer and must not be collapsed into one.
+`remote-m3` has three rendering surfaces. They share one semantic UI Builder document. The Visual
+Editor and the Browser Preview share a renderer, the CMP Remote M3 one; Native / Live stays its own.
 
 | Surface | Purpose | Implementation | Fidelity |
 | --- | --- | --- | --- |
-| Visual Editor | Select, insert, move and inspect nodes | Wear Compose Material 3 CMP components used as catalog-declared stand-ins | Approximate |
-| Browser Preview | Inspect the Remote Compose result in each selected widget host | CMP/Wasm Remote M3 records a `.rc` document and `RcComposePlayer` plays those bytes, or (live engine) rc-players' `RcEmbeddedPlayer` plays a remote composition kept alive across edits | Real Remote Compose browser preview |
+| Visual Editor | Select, insert, move and inspect nodes | The Browser Preview's recording, played, with each authored node tagged so the player reports its inspection (`RemoteM3AuthoringSurface`) | Real Remote Compose browser preview |
+| Browser Preview | Inspect the Remote Compose result in each selected widget host | CMP/Wasm Remote M3 composed under rc-players' `RcEmbeddedPlayer`, a remote composition kept alive across edits | Real Remote Compose browser preview |
 | Native / Live | Make the release decision | AndroidX Remote M3 records on Android; the Android player renders it | Authoritative |
 
-The Visual Editor is allowed to optimize for authoring. It must preserve authored Remote M3
-properties, slots, node ids and state, and its `canvasMapping` may only translate them into the names
-the Wear stand-in reads. It must never rewrite the stored document to Wear component ids.
-
-The Browser Preview is not another set of lookalikes. The catalog runtime handles protocol-v2
-`DEVICE` surfaces by walking the same semantic document with the CMP Remote creation APIs, recording
-real Remote M3 components, decoding the resulting document, and passing it to `RcComposePlayer`.
-Glance Wear host chrome remains outside the document, just as it does on Android, and is applied per
-small/large widget frame around the player.
+The runtime handles protocol-v2 surfaces by walking the semantic document with the CMP Remote
+creation APIs, composing real Remote M3 components, and playing them. Glance Wear host chrome
+remains outside the document, just as it does on Android, and is applied per small/large widget
+frame around the player. Neither surface rewrites the stored document.
 
 The catalog does **not** declare the legacy `browserPreview: remote-compose-document` capability.
 That capability asks the host/server to compile an RC document and causes the editor to bypass the
 catalog runtime's DEVICE surface. It remains useful to catalogs without an executable runtime, but it
 is the wrong ownership boundary here.
 
-## Preview engines
+## Live playback
 
-The runtime draws through one of two engines, picked per render by `previewEngine` in the document's
-environment. It announces the `previewEngines` capability, and the editor sends the key only to a
-runtime that did; compose-ui-builder shows the choice behind `?previewEngine=`.
+The design's remote composition stays alive under rc-players' `RcEmbeddedPlayer`, and an edit
+recomposes only what changed: measured on the golden designs, 0.28–0.55 ms, against 0.7–3 ms for
+recording a fresh document and decoding it. The capture engine that did that, and the Wear Compose
+stand-ins the Visual Editor drew until then, are gone.
 
-- **Capture** (the default): every edit records a fresh document and plays it, as above. The Visual
-  Editor keeps its stand-ins.
-- **Live**: the design's remote composition stays alive under rc-players' `RcEmbeddedPlayer`, and an
-  edit recomposes only what changed. The Visual Editor then plays the same recording
-  (`RemoteM3AuthoringSurface`): each authored node carries an explicit component id, and the
-  player's geometry becomes the editor's per-node bounds. Not yet carried over from the stand-ins:
-  text baselines, semantic actions (`activate`, `scrollBy`), horizontal unrolling and empty-slot
-  placeholders.
+On the Visual Editor (`AUTHORING_UNROLLED`) each authored node carries an explicit component id,
+and the player reports, per node:
 
-Measured on the golden designs, a live edit takes 0.28–0.55 ms against 0.7–3 ms for a fresh capture.
-Decoding the `.rc` is only 1–3% of a capture; the cost is composing from nothing. Both engines record
-with rc-players' creation fork, so a difference between them is the engine, not the writer. The JVM
-tests run once per engine (`jvmTest`, `jvmTestLive`).
+- **bounds**, which drive selection, hit-testing, drop planning and the editor's empty-slot
+  placeholders;
+- **text layout** (line count and baselines) for each remote text;
+- **a click**, which the runtime's `activate` action runs, as a tap would;
+- **undrawn**: a component the tree can only draw as an "Unsupported" diagnostic is listed in the
+  generation's `undrawn` reply, so the editor notes it and the authoring-canvas coverage gate fails.
+
+Scroll modifiers are dropped there, so a scrolling container plays as a plain one; on the device
+surface it scrolls. Not reported: `selected` follows the design's initial state, and `scrollBy` and
+`revealNode`, which the editor sends only to the device view, are not available.
 
 ## Compatibility and pinning
 
@@ -50,8 +46,7 @@ Writer and player move as an explicit compatibility pair:
 
 - writer: the vendored Remote Compose port identified by `vendor/remote-compose-upstream.json`
   (`4307936-ps17-cmp01` at the time this contract was added) for Remote M3, over rc-players'
-  creation fork (`third-party-remote-creation-*`) for creation and foundation since the preview
-  engines landed, declared together as `<port>+rc-players-<version>`;
+  creation fork (`third-party-remote-creation-*`) for creation and foundation, declared together as `<port>+rc-players-<version>`;
 - player: the `rc-players` release in `gradle/libs.versions.toml` (`1.69.0` at the same point).
 
 Both values are pinned by the renderer's dependency graph and declared by the versioned runtime
@@ -71,8 +66,8 @@ merely compatible system, or follow a different catalog pin.
 - A writer/player upgrade is reviewed as a rendering change and ships with the catalog runtime that
   names both exact versions.
 
-This division keeps the editor responsive, makes browser feedback real, and preserves Android as the
-final source of truth without introducing a second stored design model.
+This keeps the editor responsive, makes browser feedback real, and preserves Android as the final
+source of truth without introducing a second stored design model.
 
 ## Layout vocabulary, and what a Wear widget can carry
 

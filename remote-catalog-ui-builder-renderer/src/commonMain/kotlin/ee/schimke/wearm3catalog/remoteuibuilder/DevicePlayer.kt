@@ -1,5 +1,5 @@
-// The live engine (`PreviewEngine.Live`): the Browser Preview on rc-players' live player
-// (`RcEmbeddedPlayer`). See PreviewEngine.kt.
+// The Browser Preview and the Visual Editor's surface, on rc-players' live player
+// (`RcEmbeddedPlayer`).
 package ee.schimke.wearm3catalog.remoteuibuilder
 
 import androidx.compose.foundation.layout.Box
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.remote.creation.compose.capture.RemoteCreationDisplayInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +23,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
 import androidx.wear.compose.material3.Text
 import ee.schimke.composeai.rccreation.bridge.RcComponentIds
@@ -33,6 +35,8 @@ import ee.schimke.composeai.uibuilder.LocalUiBuilderFontRegistry
 import ee.schimke.composeai.uibuilder.export.FontSettings
 import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
+import ee.schimke.composeai.uibuilder.export.UiBuilderInstancePath
+import ee.schimke.composeai.uibuilder.export.UiBuilderNode
 import ee.schimke.composeai.uibuilder.export.hostSpec
 import ee.schimke.composeai.uibuilder.renderer.sdk.GoogleMaterialIconVectors
 import ee.schimke.wearm3catalog.uibuilder.WearWidgetContainerFrame
@@ -40,17 +44,18 @@ import ee.schimke.wearm3catalog.uibuilder.wearWidgetHostShape
 import kotlin.math.roundToInt
 
 /**
- * Real Remote M3 creation and playback for the read-only browser device surface, played live.
+ * Real Remote M3 creation and playback for the browser device surface, played live.
  *
- * The capture variant records a fresh document per edit. Here the design's remote composition is
- * kept alive under the preview: an edit recomposes only what changed and re-renders the retained
- * tree. There is no recording step to wait for, so there is no refreshing scrim either.
+ * The design's remote composition is kept alive under the preview: an edit recomposes only what
+ * changed and re-renders the retained tree, rather than recording a fresh document and playing it.
+ * There is no recording step to wait for, so there is no refreshing scrim either. With [authoring]
+ * it is the Visual Editor's surface too ([RemoteM3AuthoringSurface]).
  *
  * [typefaceFallback] answers for every family the runtime's font registry does not: the player's
  * own default face unless a test stands in for the browser's.
  */
 @Composable
-internal fun LiveDevicePreview(
+internal fun RemoteM3DevicePreview(
   document: UiBuilderDocument,
   widthDp: Float,
   heightDp: Float,
@@ -110,7 +115,7 @@ internal fun LiveDevicePreview(
 
   val hasBackground = hostSpec != null && root?.slots?.get("background").orEmpty().isNotEmpty()
   // Which design each player has rendered. The pane is Ready once both show the current one, and
-  // [onReady] is told once per design, as the capture variant tells it once per recording.
+  // [onReady] is told once per design.
   var contentRendered by remember { mutableStateOf<UiBuilderDocument?>(null) }
   var backgroundRendered by remember { mutableStateOf<UiBuilderDocument?>(null) }
   // Each player's own: one player rendering must not clear the other's failure.
@@ -153,8 +158,8 @@ internal fun LiveDevicePreview(
           typefaces = fonts,
           encodePng = ::encodeDesignAssetPng,
           onRendered = { onSettled(null) },
-          // A failed render still settles the design, as a failed recording does in the capture
-          // variant: the pane reports Failed, and [onReady] is told once.
+          // A failed render still settles the design: the pane reports Failed, and [onReady] is
+          // told once.
           onFailure = { onSettled(it) },
           key = design,
         ) {
@@ -164,14 +169,7 @@ internal fun LiveDevicePreview(
     }
 
     ProvideDevicePreviewTime(design) {
-      val tree =
-        remember(design, authoring) {
-          if (authoring == null) RemoteDocumentTree(design)
-          else
-            RemoteDocumentTree(design) { node, modifier ->
-              authoring.ids.component(modifier, node.id)
-            }
-        }
+      val tree = remember(design, authoring) { RemoteDocumentTree(design, authoring) }
       val contentDisplay =
         remember(contentWidth, contentHeight, density) {
           displayInfo(contentWidth, contentHeight, density)
@@ -255,13 +253,50 @@ private fun displayInfo(widthDp: Float, heightDp: Float, density: Density) =
 
 /**
  * What an authoring surface needs from the preview: each authored node tagged with a component id
- * from [ids], and the geometry the player then reports for it, by node id.
+ * from [ids], and what the player then reports for it, by node id — its geometry, a text's layout,
+ * a click the editor can run — and every node the preview could only draw as a diagnostic.
  */
 internal class AuthoringInspection(
-  val ids: RcComponentIds<String>,
+  /** By instance path, not node id: a repeat or a second placement draws one node twice. */
+  val ids: RcComponentIds<UiBuilderInstancePath>,
   val onBounds: (nodeId: String, coordinates: LayoutCoordinates) -> Unit,
+  val onText: (nodeId: String, content: LayoutCoordinates, layout: TextLayoutResult) -> Unit =
+    { _, _, _ ->
+    },
+  /** A click the player holds for a node, [added] or taken back. */
+  val onClick: (nodeId: String, click: () -> Unit, added: Boolean) -> Unit = { _, _, _ -> },
+  /** A node drawn as an "Unsupported" diagnostic ([drawn] false), or no longer ([drawn] true). */
+  val onUndrawn: (node: UiBuilderNode, drawn: Boolean) -> Unit = { _, _ -> },
 ) {
-  val listener = RcComponentCoordinatesListener { id, coordinates ->
-    ids.keyFor(id)?.let { onBounds(it, coordinates) }
+  val listener =
+    object : RcComponentCoordinatesListener {
+      override fun onPositioned(componentId: Int, coordinates: LayoutCoordinates) {
+        ids.keyFor(componentId)?.let { onBounds(it.nodeId, coordinates) }
+      }
+
+      override fun onTextLaidOut(
+        componentId: Int,
+        content: LayoutCoordinates,
+        layout: TextLayoutResult,
+      ) {
+        ids.keyFor(componentId)?.let { onText(it.nodeId, content, layout) }
+      }
+
+      override fun onClickActionAdded(componentId: Int, click: () -> Unit) {
+        ids.keyFor(componentId)?.let { onClick(it.nodeId, click, true) }
+      }
+
+      override fun onClickActionRemoved(componentId: Int, click: () -> Unit) {
+        ids.keyFor(componentId)?.let { onClick(it.nodeId, click, false) }
+      }
+    }
+
+  /** Called where the tree draws [node] as a diagnostic, for as long as it does. */
+  @Composable
+  fun ReportUndrawn(node: UiBuilderNode) {
+    DisposableEffect(node.id, node.componentId) {
+      onUndrawn(node, false)
+      onDispose { onUndrawn(node, true) }
+    }
   }
 }
