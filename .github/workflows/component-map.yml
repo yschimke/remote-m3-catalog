@@ -82,7 +82,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24.21.0
+          node-version: 24.22.0
 
       # No Gradle and no `node_modules`: the script reads the Kotlin sources with `node:fs` and
       # fetches two `catalog.json` files. That is the whole of it.

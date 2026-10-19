@@ -28,7 +28,7 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: actions/setup-java@v6.0.1
+      - uses: actions/setup-java@v6.1.0
         with:
           distribution: temurin
           java-version: |
@@ -64,7 +64,7 @@ jobs:
       # (34701265) RELEASES, pinned in catalog-typed-adapters/build.gradle.kts. A tools source
       # composite cannot share this build with `:remote-catalog`'s versioned preview plugin; see
       # settings.gradle.kts.
-      - uses: actions/setup-java@v6.0.1
+      - uses: actions/setup-java@v6.1.0
         with:
           distribution: temurin
           java-version: |
