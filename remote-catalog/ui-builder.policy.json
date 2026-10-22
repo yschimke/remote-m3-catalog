@@ -945,6 +945,13 @@
           "notes": "The widget's own background, painted by the host inside the frame it draws. Defaults to #FF272430, the colour WearWidgetContainer applies to a widget that declares none. Padding and corner radius are not properties: WearWidgetParams hands them to the widget per host shape (0 rectangular, 26 squircle, 999 round), so the outermost box never authors a radius."
         },
         {
+          "name": "hostFrame",
+          "jsonType": "string",
+          "required": false,
+          "allowedValues": ["host", "device"],
+          "notes": "How the host frame (padding and corner radius) is written into the exported widget. `host`, the default, exports a `WearWidgetDocument`: the frame of the host it was captured for is baked in as constants, so a capture made for one host shape keeps that frame on another. `device` exports a `HostFramedWearWidgetDocument` (compose-ai-tools' `wear-preview-runtime`): the same frame, declared as the named floats `wear.widget.horizontalPaddingDp`, `wear.widget.verticalPaddingDp` and `wear.widget.cornerRadiusDp`, which the device playing the document writes its own host's values into, so one capture fits Pixel Watch's squircle, Samsung's round host and the rectangular one. For a widget captured once and played on many watches, such as one a design server serves."
+        },
+        {
           "name": "themeDisplayTypeface",
           "jsonType": "string",
           "required": false,
@@ -1035,6 +1042,13 @@
           "jsonType": "string",
           "required": false,
           "notes": "The widget's own background, painted by the host inside the frame it draws. Defaults to #FF272430, the colour WearWidgetContainer applies to a widget that declares none. Padding and corner radius are not properties: WearWidgetParams hands them to the widget per host shape (0 rectangular, 26 squircle, 999 round), so the outermost box never authors a radius."
+        },
+        {
+          "name": "hostFrame",
+          "jsonType": "string",
+          "required": false,
+          "allowedValues": ["host", "device"],
+          "notes": "How the host frame (padding and corner radius) is written into the exported widget. `host`, the default, exports a `WearWidgetDocument`: the frame of the host it was captured for is baked in as constants, so a capture made for one host shape keeps that frame on another. `device` exports a `HostFramedWearWidgetDocument` (compose-ai-tools' `wear-preview-runtime`): the same frame, declared as the named floats `wear.widget.horizontalPaddingDp`, `wear.widget.verticalPaddingDp` and `wear.widget.cornerRadiusDp`, which the device playing the document writes its own host's values into, so one capture fits Pixel Watch's squircle, Samsung's round host and the rectangular one. For a widget captured once and played on many watches, such as one a design server serves."
         },
         {
           "name": "themeDisplayTypeface",
@@ -1147,6 +1161,13 @@
           "jsonType": "string",
           "required": false,
           "notes": "The widget's own background, painted by the host inside the frame it draws. Defaults to #FF272430, the colour WearWidgetContainer applies to a widget that declares none. Padding and corner radius are not properties: WearWidgetParams hands them to the widget per host shape (0 rectangular, 26 squircle, 999 round), so the outermost box never authors a radius."
+        },
+        {
+          "name": "hostFrame",
+          "jsonType": "string",
+          "required": false,
+          "allowedValues": ["host", "device"],
+          "notes": "How the host frame (padding and corner radius) is written into the exported widget. `host`, the default, exports a `WearWidgetDocument`: the frame of the host it was captured for is baked in as constants, so a capture made for one host shape keeps that frame on another. `device` exports a `HostFramedWearWidgetDocument` (compose-ai-tools' `wear-preview-runtime`): the same frame, declared as the named floats `wear.widget.horizontalPaddingDp`, `wear.widget.verticalPaddingDp` and `wear.widget.cornerRadiusDp`, which the device playing the document writes its own host's values into, so one capture fits Pixel Watch's squircle, Samsung's round host and the rectangular one. For a widget captured once and played on many watches, such as one a design server serves."
         },
         {
           "name": "themeDisplayTypeface",
