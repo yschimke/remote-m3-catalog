@@ -1514,6 +1514,7 @@ private fun builtinWidgetContainerSmall(): UiBuilderBuiltin =
             notes =
               "The widget's own background, painted by the host inside the frame it draws. Defaults to #FF272430, the colour WearWidgetContainer applies to a widget that declares none. Padding and corner radius are not properties: WearWidgetParams hands them to the widget per host shape (0 rectangular, 26 squircle, 999 round), so the outermost box never authors a radius.",
           ),
+          hostFrameProperty(),
           property(
             "themeDisplayTypeface",
             JsonValueTypeV1.STRING,
@@ -1617,6 +1618,7 @@ private fun builtinWidgetContainerLarge(): UiBuilderBuiltin =
             notes =
               "The widget's own background, painted by the host inside the frame it draws. Defaults to #FF272430, the colour WearWidgetContainer applies to a widget that declares none. Padding and corner radius are not properties: WearWidgetParams hands them to the widget per host shape (0 rectangular, 26 squircle, 999 round), so the outermost box never authors a radius.",
           ),
+          hostFrameProperty(),
           property(
             "themeDisplayTypeface",
             JsonValueTypeV1.STRING,
@@ -1756,6 +1758,7 @@ private fun builtinWidgetContainerAdaptive(): UiBuilderBuiltin =
             notes =
               "The widget's own background, painted by the host inside the frame it draws. Defaults to #FF272430, the colour WearWidgetContainer applies to a widget that declares none. Padding and corner radius are not properties: WearWidgetParams hands them to the widget per host shape (0 rectangular, 26 squircle, 999 round), so the outermost box never authors a radius.",
           ),
+          hostFrameProperty(),
           property(
             "themeDisplayTypeface",
             JsonValueTypeV1.STRING,
@@ -1893,6 +1896,17 @@ private fun colorRoles(factory: String, roles: List<String>): List<JsonElement> 
         "`$factory`' `$role`: a theme role (`primary`), `transparent`, `#AARRGGBB`, or a computed colour such as `lerp(theme.primary, theme.primaryDim, @on)`. The roles a node leaves out keep the factory's defaults; stated rather than derived, because `colors` is a bundle the record cannot type.",
     )
   }
+
+/** The widget containers' `hostFrame` flag: whether the export bakes the host frame or names it. */
+private fun hostFrameProperty(): JsonElement =
+  property(
+    "hostFrame",
+    JsonValueTypeV1.STRING,
+    required = false,
+    allowedValues = listOf(JsonPrimitive("host"), JsonPrimitive("device")),
+    notes =
+      "How the host frame (padding and corner radius) is written into the exported widget. `host`, the default, exports a `WearWidgetDocument`: the frame of the host it was captured for is baked in as constants, so a capture made for one host shape keeps that frame on another. `device` exports a `HostFramedWearWidgetDocument` (compose-ai-tools' `wear-preview-runtime`): the same frame, declared as the named floats `wear.container.horizontal_padding`, `wear.container.vertical_padding` and `wear.container.corner_radius` (dp), which the device playing the document writes its own host's values into, so one capture fits Pixel Watch's squircle, Samsung's round host and the rectangular one. For a widget captured once and played on many watches, such as one a design server serves.",
+  )
 
 private fun property(
   name: String,
