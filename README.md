@@ -85,14 +85,14 @@ whole-kit one: against the whole kit this sheet's percentage measures how many s
 rather than how much of its own work is missing.
 
 **Where the library draws the wrong thing, the sheet draws it anyway.** A cell whose API exists is
-called and published even when the result is blank or identical to its neighbour — an image-backed
-button that renders a black pill with no image in it, a text button that draws nothing at all when
-disabled, a disabled tonal button that is the disabled filled one to the byte. Withdrawing those
-would leave the set reading as unreproduced, indistinguishable from nobody having got to it: the
-sheet would look finished and the defect would be nowhere. `StickerBakeCoverageTest`'s `knownBlank`
-and `RemoteRenderTest`'s `knownDuplicate` record each one against the call that causes it, and both
-fail in the other direction too — the day the library starts drawing, the exemption is what
-announces it.
+called and published even when the result is wrong or identical to its neighbour — an image-backed
+button whose disabled state leaves the image undimmed, a disabled text button that is its label and
+nothing else in every style, a disabled tonal button that is the disabled filled one to the byte.
+Withdrawing those would leave the set reading as unreproduced, indistinguishable from nobody having
+got to it: the sheet would look finished and the defect would be nowhere.
+`StickerBakeCoverageTest`'s `knownBlank` and `RemoteRenderTest`'s `knownDuplicate` record each one
+against the call that causes it, and both fail in the other direction too — the day the library
+starts drawing, the exemption is what announces it.
 
 Components with nothing to compare against enter through the **library's** door, carrying
 `noReference`: a sheet whose reader is looking for the component set should not omit a component

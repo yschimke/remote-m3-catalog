@@ -29,14 +29,15 @@ import ee.schimke.composeai.preview.OverrideVariant
 //
 // THESE THREE CELLS ARE BROKEN, AND THAT IS THE ANSWER THEY WERE DRAWN TO GET.
 //
-// `Button/ImageBackground` on this sheet calls the equivalent BUTTON painter and draws an opaque
-// black pill with no image in it (see `ComponentVariantPreviews.kt`). The open question was whether
-// the CARD overload — a different function, added later — behaves differently. It does not: the
-// container renders near-black, measured at ~#292929 against a placeholder that is #ECECEC, so the
-// image is absent here too. `RemoteImage` draws that same bitmap correctly in the content slots
-// of the very same cells, which is what puts it in the container painter rather than in the bitmap,
-// the scrim or the player. The defect is `remoteContainerPainter`, which both overloads route
-// through, not the button's wrapper around it.
+// `Button/ImageBackground` on this sheet calls the equivalent BUTTON painter. It once drew an
+// opaque black pill with no image in it, and now draws the image (`ComponentVariantPreviews.kt`).
+// The open question was whether the CARD overload — a different function, added later — behaves
+// the same. When these cells were drawn, it rendered the container near-black, measured at
+// ~#292929 against a placeholder that is #ECECEC, so the image was absent. `RemoteImage` draws that
+// same bitmap correctly in the content slots of the very same cells, which puts it in the container
+// painter rather than in the bitmap or the player. This comment used to name
+// `remoteContainerPainter`, which both overloads route through, as the defect; the button drawing
+// now leaves that unproven, so re-measure these cells before blaming either side.
 //
 // They are published anyway, which is this repo's standing bargain and the same one the button
 // row records at length: withdrawing leaves the SET reading as unreproduced, indistinguishable from
