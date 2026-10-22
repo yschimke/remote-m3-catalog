@@ -22,8 +22,8 @@ import org.junit.runners.Parameterized
  * the Remote Compose creation DSL and Glance Wear, the same artifacts the stickers use.
  *
  * The generated widget previews fan out over the three host corner shapes
- * `androidx.glance.wear.tooling.preview` publishes — `RoundSmallWidgetPreviewParams` (the Pixel
- * Watch's fully-round host), `SquircleSmallWidgetPreviewParams` (Samsung's 26dp squircle) and the
+ * `androidx.glance.wear.tooling.preview` publishes — `RoundSmallWidgetPreviewParams` (Samsung's
+ * fully-round host), `SquircleSmallWidgetPreviewParams` (the Pixel Watch's 26dp squircle) and the
  * rectangular picker asset — so each golden is also the host set the sheet draws as WidgetContainer
  * stickers.
  *
@@ -147,10 +147,10 @@ class WidgetTemplateRoundTripTest(private val templateId: String) {
   }
 
   /**
-   * Every template's generated widget carries the three host previews: Pixel Watch's round host,
-   * Samsung's squircle and the rectangular picker asset. The preview names come from the emitter,
-   * and a widget template that stopped generating one would hand a designer source with no way to
-   * check that host.
+   * Every template's generated widget carries the three host previews: Samsung's round host, the
+   * Pixel Watch's squircle and the rectangular picker asset. The preview names come from the
+   * emitter, and a widget template that stopped generating one would hand a designer source with no
+   * way to check that host.
    */
   @Test
   fun `the generated widget previews every host shape`() {

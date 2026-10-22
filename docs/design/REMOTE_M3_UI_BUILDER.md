@@ -62,7 +62,7 @@ merely compatible system, or follow a different catalog pin.
   silently redrawn by a generic Compose component.
 - Browser Preview is evidence that the CMP writer/player pair can represent the document, not a
   replacement for Native / Live.
-- Native / Live remains authoritative for rectangular, Samsung squircle and Pixel Watch round hosts.
+- Native / Live remains authoritative for rectangular, Pixel Watch squircle and Samsung round hosts.
 - A writer/player upgrade is reviewed as a rendering change and ships with the catalog runtime that
   names both exact versions.
 
