@@ -1905,7 +1905,7 @@ private fun hostFrameProperty(): JsonElement =
     required = false,
     allowedValues = listOf(JsonPrimitive("host"), JsonPrimitive("device")),
     notes =
-      "How the host frame (padding and corner radius) is written into the exported widget. `host`, the default, exports a `WearWidgetDocument`: the frame of the host it was captured for is baked in as constants, so a capture made for one host shape keeps that frame on another. `device` exports a `HostFramedWearWidgetDocument` (compose-ai-tools' `wear-preview-runtime`): the same frame, declared as the named floats `wear.widget.horizontalPaddingDp`, `wear.widget.verticalPaddingDp` and `wear.widget.cornerRadiusDp`, which the device playing the document writes its own host's values into, so one capture fits Pixel Watch's squircle, Samsung's round host and the rectangular one. For a widget captured once and played on many watches, such as one a design server serves.",
+      "How the host frame (padding and corner radius) is written into the exported widget. `host`, the default, exports a `WearWidgetDocument`: the frame of the host it was captured for is baked in as constants, so a capture made for one host shape keeps that frame on another. `device` exports a `HostFramedWearWidgetDocument` (compose-ai-tools' `wear-preview-runtime`): the same frame, declared as the named floats `wear.container.horizontal_padding`, `wear.container.vertical_padding` and `wear.container.corner_radius` (dp), which the device playing the document writes its own host's values into, so one capture fits Pixel Watch's squircle, Samsung's round host and the rectangular one. For a widget captured once and played on many watches, such as one a design server serves.",
   )
 
 private fun property(
