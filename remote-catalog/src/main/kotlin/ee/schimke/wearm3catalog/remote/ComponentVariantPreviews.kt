@@ -169,33 +169,34 @@ fun ChildRemoteButton() = RemoteSticker { RemoteKitButton(remoteChildButtonColor
   kitAxis = "Disabled",
   kitValue = "Yes",
 )
-// THIS ROW IS BROKEN ON PURPOSE, and that is the whole reason it is here.
+// THE TWO DISABLED CELLS ARE A KNOWN DIVERGENCE, published so that they score as one.
 //
-// `Button-ImageBackground` publishes four cells and this column reproduced none of them, while the
-// Wear column draws all four ([#157](https://github.com/yschimke/wear-m3-catalog/issues/157)). The
-// library looks ready for it: `remote-material3-1.0.0-alpha10` ships `containerPainter`, its
-// disabled companion, `buttonWithContainerPainterColors()` and a `RemoteButton` overload taking
-// both painters. Call them and the button renders an OPAQUE BLACK PILL with no image in it —
-// under the default scrim, a transparent one, `ContentScale.FillBounds`, and a bitmap 64x larger.
-// `RemoteImage` draws that same bitmap in the card content slots, so it is the container painter
-// specifically rather than the bitmap or the player.
+// `Button-ImageBackground` publishes four cells, and the Wear column draws all four
+// ([#157](https://github.com/yschimke/wear-m3-catalog/issues/157)). This column draws them with
+// what `remote-material3` ships for it: `containerPainter`, its disabled companion,
+// `buttonWithContainerPainterColors()` and the `RemoteButton` overload taking both painters. For a
+// long stretch that call rendered an opaque black pill with no image in it, and both players drew
+// the same thing. It draws now: the flat placeholder under the painter's scrim, the dark-to-light
+// gradient the enabled cells show.
 //
-// The first pass withdrew the component over that, on the grounds that a black pill scored against
-// an image-backed node claims a comparison it is not making. That was the wrong call, and it is
-// worth writing down why: withdrawing leaves the SET reading as unreproduced, which is
-// indistinguishable from nobody having got to it — the sheet looks fine and the defect is
-// invisible.
-// Publishing it puts the break where a reader meets it and lets design-parity score it as the real
-// divergence it is, which on a design-led scan is exactly what the number is for. It is the same
-// bargain `StickerBakeCoverageTest.knownBlank` already strikes for the blank text button, and it
-// makes the fix self-announcing: the day the painter draws, this row moves on its own.
+// What still diverges is `Disabled=Yes`. `disabledContainerPainter` changes nothing: the disabled
+// capture differs from the enabled one only inside the label's box, and the container pixels are
+// identical, where the Wear cell dims the whole container. Tracked on
+// [#192](https://github.com/yschimke/remote-m3-catalog/issues/192); the two disabled cells score
+// lowest of any button row against the Wear column for that reason.
+//
+// Withdrawing a component over a defect like this is the wrong call: it leaves the SET reading as
+// unreproduced, which is indistinguishable from nobody having got to it, so the sheet looks fine
+// and the defect is invisible. Publishing it puts the break where a reader meets it and lets
+// design-parity score it as the real divergence it is, and it makes the fix self-announcing: the
+// day the disabled painter dims, these cells move on their own.
 //
 // The image is the flat placeholder every other slot here draws — the kit publishes this cell's
 // background as an empty `IMAGE` fill, which design-parity normalises to a flat colour at import.
 //
-// All four cells are drawn. `secondary-label-disabled` is the same picture as `disabled`, because
-// a disabled `RemoteButton` draws its container and not its labels — the same loss the `Button`
-// row's five `Alignment=Left, Disabled` cells record, and recorded here the same way.
+// All four cells are drawn, and they are four pictures: a disabled `RemoteButton` draws its labels
+// dimmed. They once read as missing, which was the embedded player rather than the library (see
+// `RemoteRenderTest.knownDuplicate`).
 @OverrideVariant(
   name = "secondary-label-disabled",
   booleans = ["secondary=true", "enabled=false"],
