@@ -156,7 +156,7 @@ uiBuilderSource = "3.69.0"
 # pins the pair and `RemoteRenderTest` checks every capture actually used the embedded player.
 # 2.4.0 plays shared elements named by their AnimationSpec and a component's own enter/exit across a
 # StateLayout switch (rc-players#604, rc-players#606), which `RemoteM3DeviceMotionUiTest` needs.
-rcPlayers = "2.17.4"
+rcPlayers = "2.17.5"
 
 # materialkolor — the dynamic-colour engine Confetti Wear builds its conference palettes with. The
 # declared themes in `CatalogThemes.kt` reproduce them by running the same seed through the same
