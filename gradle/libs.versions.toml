@@ -116,8 +116,8 @@ composePreviewContracts = "3.39.0"
 # The release BOM advances even when the plugin is unchanged. Never share these refs:
 # BOM 2.67.0 names compose-preview-plugin 2.66.0; a marker at 2.67.0 does not exist.
 composeAiTools = "2.72.0"
-composePreviewPlugin = "2.71.0"
-composePreviewCore = "2.69.3"
+composePreviewPlugin = "2.72.0"
+composePreviewCore = "2.72.0"
 composePreviewDaemon = "3.23.0"
 # compose-preview-daemon's release guard publishes each module only when it changed, so ITS OWN
 # artifacts move on independent lines too: 3.9.x shipped `data-remotecompose-connector` (and the
