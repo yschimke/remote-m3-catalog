@@ -338,7 +338,7 @@ jobs:
       - uses: actions/setup-node@v7.1.0
         if: needs.changes.outputs.inert != 'true'
         with:
-          node-version: 24.22.0
+          node-version: 24.22.1
       # The Remote sheet's spec still carries its inventory as `groups`, so this is not a pre-flight
       # over annotations but the check on the inventory itself: every `preview` and
       # `motionPreview` it names has to resolve to a real `@Preview`.
@@ -361,7 +361,7 @@ jobs:
       - uses: actions/setup-node@v7.1.0
         if: needs.changes.outputs.inert != 'true'
         with:
-          node-version: 24.22.0
+          node-version: 24.22.1
       # Which pages the import covers, and what each one is called. Both answers are published URLs
       # (`/{system}/pages/{id}`), and the page list is discovered from the Figma file rather than
       # hand-kept — so the slug rule is the only thing holding those URLs still. Needs no token:
@@ -479,7 +479,7 @@ jobs:
       - uses: actions/setup-node@v7.1.0
         if: env.RUN == 'true'
         with:
-          node-version: 24.22.0
+          node-version: 24.22.1
       - name: Install the gate
         if: env.RUN == 'true'
         working-directory: .compose-ui-builder/scripts/ui-builder-web-smoke
