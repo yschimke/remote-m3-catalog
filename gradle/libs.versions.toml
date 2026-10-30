@@ -118,7 +118,7 @@ composePreviewContracts = "3.39.0"
 composeAiTools = "2.74.1"
 composePreviewPlugin = "2.74.1"
 composePreviewCore = "2.74.1"
-composePreviewDaemon = "3.26.0"
+composePreviewDaemon = "3.27.0"
 # compose-preview-daemon's release guard publishes each module only when it changed, so ITS OWN
 # artifacts move on independent lines too: 3.9.x shipped `data-remotecompose-connector` (and the
 # `daemon-core` it pins) at 3.9.2 while holding `preview-annotations` and
