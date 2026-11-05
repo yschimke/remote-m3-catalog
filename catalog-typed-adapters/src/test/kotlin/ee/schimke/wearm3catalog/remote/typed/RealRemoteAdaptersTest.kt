@@ -44,7 +44,16 @@ class RealRemoteAdaptersTest {
       adapter.properties.map { it.name }.toSet() - requireNotNull(adapter.projection).properties
     }
     assertEquals(
-      setOf("text", "color", "fontSize", "fontVariationSettings", "fontFeatureSettings"),
+      setOf(
+        "text",
+        "color",
+        "fontSize",
+        "fontFamily",
+        "letterSpacing",
+        "lineHeight",
+        "fontVariationSettings",
+        "fontFeatureSettings",
+      ),
       refused(real.text),
     )
     assertEquals(setOf("containerImageKey"), refused(real.button))

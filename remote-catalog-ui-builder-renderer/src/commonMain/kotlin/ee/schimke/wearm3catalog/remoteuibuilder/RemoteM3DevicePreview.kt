@@ -61,6 +61,7 @@ import androidx.compose.remote.creation.compose.state.rememberMutableRemoteInt
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.ri
 import androidx.compose.remote.creation.compose.state.rs
+import androidx.compose.remote.creation.compose.text.RemoteFontFamily
 import androidx.compose.remote.creation.compose.text.RemoteTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -535,10 +536,11 @@ internal class RemoteDocumentTree(
             node.number("fontSize")?.sp?.asRemoteTextUnit()
               ?: node.number("fontSizeSp")?.sp?.asRemoteTextUnit(),
           fontWeight = node.fontWeight(),
+          fontFamily = node.remoteFontFamily(),
           textAlign = node.textAlign(),
           overflow = node.textOverflow(),
           maxLines = node.integer("maxLines") ?: Int.MAX_VALUE,
-          style = node.textStyle().withFontFeatures(node),
+          style = node.textStyle().withSpacing(node).withFontFeatures(node),
           fontVariationSettings = node.fontVariationSettings(),
         )
       "remote-m3/remote-button" -> {
@@ -1276,6 +1278,40 @@ private fun RemoteTextStyle.withFontFeatures(node: UiBuilderNode): RemoteTextSty
     )
     .takeIf { it.isNotEmpty() }
     ?.let { merge(fontFeatureSettings = it) } ?: this
+
+/**
+ * [this] with the node's letter spacing and line height merged in, as the generated widget writes
+ * them (`style = ….merge(letterSpacing = …, lineHeight = …)`). Either spelling: remote-m3's own
+ * `letterSpacing`/`lineHeight`, or the borrowed `m3/text`'s `…Sp`. Zero writes nothing.
+ */
+private fun RemoteTextStyle.withSpacing(node: UiBuilderNode): RemoteTextStyle {
+  val letterSpacing =
+    (node.number("letterSpacing") ?: node.number("letterSpacingSp"))?.takeIf {
+      it.isFinite() && it != 0f
+    }
+  val lineHeight =
+    (node.number("lineHeight") ?: node.number("lineHeightSp"))?.takeIf { it.isFinite() && it > 0f }
+  if (letterSpacing == null && lineHeight == null) return this
+  return merge(
+    letterSpacing = letterSpacing?.sp?.asRemoteTextUnit(),
+    lineHeight = lineHeight?.sp?.asRemoteTextUnit(),
+  )
+}
+
+/**
+ * The node's `fontFamily`, as the generated widget writes it: a generic family by its own member,
+ * any other name as [RemoteFontFamily.Named] for the player to resolve. Null keeps the style's.
+ */
+private fun UiBuilderNode.remoteFontFamily(): RemoteFontFamily? =
+  when (val name = string("fontFamily").trim()) {
+    "" -> null
+    "default" -> RemoteFontFamily.Default
+    "sans-serif" -> RemoteFontFamily.SansSerif
+    "serif" -> RemoteFontFamily.Serif
+    "monospace" -> RemoteFontFamily.Monospace
+    "cursive" -> RemoteFontFamily.Cursive
+    else -> RemoteFontFamily.Named(name)
+  }
 
 private fun UiBuilderNode.fontWeight(): FontWeight? =
   when (string("fontWeight")) {

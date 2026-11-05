@@ -80,6 +80,11 @@ internal fun RemoteM3DevicePreview(
   val textRole = root?.string("themeTextStyle").orEmpty()
   val registry = LocalUiBuilderFontRegistry.current
   LaunchedEffect(registry, roleNames) { roleNames.values.toSet().forEach { registry?.request(it) } }
+  // A text's own `fontFamily` is written as `RemoteFontFamily.Named`, which the player resolves
+  // only from what the registry has loaded, so a Google Fonts family a text names is requested
+  // too, and again whenever an edit names a new one.
+  val textFamilies = remember(document) { document.nodes.values.textGoogleFamilies() }
+  LaunchedEffect(registry, textFamilies) { textFamilies.forEach { registry?.request(it) } }
   val declaredAxes =
     remember(document) {
       document.nodes.values.mapNotNullTo(mutableSetOf()) { node ->

@@ -8,6 +8,7 @@ import ee.schimke.composeai.rcplayer.compose.RcTypefaceLoader
 import ee.schimke.composeai.uibuilder.UiBuilderFontRegistry
 import ee.schimke.composeai.uibuilder.export.FontSettings
 import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
+import ee.schimke.composeai.uibuilder.export.UiBuilderNode
 
 /**
  * The family a widget container's theme names for each Remote Material 3 role, by role name, as the
@@ -17,6 +18,15 @@ import ee.schimke.composeai.uibuilder.export.ThemeTypefaces
  * `RemoteContentEmitter.themeTypography`), so the device preview records the same document the
  * widget will ship.
  */
+/**
+ * The `google:` families the nodes' own `fontFamily` names, as the registry keys them. Generic
+ * names (`serif`, `monospace`, …) are the player's own faces and are not requested.
+ */
+internal fun Iterable<UiBuilderNode>.textGoogleFamilies(): Set<String> =
+  mapNotNullTo(mutableSetOf()) { node ->
+    node.string("fontFamily").trim().takeIf { it.startsWith("google:") && it.length > 7 }
+  }
+
 internal fun Map<ThemeTypefaces.Group, String>.remoteRoleNames(): Map<String, String> =
   ThemeTypefaces.wearRoleFamilies(this).mapValues { (_, family) ->
     "google:${ThemeTypefaces.familyName(family)}"

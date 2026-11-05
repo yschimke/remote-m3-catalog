@@ -95,6 +95,9 @@ data class RealRemoteTextProperties(
   val color: WireColor,
   val textAlign: String,
   val maxLines: Int,
+  val fontFamily: String,
+  val letterSpacing: Float,
+  val lineHeight: Float,
   val fontVariationSettings: String,
   val fontFeatureSettings: String,
 )
@@ -126,6 +129,15 @@ class RealRemoteTextAdapter(record: ComponentRecord) :
     )
   val textAlign = wireProperty(RealRemoteTextProperties::textAlign, TEXT_ALIGN, "")
   val maxLines = wireProperty(RealRemoteTextProperties::maxLines, AdapterValueCodecs.Int, 0)
+  val fontFamily = wireProperty(RealRemoteTextProperties::fontFamily, AdapterValueCodecs.String, "")
+  val letterSpacing =
+    wireProperty(RealRemoteTextProperties::letterSpacing, AdapterValueCodecs.unit("sp"), 0f)
+  val lineHeight =
+    wireProperty(
+      RealRemoteTextProperties::lineHeight,
+      AdapterValueCodecs.unit("sp", positive = true),
+      0f,
+    )
   val fontVariationSettings =
     wireProperty(RealRemoteTextProperties::fontVariationSettings, AdapterValueCodecs.String, "")
   val fontFeatureSettings =
@@ -142,7 +154,16 @@ class RealRemoteTextAdapter(record: ComponentRecord) :
         ),
       )
     )
-    exportRefuses(text, color, fontSize, fontVariationSettings, fontFeatureSettings)
+    exportRefuses(
+      text,
+      color,
+      fontSize,
+      fontFamily,
+      letterSpacing,
+      lineHeight,
+      fontVariationSettings,
+      fontFeatureSettings,
+    )
   }
 }
 
