@@ -327,6 +327,27 @@ private fun componentRemoteText(): UiBuilderAuthoredComponent =
           ),
           property("maxLines", JsonValueTypeV1.INTEGER, required = false),
           property(
+            "fontFamily",
+            JsonValueTypeV1.STRING,
+            required = false,
+            notes =
+              "The typeface, by name. `default`, `sans-serif`, `serif`, `monospace` and `cursive` write `RemoteText(fontFamily = RemoteFontFamily.<Generic>)`; any other name writes `RemoteFontFamily.Named(\"…\")`, which the player resolves — `google:<Family>` names a Google Fonts family, as the theme typefaces do. A name the player cannot resolve falls back to its default face. Overrides the family `style` carries.",
+          ),
+          property(
+            "letterSpacing",
+            JsonValueTypeV1.NUMBER,
+            required = false,
+            notes =
+              "Extra space between letters in sp; negative tightens. Written as `style = ….merge(letterSpacing = …)`, since `RemoteText` has no letter-spacing parameter; with no `style` the merge is on `LocalRemoteTextStyle.current`. Zero writes nothing. A design authored against the borrowed `m3/text` says `letterSpacingSp` and the writer reads both.",
+          ),
+          property(
+            "lineHeight",
+            JsonValueTypeV1.NUMBER,
+            required = false,
+            notes =
+              "Line height in sp, merged into the style the same way as `letterSpacing`: `style = ….merge(lineHeight = …)`. Zero or absent keeps the style's own. A design authored against `m3/text` says `lineHeightSp` and the writer reads both.",
+          ),
+          property(
             "fontVariationSettings",
             JsonValueTypeV1.STRING,
             required = false,
