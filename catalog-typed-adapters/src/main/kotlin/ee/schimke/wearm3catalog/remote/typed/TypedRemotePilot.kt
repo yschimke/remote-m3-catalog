@@ -17,7 +17,7 @@ const val TYPED_REMOTE_CATALOG_ID: String = "remote-m3-typed-pilot"
  * ids are production's, so the committed designs address them unchanged.
  */
 class RealRemotePublication(
-  val records: Map<String, ComponentRecord> = RealRemoteRecords.records()
+  val records: Map<String, ComponentRecord> = RealRemoteRecords.records(),
 ) {
   val text = RealRemoteTextAdapter(records.getValue("RemoteText"))
   val button = RealRemoteButtonAdapter(records.getValue("RemoteButton"))
@@ -117,7 +117,7 @@ object TypedRemotePilot {
 
   private fun projectionJson(adapter: TypedComponentAdapter<*>) =
     ExportProjectionJson.encode(
-      requireNotNull(adapter.projection) { "${adapter.id}: no projection" }
+      requireNotNull(adapter.projection) { "${adapter.id}: no projection" },
     )
 
   /**
