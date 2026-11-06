@@ -60,7 +60,7 @@ class WidgetCanvasMappingTest {
           .jsonObject
           .getValue("fontSizeSp")
           .jsonPrimitive
-          .content
+          .content,
       )
       .isEqualTo("fontSize")
   }
@@ -78,7 +78,7 @@ class WidgetCanvasMappingTest {
           .jsonObject
           .getValue("children")
           .jsonPrimitive
-          .content
+          .content,
       )
       .isEqualTo("content")
   }

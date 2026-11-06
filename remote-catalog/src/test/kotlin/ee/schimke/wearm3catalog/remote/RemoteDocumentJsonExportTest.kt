@@ -93,7 +93,7 @@ class RemoteDocumentJsonExportTest {
         "Every sticker in this sheet must project to document JSON, because the delivery lane " +
           "that publishes documents/ is fail-soft and would drop these silently. A failure here " +
           "usually means the Remote Compose runtime this module renders with has moved ahead of " +
-          "the codec on composePreviewCore — bump it, or pin the sheet back."
+          "the codec on composePreviewCore — bump it, or pin the sheet back.",
       )
       .that(failures)
       .isEmpty()

@@ -60,7 +60,7 @@ class AdaptiveLayoutTest {
     assertThat(
         component.getValue("slotCapabilities").jsonArray.map {
           it.jsonObject.getValue("name").jsonPrimitive.content
-        }
+        },
       )
       .containsExactly("compact", "medium", "expanded")
   }

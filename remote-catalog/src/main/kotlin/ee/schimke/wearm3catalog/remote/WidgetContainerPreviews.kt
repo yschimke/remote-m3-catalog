@@ -202,7 +202,7 @@ private fun PixelWatchTileScreen(content: @Composable () -> Unit) {
         .padding(top = TILE_ICON_TOP_DP.dp)
         .size(TILE_ICON_DP.dp)
         .clip(CircleShape)
-        .background(Color(0xFF3C4043))
+        .background(Color(0xFF3C4043)),
     )
     content()
   }

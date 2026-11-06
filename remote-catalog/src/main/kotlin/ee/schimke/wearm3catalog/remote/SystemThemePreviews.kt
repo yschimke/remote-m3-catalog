@@ -65,7 +65,7 @@ private fun systemThemeColor(
   val lightArgb = lightFallback.toArgb()
   val darkArgb = darkFallback.toArgb()
   return RemoteColor(
-    RemoteConstantCacheKey("SystemTheme:$lightResource/$darkResource:$lightArgb/$darkArgb")
+    RemoteConstantCacheKey("SystemTheme:$lightResource/$darkResource:$lightArgb/$darkArgb"),
   ) { creationState ->
     (creationState as RemoteComposeCreationState)
       .writer
@@ -106,7 +106,7 @@ private fun SwatchTriple() {
       // point of carrying one.
       Color(0xFFECE6F0),
       Color(0xFF2B2930),
-    )
+    ),
   )
   RemoteBoxSwatch(
     systemThemeColor(
@@ -114,7 +114,7 @@ private fun SwatchTriple() {
       Rc.AndroidColors.SYSTEM_PRIMARY_DARK,
       Color(0xFF65558F),
       Color(0xFFD0BCFF),
-    )
+    ),
   )
   RemoteBoxSwatch(
     systemThemeColor(
@@ -122,7 +122,7 @@ private fun SwatchTriple() {
       Rc.AndroidColors.SYSTEM_ON_SURFACE_DARK,
       Color(0xFF1D1B20),
       Color(0xFFE6E0E9),
-    )
+    ),
   )
 }
 

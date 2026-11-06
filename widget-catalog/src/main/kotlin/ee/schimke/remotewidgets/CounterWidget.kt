@@ -78,7 +78,7 @@ fun CounterContent(
       WidgetSize.S2x2.dpSize,
       WidgetSize.S3x1.dpSize,
       WidgetSize.S3x2.dpSize,
-    )
+    ),
   ) {
     val size = LocalWidgetSize.current
     val narrow = size.width < WidgetSize.S3x1.dpSize.width

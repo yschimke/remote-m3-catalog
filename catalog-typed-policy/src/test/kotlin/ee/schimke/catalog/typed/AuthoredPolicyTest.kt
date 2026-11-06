@@ -52,8 +52,8 @@ class AuthoredPolicyTest {
           UiBuilderPolicyFile.serializer(),
           withoutComments(
             json.parseToJsonElement(
-              File(System.getProperty("catalogRoot"), authored.baseline).readText()
-            )
+              File(System.getProperty("catalogRoot"), authored.baseline).readText(),
+            ),
           ),
         )
       assertEquals(canonical(production), canonical(authored.policy), authored.outputName)
@@ -109,7 +109,7 @@ class AuthoredPolicyTest {
     when (value) {
       is JsonObject ->
         JsonObject(
-          value.filterKeys { !it.startsWith("\$comment") }.mapValues { withoutComments(it.value) }
+          value.filterKeys { !it.startsWith("\$comment") }.mapValues { withoutComments(it.value) },
         )
       is JsonArray -> JsonArray(value.map(::withoutComments))
       else -> value

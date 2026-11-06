@@ -143,7 +143,7 @@ val verifyNoRemoteMaterial3 by
           walk(root)
           seen.sorted()
         }
-      }
+      },
     )
   }
 

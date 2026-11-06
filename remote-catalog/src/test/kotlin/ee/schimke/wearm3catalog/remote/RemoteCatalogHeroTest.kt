@@ -42,7 +42,7 @@ class RemoteCatalogHeroTest {
     assertWithMessage(
         "remote-catalog/catalog.spec.json's display.hero is \"$hero\", which is not a " +
           "@CatalogComponent id in this module — the front door would quietly feature whatever " +
-          "the server picks instead. Known ids: ${ids.sorted().joinToString(", ")}"
+          "the server picks instead. Known ids: ${ids.sorted().joinToString(", ")}",
       )
       .that(ids)
       .contains(hero)

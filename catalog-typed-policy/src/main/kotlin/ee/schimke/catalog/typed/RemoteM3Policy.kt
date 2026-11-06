@@ -123,7 +123,7 @@ private fun policyPreviewSurfaces(): JsonElement = buildJsonObject {
       put(
         "reason",
         JsonPrimitive(
-          "The selectable Visual Editor and the read-only Browser Preview both play the design as real Remote Compose: CMP Remote M3 composed in Wasm under the pinned rc-players RcEmbeddedPlayer, in each selected host frame. Approximate means against the Android writer and player, which remain authoritative."
+          "The selectable Visual Editor and the read-only Browser Preview both play the design as real Remote Compose: CMP Remote M3 composed in Wasm under the pinned rc-players RcEmbeddedPlayer, in each selected host frame. Approximate means against the Android writer and player, which remain authoritative.",
         ),
       )
     },
@@ -136,7 +136,7 @@ private fun policyPreviewSurfaces(): JsonElement = buildJsonObject {
       put(
         "reason",
         JsonPrimitive(
-          "The generated creation-DSL Kotlin compiled against this module's own alpha Remote Compose trio and rasterised by the real player — the same lane that produces every sticker in this catalog."
+          "The generated creation-DSL Kotlin compiled against this module's own alpha Remote Compose trio and rasterised by the real player — the same lane that produces every sticker in this catalog.",
         ),
       )
     },
@@ -162,7 +162,7 @@ private fun policyFrame(): JsonElement = buildJsonObject {
               put("heightDp", JsonPrimitive(124))
               put("label", JsonPrimitive("Large container"))
             },
-          )
+          ),
         ),
       )
     },
@@ -188,7 +188,7 @@ private fun policyColorTokens(): JsonElement = buildJsonObject {
         JsonPrimitive("onSurfaceVariant"),
         JsonPrimitive("outlineVariant"),
         JsonPrimitive("transparent"),
-      )
+      ),
     ),
   )
 }
@@ -203,7 +203,7 @@ private fun componentRemoteAppCard(): UiBuilderAuthoredComponent =
               "appName" to listOf(seedText("App")),
               "title" to listOf(seedText("Title")),
               "content" to listOf(seedText("Card")),
-            )
+            ),
         )
       record = "remote-catalog/androidx.wear.compose.remote.material3.RemoteAppCardKt.RemoteAppCard"
       group = "Containment"
@@ -628,7 +628,7 @@ private fun componentRemoteButton(): UiBuilderAuthoredComponent =
             required = false,
             notes =
               "The key of an asset to fill the container with, as `asset/image`'s `assetKey`: written as the `containerPainter` overload, `containerPainter = painterRemoteImageBitmap(…)`. A plain container when absent. The record carries the overload without a painter, so this is stated rather than derived.",
-          )
+          ),
         ) + buttonColorRoles()
     }
     .build()
@@ -691,7 +691,7 @@ private fun componentRemoteCard(): UiBuilderAuthoredComponent =
             required = false,
             notes =
               "The key of an asset to fill the container with, as `asset/image`'s `assetKey`: written as the `containerPainter` overload, `containerPainter = painterRemoteImageBitmap(…)`. A plain container when absent. The record carries the overload without a painter, so this is stated rather than derived.",
-          )
+          ),
         )
     }
     .build()
@@ -973,7 +973,8 @@ private fun componentRemoteTitleCard(): UiBuilderAuthoredComponent =
     .apply {
       insertContent =
         insertSeeds(
-          slots = mapOf("title" to listOf(seedText("Title")), "content" to listOf(seedText("Card")))
+          slots =
+            mapOf("title" to listOf(seedText("Title")), "content" to listOf(seedText("Card"))),
         )
       record =
         "remote-catalog/androidx.wear.compose.remote.material3.RemoteTitleCardKt.RemoteTitleCard"
@@ -1047,7 +1048,7 @@ private fun builtinRemoteLabelButton(): UiBuilderBuiltin =
                     JsonPrimitive("Scaffold"),
                     JsonPrimitive("Container"),
                     JsonPrimitive("Leaf"),
-                  )
+                  ),
                 ),
               )
               put("acceptedTraits", JsonArray(listOf(JsonPrimitive("RemoteAuthorable"))))
@@ -1062,7 +1063,7 @@ private fun builtinRemoteLabelButton(): UiBuilderBuiltin =
                     JsonPrimitive("Scaffold"),
                     JsonPrimitive("Container"),
                     JsonPrimitive("Leaf"),
-                  )
+                  ),
                 ),
               )
               put("acceptedTraits", JsonArray(listOf(JsonPrimitive("RemoteAuthorable"))))
@@ -1077,7 +1078,7 @@ private fun builtinRemoteLabelButton(): UiBuilderBuiltin =
                     JsonPrimitive("Scaffold"),
                     JsonPrimitive("Container"),
                     JsonPrimitive("Leaf"),
-                  )
+                  ),
                 ),
               )
               put("acceptedTraits", JsonArray(listOf(JsonPrimitive("RemoteAuthorable"))))
@@ -1262,13 +1263,13 @@ private fun builtinRemoteMaterialTheme(): UiBuilderBuiltin =
                     JsonPrimitive("Scaffold"),
                     JsonPrimitive("Container"),
                     JsonPrimitive("Leaf"),
-                  )
+                  ),
                 ),
               )
               put("acceptedTraits", JsonArray(listOf(JsonPrimitive("AnyContent"))))
               put("ordered", JsonPrimitive(true))
               put("max", JsonPrimitive(1))
-            }
+            },
         )
       modifierCapabilities = listOf()
       properties =
@@ -1519,7 +1520,7 @@ private fun builtinWidgetContainerSmall(): UiBuilderBuiltin =
                     JsonPrimitive("Scaffold"),
                     JsonPrimitive("Container"),
                     JsonPrimitive("Leaf"),
-                  )
+                  ),
                 ),
               )
               put("acceptedTraits", JsonArray(listOf(JsonPrimitive("RemoteAuthorable"))))
@@ -1623,7 +1624,7 @@ private fun builtinWidgetContainerLarge(): UiBuilderBuiltin =
                     JsonPrimitive("Scaffold"),
                     JsonPrimitive("Container"),
                     JsonPrimitive("Leaf"),
-                  )
+                  ),
                 ),
               )
               put("acceptedTraits", JsonArray(listOf(JsonPrimitive("RemoteAuthorable"))))
@@ -1711,7 +1712,7 @@ private fun builtinWidgetContainerAdaptive(): UiBuilderBuiltin =
               "headline" to listOf(seedText("Headline")),
               "supporting" to listOf(seedText("Supporting text")),
               "action" to listOf(seedButton("Open")),
-            )
+            ),
         )
       displayName = "Wear widget · Adaptive (experimental)"
       group = "Widget Container"
@@ -1736,7 +1737,7 @@ private fun builtinWidgetContainerAdaptive(): UiBuilderBuiltin =
                     JsonPrimitive("Scaffold"),
                     JsonPrimitive("Container"),
                     JsonPrimitive("Leaf"),
-                  )
+                  ),
                 ),
               )
               put("acceptedTraits", JsonArray(listOf(JsonPrimitive("RemoteAuthorable"))))
@@ -1750,7 +1751,7 @@ private fun builtinWidgetContainerAdaptive(): UiBuilderBuiltin =
                     JsonPrimitive("Scaffold"),
                     JsonPrimitive("Container"),
                     JsonPrimitive("Leaf"),
-                  )
+                  ),
                 ),
               )
               put("acceptedTraits", JsonArray(listOf(JsonPrimitive("RemoteAuthorable"))))
@@ -1764,7 +1765,7 @@ private fun builtinWidgetContainerAdaptive(): UiBuilderBuiltin =
                     JsonPrimitive("Scaffold"),
                     JsonPrimitive("Container"),
                     JsonPrimitive("Leaf"),
-                  )
+                  ),
                 ),
               )
               put("acceptedTraits", JsonArray(listOf(JsonPrimitive("RemoteAuthorable"))))

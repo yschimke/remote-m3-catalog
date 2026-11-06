@@ -360,7 +360,7 @@ internal fun RemoteKitButton(colors: RemoteButtonColors, outlined: Boolean = fal
                 // gains the token, this becomes `ExtraLargeIconSize` and nothing else moves.
                 "extra-large" -> 36.rdp
                 else -> RemoteButtonDefaults.IconSize
-              }
+              },
             ),
         )
       },
@@ -1320,7 +1320,7 @@ fun CompactRemoteButton() = RemoteSticker {
       if (content == "icon")
         colors.copy(
           containerColor =
-            tween(colors.containerColor, RemoteMaterialTheme.colorScheme.tertiaryContainer, on)
+            tween(colors.containerColor, RemoteMaterialTheme.colorScheme.tertiaryContainer, on),
         )
       else colors,
     icon =
@@ -1337,7 +1337,7 @@ fun CompactRemoteButton() = RemoteSticker {
                 // Its dedicated 52dp visible width gives the glyph more room than the leading
                 // slot beside a label does.
                 if (content == "icon") RemoteButtonDefaults.SmallIconSize
-                else RemoteButtonDefaults.ExtraSmallIconSize
+                else RemoteButtonDefaults.ExtraSmallIconSize,
               ),
           )
         }),
@@ -2911,7 +2911,7 @@ fun ShaderGradientSticker() = RemoteSticker {
   val shaderColor = rememberOverridableRemoteColor("shaderColor", Color(0xFF7DE2FF))
   val brush =
     RemoteBrush.linearGradient(
-      listOf(RemoteColor(Color(0xFF101820)), shaderColor, RemoteColor(Color(0xFFFFB86C)))
+      listOf(RemoteColor(Color(0xFF101820)), shaderColor, RemoteColor(Color(0xFFFFB86C))),
     )
   RemoteBox(
     modifier = RemoteModifier.fillMaxSize().background(brush),

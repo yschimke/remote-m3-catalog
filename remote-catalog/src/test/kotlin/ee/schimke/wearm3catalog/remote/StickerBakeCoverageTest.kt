@@ -126,7 +126,7 @@ class StickerBakeCoverageTest {
     assertWithMessage(
         "these stickers baked to a fully transparent PNG — nothing was drawn. If the LIBRARY " +
           "draws nothing for the state the cell seeds, publish the cell and record it in " +
-          "`knownBlank` with the call that does it, rather than withdrawing it silently"
+          "`knownBlank` with the call that does it, rather than withdrawing it silently",
       )
       .that(blank)
       .isEmpty()
@@ -152,7 +152,7 @@ class StickerBakeCoverageTest {
     assertWithMessage(
         "these captures are no longer blank — the library gap they record has been FIXED. Drop " +
           "the entry from `knownBlank` and let the cell stand as an ordinary comparison: " +
-          fixed.joinToString { "$it (was: ${knownBlank[it]})" }
+          fixed.joinToString { "$it (was: ${knownBlank[it]})" },
       )
       .that(fixed)
       .isEmpty()
