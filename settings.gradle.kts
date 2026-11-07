@@ -207,6 +207,12 @@ if (providers.gradleProperty("embeddedDocumentPrototype").orNull == "true") {
   include(":prototypes:embedded-document")
 }
 
+// A local, interactive demo of a UI builder widget design with real logic behind it
+// (calculator-demo/README.md): -PcalculatorDemo=true :calculator-demo:run.
+if (providers.gradleProperty("calculatorDemo").orNull == "true") {
+  include(":calculator-demo")
+}
+
 // The shadow catalog: Remote stickers whose body is a UI builder document
 // (`uid-stickers/README.md`).
 if (providers.gradleProperty("uidStickers").orNull == "true") {
