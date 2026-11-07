@@ -69,14 +69,13 @@ android {
 // The vendored port answers for the published Remote coordinates, exactly as in
 // `:remote-catalog`, so the two sheets record with the same writer. `remote-material3` is
 // deliberately absent from this list: nothing here may ask for it.
-val composePreviewDaemonVersion = libs.versions.composePreviewDaemon.get()
+val remoteComposeConnector = libs.composeai.remotecompose.connector.get()
 
 configurations.configureEach {
   resolutionStrategy {
     force(
-      "ee.schimke.composeai:data-remotecompose-connector:$composePreviewDaemonVersion",
-      "ee.schimke.composeai:data-remotecompose-core:$composePreviewDaemonVersion",
-      "ee.schimke.composeai:daemon-core:$composePreviewDaemonVersion",
+      remoteComposeConnector,
+      "${remoteComposeConnector.group}:data-remotecompose-core:${remoteComposeConnector.version}",
     )
     dependencySubstitution {
       substitute(module("androidx.compose.remote:remote-creation-compose"))
