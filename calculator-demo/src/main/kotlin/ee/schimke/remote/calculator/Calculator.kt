@@ -54,6 +54,11 @@ data class Calculator(
   val pending: Operator? = null,
   /** The next digit starts a new number rather than extending [entry]. */
   val fresh: Boolean = true,
+  /**
+   * A right operand for [pending] has been given since the operator: typed, or made by a unary key.
+   * Not the same as `!fresh`: `2 + 3 x²` shows a result (fresh) that is also the operand.
+   */
+  val operand: Boolean = false,
   /** What `=` repeats once [pending] has been resolved. */
   val repeat: Pair<Operator, Double>? = null,
   val error: Boolean = false,
@@ -106,15 +111,16 @@ data class Calculator(
         else -> start + key
       }
     if (next.count(Char::isDigit) > MAX_DIGITS) return this
-    return copy(entry = next, fresh = false)
+    return copy(entry = next, fresh = false, operand = true)
   }
 
   private fun operator(operator: Operator): Calculator {
     // Changing your mind: `5 + ×` is `5 ×`.
-    if (pending != null && fresh) return copy(pending = operator)
+    if (pending != null && !operand) return copy(pending = operator)
     val left =
       if (pending != null && accumulator != null) apply(accumulator, pending, value) else value
-    return result(left)?.copy(accumulator = left, pending = operator, repeat = null) ?: failed()
+    return result(left)
+      ?.copy(accumulator = left, pending = operator, repeat = null, operand = false) ?: failed()
   }
 
   private fun equals(): Calculator {
@@ -127,11 +133,13 @@ data class Calculator(
       }
     val left = if (pending != null) accumulator ?: value else value
     val answer = apply(left, operator, right)
-    return result(answer)?.copy(accumulator = null, pending = null, repeat = operator to right)
+    return result(answer)
+      ?.copy(accumulator = null, pending = null, repeat = operator to right, operand = false)
       ?: failed()
   }
 
-  private fun unary(f: (Double) -> Double): Calculator = result(f(value)) ?: failed()
+  private fun unary(f: (Double) -> Double): Calculator =
+    result(f(value))?.copy(operand = true) ?: failed()
 
   /** [answer] on show, ready to be operated on or replaced; null if it is not a number. */
   private fun result(answer: Double): Calculator? {

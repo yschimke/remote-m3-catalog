@@ -55,6 +55,8 @@ private enum class Register(val initial: Float) {
   Operator(0f),
   /** 1 when the next digit starts a new number. */
   Fresh(1f),
+  /** 1 once a right operand for the pending operator is given: typed, or made by a unary key. */
+  Operand(0f),
   RepeatOperator(0f),
   RepeatOperand(0f),
   Error(0f),
@@ -99,6 +101,7 @@ private class DocumentCalculator(val current: Registers, val next: Registers) {
         allowed.select(beforePoint.select((-1f).rf, baseFraction + 1f), Register.Fraction()),
       Register.Digits to allowed.select(digits, Register.Digits()),
       Register.Fresh to 0f.rf,
+      Register.Operand to 1f.rf,
       Register.Error to 0f.rf,
     )
   }
@@ -109,13 +112,14 @@ private class DocumentCalculator(val current: Registers, val next: Registers) {
       Register.Fraction to beforePoint.select(0f.rf, baseFraction),
       Register.Digits to baseDigits,
       Register.Fresh to 0f.rf,
+      Register.Operand to 1f.rf,
       Register.Error to 0f.rf,
     )
 
   fun binary(operator: Operator): Step {
     val code = (operator.ordinal + 1).toFloat().rf
     // Changing your mind: `5 + ×` is `5 ×`.
-    val changeOnly = pending and fresh
+    val changeOnly = pending and Register.Operand().isEqualTo(0f.rf)
     val left =
       pending.select(
         apply(Register.Accumulator(), Register.Operator(), Register.Entry()),
@@ -128,6 +132,7 @@ private class DocumentCalculator(val current: Registers, val next: Registers) {
       Register.Entry to changeOnly.select(Register.Entry(), good.select(left, 0f.rf)),
       Register.Error to changeOnly.select(0f.rf, good.select(0f.rf, 1f.rf)),
       Register.RepeatOperator to 0f.rf,
+      Register.Operand to 0f.rf,
     ) + newNumber
   }
 
@@ -147,6 +152,7 @@ private class DocumentCalculator(val current: Registers, val next: Registers) {
       Register.Accumulator to 0f.rf,
       Register.RepeatOperator to (active and good).select(operator, 0f.rf),
       Register.RepeatOperand to right,
+      Register.Operand to 0f.rf,
     ) + newNumber
   }
 
@@ -171,6 +177,7 @@ private class DocumentCalculator(val current: Registers, val next: Registers) {
       Register.Error to good.select(0f.rf, 1f.rf),
       Register.Operator to good.select(Register.Operator(), 0f.rf),
       Register.Accumulator to good.select(Register.Accumulator(), 0f.rf),
+      Register.Operand to 1f.rf,
     ) + newNumber
   }
 
@@ -206,8 +213,9 @@ private class DocumentCalculator(val current: Registers, val next: Registers) {
   val display: RemoteString = run {
     val entry = Register.Entry()
     val fraction = Register.Fraction()
-    var typed = entry.toRemoteString(fixed(DOCUMENT_DIGITS - 1))
-    for (places in DOCUMENT_DIGITS - 2 downTo 1) {
+    // Every place a typed number can reach: `.0000001` is seven digits, all after the point.
+    var typed = entry.toRemoteString(fixed(DOCUMENT_DIGITS))
+    for (places in DOCUMENT_DIGITS - 1 downTo 1) {
       typed =
         fraction.isEqualTo(places.toFloat().rf).select(entry.toRemoteString(fixed(places)), typed)
     }

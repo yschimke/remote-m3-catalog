@@ -195,6 +195,21 @@ class CalculatorWidgetUiTest {
     press("2.50")
     shows("2.50")
 
+    // A unary key's result is the pending operation's right operand, not a change of mind:
+    // `2 + 3 x² + 4 =` is 15.
+    swipeDisplay()
+    press("2+3")
+    tapDp(Offset(LargeWidgetHost.PADDING_DP + 17f, displayRowY))
+    press("/")
+    shows("9")
+    press("+4=")
+    shows("15")
+
+    // Every place a typed number can reach is shown.
+    swipeDisplay()
+    press(".0000001")
+    shows("0.0000001")
+
     val hostActions = events.filter {
       it is RcPlayerEvent.HostNamedAction || it is RcPlayerEvent.HostAction
     }

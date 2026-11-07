@@ -46,9 +46,9 @@ The document calculates by itself. It fires no host action, and a recorded docum
 any player while its app sleeps. The UI test checks this: the player raises no host action at all
 through the whole scenario.
 
-- **State.** Nine remote floats: entry, decimal places typed, digits typed, accumulator, pending
-  operator, a fresh-number flag, the repeat operator and operand, and an error flag. Two more hold
-  the `f(x)` set and where a swipe started.
+- **State.** Ten remote floats: entry, decimal places typed, digits typed, accumulator, pending
+  operator, a fresh-number flag, an operand-given flag, the repeat operator and operand, and an
+  error flag. Two more hold the `f(x)` set and where a swipe started.
 - **Keys.** Each key is a list of value-change actions. Their new values are expressions the player
   evaluates at the press, with `select` standing in for `if`. An action list is fixed when the
   document is recorded, so a key that does different things in different states assigns

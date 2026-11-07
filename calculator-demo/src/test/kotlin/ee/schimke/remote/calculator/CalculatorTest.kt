@@ -86,4 +86,8 @@ class CalculatorTest {
   @Test fun bigNumbersGoScientific() = shows("1e12", "1000000 * 1000000 =")
 
   @Test fun resultIsReplacedByTyping() = shows("9", "2 + 3 = 9")
+
+  @Test fun unaryOperandIsKeptForTheNextOperator() = shows("15", "2 + 3 sq + 4 =")
+
+  @Test fun unaryOperandIsKeptForEquals() = shows("11", "2 + 3 sq =")
 }
