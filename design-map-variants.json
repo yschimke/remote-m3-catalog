@@ -218,126 +218,6 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-outlined",
-          "name": "icon-outlined",
-          "seeds": [
-            {
-              "key": "Layout type",
-              "raw": "Title Card + Icon",
-              "kitAxis": "Layout type",
-              "kitValue": "Title Card + Icon"
-            },
-            {
-              "key": "Style",
-              "raw": "Outline",
-              "kitAxis": "Style",
-              "kitValue": "Outline"
-            },
-            {
-              "key": "Content type",
-              "raw": "Text",
-              "kitAxis": "Content type",
-              "kitValue": "Text"
-            },
-            {
-              "key": "Interactive",
-              "raw": "Yes",
-              "kitAxis": "Interactive",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-outlined-content-image",
-          "name": "icon-outlined-content-image",
-          "seeds": [
-            {
-              "key": "Layout type",
-              "raw": "Title Card + Icon",
-              "kitAxis": "Layout type",
-              "kitValue": "Title Card + Icon"
-            },
-            {
-              "key": "Style",
-              "raw": "Outline",
-              "kitAxis": "Style",
-              "kitValue": "Outline"
-            },
-            {
-              "key": "Content type",
-              "raw": "Image",
-              "kitAxis": "Content type",
-              "kitValue": "Image"
-            },
-            {
-              "key": "Interactive",
-              "raw": "Yes",
-              "kitAxis": "Interactive",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-outlined-gallery-1",
-          "name": "icon-outlined-gallery-1",
-          "seeds": [
-            {
-              "key": "Layout type",
-              "raw": "Title Card + Icon",
-              "kitAxis": "Layout type",
-              "kitValue": "Title Card + Icon"
-            },
-            {
-              "key": "Style",
-              "raw": "Outline",
-              "kitAxis": "Style",
-              "kitValue": "Outline"
-            },
-            {
-              "key": "Content type",
-              "raw": "Gallery 1",
-              "kitAxis": "Content type",
-              "kitValue": "Gallery 1"
-            },
-            {
-              "key": "Interactive",
-              "raw": "Yes",
-              "kitAxis": "Interactive",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-outlined-gallery-2",
-          "name": "icon-outlined-gallery-2",
-          "seeds": [
-            {
-              "key": "Layout type",
-              "raw": "Title Card + Icon",
-              "kitAxis": "Layout type",
-              "kitValue": "Title Card + Icon"
-            },
-            {
-              "key": "Style",
-              "raw": "Outline",
-              "kitAxis": "Style",
-              "kitValue": "Outline"
-            },
-            {
-              "key": "Content type",
-              "raw": "Gallery 2",
-              "kitAxis": "Content type",
-              "kitValue": "Gallery 2"
-            },
-            {
-              "key": "Interactive",
-              "raw": "Yes",
-              "kitAxis": "Interactive",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
           "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_no-app-image",
           "name": "no-app-image",
           "seeds": [
@@ -466,6 +346,126 @@
               "kitValue": "Yes"
             }
           ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-outlined",
+          "name": "icon-outlined",
+          "seeds": [
+            {
+              "key": "Layout type",
+              "raw": "Title Card + Icon",
+              "kitAxis": "Layout type",
+              "kitValue": "Title Card + Icon"
+            },
+            {
+              "key": "Style",
+              "raw": "Outline",
+              "kitAxis": "Style",
+              "kitValue": "Outline"
+            },
+            {
+              "key": "Content type",
+              "raw": "Text",
+              "kitAxis": "Content type",
+              "kitValue": "Text"
+            },
+            {
+              "key": "Interactive",
+              "raw": "Yes",
+              "kitAxis": "Interactive",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-outlined-content-image",
+          "name": "icon-outlined-content-image",
+          "seeds": [
+            {
+              "key": "Layout type",
+              "raw": "Title Card + Icon",
+              "kitAxis": "Layout type",
+              "kitValue": "Title Card + Icon"
+            },
+            {
+              "key": "Style",
+              "raw": "Outline",
+              "kitAxis": "Style",
+              "kitValue": "Outline"
+            },
+            {
+              "key": "Content type",
+              "raw": "Image",
+              "kitAxis": "Content type",
+              "kitValue": "Image"
+            },
+            {
+              "key": "Interactive",
+              "raw": "Yes",
+              "kitAxis": "Interactive",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-outlined-gallery-1",
+          "name": "icon-outlined-gallery-1",
+          "seeds": [
+            {
+              "key": "Layout type",
+              "raw": "Title Card + Icon",
+              "kitAxis": "Layout type",
+              "kitValue": "Title Card + Icon"
+            },
+            {
+              "key": "Style",
+              "raw": "Outline",
+              "kitAxis": "Style",
+              "kitValue": "Outline"
+            },
+            {
+              "key": "Content type",
+              "raw": "Gallery 1",
+              "kitAxis": "Content type",
+              "kitValue": "Gallery 1"
+            },
+            {
+              "key": "Interactive",
+              "raw": "Yes",
+              "kitAxis": "Interactive",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.AppCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_icon-outlined-gallery-2",
+          "name": "icon-outlined-gallery-2",
+          "seeds": [
+            {
+              "key": "Layout type",
+              "raw": "Title Card + Icon",
+              "kitAxis": "Layout type",
+              "kitValue": "Title Card + Icon"
+            },
+            {
+              "key": "Style",
+              "raw": "Outline",
+              "kitAxis": "Style",
+              "kitValue": "Outline"
+            },
+            {
+              "key": "Content type",
+              "raw": "Gallery 2",
+              "kitAxis": "Content type",
+              "kitValue": "Gallery 2"
+            },
+            {
+              "key": "Interactive",
+              "raw": "Yes",
+              "kitAxis": "Interactive",
+              "kitValue": "Yes"
+            }
+          ]
         }
       ]
     },
@@ -475,18 +475,6 @@
       "reference": "figma:B24oss2tTeXAFykyeyusz0/41424:58637",
       "basePreviewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp",
       "renders": [
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_complete",
-          "name": "complete",
-          "seeds": [
-            {
-              "key": "progress",
-              "raw": "1.0",
-              "kitAxis": "Progress",
-              "kitValue": "Complete"
-            }
-          ]
-        },
         {
           "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_disabled",
           "name": "disabled",
@@ -500,12 +488,14 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_indeterminate",
-          "name": "indeterminate",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_complete",
+          "name": "complete",
           "seeds": [
             {
-              "key": "mode",
-              "raw": "indeterminate"
+              "key": "progress",
+              "raw": "1.0",
+              "kitAxis": "Progress",
+              "kitValue": "Complete"
             }
           ]
         },
@@ -518,6 +508,70 @@
               "raw": "1.4",
               "kitAxis": "Progress",
               "kitValue": "Overflow"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_zero",
+          "name": "zero",
+          "seeds": [
+            {
+              "key": "progress",
+              "raw": "0.0",
+              "kitAxis": "Progress",
+              "kitValue": "Zero"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_zero-disabled",
+          "name": "zero-disabled",
+          "seeds": [
+            {
+              "key": "Type",
+              "raw": "Full",
+              "kitAxis": "Type",
+              "kitValue": "Full"
+            },
+            {
+              "key": "Segments",
+              "raw": "1",
+              "kitAxis": "Segments",
+              "kitValue": "1"
+            },
+            {
+              "key": "Stroke Width",
+              "raw": "Medium",
+              "kitAxis": "Stroke Width",
+              "kitValue": "Medium"
+            },
+            {
+              "key": "Progress",
+              "raw": "Zero",
+              "kitAxis": "Progress",
+              "kitValue": "Zero"
+            },
+            {
+              "key": "Dot value",
+              "raw": "No",
+              "kitAxis": "Dot value",
+              "kitValue": "No"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_indeterminate",
+          "name": "indeterminate",
+          "seeds": [
+            {
+              "key": "mode",
+              "raw": "indeterminate"
             }
           ]
         },
@@ -572,48 +626,6 @@
               "raw": "No",
               "kitAxis": "Disabled",
               "kitValue": "No"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_small-stroke-disabled",
-          "name": "small-stroke-disabled",
-          "seeds": [
-            {
-              "key": "Type",
-              "raw": "Full",
-              "kitAxis": "Type",
-              "kitValue": "Full"
-            },
-            {
-              "key": "Segments",
-              "raw": "1",
-              "kitAxis": "Segments",
-              "kitValue": "1"
-            },
-            {
-              "key": "Stroke Width",
-              "raw": "Small",
-              "kitAxis": "Stroke Width",
-              "kitValue": "Small"
-            },
-            {
-              "key": "Progress",
-              "raw": "In progress",
-              "kitAxis": "Progress",
-              "kitValue": "In progress"
-            },
-            {
-              "key": "Dot value",
-              "raw": "No",
-              "kitAxis": "Dot value",
-              "kitValue": "No"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
             }
           ]
         },
@@ -702,8 +714,8 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_small-stroke-zero-disabled",
-          "name": "small-stroke-zero-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_small-stroke-disabled",
+          "name": "small-stroke-disabled",
           "seeds": [
             {
               "key": "Type",
@@ -725,9 +737,9 @@
             },
             {
               "key": "Progress",
-              "raw": "Zero",
+              "raw": "In progress",
               "kitAxis": "Progress",
-              "kitValue": "Zero"
+              "kitValue": "In progress"
             },
             {
               "key": "Dot value",
@@ -744,20 +756,8 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_zero",
-          "name": "zero",
-          "seeds": [
-            {
-              "key": "progress",
-              "raw": "0.0",
-              "kitAxis": "Progress",
-              "kitValue": "Zero"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_zero-disabled",
-          "name": "zero-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CircularProgressRemote_192dp_VARIANT_small-stroke-zero-disabled",
+          "name": "small-stroke-zero-disabled",
           "seeds": [
             {
               "key": "Type",
@@ -773,9 +773,9 @@
             },
             {
               "key": "Stroke Width",
-              "raw": "Medium",
+              "raw": "Small",
               "kitAxis": "Stroke Width",
-              "kitValue": "Medium"
+              "kitValue": "Small"
             },
             {
               "key": "Progress",
@@ -846,86 +846,14 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320",
       "renders": [
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child",
-          "name": "child",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-only",
+          "name": "icon-only",
           "seeds": [
             {
               "key": "Style",
-              "raw": "Child (No background)",
+              "raw": "Filled",
               "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Icon left",
-              "kitAxis": "Alignment",
-              "kitValue": "Icon left"
-            },
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Text",
-              "raw": "Yes",
-              "kitAxis": "Text",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Disabled",
-              "raw": "No",
-              "kitAxis": "Disabled",
-              "kitValue": "No"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-disabled",
-          "name": "child-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Icon left",
-              "kitAxis": "Alignment",
-              "kitValue": "Icon left"
-            },
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Text",
-              "raw": "Yes",
-              "kitAxis": "Text",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-only",
-          "name": "child-icon-only",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
+              "kitValue": "Filled"
             },
             {
               "key": "Alignment",
@@ -950,114 +878,6 @@
               "raw": "No",
               "kitAxis": "Disabled",
               "kitValue": "No"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-only-disabled",
-          "name": "child-icon-only-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Icon centre",
-              "kitAxis": "Alignment",
-              "kitValue": "Icon centre"
-            },
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Text",
-              "raw": "No",
-              "kitAxis": "Text",
-              "kitValue": "No"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-text-only",
-          "name": "child-text-only",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Text centre",
-              "kitAxis": "Alignment",
-              "kitValue": "Text centre"
-            },
-            {
-              "key": "Icon",
-              "raw": "No",
-              "kitAxis": "Icon",
-              "kitValue": "No"
-            },
-            {
-              "key": "Text",
-              "raw": "Yes",
-              "kitAxis": "Text",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Disabled",
-              "raw": "No",
-              "kitAxis": "Disabled",
-              "kitValue": "No"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-text-only-disabled",
-          "name": "child-text-only-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Text centre",
-              "kitAxis": "Alignment",
-              "kitValue": "Text centre"
-            },
-            {
-              "key": "Icon",
-              "raw": "No",
-              "kitAxis": "Icon",
-              "kitValue": "No"
-            },
-            {
-              "key": "Text",
-              "raw": "Yes",
-              "kitAxis": "Text",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
             }
           ]
         },
@@ -1082,6 +902,114 @@
               "raw": "Yes",
               "kitAxis": "Icon",
               "kitValue": "Yes"
+            },
+            {
+              "key": "Text",
+              "raw": "Yes",
+              "kitAxis": "Text",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-only-disabled",
+          "name": "icon-only-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Filled",
+              "kitAxis": "Style",
+              "kitValue": "Filled"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Icon centre",
+              "kitAxis": "Alignment",
+              "kitValue": "Icon centre"
+            },
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Text",
+              "raw": "No",
+              "kitAxis": "Text",
+              "kitValue": "No"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_text-only",
+          "name": "text-only",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Filled",
+              "kitAxis": "Style",
+              "kitValue": "Filled"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Text centre",
+              "kitAxis": "Alignment",
+              "kitValue": "Text centre"
+            },
+            {
+              "key": "Icon",
+              "raw": "No",
+              "kitAxis": "Icon",
+              "kitValue": "No"
+            },
+            {
+              "key": "Text",
+              "raw": "Yes",
+              "kitAxis": "Text",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Disabled",
+              "raw": "No",
+              "kitAxis": "Disabled",
+              "kitValue": "No"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_text-only-disabled",
+          "name": "text-only-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Filled",
+              "kitAxis": "Style",
+              "kitValue": "Filled"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Text centre",
+              "kitAxis": "Alignment",
+              "kitValue": "Text centre"
+            },
+            {
+              "key": "Icon",
+              "raw": "No",
+              "kitAxis": "Icon",
+              "kitValue": "No"
             },
             {
               "key": "Text",
@@ -1134,42 +1062,6 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-disabled",
-          "name": "filled-variant-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Filled Variant",
-              "kitAxis": "Style",
-              "kitValue": "Filled Variant"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Icon left",
-              "kitAxis": "Alignment",
-              "kitValue": "Icon left"
-            },
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Text",
-              "raw": "Yes",
-              "kitAxis": "Text",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
           "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-icon-only",
           "name": "filled-variant-icon-only",
           "seeds": [
@@ -1202,42 +1094,6 @@
               "raw": "No",
               "kitAxis": "Disabled",
               "kitValue": "No"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-icon-only-disabled",
-          "name": "filled-variant-icon-only-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Filled Variant",
-              "kitAxis": "Style",
-              "kitValue": "Filled Variant"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Icon centre",
-              "kitAxis": "Alignment",
-              "kitValue": "Icon centre"
-            },
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Text",
-              "raw": "No",
-              "kitAxis": "Text",
-              "kitValue": "No"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
             }
           ]
         },
@@ -1278,14 +1134,86 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-text-only-disabled",
-          "name": "filled-variant-text-only-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal",
+          "name": "tonal",
           "seeds": [
             {
               "key": "Style",
-              "raw": "Filled Variant",
+              "raw": "Tonal",
               "kitAxis": "Style",
-              "kitValue": "Filled Variant"
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Icon left",
+              "kitAxis": "Alignment",
+              "kitValue": "Icon left"
+            },
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Text",
+              "raw": "Yes",
+              "kitAxis": "Text",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Disabled",
+              "raw": "No",
+              "kitAxis": "Disabled",
+              "kitValue": "No"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-icon-only",
+          "name": "tonal-icon-only",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Icon centre",
+              "kitAxis": "Alignment",
+              "kitValue": "Icon centre"
+            },
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Text",
+              "raw": "No",
+              "kitAxis": "Text",
+              "kitValue": "No"
+            },
+            {
+              "key": "Disabled",
+              "raw": "No",
+              "kitAxis": "Disabled",
+              "kitValue": "No"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-text-only",
+          "name": "tonal-text-only",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
             },
             {
               "key": "Alignment",
@@ -1307,81 +1235,9 @@
             },
             {
               "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-only",
-          "name": "icon-only",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Filled",
-              "kitAxis": "Style",
-              "kitValue": "Filled"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Icon centre",
-              "kitAxis": "Alignment",
-              "kitValue": "Icon centre"
-            },
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Text",
-              "raw": "No",
-              "kitAxis": "Text",
-              "kitValue": "No"
-            },
-            {
-              "key": "Disabled",
               "raw": "No",
               "kitAxis": "Disabled",
               "kitValue": "No"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-only-disabled",
-          "name": "icon-only-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Filled",
-              "kitAxis": "Style",
-              "kitValue": "Filled"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Icon centre",
-              "kitAxis": "Alignment",
-              "kitValue": "Icon centre"
-            },
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Text",
-              "raw": "No",
-              "kitAxis": "Text",
-              "kitValue": "No"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
             }
           ]
         },
@@ -1602,86 +1458,14 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_text-only",
-          "name": "text-only",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child",
+          "name": "child",
           "seeds": [
             {
               "key": "Style",
-              "raw": "Filled",
+              "raw": "Child (No background)",
               "kitAxis": "Style",
-              "kitValue": "Filled"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Text centre",
-              "kitAxis": "Alignment",
-              "kitValue": "Text centre"
-            },
-            {
-              "key": "Icon",
-              "raw": "No",
-              "kitAxis": "Icon",
-              "kitValue": "No"
-            },
-            {
-              "key": "Text",
-              "raw": "Yes",
-              "kitAxis": "Text",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Disabled",
-              "raw": "No",
-              "kitAxis": "Disabled",
-              "kitValue": "No"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_text-only-disabled",
-          "name": "text-only-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Filled",
-              "kitAxis": "Style",
-              "kitValue": "Filled"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Text centre",
-              "kitAxis": "Alignment",
-              "kitValue": "Text centre"
-            },
-            {
-              "key": "Icon",
-              "raw": "No",
-              "kitAxis": "Icon",
-              "kitValue": "No"
-            },
-            {
-              "key": "Text",
-              "raw": "Yes",
-              "kitAxis": "Text",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal",
-          "name": "tonal",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Tonal",
-              "kitAxis": "Style",
-              "kitValue": "Tonal"
+              "kitValue": "Child (No background)"
             },
             {
               "key": "Alignment",
@@ -1706,6 +1490,294 @@
               "raw": "No",
               "kitAxis": "Disabled",
               "kitValue": "No"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-only",
+          "name": "child-icon-only",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Child (No background)",
+              "kitAxis": "Style",
+              "kitValue": "Child (No background)"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Icon centre",
+              "kitAxis": "Alignment",
+              "kitValue": "Icon centre"
+            },
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Text",
+              "raw": "No",
+              "kitAxis": "Text",
+              "kitValue": "No"
+            },
+            {
+              "key": "Disabled",
+              "raw": "No",
+              "kitAxis": "Disabled",
+              "kitValue": "No"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-text-only",
+          "name": "child-text-only",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Child (No background)",
+              "kitAxis": "Style",
+              "kitValue": "Child (No background)"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Text centre",
+              "kitAxis": "Alignment",
+              "kitValue": "Text centre"
+            },
+            {
+              "key": "Icon",
+              "raw": "No",
+              "kitAxis": "Icon",
+              "kitValue": "No"
+            },
+            {
+              "key": "Text",
+              "raw": "Yes",
+              "kitAxis": "Text",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Disabled",
+              "raw": "No",
+              "kitAxis": "Disabled",
+              "kitValue": "No"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-disabled",
+          "name": "child-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Child (No background)",
+              "kitAxis": "Style",
+              "kitValue": "Child (No background)"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Icon left",
+              "kitAxis": "Alignment",
+              "kitValue": "Icon left"
+            },
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Text",
+              "raw": "Yes",
+              "kitAxis": "Text",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-only-disabled",
+          "name": "child-icon-only-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Child (No background)",
+              "kitAxis": "Style",
+              "kitValue": "Child (No background)"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Icon centre",
+              "kitAxis": "Alignment",
+              "kitValue": "Icon centre"
+            },
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Text",
+              "raw": "No",
+              "kitAxis": "Text",
+              "kitValue": "No"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-text-only-disabled",
+          "name": "child-text-only-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Child (No background)",
+              "kitAxis": "Style",
+              "kitValue": "Child (No background)"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Text centre",
+              "kitAxis": "Alignment",
+              "kitValue": "Text centre"
+            },
+            {
+              "key": "Icon",
+              "raw": "No",
+              "kitAxis": "Icon",
+              "kitValue": "No"
+            },
+            {
+              "key": "Text",
+              "raw": "Yes",
+              "kitAxis": "Text",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-disabled",
+          "name": "filled-variant-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Filled Variant",
+              "kitAxis": "Style",
+              "kitValue": "Filled Variant"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Icon left",
+              "kitAxis": "Alignment",
+              "kitValue": "Icon left"
+            },
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Text",
+              "raw": "Yes",
+              "kitAxis": "Text",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-icon-only-disabled",
+          "name": "filled-variant-icon-only-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Filled Variant",
+              "kitAxis": "Style",
+              "kitValue": "Filled Variant"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Icon centre",
+              "kitAxis": "Alignment",
+              "kitValue": "Icon centre"
+            },
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Text",
+              "raw": "No",
+              "kitAxis": "Text",
+              "kitValue": "No"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-text-only-disabled",
+          "name": "filled-variant-text-only-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Filled Variant",
+              "kitAxis": "Style",
+              "kitValue": "Filled Variant"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Text centre",
+              "kitAxis": "Alignment",
+              "kitValue": "Text centre"
+            },
+            {
+              "key": "Icon",
+              "raw": "No",
+              "kitAxis": "Icon",
+              "kitValue": "No"
+            },
+            {
+              "key": "Text",
+              "raw": "Yes",
+              "kitAxis": "Text",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
             }
           ]
         },
@@ -1746,42 +1818,6 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-icon-only",
-          "name": "tonal-icon-only",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Tonal",
-              "kitAxis": "Style",
-              "kitValue": "Tonal"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Icon centre",
-              "kitAxis": "Alignment",
-              "kitValue": "Icon centre"
-            },
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Text",
-              "raw": "No",
-              "kitAxis": "Text",
-              "kitValue": "No"
-            },
-            {
-              "key": "Disabled",
-              "raw": "No",
-              "kitAxis": "Disabled",
-              "kitValue": "No"
-            }
-          ]
-        },
-        {
           "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-icon-only-disabled",
           "name": "tonal-icon-only-disabled",
           "seeds": [
@@ -1814,42 +1850,6 @@
               "raw": "Yes",
               "kitAxis": "Disabled",
               "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.CompactRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-text-only",
-          "name": "tonal-text-only",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Tonal",
-              "kitAxis": "Style",
-              "kitValue": "Tonal"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Text centre",
-              "kitAxis": "Alignment",
-              "kitValue": "Text centre"
-            },
-            {
-              "key": "Icon",
-              "raw": "No",
-              "kitAxis": "Icon",
-              "kitValue": "No"
-            },
-            {
-              "key": "Text",
-              "raw": "Yes",
-              "kitAxis": "Text",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Disabled",
-              "raw": "No",
-              "kitAxis": "Disabled",
-              "kitValue": "No"
             }
           ]
         },
@@ -1934,6 +1934,30 @@
           ]
         },
         {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
+          "name": "icon-large",
+          "seeds": [
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Icon size",
+              "raw": "Lrg 32",
+              "kitAxis": "Icon size",
+              "kitValue": "Lrg 32"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Left",
+              "kitAxis": "Alignment",
+              "kitValue": "Left"
+            }
+          ]
+        },
+        {
           "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-disabled",
           "name": "icon-disabled",
           "seeds": [
@@ -1948,6 +1972,36 @@
               "raw": "26 (Default)",
               "kitAxis": "Icon size",
               "kitValue": "26 (Default)"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Left",
+              "kitAxis": "Alignment",
+              "kitValue": "Left"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
+          "name": "icon-large-disabled",
+          "seeds": [
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Icon size",
+              "raw": "Lrg 32",
+              "kitAxis": "Icon size",
+              "kitValue": "Lrg 32"
             },
             {
               "key": "Alignment",
@@ -2002,60 +2056,6 @@
               "raw": "xLg 36",
               "kitAxis": "Icon size",
               "kitValue": "xLg 36"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Left",
-              "kitAxis": "Alignment",
-              "kitValue": "Left"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
-          "name": "icon-large",
-          "seeds": [
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Icon size",
-              "raw": "Lrg 32",
-              "kitAxis": "Icon size",
-              "kitValue": "Lrg 32"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Left",
-              "kitAxis": "Alignment",
-              "kitValue": "Left"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.FilledRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
-          "name": "icon-large-disabled",
-          "seeds": [
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Icon size",
-              "raw": "Lrg 32",
-              "kitAxis": "Icon size",
-              "kitValue": "Lrg 32"
             },
             {
               "key": "Alignment",
@@ -2134,18 +2134,6 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320",
       "renders": [
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
-          "name": "disabled",
-          "seeds": [
-            {
-              "key": "enabled",
-              "raw": "false",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
           "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small",
           "name": "extra-small",
           "seeds": [
@@ -2154,6 +2142,42 @@
               "raw": "extra-small",
               "kitAxis": "Size",
               "kitValue": "Extra-Small"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
+          "name": "small",
+          "seeds": [
+            {
+              "key": "size",
+              "raw": "small",
+              "kitAxis": "Size",
+              "kitValue": "Small"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_large",
+          "name": "large",
+          "seeds": [
+            {
+              "key": "size",
+              "raw": "large",
+              "kitAxis": "Size",
+              "kitValue": "Large"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "name": "disabled",
+          "seeds": [
+            {
+              "key": "enabled",
+              "raw": "false",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
             }
           ]
         },
@@ -2182,14 +2206,26 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_large",
-          "name": "large",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
+          "name": "small-disabled",
           "seeds": [
             {
-              "key": "size",
-              "raw": "large",
+              "key": "Style",
+              "raw": "Child (No background)",
+              "kitAxis": "Style",
+              "kitValue": "Child (No background)"
+            },
+            {
+              "key": "Size",
+              "raw": "Small",
               "kitAxis": "Size",
-              "kitValue": "Large"
+              "kitValue": "Small"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
             }
           ]
         },
@@ -2208,42 +2244,6 @@
               "raw": "Large",
               "kitAxis": "Size",
               "kitValue": "Large"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
-          "name": "small",
-          "seeds": [
-            {
-              "key": "size",
-              "raw": "small",
-              "kitAxis": "Size",
-              "kitValue": "Small"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.IconRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
-          "name": "small-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Size",
-              "raw": "Small",
-              "kitAxis": "Size",
-              "kitValue": "Small"
             },
             {
               "key": "Disabled",
@@ -2298,6 +2298,30 @@
           ]
         },
         {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
+          "name": "icon-large",
+          "seeds": [
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Icon size",
+              "raw": "Lrg 32",
+              "kitAxis": "Icon size",
+              "kitValue": "Lrg 32"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Left",
+              "kitAxis": "Alignment",
+              "kitValue": "Left"
+            }
+          ]
+        },
+        {
           "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-disabled",
           "name": "icon-disabled",
           "seeds": [
@@ -2312,6 +2336,36 @@
               "raw": "26 (Default)",
               "kitAxis": "Icon size",
               "kitValue": "26 (Default)"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Left",
+              "kitAxis": "Alignment",
+              "kitValue": "Left"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
+          "name": "icon-large-disabled",
+          "seeds": [
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Icon size",
+              "raw": "Lrg 32",
+              "kitAxis": "Icon size",
+              "kitValue": "Lrg 32"
             },
             {
               "key": "Alignment",
@@ -2366,60 +2420,6 @@
               "raw": "xLg 36",
               "kitAxis": "Icon size",
               "kitValue": "xLg 36"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Left",
-              "kitAxis": "Alignment",
-              "kitValue": "Left"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
-          "name": "icon-large",
-          "seeds": [
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Icon size",
-              "raw": "Lrg 32",
-              "kitAxis": "Icon size",
-              "kitValue": "Lrg 32"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Left",
-              "kitAxis": "Alignment",
-              "kitValue": "Left"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.OutlinedRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
-          "name": "icon-large-disabled",
-          "seeds": [
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Icon size",
-              "raw": "Lrg 32",
-              "kitAxis": "Icon size",
-              "kitValue": "Lrg 32"
             },
             {
               "key": "Alignment",
@@ -2538,6 +2538,30 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320",
       "renders": [
         {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
+          "name": "small",
+          "seeds": [
+            {
+              "key": "size",
+              "raw": "small",
+              "kitAxis": "Size",
+              "kitValue": "Small"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_large",
+          "name": "large",
+          "seeds": [
+            {
+              "key": "size",
+              "raw": "large",
+              "kitAxis": "Size",
+              "kitValue": "Large"
+            }
+          ]
+        },
+        {
           "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child",
           "name": "child",
           "seeds": [
@@ -2550,26 +2574,14 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-disabled",
-          "name": "child-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined",
+          "name": "outlined",
           "seeds": [
             {
-              "key": "Style",
-              "raw": "Child (No background)",
+              "key": "style",
+              "raw": "outlined",
               "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Size",
-              "raw": "Default",
-              "kitAxis": "Size",
-              "kitValue": "Default"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
+              "kitValue": "Outline"
             }
           ]
         },
@@ -2598,272 +2610,8 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-large-disabled",
-          "name": "child-large-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Size",
-              "raw": "Large",
-              "kitAxis": "Size",
-              "kitValue": "Large"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-small",
-          "name": "child-small",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Size",
-              "raw": "Small",
-              "kitAxis": "Size",
-              "kitValue": "Small"
-            },
-            {
-              "key": "Disabled",
-              "raw": "No",
-              "kitAxis": "Disabled",
-              "kitValue": "No"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-small-disabled",
-          "name": "child-small-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Size",
-              "raw": "Small",
-              "kitAxis": "Size",
-              "kitValue": "Small"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
-          "name": "disabled",
-          "seeds": [
-            {
-              "key": "enabled",
-              "raw": "false",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant",
-          "name": "filled-variant",
-          "seeds": [
-            {
-              "key": "style",
-              "raw": "filled-variant",
-              "kitAxis": "Style",
-              "kitValue": "Filled-Variant"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-disabled",
-          "name": "filled-variant-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Filled-Variant",
-              "kitAxis": "Style",
-              "kitValue": "Filled-Variant"
-            },
-            {
-              "key": "Size",
-              "raw": "Default",
-              "kitAxis": "Size",
-              "kitValue": "Default"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-large",
-          "name": "filled-variant-large",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Filled-Variant",
-              "kitAxis": "Style",
-              "kitValue": "Filled-Variant"
-            },
-            {
-              "key": "Size",
-              "raw": "Large",
-              "kitAxis": "Size",
-              "kitValue": "Large"
-            },
-            {
-              "key": "Disabled",
-              "raw": "No",
-              "kitAxis": "Disabled",
-              "kitValue": "No"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-large-disabled",
-          "name": "filled-variant-large-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Filled-Variant",
-              "kitAxis": "Style",
-              "kitValue": "Filled-Variant"
-            },
-            {
-              "key": "Size",
-              "raw": "Large",
-              "kitAxis": "Size",
-              "kitValue": "Large"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-small",
-          "name": "filled-variant-small",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Filled-Variant",
-              "kitAxis": "Style",
-              "kitValue": "Filled-Variant"
-            },
-            {
-              "key": "Size",
-              "raw": "Small",
-              "kitAxis": "Size",
-              "kitValue": "Small"
-            },
-            {
-              "key": "Disabled",
-              "raw": "No",
-              "kitAxis": "Disabled",
-              "kitValue": "No"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-small-disabled",
-          "name": "filled-variant-small-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Filled-Variant",
-              "kitAxis": "Style",
-              "kitValue": "Filled-Variant"
-            },
-            {
-              "key": "Size",
-              "raw": "Small",
-              "kitAxis": "Size",
-              "kitValue": "Small"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_large",
-          "name": "large",
-          "seeds": [
-            {
-              "key": "size",
-              "raw": "large",
-              "kitAxis": "Size",
-              "kitValue": "Large"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_large-disabled",
-          "name": "large-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Filled",
-              "kitAxis": "Style",
-              "kitValue": "Filled"
-            },
-            {
-              "key": "Size",
-              "raw": "Large",
-              "kitAxis": "Size",
-              "kitValue": "Large"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined",
-          "name": "outlined",
-          "seeds": [
-            {
-              "key": "style",
-              "raw": "outlined",
-              "kitAxis": "Style",
-              "kitValue": "Outline"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-disabled",
-          "name": "outlined-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-small",
+          "name": "outlined-small",
           "seeds": [
             {
               "key": "Style",
@@ -2873,15 +2621,15 @@
             },
             {
               "key": "Size",
-              "raw": "Default",
+              "raw": "Small",
               "kitAxis": "Size",
-              "kitValue": "Default"
+              "kitValue": "Small"
             },
             {
               "key": "Disabled",
-              "raw": "Yes",
+              "raw": "No",
               "kitAxis": "Disabled",
-              "kitValue": "Yes"
+              "kitValue": "No"
             }
           ]
         },
@@ -2910,38 +2658,14 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-large-disabled",
-          "name": "outlined-large-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-small",
+          "name": "child-small",
           "seeds": [
             {
               "key": "Style",
-              "raw": "Outline",
+              "raw": "Child (No background)",
               "kitAxis": "Style",
-              "kitValue": "Outline"
-            },
-            {
-              "key": "Size",
-              "raw": "Large",
-              "kitAxis": "Size",
-              "kitValue": "Large"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-small",
-          "name": "outlined-small",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Outline",
-              "kitAxis": "Style",
-              "kitValue": "Outline"
+              "kitValue": "Child (No background)"
             },
             {
               "key": "Size",
@@ -2958,14 +2682,26 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-small-disabled",
-          "name": "outlined-small-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant",
+          "name": "filled-variant",
+          "seeds": [
+            {
+              "key": "style",
+              "raw": "filled-variant",
+              "kitAxis": "Style",
+              "kitValue": "Filled-Variant"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-small",
+          "name": "filled-variant-small",
           "seeds": [
             {
               "key": "Style",
-              "raw": "Outline",
+              "raw": "Filled-Variant",
               "kitAxis": "Style",
-              "kitValue": "Outline"
+              "kitValue": "Filled-Variant"
             },
             {
               "key": "Size",
@@ -2975,45 +2711,33 @@
             },
             {
               "key": "Disabled",
-              "raw": "Yes",
+              "raw": "No",
               "kitAxis": "Disabled",
-              "kitValue": "Yes"
+              "kitValue": "No"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
-          "name": "small",
-          "seeds": [
-            {
-              "key": "size",
-              "raw": "small",
-              "kitAxis": "Size",
-              "kitValue": "Small"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
-          "name": "small-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-large",
+          "name": "filled-variant-large",
           "seeds": [
             {
               "key": "Style",
-              "raw": "Filled",
+              "raw": "Filled-Variant",
               "kitAxis": "Style",
-              "kitValue": "Filled"
+              "kitValue": "Filled-Variant"
             },
             {
               "key": "Size",
-              "raw": "Small",
+              "raw": "Large",
               "kitAxis": "Size",
-              "kitValue": "Small"
+              "kitValue": "Large"
             },
             {
               "key": "Disabled",
-              "raw": "Yes",
+              "raw": "No",
               "kitAxis": "Disabled",
-              "kitValue": "Yes"
+              "kitValue": "No"
             }
           ]
         },
@@ -3026,78 +2750,6 @@
               "raw": "tonal",
               "kitAxis": "Style",
               "kitValue": "Tonal"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-disabled",
-          "name": "tonal-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Tonal",
-              "kitAxis": "Style",
-              "kitValue": "Tonal"
-            },
-            {
-              "key": "Size",
-              "raw": "Default",
-              "kitAxis": "Size",
-              "kitValue": "Default"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-large",
-          "name": "tonal-large",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Tonal",
-              "kitAxis": "Style",
-              "kitValue": "Tonal"
-            },
-            {
-              "key": "Size",
-              "raw": "Large",
-              "kitAxis": "Size",
-              "kitValue": "Large"
-            },
-            {
-              "key": "Disabled",
-              "raw": "No",
-              "kitAxis": "Disabled",
-              "kitValue": "No"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-large-disabled",
-          "name": "tonal-large-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Tonal",
-              "kitAxis": "Style",
-              "kitValue": "Tonal"
-            },
-            {
-              "key": "Size",
-              "raw": "Large",
-              "kitAxis": "Size",
-              "kitValue": "Large"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
             }
           ]
         },
@@ -3126,6 +2778,210 @@
           ]
         },
         {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-large",
+          "name": "tonal-large",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Size",
+              "raw": "Large",
+              "kitAxis": "Size",
+              "kitValue": "Large"
+            },
+            {
+              "key": "Disabled",
+              "raw": "No",
+              "kitAxis": "Disabled",
+              "kitValue": "No"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "name": "disabled",
+          "seeds": [
+            {
+              "key": "enabled",
+              "raw": "false",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-disabled",
+          "name": "outlined-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Outline",
+              "kitAxis": "Style",
+              "kitValue": "Outline"
+            },
+            {
+              "key": "Size",
+              "raw": "Default",
+              "kitAxis": "Size",
+              "kitValue": "Default"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-small-disabled",
+          "name": "outlined-small-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Outline",
+              "kitAxis": "Style",
+              "kitValue": "Outline"
+            },
+            {
+              "key": "Size",
+              "raw": "Small",
+              "kitAxis": "Size",
+              "kitValue": "Small"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-large-disabled",
+          "name": "outlined-large-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Outline",
+              "kitAxis": "Style",
+              "kitValue": "Outline"
+            },
+            {
+              "key": "Size",
+              "raw": "Large",
+              "kitAxis": "Size",
+              "kitValue": "Large"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-disabled",
+          "name": "filled-variant-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Filled-Variant",
+              "kitAxis": "Style",
+              "kitValue": "Filled-Variant"
+            },
+            {
+              "key": "Size",
+              "raw": "Default",
+              "kitAxis": "Size",
+              "kitValue": "Default"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-small-disabled",
+          "name": "filled-variant-small-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Filled-Variant",
+              "kitAxis": "Style",
+              "kitValue": "Filled-Variant"
+            },
+            {
+              "key": "Size",
+              "raw": "Small",
+              "kitAxis": "Size",
+              "kitValue": "Small"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_filled-variant-large-disabled",
+          "name": "filled-variant-large-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Filled-Variant",
+              "kitAxis": "Style",
+              "kitValue": "Filled-Variant"
+            },
+            {
+              "key": "Size",
+              "raw": "Large",
+              "kitAxis": "Size",
+              "kitValue": "Large"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-disabled",
+          "name": "tonal-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Size",
+              "raw": "Default",
+              "kitAxis": "Size",
+              "kitValue": "Default"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
           "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-small-disabled",
           "name": "tonal-small-disabled",
           "seeds": [
@@ -3148,6 +3004,150 @@
               "kitValue": "Yes"
             }
           ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_tonal-large-disabled",
+          "name": "tonal-large-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Size",
+              "raw": "Large",
+              "kitAxis": "Size",
+              "kitValue": "Large"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-disabled",
+          "name": "child-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Child (No background)",
+              "kitAxis": "Style",
+              "kitValue": "Child (No background)"
+            },
+            {
+              "key": "Size",
+              "raw": "Default",
+              "kitAxis": "Size",
+              "kitValue": "Default"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-small-disabled",
+          "name": "child-small-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Child (No background)",
+              "kitAxis": "Style",
+              "kitValue": "Child (No background)"
+            },
+            {
+              "key": "Size",
+              "raw": "Small",
+              "kitAxis": "Size",
+              "kitValue": "Small"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-large-disabled",
+          "name": "child-large-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Child (No background)",
+              "kitAxis": "Style",
+              "kitValue": "Child (No background)"
+            },
+            {
+              "key": "Size",
+              "raw": "Large",
+              "kitAxis": "Size",
+              "kitValue": "Large"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
+          "name": "small-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Filled",
+              "kitAxis": "Style",
+              "kitValue": "Filled"
+            },
+            {
+              "key": "Size",
+              "raw": "Small",
+              "kitAxis": "Size",
+              "kitValue": "Small"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TextRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_large-disabled",
+          "name": "large-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Filled",
+              "kitAxis": "Style",
+              "kitValue": "Filled"
+            },
+            {
+              "key": "Size",
+              "raw": "Large",
+              "kitAxis": "Size",
+              "kitValue": "Large"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
         }
       ]
     },
@@ -3157,6 +3157,36 @@
       "reference": "figma:B24oss2tTeXAFykyeyusz0/38437:5747",
       "basePreviewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320",
       "renders": [
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle",
+          "name": "with-subtitle",
+          "seeds": [
+            {
+              "key": "Layout type",
+              "raw": "Title Card 2",
+              "kitAxis": "Layout type",
+              "kitValue": "Title Card 2"
+            },
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Content type",
+              "raw": "Text",
+              "kitAxis": "Content type",
+              "kitValue": "Text"
+            },
+            {
+              "key": "Interactive",
+              "raw": "Yes",
+              "kitAxis": "Interactive",
+              "kitValue": "Yes"
+            }
+          ]
+        },
         {
           "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_content-image",
           "name": "content-image",
@@ -3226,6 +3256,216 @@
               "raw": "Title Card 1",
               "kitAxis": "Layout type",
               "kitValue": "Title Card 1"
+            },
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Content type",
+              "raw": "Gallery 2",
+              "kitAxis": "Content type",
+              "kitValue": "Gallery 2"
+            },
+            {
+              "key": "Interactive",
+              "raw": "Yes",
+              "kitAxis": "Interactive",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-content-image",
+          "name": "with-subtitle-content-image",
+          "seeds": [
+            {
+              "key": "Layout type",
+              "raw": "Title Card 2",
+              "kitAxis": "Layout type",
+              "kitValue": "Title Card 2"
+            },
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Content type",
+              "raw": "Image",
+              "kitAxis": "Content type",
+              "kitValue": "Image"
+            },
+            {
+              "key": "Interactive",
+              "raw": "Yes",
+              "kitAxis": "Interactive",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-gallery-1",
+          "name": "with-subtitle-gallery-1",
+          "seeds": [
+            {
+              "key": "Layout type",
+              "raw": "Title Card 2",
+              "kitAxis": "Layout type",
+              "kitValue": "Title Card 2"
+            },
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Content type",
+              "raw": "Gallery 1",
+              "kitAxis": "Content type",
+              "kitValue": "Gallery 1"
+            },
+            {
+              "key": "Interactive",
+              "raw": "Yes",
+              "kitAxis": "Interactive",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-gallery-2",
+          "name": "with-subtitle-gallery-2",
+          "seeds": [
+            {
+              "key": "Layout type",
+              "raw": "Title Card 2",
+              "kitAxis": "Layout type",
+              "kitValue": "Title Card 2"
+            },
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Content type",
+              "raw": "Gallery 2",
+              "kitAxis": "Content type",
+              "kitValue": "Gallery 2"
+            },
+            {
+              "key": "Interactive",
+              "raw": "Yes",
+              "kitAxis": "Interactive",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle",
+          "name": "title-and-subtitle",
+          "seeds": [
+            {
+              "key": "Layout type",
+              "raw": "Title Card 3",
+              "kitAxis": "Layout type",
+              "kitValue": "Title Card 3"
+            },
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Content type",
+              "raw": "Text",
+              "kitAxis": "Content type",
+              "kitValue": "Text"
+            },
+            {
+              "key": "Interactive",
+              "raw": "Yes",
+              "kitAxis": "Interactive",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle-content-image",
+          "name": "title-and-subtitle-content-image",
+          "seeds": [
+            {
+              "key": "Layout type",
+              "raw": "Title Card 3",
+              "kitAxis": "Layout type",
+              "kitValue": "Title Card 3"
+            },
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Content type",
+              "raw": "Image",
+              "kitAxis": "Content type",
+              "kitValue": "Image"
+            },
+            {
+              "key": "Interactive",
+              "raw": "Yes",
+              "kitAxis": "Interactive",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle-gallery-1",
+          "name": "title-and-subtitle-gallery-1",
+          "seeds": [
+            {
+              "key": "Layout type",
+              "raw": "Title Card 3",
+              "kitAxis": "Layout type",
+              "kitValue": "Title Card 3"
+            },
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Content type",
+              "raw": "Gallery 1",
+              "kitAxis": "Content type",
+              "kitValue": "Gallery 1"
+            },
+            {
+              "key": "Interactive",
+              "raw": "Yes",
+              "kitAxis": "Interactive",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle-gallery-2",
+          "name": "title-and-subtitle-gallery-2",
+          "seeds": [
+            {
+              "key": "Layout type",
+              "raw": "Title Card 3",
+              "kitAxis": "Layout type",
+              "kitValue": "Title Card 3"
             },
             {
               "key": "Style",
@@ -3368,20 +3608,20 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle",
-          "name": "title-and-subtitle",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-outlined",
+          "name": "with-subtitle-outlined",
           "seeds": [
             {
               "key": "Layout type",
-              "raw": "Title Card 3",
+              "raw": "Title Card 2",
               "kitAxis": "Layout type",
-              "kitValue": "Title Card 3"
+              "kitValue": "Title Card 2"
             },
             {
               "key": "Style",
-              "raw": "Tonal",
+              "raw": "Outline",
               "kitAxis": "Style",
-              "kitValue": "Tonal"
+              "kitValue": "Outline"
             },
             {
               "key": "Content type",
@@ -3398,20 +3638,20 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle-content-image",
-          "name": "title-and-subtitle-content-image",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-outlined-content-image",
+          "name": "with-subtitle-outlined-content-image",
           "seeds": [
             {
               "key": "Layout type",
-              "raw": "Title Card 3",
+              "raw": "Title Card 2",
               "kitAxis": "Layout type",
-              "kitValue": "Title Card 3"
+              "kitValue": "Title Card 2"
             },
             {
               "key": "Style",
-              "raw": "Tonal",
+              "raw": "Outline",
               "kitAxis": "Style",
-              "kitValue": "Tonal"
+              "kitValue": "Outline"
             },
             {
               "key": "Content type",
@@ -3428,20 +3668,20 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle-gallery-1",
-          "name": "title-and-subtitle-gallery-1",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-outlined-gallery-1",
+          "name": "with-subtitle-outlined-gallery-1",
           "seeds": [
             {
               "key": "Layout type",
-              "raw": "Title Card 3",
+              "raw": "Title Card 2",
               "kitAxis": "Layout type",
-              "kitValue": "Title Card 3"
+              "kitValue": "Title Card 2"
             },
             {
               "key": "Style",
-              "raw": "Tonal",
+              "raw": "Outline",
               "kitAxis": "Style",
-              "kitValue": "Tonal"
+              "kitValue": "Outline"
             },
             {
               "key": "Content type",
@@ -3458,20 +3698,20 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_title-and-subtitle-gallery-2",
-          "name": "title-and-subtitle-gallery-2",
+          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-outlined-gallery-2",
+          "name": "with-subtitle-outlined-gallery-2",
           "seeds": [
             {
               "key": "Layout type",
-              "raw": "Title Card 3",
+              "raw": "Title Card 2",
               "kitAxis": "Layout type",
-              "kitValue": "Title Card 3"
+              "kitValue": "Title Card 2"
             },
             {
               "key": "Style",
-              "raw": "Tonal",
+              "raw": "Outline",
               "kitAxis": "Style",
-              "kitValue": "Tonal"
+              "kitValue": "Outline"
             },
             {
               "key": "Content type",
@@ -3606,246 +3846,6 @@
               "kitValue": "Yes"
             }
           ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle",
-          "name": "with-subtitle",
-          "seeds": [
-            {
-              "key": "Layout type",
-              "raw": "Title Card 2",
-              "kitAxis": "Layout type",
-              "kitValue": "Title Card 2"
-            },
-            {
-              "key": "Style",
-              "raw": "Tonal",
-              "kitAxis": "Style",
-              "kitValue": "Tonal"
-            },
-            {
-              "key": "Content type",
-              "raw": "Text",
-              "kitAxis": "Content type",
-              "kitValue": "Text"
-            },
-            {
-              "key": "Interactive",
-              "raw": "Yes",
-              "kitAxis": "Interactive",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-content-image",
-          "name": "with-subtitle-content-image",
-          "seeds": [
-            {
-              "key": "Layout type",
-              "raw": "Title Card 2",
-              "kitAxis": "Layout type",
-              "kitValue": "Title Card 2"
-            },
-            {
-              "key": "Style",
-              "raw": "Tonal",
-              "kitAxis": "Style",
-              "kitValue": "Tonal"
-            },
-            {
-              "key": "Content type",
-              "raw": "Image",
-              "kitAxis": "Content type",
-              "kitValue": "Image"
-            },
-            {
-              "key": "Interactive",
-              "raw": "Yes",
-              "kitAxis": "Interactive",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-gallery-1",
-          "name": "with-subtitle-gallery-1",
-          "seeds": [
-            {
-              "key": "Layout type",
-              "raw": "Title Card 2",
-              "kitAxis": "Layout type",
-              "kitValue": "Title Card 2"
-            },
-            {
-              "key": "Style",
-              "raw": "Tonal",
-              "kitAxis": "Style",
-              "kitValue": "Tonal"
-            },
-            {
-              "key": "Content type",
-              "raw": "Gallery 1",
-              "kitAxis": "Content type",
-              "kitValue": "Gallery 1"
-            },
-            {
-              "key": "Interactive",
-              "raw": "Yes",
-              "kitAxis": "Interactive",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-gallery-2",
-          "name": "with-subtitle-gallery-2",
-          "seeds": [
-            {
-              "key": "Layout type",
-              "raw": "Title Card 2",
-              "kitAxis": "Layout type",
-              "kitValue": "Title Card 2"
-            },
-            {
-              "key": "Style",
-              "raw": "Tonal",
-              "kitAxis": "Style",
-              "kitValue": "Tonal"
-            },
-            {
-              "key": "Content type",
-              "raw": "Gallery 2",
-              "kitAxis": "Content type",
-              "kitValue": "Gallery 2"
-            },
-            {
-              "key": "Interactive",
-              "raw": "Yes",
-              "kitAxis": "Interactive",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-outlined",
-          "name": "with-subtitle-outlined",
-          "seeds": [
-            {
-              "key": "Layout type",
-              "raw": "Title Card 2",
-              "kitAxis": "Layout type",
-              "kitValue": "Title Card 2"
-            },
-            {
-              "key": "Style",
-              "raw": "Outline",
-              "kitAxis": "Style",
-              "kitValue": "Outline"
-            },
-            {
-              "key": "Content type",
-              "raw": "Text",
-              "kitAxis": "Content type",
-              "kitValue": "Text"
-            },
-            {
-              "key": "Interactive",
-              "raw": "Yes",
-              "kitAxis": "Interactive",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-outlined-content-image",
-          "name": "with-subtitle-outlined-content-image",
-          "seeds": [
-            {
-              "key": "Layout type",
-              "raw": "Title Card 2",
-              "kitAxis": "Layout type",
-              "kitValue": "Title Card 2"
-            },
-            {
-              "key": "Style",
-              "raw": "Outline",
-              "kitAxis": "Style",
-              "kitValue": "Outline"
-            },
-            {
-              "key": "Content type",
-              "raw": "Image",
-              "kitAxis": "Content type",
-              "kitValue": "Image"
-            },
-            {
-              "key": "Interactive",
-              "raw": "Yes",
-              "kitAxis": "Interactive",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-outlined-gallery-1",
-          "name": "with-subtitle-outlined-gallery-1",
-          "seeds": [
-            {
-              "key": "Layout type",
-              "raw": "Title Card 2",
-              "kitAxis": "Layout type",
-              "kitValue": "Title Card 2"
-            },
-            {
-              "key": "Style",
-              "raw": "Outline",
-              "kitAxis": "Style",
-              "kitValue": "Outline"
-            },
-            {
-              "key": "Content type",
-              "raw": "Gallery 1",
-              "kitAxis": "Content type",
-              "kitValue": "Gallery 1"
-            },
-            {
-              "key": "Interactive",
-              "raw": "Yes",
-              "kitAxis": "Interactive",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.CatalogPreviewsKt.TitleCardRemote_width=227dp,height=200dp,dpi=320_VARIANT_with-subtitle-outlined-gallery-2",
-          "name": "with-subtitle-outlined-gallery-2",
-          "seeds": [
-            {
-              "key": "Layout type",
-              "raw": "Title Card 2",
-              "kitAxis": "Layout type",
-              "kitValue": "Title Card 2"
-            },
-            {
-              "key": "Style",
-              "raw": "Outline",
-              "kitAxis": "Style",
-              "kitValue": "Outline"
-            },
-            {
-              "key": "Content type",
-              "raw": "Gallery 2",
-              "kitAxis": "Content type",
-              "kitValue": "Gallery 2"
-            },
-            {
-              "key": "Interactive",
-              "raw": "Yes",
-              "kitAxis": "Interactive",
-              "kitValue": "Yes"
-            }
-          ]
         }
       ]
     },
@@ -3892,6 +3892,30 @@
           ]
         },
         {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
+          "name": "icon-large",
+          "seeds": [
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Icon size",
+              "raw": "Lrg 32",
+              "kitAxis": "Icon size",
+              "kitValue": "Lrg 32"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Left",
+              "kitAxis": "Alignment",
+              "kitValue": "Left"
+            }
+          ]
+        },
+        {
           "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-disabled",
           "name": "icon-disabled",
           "seeds": [
@@ -3906,6 +3930,36 @@
               "raw": "26 (Default)",
               "kitAxis": "Icon size",
               "kitValue": "26 (Default)"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Left",
+              "kitAxis": "Alignment",
+              "kitValue": "Left"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
+          "name": "icon-large-disabled",
+          "seeds": [
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Icon size",
+              "raw": "Lrg 32",
+              "kitAxis": "Icon size",
+              "kitValue": "Lrg 32"
             },
             {
               "key": "Alignment",
@@ -3960,60 +4014,6 @@
               "raw": "xLg 36",
               "kitAxis": "Icon size",
               "kitValue": "xLg 36"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Left",
-              "kitAxis": "Alignment",
-              "kitValue": "Left"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
-          "name": "icon-large",
-          "seeds": [
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Icon size",
-              "raw": "Lrg 32",
-              "kitAxis": "Icon size",
-              "kitValue": "Lrg 32"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Left",
-              "kitAxis": "Alignment",
-              "kitValue": "Left"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ChildRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
-          "name": "icon-large-disabled",
-          "seeds": [
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Icon size",
-              "raw": "Lrg 32",
-              "kitAxis": "Icon size",
-              "kitValue": "Lrg 32"
             },
             {
               "key": "Alignment",
@@ -4092,18 +4092,6 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320",
       "renders": [
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
-          "name": "disabled",
-          "seeds": [
-            {
-              "key": "enabled",
-              "raw": "false",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
           "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small",
           "name": "extra-small",
           "seeds": [
@@ -4116,20 +4104,14 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small-disabled",
-          "name": "extra-small-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
+          "name": "small",
           "seeds": [
             {
-              "key": "Size",
-              "raw": "Extra-Small",
+              "key": "size",
+              "raw": "small",
               "kitAxis": "Size",
-              "kitValue": "Extra-Small"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
+              "kitValue": "Small"
             }
           ]
         },
@@ -4142,6 +4124,36 @@
               "raw": "large",
               "kitAxis": "Size",
               "kitValue": "Large"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "name": "disabled",
+          "seeds": [
+            {
+              "key": "enabled",
+              "raw": "false",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
+          "name": "small-disabled",
+          "seeds": [
+            {
+              "key": "Size",
+              "raw": "Small",
+              "kitAxis": "Size",
+              "kitValue": "Small"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
             }
           ]
         },
@@ -4164,26 +4176,14 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
-          "name": "small",
-          "seeds": [
-            {
-              "key": "size",
-              "raw": "small",
-              "kitAxis": "Size",
-              "kitValue": "Small"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
-          "name": "small-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small-disabled",
+          "name": "extra-small-disabled",
           "seeds": [
             {
               "key": "Size",
-              "raw": "Small",
+              "raw": "Extra-Small",
               "kitAxis": "Size",
-              "kitValue": "Small"
+              "kitValue": "Extra-Small"
             },
             {
               "key": "Disabled",
@@ -4238,6 +4238,30 @@
           ]
         },
         {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
+          "name": "icon-large",
+          "seeds": [
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Icon size",
+              "raw": "Lrg 32",
+              "kitAxis": "Icon size",
+              "kitValue": "Lrg 32"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Left",
+              "kitAxis": "Alignment",
+              "kitValue": "Left"
+            }
+          ]
+        },
+        {
           "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-disabled",
           "name": "icon-disabled",
           "seeds": [
@@ -4252,6 +4276,36 @@
               "raw": "26 (Default)",
               "kitAxis": "Icon size",
               "kitValue": "26 (Default)"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Left",
+              "kitAxis": "Alignment",
+              "kitValue": "Left"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
+          "name": "icon-large-disabled",
+          "seeds": [
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Icon size",
+              "raw": "Lrg 32",
+              "kitAxis": "Icon size",
+              "kitValue": "Lrg 32"
             },
             {
               "key": "Alignment",
@@ -4306,60 +4360,6 @@
               "raw": "xLg 36",
               "kitAxis": "Icon size",
               "kitValue": "xLg 36"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Left",
-              "kitAxis": "Alignment",
-              "kitValue": "Left"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
-          "name": "icon-large",
-          "seeds": [
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Icon size",
-              "raw": "Lrg 32",
-              "kitAxis": "Icon size",
-              "kitValue": "Lrg 32"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Left",
-              "kitAxis": "Alignment",
-              "kitValue": "Left"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
-          "name": "icon-large-disabled",
-          "seeds": [
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Icon size",
-              "raw": "Lrg 32",
-              "kitAxis": "Icon size",
-              "kitValue": "Lrg 32"
             },
             {
               "key": "Alignment",
@@ -4438,18 +4438,6 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320",
       "renders": [
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
-          "name": "disabled",
-          "seeds": [
-            {
-              "key": "enabled",
-              "raw": "false",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
           "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small",
           "name": "extra-small",
           "seeds": [
@@ -4462,20 +4450,14 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small-disabled",
-          "name": "extra-small-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
+          "name": "small",
           "seeds": [
             {
-              "key": "Size",
-              "raw": "Extra-Small",
+              "key": "size",
+              "raw": "small",
               "kitAxis": "Size",
-              "kitValue": "Extra-Small"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
+              "kitValue": "Small"
             }
           ]
         },
@@ -4488,6 +4470,36 @@
               "raw": "large",
               "kitAxis": "Size",
               "kitValue": "Large"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "name": "disabled",
+          "seeds": [
+            {
+              "key": "enabled",
+              "raw": "false",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
+          "name": "small-disabled",
+          "seeds": [
+            {
+              "key": "Size",
+              "raw": "Small",
+              "kitAxis": "Size",
+              "kitValue": "Small"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
             }
           ]
         },
@@ -4510,26 +4522,14 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
-          "name": "small",
-          "seeds": [
-            {
-              "key": "size",
-              "raw": "small",
-              "kitAxis": "Size",
-              "kitValue": "Small"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
-          "name": "small-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.FilledVariantRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small-disabled",
+          "name": "extra-small-disabled",
           "seeds": [
             {
               "key": "Size",
-              "raw": "Small",
+              "raw": "Extra-Small",
               "kitAxis": "Size",
-              "kitValue": "Small"
+              "kitValue": "Extra-Small"
             },
             {
               "key": "Disabled",
@@ -4548,6 +4548,30 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp",
       "renders": [
         {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_two-pages",
+          "name": "two-pages",
+          "seeds": [
+            {
+              "key": "pages",
+              "raw": "2",
+              "kitAxis": "Number",
+              "kitValue": "2"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_three-pages",
+          "name": "three-pages",
+          "seeds": [
+            {
+              "key": "pages",
+              "raw": "3",
+              "kitAxis": "Number",
+              "kitValue": "3"
+            }
+          ]
+        },
+        {
           "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_five-pages",
           "name": "five-pages",
           "seeds": [
@@ -4560,14 +4584,26 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_many-pages",
-          "name": "many-pages",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_six-pages",
+          "name": "six-pages",
+          "seeds": [
+            {
+              "key": "pages",
+              "raw": "6",
+              "kitAxis": "Number",
+              "kitValue": "6 - Start"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_six-pages-middle",
+          "name": "six-pages-middle",
           "seeds": [
             {
               "key": "Number",
-              "raw": "7+ - Start",
+              "raw": "6  - MiddleEnd",
               "kitAxis": "Number",
-              "kitValue": "7+ - Start"
+              "kitValue": "6  - MiddleEnd"
             },
             {
               "key": "Position",
@@ -4578,14 +4614,32 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_many-pages-end",
-          "name": "many-pages-end",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_six-pages-end",
+          "name": "six-pages-end",
           "seeds": [
             {
               "key": "Number",
-              "raw": "7+ - End",
+              "raw": "6 - End",
               "kitAxis": "Number",
-              "kitValue": "7+ - End"
+              "kitValue": "6 - End"
+            },
+            {
+              "key": "Position",
+              "raw": "Horizontal-Bottom",
+              "kitAxis": "Position",
+              "kitValue": "Horizontal-Bottom"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_many-pages",
+          "name": "many-pages",
+          "seeds": [
+            {
+              "key": "Number",
+              "raw": "7+ - Start",
+              "kitAxis": "Number",
+              "kitValue": "7+ - Start"
             },
             {
               "key": "Position",
@@ -4614,74 +4668,20 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_six-pages",
-          "name": "six-pages",
-          "seeds": [
-            {
-              "key": "pages",
-              "raw": "6",
-              "kitAxis": "Number",
-              "kitValue": "6 - Start"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_six-pages-end",
-          "name": "six-pages-end",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_many-pages-end",
+          "name": "many-pages-end",
           "seeds": [
             {
               "key": "Number",
-              "raw": "6 - End",
+              "raw": "7+ - End",
               "kitAxis": "Number",
-              "kitValue": "6 - End"
+              "kitValue": "7+ - End"
             },
             {
               "key": "Position",
               "raw": "Horizontal-Bottom",
               "kitAxis": "Position",
               "kitValue": "Horizontal-Bottom"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_six-pages-middle",
-          "name": "six-pages-middle",
-          "seeds": [
-            {
-              "key": "Number",
-              "raw": "6  - MiddleEnd",
-              "kitAxis": "Number",
-              "kitValue": "6  - MiddleEnd"
-            },
-            {
-              "key": "Position",
-              "raw": "Horizontal-Bottom",
-              "kitAxis": "Position",
-              "kitValue": "Horizontal-Bottom"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_three-pages",
-          "name": "three-pages",
-          "seeds": [
-            {
-              "key": "pages",
-              "raw": "3",
-              "kitAxis": "Number",
-              "kitValue": "3"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.HorizontalPageIndicatorRemote_192dp_VARIANT_two-pages",
-          "name": "two-pages",
-          "seeds": [
-            {
-              "key": "pages",
-              "raw": "2",
-              "kitAxis": "Number",
-              "kitValue": "2"
             }
           ]
         },
@@ -4734,18 +4734,6 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ImageBackgroundRemoteButton_width=227dp,height=100dp,dpi=320",
       "renders": [
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ImageBackgroundRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
-          "name": "disabled",
-          "seeds": [
-            {
-              "key": "enabled",
-              "raw": "false",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
           "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ImageBackgroundRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_secondary-label",
           "name": "secondary-label",
           "seeds": [
@@ -4753,6 +4741,18 @@
               "key": "secondary",
               "raw": "true",
               "kitAxis": "Secondary label",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.ImageBackgroundRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "name": "disabled",
+          "seeds": [
+            {
+              "key": "enabled",
+              "raw": "false",
+              "kitAxis": "Disabled",
               "kitValue": "Yes"
             }
           ]
@@ -4784,30 +4784,6 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320",
       "renders": [
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
-          "name": "disabled",
-          "seeds": [
-            {
-              "key": "enabled",
-              "raw": "false",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small",
-          "name": "extra-small",
-          "seeds": [
-            {
-              "key": "size",
-              "raw": "extra-small",
-              "kitAxis": "Size",
-              "kitValue": "Extra-Small"
-            }
-          ]
-        },
-        {
           "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small-disabled",
           "name": "extra-small-disabled",
           "seeds": [
@@ -4826,32 +4802,14 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_large",
-          "name": "large",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small",
+          "name": "extra-small",
           "seeds": [
             {
               "key": "size",
-              "raw": "large",
+              "raw": "extra-small",
               "kitAxis": "Size",
-              "kitValue": "Large"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_large-disabled",
-          "name": "large-disabled",
-          "seeds": [
-            {
-              "key": "Size",
-              "raw": "Large",
-              "kitAxis": "Size",
-              "kitValue": "Large"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
+              "kitValue": "Extra-Small"
             }
           ]
         },
@@ -4868,6 +4826,30 @@
           ]
         },
         {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_large",
+          "name": "large",
+          "seeds": [
+            {
+              "key": "size",
+              "raw": "large",
+              "kitAxis": "Size",
+              "kitValue": "Large"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "name": "disabled",
+          "seeds": [
+            {
+              "key": "enabled",
+              "raw": "false",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
           "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
           "name": "small-disabled",
           "seeds": [
@@ -4876,6 +4858,24 @@
               "raw": "Small",
               "kitAxis": "Size",
               "kitValue": "Small"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.OutlinedRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_large-disabled",
+          "name": "large-disabled",
+          "seeds": [
+            {
+              "key": "Size",
+              "raw": "Large",
+              "kitAxis": "Size",
+              "kitValue": "Large"
             },
             {
               "key": "Disabled",
@@ -4930,6 +4930,30 @@
           ]
         },
         {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
+          "name": "icon-large",
+          "seeds": [
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Icon size",
+              "raw": "Lrg 32",
+              "kitAxis": "Icon size",
+              "kitValue": "Lrg 32"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Left",
+              "kitAxis": "Alignment",
+              "kitValue": "Left"
+            }
+          ]
+        },
+        {
           "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-disabled",
           "name": "icon-disabled",
           "seeds": [
@@ -4944,6 +4968,36 @@
               "raw": "26 (Default)",
               "kitAxis": "Icon size",
               "kitValue": "26 (Default)"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Left",
+              "kitAxis": "Alignment",
+              "kitValue": "Left"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
+          "name": "icon-large-disabled",
+          "seeds": [
+            {
+              "key": "Icon",
+              "raw": "Yes",
+              "kitAxis": "Icon",
+              "kitValue": "Yes"
+            },
+            {
+              "key": "Icon size",
+              "raw": "Lrg 32",
+              "kitAxis": "Icon size",
+              "kitValue": "Lrg 32"
             },
             {
               "key": "Alignment",
@@ -4998,60 +5052,6 @@
               "raw": "xLg 36",
               "kitAxis": "Icon size",
               "kitValue": "xLg 36"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Left",
-              "kitAxis": "Alignment",
-              "kitValue": "Left"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large",
-          "name": "icon-large",
-          "seeds": [
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Icon size",
-              "raw": "Lrg 32",
-              "kitAxis": "Icon size",
-              "kitValue": "Lrg 32"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Left",
-              "kitAxis": "Alignment",
-              "kitValue": "Left"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-large-disabled",
-          "name": "icon-large-disabled",
-          "seeds": [
-            {
-              "key": "Icon",
-              "raw": "Yes",
-              "kitAxis": "Icon",
-              "kitValue": "Yes"
-            },
-            {
-              "key": "Icon size",
-              "raw": "Lrg 32",
-              "kitAxis": "Icon size",
-              "kitValue": "Lrg 32"
             },
             {
               "key": "Alignment",
@@ -5130,18 +5130,6 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320",
       "renders": [
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
-          "name": "disabled",
-          "seeds": [
-            {
-              "key": "enabled",
-              "raw": "false",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
           "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small",
           "name": "extra-small",
           "seeds": [
@@ -5154,20 +5142,14 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small-disabled",
-          "name": "extra-small-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
+          "name": "small",
           "seeds": [
             {
-              "key": "Size",
-              "raw": "Extra-Small",
+              "key": "size",
+              "raw": "small",
               "kitAxis": "Size",
-              "kitValue": "Extra-Small"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
+              "kitValue": "Small"
             }
           ]
         },
@@ -5180,6 +5162,36 @@
               "raw": "large",
               "kitAxis": "Size",
               "kitValue": "Large"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
+          "name": "disabled",
+          "seeds": [
+            {
+              "key": "enabled",
+              "raw": "false",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
+          "name": "small-disabled",
+          "seeds": [
+            {
+              "key": "Size",
+              "raw": "Small",
+              "kitAxis": "Size",
+              "kitValue": "Small"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
             }
           ]
         },
@@ -5202,26 +5214,14 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small",
-          "name": "small",
-          "seeds": [
-            {
-              "key": "size",
-              "raw": "small",
-              "kitAxis": "Size",
-              "kitValue": "Small"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_small-disabled",
-          "name": "small-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.TonalRemoteIconButton_width=227dp,height=100dp,dpi=320_VARIANT_extra-small-disabled",
+          "name": "extra-small-disabled",
           "seeds": [
             {
               "key": "Size",
-              "raw": "Small",
+              "raw": "Extra-Small",
               "kitAxis": "Size",
-              "kitValue": "Small"
+              "kitValue": "Extra-Small"
             },
             {
               "key": "Disabled",
@@ -5240,6 +5240,30 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp",
       "renders": [
         {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_two-pages",
+          "name": "two-pages",
+          "seeds": [
+            {
+              "key": "pages",
+              "raw": "2",
+              "kitAxis": "Number",
+              "kitValue": "2"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_three-pages",
+          "name": "three-pages",
+          "seeds": [
+            {
+              "key": "pages",
+              "raw": "3",
+              "kitAxis": "Number",
+              "kitValue": "3"
+            }
+          ]
+        },
+        {
           "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_five-pages",
           "name": "five-pages",
           "seeds": [
@@ -5252,128 +5276,20 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left",
-          "name": "left",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_six-pages",
+          "name": "six-pages",
           "seeds": [
             {
-              "key": "side",
-              "raw": "left",
-              "kitAxis": "Position",
-              "kitValue": "Vertical-Left"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-five-pages",
-          "name": "left-five-pages",
-          "seeds": [
-            {
-              "key": "Number",
-              "raw": "5",
-              "kitAxis": "Number",
-              "kitValue": "5"
-            },
-            {
-              "key": "Position",
-              "raw": "Vertical-Left",
-              "kitAxis": "Position",
-              "kitValue": "Vertical-Left"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-many-pages",
-          "name": "left-many-pages",
-          "seeds": [
-            {
-              "key": "Number",
-              "raw": "7+ - Start",
-              "kitAxis": "Number",
-              "kitValue": "7+ - Start"
-            },
-            {
-              "key": "Position",
-              "raw": "Vertical-Left",
-              "kitAxis": "Position",
-              "kitValue": "Vertical-Left"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-many-pages-end",
-          "name": "left-many-pages-end",
-          "seeds": [
-            {
-              "key": "Number",
-              "raw": "7+ - End",
-              "kitAxis": "Number",
-              "kitValue": "7+ - End"
-            },
-            {
-              "key": "Position",
-              "raw": "Vertical-Left",
-              "kitAxis": "Position",
-              "kitValue": "Vertical-Left"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-many-pages-middle",
-          "name": "left-many-pages-middle",
-          "seeds": [
-            {
-              "key": "Number",
-              "raw": "7+  - MiddleEnd",
-              "kitAxis": "Number",
-              "kitValue": "7+  - MiddleEnd"
-            },
-            {
-              "key": "Position",
-              "raw": "Vertical-Left",
-              "kitAxis": "Position",
-              "kitValue": "Vertical-Left"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-six-pages",
-          "name": "left-six-pages",
-          "seeds": [
-            {
-              "key": "Number",
-              "raw": "6 - Start",
+              "key": "pages",
+              "raw": "6",
               "kitAxis": "Number",
               "kitValue": "6 - Start"
-            },
-            {
-              "key": "Position",
-              "raw": "Vertical-Left",
-              "kitAxis": "Position",
-              "kitValue": "Vertical-Left"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-six-pages-end",
-          "name": "left-six-pages-end",
-          "seeds": [
-            {
-              "key": "Number",
-              "raw": "6 - End",
-              "kitAxis": "Number",
-              "kitValue": "6 - End"
-            },
-            {
-              "key": "Position",
-              "raw": "Vertical-Left",
-              "kitAxis": "Position",
-              "kitValue": "Vertical-Left"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-six-pages-middle",
-          "name": "left-six-pages-middle",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_six-pages-middle",
+          "name": "six-pages-middle",
           "seeds": [
             {
               "key": "Number",
@@ -5383,45 +5299,27 @@
             },
             {
               "key": "Position",
-              "raw": "Vertical-Left",
+              "raw": "Vertical-Right",
               "kitAxis": "Position",
-              "kitValue": "Vertical-Left"
+              "kitValue": "Vertical-Right"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-three-pages",
-          "name": "left-three-pages",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_six-pages-end",
+          "name": "six-pages-end",
           "seeds": [
             {
               "key": "Number",
-              "raw": "3",
+              "raw": "6 - End",
               "kitAxis": "Number",
-              "kitValue": "3"
+              "kitValue": "6 - End"
             },
             {
               "key": "Position",
-              "raw": "Vertical-Left",
+              "raw": "Vertical-Right",
               "kitAxis": "Position",
-              "kitValue": "Vertical-Left"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-two-pages",
-          "name": "left-two-pages",
-          "seeds": [
-            {
-              "key": "Number",
-              "raw": "2",
-              "kitAxis": "Number",
-              "kitValue": "2"
-            },
-            {
-              "key": "Position",
-              "raw": "Vertical-Left",
-              "kitAxis": "Position",
-              "kitValue": "Vertical-Left"
+              "kitValue": "Vertical-Right"
             }
           ]
         },
@@ -5434,24 +5332,6 @@
               "raw": "7+ - Start",
               "kitAxis": "Number",
               "kitValue": "7+ - Start"
-            },
-            {
-              "key": "Position",
-              "raw": "Vertical-Right",
-              "kitAxis": "Position",
-              "kitValue": "Vertical-Right"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_many-pages-end",
-          "name": "many-pages-end",
-          "seeds": [
-            {
-              "key": "Number",
-              "raw": "7+ - End",
-              "kitAxis": "Number",
-              "kitValue": "7+ - End"
             },
             {
               "key": "Position",
@@ -5480,26 +5360,14 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_six-pages",
-          "name": "six-pages",
-          "seeds": [
-            {
-              "key": "pages",
-              "raw": "6",
-              "kitAxis": "Number",
-              "kitValue": "6 - Start"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_six-pages-end",
-          "name": "six-pages-end",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_many-pages-end",
+          "name": "many-pages-end",
           "seeds": [
             {
               "key": "Number",
-              "raw": "6 - End",
+              "raw": "7+ - End",
               "kitAxis": "Number",
-              "kitValue": "6 - End"
+              "kitValue": "7+ - End"
             },
             {
               "key": "Position",
@@ -5510,8 +5378,92 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_six-pages-middle",
-          "name": "six-pages-middle",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left",
+          "name": "left",
+          "seeds": [
+            {
+              "key": "side",
+              "raw": "left",
+              "kitAxis": "Position",
+              "kitValue": "Vertical-Left"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-two-pages",
+          "name": "left-two-pages",
+          "seeds": [
+            {
+              "key": "Number",
+              "raw": "2",
+              "kitAxis": "Number",
+              "kitValue": "2"
+            },
+            {
+              "key": "Position",
+              "raw": "Vertical-Left",
+              "kitAxis": "Position",
+              "kitValue": "Vertical-Left"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-three-pages",
+          "name": "left-three-pages",
+          "seeds": [
+            {
+              "key": "Number",
+              "raw": "3",
+              "kitAxis": "Number",
+              "kitValue": "3"
+            },
+            {
+              "key": "Position",
+              "raw": "Vertical-Left",
+              "kitAxis": "Position",
+              "kitValue": "Vertical-Left"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-five-pages",
+          "name": "left-five-pages",
+          "seeds": [
+            {
+              "key": "Number",
+              "raw": "5",
+              "kitAxis": "Number",
+              "kitValue": "5"
+            },
+            {
+              "key": "Position",
+              "raw": "Vertical-Left",
+              "kitAxis": "Position",
+              "kitValue": "Vertical-Left"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-six-pages",
+          "name": "left-six-pages",
+          "seeds": [
+            {
+              "key": "Number",
+              "raw": "6 - Start",
+              "kitAxis": "Number",
+              "kitValue": "6 - Start"
+            },
+            {
+              "key": "Position",
+              "raw": "Vertical-Left",
+              "kitAxis": "Position",
+              "kitValue": "Vertical-Left"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-six-pages-middle",
+          "name": "left-six-pages-middle",
           "seeds": [
             {
               "key": "Number",
@@ -5521,33 +5473,81 @@
             },
             {
               "key": "Position",
-              "raw": "Vertical-Right",
+              "raw": "Vertical-Left",
               "kitAxis": "Position",
-              "kitValue": "Vertical-Right"
+              "kitValue": "Vertical-Left"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_three-pages",
-          "name": "three-pages",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-six-pages-end",
+          "name": "left-six-pages-end",
           "seeds": [
             {
-              "key": "pages",
-              "raw": "3",
+              "key": "Number",
+              "raw": "6 - End",
               "kitAxis": "Number",
-              "kitValue": "3"
+              "kitValue": "6 - End"
+            },
+            {
+              "key": "Position",
+              "raw": "Vertical-Left",
+              "kitAxis": "Position",
+              "kitValue": "Vertical-Left"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_two-pages",
-          "name": "two-pages",
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-many-pages",
+          "name": "left-many-pages",
           "seeds": [
             {
-              "key": "pages",
-              "raw": "2",
+              "key": "Number",
+              "raw": "7+ - Start",
               "kitAxis": "Number",
-              "kitValue": "2"
+              "kitValue": "7+ - Start"
+            },
+            {
+              "key": "Position",
+              "raw": "Vertical-Left",
+              "kitAxis": "Position",
+              "kitValue": "Vertical-Left"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-many-pages-middle",
+          "name": "left-many-pages-middle",
+          "seeds": [
+            {
+              "key": "Number",
+              "raw": "7+  - MiddleEnd",
+              "kitAxis": "Number",
+              "kitValue": "7+  - MiddleEnd"
+            },
+            {
+              "key": "Position",
+              "raw": "Vertical-Left",
+              "kitAxis": "Position",
+              "kitValue": "Vertical-Left"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ComponentVariantPreviewsKt.VerticalPageIndicatorRemote_192dp_VARIANT_left-many-pages-end",
+          "name": "left-many-pages-end",
+          "seeds": [
+            {
+              "key": "Number",
+              "raw": "7+ - End",
+              "kitAxis": "Number",
+              "kitValue": "7+ - End"
+            },
+            {
+              "key": "Position",
+              "raw": "Vertical-Left",
+              "kitAxis": "Position",
+              "kitValue": "Vertical-Left"
             }
           ]
         },
@@ -5620,24 +5620,6 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.ListHeaderPreviewsKt.ListSubHeaderRemote_width=227dp,height=100dp,dpi=320",
       "renders": [
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ListHeaderPreviewsKt.ListSubHeaderRemote_width=227dp,height=100dp,dpi=320_VARIANT_centred",
-          "name": "centred",
-          "seeds": [
-            {
-              "key": "Icon",
-              "raw": "No",
-              "kitAxis": "Icon",
-              "kitValue": "No"
-            },
-            {
-              "key": "Alignment",
-              "raw": "Centre",
-              "kitAxis": "Alignment",
-              "kitValue": "Centre"
-            }
-          ]
-        },
-        {
           "previewId": "ee.schimke.wearm3catalog.remote.ListHeaderPreviewsKt.ListSubHeaderRemote_width=227dp,height=100dp,dpi=320_VARIANT_icon",
           "name": "icon",
           "seeds": [
@@ -5654,6 +5636,24 @@
               "kitValue": "Left"
             }
           ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ListHeaderPreviewsKt.ListSubHeaderRemote_width=227dp,height=100dp,dpi=320_VARIANT_centred",
+          "name": "centred",
+          "seeds": [
+            {
+              "key": "Icon",
+              "raw": "No",
+              "kitAxis": "Icon",
+              "kitValue": "No"
+            },
+            {
+              "key": "Alignment",
+              "raw": "Centre",
+              "kitAxis": "Alignment",
+              "kitValue": "Centre"
+            }
+          ]
         }
       ]
     },
@@ -5664,180 +5664,12 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320",
       "renders": [
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child",
-          "name": "child",
-          "seeds": [
-            {
-              "key": "style",
-              "raw": "child",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-disabled",
-          "name": "child-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Icon size",
-              "raw": "26 (Default)",
-              "kitAxis": "Icon size",
-              "kitValue": "26 (Default)"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-extra-large",
-          "name": "child-icon-extra-large",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Icon size",
-              "raw": "xLg 36",
-              "kitAxis": "Icon size",
-              "kitValue": "xLg 36"
-            },
-            {
-              "key": "Disabled",
-              "raw": "No",
-              "kitAxis": "Disabled",
-              "kitValue": "No"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-extra-large-disabled",
-          "name": "child-icon-extra-large-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Icon size",
-              "raw": "xLg 36",
-              "kitAxis": "Icon size",
-              "kitValue": "xLg 36"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-large",
-          "name": "child-icon-large",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Icon size",
-              "raw": "Lrg 32",
-              "kitAxis": "Icon size",
-              "kitValue": "Lrg 32"
-            },
-            {
-              "key": "Disabled",
-              "raw": "No",
-              "kitAxis": "Disabled",
-              "kitValue": "No"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-large-disabled",
-          "name": "child-icon-large-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Child (No background)",
-              "kitAxis": "Style",
-              "kitValue": "Child (No background)"
-            },
-            {
-              "key": "Icon size",
-              "raw": "Lrg 32",
-              "kitAxis": "Icon size",
-              "kitValue": "Lrg 32"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
           "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_disabled",
           "name": "disabled",
           "seeds": [
             {
               "key": "enabled",
               "raw": "false",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large",
-          "name": "icon-extra-large",
-          "seeds": [
-            {
-              "key": "iconSize",
-              "raw": "extra-large",
-              "kitAxis": "Icon size",
-              "kitValue": "xLg 36"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large-disabled",
-          "name": "icon-extra-large-disabled",
-          "seeds": [
-            {
-              "key": "Style",
-              "raw": "Tonal",
-              "kitAxis": "Style",
-              "kitValue": "Tonal"
-            },
-            {
-              "key": "Icon size",
-              "raw": "xLg 36",
-              "kitAxis": "Icon size",
-              "kitValue": "xLg 36"
-            },
-            {
-              "key": "Disabled",
-              "raw": "Yes",
               "kitAxis": "Disabled",
               "kitValue": "Yes"
             }
@@ -5880,6 +5712,42 @@
           ]
         },
         {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large",
+          "name": "icon-extra-large",
+          "seeds": [
+            {
+              "key": "iconSize",
+              "raw": "extra-large",
+              "kitAxis": "Icon size",
+              "kitValue": "xLg 36"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_icon-extra-large-disabled",
+          "name": "icon-extra-large-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Tonal",
+              "kitAxis": "Style",
+              "kitValue": "Tonal"
+            },
+            {
+              "key": "Icon size",
+              "raw": "xLg 36",
+              "kitAxis": "Icon size",
+              "kitValue": "xLg 36"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
           "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined",
           "name": "outlined",
           "seeds": [
@@ -5906,6 +5774,54 @@
               "raw": "26 (Default)",
               "kitAxis": "Icon size",
               "kitValue": "26 (Default)"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-icon-large",
+          "name": "outlined-icon-large",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Outline",
+              "kitAxis": "Style",
+              "kitValue": "Outline"
+            },
+            {
+              "key": "Icon size",
+              "raw": "Lrg 32",
+              "kitAxis": "Icon size",
+              "kitValue": "Lrg 32"
+            },
+            {
+              "key": "Disabled",
+              "raw": "No",
+              "kitAxis": "Disabled",
+              "kitValue": "No"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-icon-large-disabled",
+          "name": "outlined-icon-large-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Outline",
+              "kitAxis": "Style",
+              "kitValue": "Outline"
+            },
+            {
+              "key": "Icon size",
+              "raw": "Lrg 32",
+              "kitAxis": "Icon size",
+              "kitValue": "Lrg 32"
             },
             {
               "key": "Disabled",
@@ -5964,14 +5880,50 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-icon-large",
-          "name": "outlined-icon-large",
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child",
+          "name": "child",
+          "seeds": [
+            {
+              "key": "style",
+              "raw": "child",
+              "kitAxis": "Style",
+              "kitValue": "Child (No background)"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-disabled",
+          "name": "child-disabled",
           "seeds": [
             {
               "key": "Style",
-              "raw": "Outline",
+              "raw": "Child (No background)",
               "kitAxis": "Style",
-              "kitValue": "Outline"
+              "kitValue": "Child (No background)"
+            },
+            {
+              "key": "Icon size",
+              "raw": "26 (Default)",
+              "kitAxis": "Icon size",
+              "kitValue": "26 (Default)"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-large",
+          "name": "child-icon-large",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Child (No background)",
+              "kitAxis": "Style",
+              "kitValue": "Child (No background)"
             },
             {
               "key": "Icon size",
@@ -5988,20 +5940,68 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_outlined-icon-large-disabled",
-          "name": "outlined-icon-large-disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-large-disabled",
+          "name": "child-icon-large-disabled",
           "seeds": [
             {
               "key": "Style",
-              "raw": "Outline",
+              "raw": "Child (No background)",
               "kitAxis": "Style",
-              "kitValue": "Outline"
+              "kitValue": "Child (No background)"
             },
             {
               "key": "Icon size",
               "raw": "Lrg 32",
               "kitAxis": "Icon size",
               "kitValue": "Lrg 32"
+            },
+            {
+              "key": "Disabled",
+              "raw": "Yes",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-extra-large",
+          "name": "child-icon-extra-large",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Child (No background)",
+              "kitAxis": "Style",
+              "kitValue": "Child (No background)"
+            },
+            {
+              "key": "Icon size",
+              "raw": "xLg 36",
+              "kitAxis": "Icon size",
+              "kitValue": "xLg 36"
+            },
+            {
+              "key": "Disabled",
+              "raw": "No",
+              "kitAxis": "Disabled",
+              "kitValue": "No"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.LoadingButtonPreviewsKt.LoadingRemoteButton_width=227dp,height=100dp,dpi=320_VARIANT_child-icon-extra-large-disabled",
+          "name": "child-icon-extra-large-disabled",
+          "seeds": [
+            {
+              "key": "Style",
+              "raw": "Child (No background)",
+              "kitAxis": "Style",
+              "kitValue": "Child (No background)"
+            },
+            {
+              "key": "Icon size",
+              "raw": "xLg 36",
+              "kitAxis": "Icon size",
+              "kitValue": "xLg 36"
             },
             {
               "key": "Disabled",
@@ -6020,14 +6020,12 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.LevelRailRemote_192dp",
       "renders": [
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.LevelRailRemote_192dp_VARIANT_disabled",
-          "name": "disabled",
+          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.LevelRailRemote_192dp_VARIANT_low",
+          "name": "low",
           "seeds": [
             {
-              "key": "enabled",
-              "raw": "false",
-              "kitAxis": "Disabled",
-              "kitValue": "Yes"
+              "key": "value",
+              "raw": "0.15"
             }
           ]
         },
@@ -6042,12 +6040,14 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.LevelRailRemote_192dp_VARIANT_low",
-          "name": "low",
+          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.LevelRailRemote_192dp_VARIANT_disabled",
+          "name": "disabled",
           "seeds": [
             {
-              "key": "value",
-              "raw": "0.15"
+              "key": "enabled",
+              "raw": "false",
+              "kitAxis": "Disabled",
+              "kitValue": "Yes"
             }
           ]
         },
@@ -6100,30 +6100,6 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.ScrollRailRemote_192dp",
       "renders": [
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.ScrollRailRemote_192dp_VARIANT_bottom",
-          "name": "bottom",
-          "seeds": [
-            {
-              "key": "position",
-              "raw": "1.0",
-              "kitAxis": "Position",
-              "kitValue": "Bottom"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.ScrollRailRemote_192dp_VARIANT_middle",
-          "name": "middle",
-          "seeds": [
-            {
-              "key": "position",
-              "raw": "0.5",
-              "kitAxis": "Position",
-              "kitValue": "Middle"
-            }
-          ]
-        },
-        {
           "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.ScrollRailRemote_192dp_VARIANT_size-40",
           "name": "size-40",
           "seeds": [
@@ -6168,6 +6144,30 @@
               "raw": "0.7",
               "kitAxis": "Position",
               "kitValue": "70% (Max)"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.ScrollRailRemote_192dp_VARIANT_middle",
+          "name": "middle",
+          "seeds": [
+            {
+              "key": "position",
+              "raw": "0.5",
+              "kitAxis": "Position",
+              "kitValue": "Middle"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.PositionIndicatorPreviewsKt.ScrollRailRemote_192dp_VARIANT_bottom",
+          "name": "bottom",
+          "seeds": [
+            {
+              "key": "position",
+              "raw": "1.0",
+              "kitAxis": "Position",
+              "kitValue": "Bottom"
             }
           ]
         },
@@ -6220,22 +6220,152 @@
       "basePreviewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320",
       "renders": [
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_12-sided-cookie",
-          "name": "12-sided-cookie",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_square",
+          "name": "square",
           "seeds": [
             {
               "key": "shape",
-              "raw": "12-sided cookie"
+              "raw": "square"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_4-leaf-clover",
-          "name": "4-leaf-clover",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_slanted",
+          "name": "slanted",
           "seeds": [
             {
               "key": "shape",
-              "raw": "4-leaf clover"
+              "raw": "slanted"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_arch",
+          "name": "arch",
+          "seeds": [
+            {
+              "key": "shape",
+              "raw": "arch"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_fan",
+          "name": "fan",
+          "seeds": [
+            {
+              "key": "shape",
+              "raw": "fan"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_arrow",
+          "name": "arrow",
+          "seeds": [
+            {
+              "key": "shape",
+              "raw": "arrow"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_semicircle",
+          "name": "semicircle",
+          "seeds": [
+            {
+              "key": "shape",
+              "raw": "semicircle"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_oval",
+          "name": "oval",
+          "seeds": [
+            {
+              "key": "shape",
+              "raw": "oval"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_pill",
+          "name": "pill",
+          "seeds": [
+            {
+              "key": "shape",
+              "raw": "pill"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_triangle",
+          "name": "triangle",
+          "seeds": [
+            {
+              "key": "shape",
+              "raw": "triangle"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_diamond",
+          "name": "diamond",
+          "seeds": [
+            {
+              "key": "shape",
+              "raw": "diamond"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_hexagon",
+          "name": "hexagon",
+          "seeds": [
+            {
+              "key": "shape",
+              "raw": "hexagon"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_pantagon",
+          "name": "pantagon",
+          "seeds": [
+            {
+              "key": "shape",
+              "raw": "pantagon"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_gem",
+          "name": "gem",
+          "seeds": [
+            {
+              "key": "shape",
+              "raw": "gem"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_very-sunny",
+          "name": "very-sunny",
+          "seeds": [
+            {
+              "key": "shape",
+              "raw": "very sunny"
+            }
+          ]
+        },
+        {
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_sunny",
+          "name": "sunny",
+          "seeds": [
+            {
+              "key": "shape",
+              "raw": "sunny"
             }
           ]
         },
@@ -6270,16 +6400,6 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_8-leaf-clover",
-          "name": "8-leaf-clover",
-          "seeds": [
-            {
-              "key": "shape",
-              "raw": "8-leaf clover"
-            }
-          ]
-        },
-        {
           "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_9-sided-cookie",
           "name": "9-sided-cookie",
           "seeds": [
@@ -6290,92 +6410,12 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_arch",
-          "name": "arch",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_12-sided-cookie",
+          "name": "12-sided-cookie",
           "seeds": [
             {
               "key": "shape",
-              "raw": "arch"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_arrow",
-          "name": "arrow",
-          "seeds": [
-            {
-              "key": "shape",
-              "raw": "arrow"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_boom",
-          "name": "boom",
-          "seeds": [
-            {
-              "key": "shape",
-              "raw": "boom"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_bun",
-          "name": "bun",
-          "seeds": [
-            {
-              "key": "shape",
-              "raw": "bun"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_burst",
-          "name": "burst",
-          "seeds": [
-            {
-              "key": "shape",
-              "raw": "burst"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_diamond",
-          "name": "diamond",
-          "seeds": [
-            {
-              "key": "shape",
-              "raw": "diamond"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_fan",
-          "name": "fan",
-          "seeds": [
-            {
-              "key": "shape",
-              "raw": "fan"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_flower",
-          "name": "flower",
-          "seeds": [
-            {
-              "key": "shape",
-              "raw": "flower"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_gem",
-          "name": "gem",
-          "seeds": [
-            {
-              "key": "shape",
-              "raw": "gem"
+              "raw": "12-sided cookie"
             }
           ]
         },
@@ -6390,72 +6430,72 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_heart",
-          "name": "heart",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_4-leaf-clover",
+          "name": "4-leaf-clover",
           "seeds": [
             {
               "key": "shape",
-              "raw": "heart"
+              "raw": "4-leaf clover"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_hexagon",
-          "name": "hexagon",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_8-leaf-clover",
+          "name": "8-leaf-clover",
           "seeds": [
             {
               "key": "shape",
-              "raw": "hexagon"
+              "raw": "8-leaf clover"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_oval",
-          "name": "oval",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_burst",
+          "name": "burst",
           "seeds": [
             {
               "key": "shape",
-              "raw": "oval"
+              "raw": "burst"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_pantagon",
-          "name": "pantagon",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_soft-burst",
+          "name": "soft-burst",
           "seeds": [
             {
               "key": "shape",
-              "raw": "pantagon"
+              "raw": "soft burst"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_pill",
-          "name": "pill",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_boom",
+          "name": "boom",
           "seeds": [
             {
               "key": "shape",
-              "raw": "pill"
+              "raw": "boom"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_pixel-circle",
-          "name": "pixel-circle",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_soft-boom",
+          "name": "soft-boom",
           "seeds": [
             {
               "key": "shape",
-              "raw": "pixel circle"
+              "raw": "soft boom"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_pixel-triangle",
-          "name": "pixel-triangle",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_flower",
+          "name": "flower",
           "seeds": [
             {
               "key": "shape",
-              "raw": "pixel triangle"
+              "raw": "flower"
             }
           ]
         },
@@ -6480,82 +6520,42 @@
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_semicircle",
-          "name": "semicircle",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_pixel-circle",
+          "name": "pixel-circle",
           "seeds": [
             {
               "key": "shape",
-              "raw": "semicircle"
+              "raw": "pixel circle"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_slanted",
-          "name": "slanted",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_pixel-triangle",
+          "name": "pixel-triangle",
           "seeds": [
             {
               "key": "shape",
-              "raw": "slanted"
+              "raw": "pixel triangle"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_soft-boom",
-          "name": "soft-boom",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_bun",
+          "name": "bun",
           "seeds": [
             {
               "key": "shape",
-              "raw": "soft boom"
+              "raw": "bun"
             }
           ]
         },
         {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_soft-burst",
-          "name": "soft-burst",
+          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_heart",
+          "name": "heart",
           "seeds": [
             {
               "key": "shape",
-              "raw": "soft burst"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_square",
-          "name": "square",
-          "seeds": [
-            {
-              "key": "shape",
-              "raw": "square"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_sunny",
-          "name": "sunny",
-          "seeds": [
-            {
-              "key": "shape",
-              "raw": "sunny"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_triangle",
-          "name": "triangle",
-          "seeds": [
-            {
-              "key": "shape",
-              "raw": "triangle"
-            }
-          ]
-        },
-        {
-          "previewId": "ee.schimke.wearm3catalog.remote.ShapePreviewsKt.MaterialShapesRemote_width=227dp,height=100dp,dpi=320_VARIANT_very-sunny",
-          "name": "very-sunny",
-          "seeds": [
-            {
-              "key": "shape",
-              "raw": "very sunny"
+              "raw": "heart"
             }
           ]
         }
