@@ -3,8 +3,8 @@ package ee.schimke.remote.calculator
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.toAwtImage
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.captureToImage
@@ -13,31 +13,72 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.compose.ui.test.swipe
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
+import ee.schimke.composeai.rcplayer.compose.LocalRcComponentCoordinates
+import ee.schimke.composeai.rcplayer.compose.RcComponentCoordinatesListener
+import ee.schimke.composeai.rcplayer.runtime.RcPlayerEvent
 import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 import javax.imageio.ImageIO
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 /**
- * Plays the real widget document and drives it through the player's own touch handling: every key
- * press below is a pointer event at a key's position, so it exercises the document's click actions
- * and the bridge's routing, not the session directly.
+ * Plays each backend's real document and drives it through the player's own touch handling: every
+ * key press is a pointer event at a key's position, and every check reads the text the player laid
+ * out. The same scenario runs against both backends and expects the same display, so the document's
+ * expressions are held to the Kotlin engine.
  */
 @OptIn(ExperimentalTestApi::class)
 class CalculatorWidgetUiTest {
-  // The layout's grid, in dp from the widget's top-left: the content slot starts at the padding,
-  // the display row is DISPLAY_HEIGHT tall, then four equal rows of four equal columns.
-  private val content = LargeWidgetHost.CONTENT_WIDTH_DP to LargeWidgetHost.CONTENT_HEIGHT_DP
-  private val pad = LargeWidgetHost.PADDING_DP
-  private val displayHeight = 26f
+  @Test fun hostActions() = scenario(Backend.HostActions)
 
-  private fun keyCentre(row: Int, column: Int): Pair<Float, Float> {
-    val keyWidth = content.first / 4
-    val rowHeight = (content.second - displayHeight) / 4
-    val x = pad + column * keyWidth + keyWidth / 2
-    val y = pad + displayHeight + row * rowHeight + rowHeight / 2
-    return x to y
+  @Test fun documentExpressions() = scenario(Backend.DocumentExpressions)
+
+  /** What the player last laid out for each text component. */
+  private class LaidOutText : RcComponentCoordinatesListener {
+    private class Text(val text: String, val sizeSp: Float, val x: Float)
+
+    private val texts = ConcurrentHashMap<Int, Text>()
+
+    override fun onPositioned(componentId: Int, coordinates: LayoutCoordinates) = Unit
+
+    override fun onTextLaidOut(
+      componentId: Int,
+      content: LayoutCoordinates,
+      layout: TextLayoutResult,
+    ) {
+      texts[componentId] =
+        Text(
+          layout.layoutInput.text.text,
+          layout.layoutInput.style.fontSize.value,
+          content.localToRoot(Offset.Zero).x,
+        )
+    }
+
+    /** The number: the one text at the display's size. */
+    val display: String?
+      get() = texts.values.singleOrNull { it.sizeSp == DISPLAY_SIZE.toFloat() }?.text
+
+    /** The pending operation: the display row's small text, right of the `f(x)` key. */
+    val expression: String?
+      get() =
+        texts.values
+          .filter { it.sizeSp == EXPRESSION_SIZE.toFloat() && it.x > 40f * SCALE }
+          .singleOrNull()
+          ?.text
+  }
+
+  private fun keyCentre(row: Int, column: Int): Offset {
+    val keyWidth = LargeWidgetHost.CONTENT_WIDTH_DP / 4
+    val rowHeight = (LargeWidgetHost.CONTENT_HEIGHT_DP - DISPLAY_HEIGHT) / 4
+    val pad = LargeWidgetHost.PADDING_DP
+    return Offset(
+      pad + column * keyWidth + keyWidth / 2,
+      pad + DISPLAY_HEIGHT + row * rowHeight + rowHeight / 2,
+    )
   }
 
   private val keys =
@@ -60,83 +101,116 @@ class CalculatorWidgetUiTest {
       '/' to (3 to 3),
     )
 
-  private fun ComposeUiTest.widget(): SemanticsNodeInteraction = onNodeWithTag(WIDGET_TEST_TAG)
+  private val displayRowY = LargeWidgetHost.PADDING_DP + DISPLAY_HEIGHT / 2
 
-  private fun ComposeUiTest.tap(x: Float, y: Float) {
-    widget().performTouchInput { click(Offset(x * SCALE, y * SCALE)) }
-    waitForIdle()
-  }
-
-  private fun ComposeUiTest.press(sequence: String) = sequence.forEach { key ->
-    val (row, column) = keys.getValue(key)
-    val (x, y) = keyCentre(row, column)
-    tap(x, y)
-  }
-
-  private fun ComposeUiTest.pressMore() = tap(pad + 17f, pad + displayHeight / 2)
-
-  private fun ComposeUiTest.swipeDisplay() {
-    val y = pad + displayHeight / 2
-    widget().performTouchInput {
-      swipe(Offset((pad + 60f) * SCALE, y * SCALE), Offset((pad + 190f) * SCALE, y * SCALE))
-    }
-    waitForIdle()
-  }
-
-  private fun ComposeUiTest.awaitDisplay(session: CalculatorSession, expected: String) {
-    waitUntil(timeoutMillis = 5_000) { session.calculator.display == expected }
-    assertEquals(expected, session.calculator.display)
-  }
-
-  private fun ComposeUiTest.snapshot(name: String) {
-    waitForIdle()
-    val directory = File(System.getProperty("calculator.screenshots") ?: "build/screenshots")
-    directory.mkdirs()
-    ImageIO.write(widget().captureToImage().toAwtImage(), "png", File(directory, "$name.png"))
-  }
-
-  @Test
-  fun keysSwipeAndMoreOperators() = runComposeUiTest {
-    val session = CalculatorSession()
+  private fun scenario(backend: Backend) = runComposeUiTest {
+    val texts = LaidOutText()
+    val events = java.util.concurrent.CopyOnWriteArrayList<RcPlayerEvent>()
     setContent {
       // A watch's density, so the captures read at the size a person sees them.
-      CompositionLocalProvider(LocalDensity provides Density(SCALE)) {
-        CalculatorWidgetHost(session)
+      CompositionLocalProvider(
+        LocalDensity provides Density(SCALE),
+        LocalRcComponentCoordinates provides texts,
+      ) {
+        CalculatorWidgetHost(backend, onPlayerEvent = { events += it })
       }
     }
-    waitUntil(timeoutMillis = 10_000) { runCatching { widget().assertExists() }.isSuccess }
-    // The player renders asynchronously; give the first document time to arrive.
-    Thread.sleep(1_500)
-    waitForIdle()
+    val widget = onNodeWithTag(widgetTestTag(backend))
+
+    fun tapDp(at: Offset) {
+      widget.performTouchInput { click(at * SCALE) }
+      waitForIdle()
+    }
+
+    fun press(sequence: String) = sequence.forEach { key ->
+      val (row, column) = keys.getValue(key)
+      tapDp(keyCentre(row, column))
+    }
+
+    fun swipeDisplay() {
+      widget.performTouchInput {
+        swipe(Offset(60f, displayRowY) * SCALE, Offset(190f, displayRowY) * SCALE)
+      }
+      waitForIdle()
+    }
+
+    fun shows(expected: String, expression: String? = null) {
+      // Not `waitUntil` alone: on a timeout the assertions below say what was drawn instead.
+      runCatching {
+        waitUntil(timeoutMillis = 5_000) {
+          texts.display == expected && (expression == null || texts.expression == expression)
+        }
+      }
+      assertEquals(expected, texts.display, "$backend display")
+      if (expression != null) assertEquals(expression, texts.expression, "$backend expression")
+    }
+
+    fun snapshot(name: String) = widget.snapshot(backend, name)
+
+    shows("0")
     snapshot("0-initial")
 
     press("106500")
-    awaitDisplay(session, "106500")
+    shows("106500")
     press("*")
-    awaitDisplay(session, "106500")
-    assertEquals(Operator.Multiply, session.calculator.pending)
+    shows("106500", expression = "106500 ×")
     snapshot("1-pending-multiply")
 
     press("2=")
-    awaitDisplay(session, "213000")
+    shows("213000", expression = "")
     snapshot("2-result")
 
-    pressMore()
-    waitUntil { session.moreOperators }
+    // f(x), then the first key of the second set: ±. The set is a one-off.
+    tapDp(Offset(LargeWidgetHost.PADDING_DP + 17f, displayRowY))
+    waitForIdle()
     snapshot("3-more-operators")
-    // In the second set, the third row of the operator column is √.
-    press("*")
-    awaitDisplay(session, "461.51923")
-    assertEquals(false, session.moreOperators)
+    press("+")
+    shows("-213000")
+    press("+3=")
+    shows("-212997")
 
     swipeDisplay()
-    awaitDisplay(session, "0")
+    shows("0")
     snapshot("4-cleared-by-swipe")
 
     // A tap on the display is not a swipe.
     press("7")
-    tap(pad + 120f, pad + displayHeight / 2)
-    awaitDisplay(session, "7")
+    tapDp(Offset(LargeWidgetHost.PADDING_DP + 120f, displayRowY))
+    shows("7")
+
+    press("/0=")
+    shows("Error")
+    press("4")
+    shows("4")
+
+    press("+3==")
+    shows("10")
+
+    swipeDisplay()
+    press(".25")
+    shows("0.25")
+    press("+1.5=")
+    shows("1.75")
+
+    press("2.50")
+    shows("2.50")
+
+    val hostActions = events.filter {
+      it is RcPlayerEvent.HostNamedAction || it is RcPlayerEvent.HostAction
+    }
+    when (backend) {
+      // The bridge handles the keys itself; only the swipe's two touch events reach the host.
+      Backend.HostActions -> assertTrue(hostActions.isNotEmpty())
+      // The whole scenario ran in the document.
+      Backend.DocumentExpressions -> assertEquals(emptyList(), hostActions)
+    }
+  }
+
+  private fun SemanticsNodeInteraction.snapshot(backend: Backend, name: String) {
+    val directory =
+      File(System.getProperty("calculator.screenshots") ?: "build/screenshots", backend.name)
+    directory.mkdirs()
+    ImageIO.write(captureToImage().toAwtImage(), "png", File(directory, "$name.png"))
   }
 }
 

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,9 +28,17 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import ee.schimke.composeai.rcplayer.compose.RcPlayerTheme
 import ee.schimke.composeai.rcplayer.embedded.RcEmbeddedPlayer
-import ee.schimke.composeai.rcplayer.runtime.RcHostActionValue
 import ee.schimke.composeai.rcplayer.runtime.RcPlayerEvent
 import kotlin.math.roundToInt
+
+/** Where the calculator's logic runs. The layout is the same document either way. */
+enum class Backend(val title: String) {
+  /** Named host values and host actions: the app process calculates ([CalculatorSession]). */
+  HostActions("Host actions"),
+
+  /** Remote state and value-change expressions: the document calculates by itself. */
+  DocumentExpressions("Document expressions"),
+}
 
 /** The Pixel Watch (squircle) large widget host: the container, its padding and its corners. */
 internal object LargeWidgetHost {
@@ -41,17 +50,23 @@ internal object LargeWidgetHost {
   const val CONTENT_HEIGHT_DP = HEIGHT_DP - 2 * PADDING_DP
 }
 
-internal const val WIDGET_TEST_TAG = "calculator-widget"
+internal fun widgetTestTag(backend: Backend) = "calculator-widget-${backend.name}"
 
 /**
- * The widget as a launcher would show it: [CalculatorWidget] played live by rc-players' embedded
- * player inside the large container's frame.
+ * The widget as a launcher would show it: [CalculatorLayout] played live by rc-players' embedded
+ * player inside the large container's frame, with its logic in [backend].
  *
- * Key presses arrive as the bridge's named actions and go straight to [session]; the swipe's two
- * touch events carry a value, which the bridge does not route, so they arrive here.
+ * [session] is the host-actions backend's state. The document-expressions backend never touches it,
+ * and nothing on this side reads the document's own state.
  */
 @Composable
-fun CalculatorWidgetHost(session: CalculatorSession, modifier: Modifier = Modifier) {
+fun CalculatorWidgetHost(
+  backend: Backend,
+  modifier: Modifier = Modifier,
+  session: CalculatorSession = remember { CalculatorSession() },
+  /** Every event the player raises, for whoever is watching (the UI test). */
+  onPlayerEvent: (RcPlayerEvent) -> Unit = {},
+) {
   val density = LocalDensity.current
   val display =
     remember(density) {
@@ -61,9 +76,10 @@ fun CalculatorWidgetHost(session: CalculatorSession, modifier: Modifier = Modifi
         (160 * density.density).roundToInt(),
       )
     }
+  val widthPx = display.size.width
   Box(
     modifier
-      .testTag(WIDGET_TEST_TAG)
+      .testTag(widgetTestTag(backend))
       .size(LargeWidgetHost.WIDTH_DP.dp, LargeWidgetHost.HEIGHT_DP.dp)
       .clip(RoundedCornerShape(LargeWidgetHost.CORNER_DP.dp))
       .background(Palette.background)
@@ -73,37 +89,45 @@ fun CalculatorWidgetHost(session: CalculatorSession, modifier: Modifier = Modifi
       display = display,
       modifier = Modifier.fillMaxSize(),
       theme = RcPlayerTheme.Dark,
-      onEvent = { event -> session.onTouch(event, display.size.width) },
+      onEvent = { event ->
+        onPlayerEvent(event)
+        if (backend == Backend.HostActions) session.onPlayerEvent(event, widthPx)
+      },
       onFailure = { it.printStackTrace() },
-      key = session,
+      key = backend to session,
     ) {
-      CalculatorWidget(session)
+      val bindings =
+        when (backend) {
+          Backend.HostActions -> rememberHostBindings(session)
+          Backend.DocumentExpressions -> rememberDocumentBindings(widthPx * SWIPE_FRACTION)
+        }
+      CalculatorLayout(bindings)
     }
   }
 }
 
-private fun CalculatorSession.onTouch(event: RcPlayerEvent, widthPx: Float) {
-  val action = event as? RcPlayerEvent.HostNamedAction ?: return
-  val x = (action.value as? RcHostActionValue.FloatValue)?.value ?: return
-  when (action.name) {
-    CalculatorSession.SWIPE_START -> swipeStarted(x)
-    CalculatorSession.SWIPE_END -> swipeEnded(x, widthPx)
-  }
-}
-
 fun main() = application {
-  val session = remember { CalculatorSession() }
   Window(
     onCloseRequest = ::exitApplication,
     title = "Wear widget calculator",
-    state = rememberWindowState(size = DpSize(420.dp, 340.dp)),
+    state = rememberWindowState(size = DpSize(600.dp, 320.dp)),
   ) {
     Column(
       Modifier.fillMaxSize().background(Color.Black).padding(24.dp),
       verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-      CalculatorWidgetHost(session)
+      Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+        Backend.entries.forEach { backend ->
+          Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+          ) {
+            CalculatorWidgetHost(backend)
+            BasicText(backend.title, style = TextStyle(color = Color.White, fontSize = 13.sp))
+          }
+        }
+      }
       BasicText(
         "Tap the keys. Swipe across the display to clear. f(x) swaps in ± % √ x².",
         style = TextStyle(color = Color(0xFFC4C6D0), fontSize = 12.sp),
