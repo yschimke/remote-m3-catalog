@@ -102,9 +102,10 @@ annotation class CatalogRemoteWidgetRoundLarge
 
 /**
  * Canvas for the **tile** sticker: the whole 240dp round screen a tile carousel page fills, the
- * same screen the squircle and round host specs above are measured for.
+ * same screen the squircle and round host specs above are measured for. Pinned to `dpi=320`,
+ * density 2.0, like the component frames in `CatalogTheme.kt`.
  */
-@Preview(showBackground = false, widthDp = 240, heightDp = 240)
+@Preview(showBackground = false, device = "spec:width=240dp,height=240dp,dpi=320")
 annotation class CatalogRemoteWidgetTile
 
 // The squircle host spec (240dp screen) from upstream's `WidgetPreviewParams`.

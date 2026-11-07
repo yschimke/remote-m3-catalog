@@ -33,7 +33,8 @@ class WidgetContainerIrCaptureTest {
       // carries the encoded document, and nothing about the round footprint exempts it.
       "WidgetContainerRoundSmallRemote",
       "WidgetContainerRoundLargeRemote",
-      "WidgetContainerTileRemote",
+      // A `device =` frame (it pins dpi=320), so the frame is part of the render's stem.
+      "WidgetContainerTileRemote_width_240dp_height_240dp_dpi_320",
     )
 
   @Test
@@ -71,7 +72,8 @@ class WidgetContainerIrCaptureTest {
         "WidgetContainerGradientRemote" to listOf("Gradient"),
         "WidgetContainerRoundSmallRemote" to listOf("Next: Standup 10:30"),
         "WidgetContainerRoundLargeRemote" to listOf("Morning run", "28 min"),
-        "WidgetContainerTileRemote" to listOf("Morning run", "28 min"),
+        "WidgetContainerTileRemote_width_240dp_height_240dp_dpi_320" to
+          listOf("Morning run", "28 min"),
       )
     for ((stem, strings) in expected) {
       val bytes = renderFile(rendersDir, stem, ext = "rc").readBytes().toString(Charsets.UTF_8)
