@@ -2,6 +2,11 @@
 
 package ee.schimke.wearm3catalog.remote
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
 import androidx.compose.remote.creation.compose.layout.RemoteBox
 import androidx.compose.remote.creation.compose.layout.RemoteColumn
@@ -11,8 +16,12 @@ import androidx.compose.remote.creation.compose.modifier.fillMaxSize
 import androidx.compose.remote.creation.compose.state.rc
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.glance.wear.WearWidgetBrush
 import androidx.glance.wear.core.ContainerInfo
 import androidx.glance.wear.core.WearWidgetParams
@@ -91,6 +100,14 @@ annotation class CatalogRemoteWidgetRoundSmall
 @Preview(showBackground = false, widthDp = 230, heightDp = 168)
 annotation class CatalogRemoteWidgetRoundLarge
 
+/**
+ * Canvas for the **tile** sticker: the whole 240dp round screen a tile carousel page fills, the
+ * same screen the squircle and round host specs above are measured for. Pinned to `dpi=320`,
+ * density 2.0, like the component frames in `CatalogTheme.kt`.
+ */
+@Preview(showBackground = false, device = "spec:width=240dp,height=240dp,dpi=320")
+annotation class CatalogRemoteWidgetTile
+
 // The squircle host spec (240dp screen) from upstream's `WidgetPreviewParams`.
 // `WidgetInstanceId` uses the same "tiles" carousel namespace as upstream; the id is
 // inert in a preview capture (it only matters to a live host round-trip).
@@ -143,6 +160,51 @@ private val roundLargeWidgetParams =
     verticalPaddingDp = 16f,
     cornerRadiusDp = 999f,
   )
+
+// A widget shown as a tile (Glance Wear's `CONTAINER_TYPE_TILE_COMPAT`), whose contents the
+// platform restricts to "specs similar to" the Large container — so the Large squircle spec,
+// stated with the tile-compat container type. The capture does not branch on the type, so the
+// document is the Large one; the type says which host the sticker stands for.
+private val tileWidgetParams =
+  WearWidgetParams(
+    instanceId = WidgetInstanceId("tiles", 10),
+    containerType = ContainerInfo.CONTAINER_TYPE_TILE_COMPAT,
+    widthDp = 200f,
+    heightDp = 108f,
+    horizontalPaddingDp = 8f,
+    verticalPaddingDp = 8f,
+    cornerRadiusDp = 26f,
+  )
+
+// Where the system draws a tile's app icon: ProtoLayout Material 3's `primaryLayout` reserves a
+// 24dp icon slot 3dp below the top of the screen (`PrimaryLayoutDefaults.HEADER_ICON_SIZE_DP`,
+// `HEADER_MARGIN_TOP_DP`) and the system places the icon in it, over the centred main content.
+private const val TILE_ICON_TOP_DP = 3
+private const val TILE_ICON_DP = 24
+private const val TILE_SCREEN_DP = 240
+
+/**
+ * A round watch screen with the system's tile icon slot at the top and [content], the widget
+ * container, centred on it. Ordinary Compose around the capture: the tile page is drawn by the
+ * host's renderer, which is not public, so neither it nor the icon is part of the widget's
+ * document. The icon is a neutral placeholder disc — a sticker has no app to take one from.
+ */
+@Composable
+private fun PixelWatchTileScreen(content: @Composable () -> Unit) {
+  Box(
+    Modifier.size(TILE_SCREEN_DP.dp).clip(CircleShape).background(Color.Black),
+    contentAlignment = Alignment.Center,
+  ) {
+    Box(
+      Modifier.align(Alignment.TopCenter)
+        .padding(top = TILE_ICON_TOP_DP.dp)
+        .size(TILE_ICON_DP.dp)
+        .clip(CircleShape)
+        .background(Color(0xFF3C4043))
+    )
+    content()
+  }
+}
 
 // Fills the container's padded content slot and centres the given content in it.
 // `WearWidgetContainer` lays content out top-start; a real widget supplies its own
@@ -270,6 +332,39 @@ fun WidgetContainerRoundLargeRemote() {
       RemoteColumn {
         RemoteText("Morning run".rs, style = RemoteMaterialTheme.typography.bodyLarge)
         RemoteText("5.2 km · 28 min".rs, style = RemoteMaterialTheme.typography.labelSmall)
+      }
+    }
+  }
+}
+
+/**
+ * The Large widget container as a Pixel Watch shows it in the **tile** carousel. Hosts without
+ * partial-height widgets (Wear OS 4–6, and Wear OS 7 on the Pixel Watch) show a widget whose
+ * service also binds `BIND_TILE_PROVIDER` as a full-screen tile, in `CONTAINER_TYPE_TILE_COMPAT`:
+ * the system's app icon at the top of the screen and the widget below it. Carries the same title +
+ * supporting line as [WidgetContainerLargeRemote], so the two differ only in what the host draws.
+ */
+@CatalogComponent(
+  id = "WidgetContainer/Tile",
+  group = "Widget Container",
+  noReference =
+    "A widget in the Glance Wear tile-compat host (`ContainerInfo.CONTAINER_TYPE_TILE_COMPAT`): " +
+      "the tile page around it is drawn by the system renderer, not a kit component.",
+  caption =
+    "The Large widget container as a Pixel Watch shows it as a tile — the full round screen, the " +
+      "system's 24dp app icon slot 3dp from the top, the 200×108dp squircle centred. The screen " +
+      "and icon placeholder are drawn around the capture; the document is the widget's alone.",
+)
+@CatalogRemoteWidgetTile
+@Composable
+fun WidgetContainerTileRemote() {
+  PixelWatchTileScreen {
+    CapturingWearWidgetPreview(params = tileWidgetParams, background = WearWidgetBrush) {
+      CenteredWidgetContent {
+        RemoteColumn {
+          RemoteText("Morning run".rs, style = RemoteMaterialTheme.typography.bodyLarge)
+          RemoteText("5.2 km · 28 min".rs, style = RemoteMaterialTheme.typography.labelSmall)
+        }
       }
     }
   }
