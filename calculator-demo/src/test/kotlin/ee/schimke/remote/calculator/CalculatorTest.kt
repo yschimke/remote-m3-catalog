@@ -90,4 +90,6 @@ class CalculatorTest {
   @Test fun unaryOperandIsKeptForTheNextOperator() = shows("15", "2 + 3 sq + 4 =")
 
   @Test fun unaryOperandIsKeptForEquals() = shows("11", "2 + 3 sq =")
+
+  @Test fun anErrorForgetsTheRepeat() = shows("4", "2 + 3 = neg sqrt 4 =")
 }

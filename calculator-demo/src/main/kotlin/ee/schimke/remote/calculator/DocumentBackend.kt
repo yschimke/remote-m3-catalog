@@ -168,7 +168,7 @@ private class DocumentCalculator(val current: Registers, val next: Registers) {
             Register.Operator().isEqualTo(1f.rf) or Register.Operator().isEqualTo(2f.rf)
           additive.select(Register.Accumulator() * entry / 100f, entry / 100f)
         }
-        2 -> sqrt(entry)
+        2 -> entry.isLessThan(0f.rf).select(OUT_OF_RANGE.rf, sqrt(entry))
         else -> entry * entry
       }
     val good = inRange(value)
@@ -177,6 +177,8 @@ private class DocumentCalculator(val current: Registers, val next: Registers) {
       Register.Error to good.select(0f.rf, 1f.rf),
       Register.Operator to good.select(Register.Operator(), 0f.rf),
       Register.Accumulator to good.select(Register.Accumulator(), 0f.rf),
+      // An error forgets everything, as the Kotlin engine's does: `2 + 3 = ± √` then `4 =` is 4.
+      Register.RepeatOperator to good.select(Register.RepeatOperator(), 0f.rf),
       Register.Operand to 1f.rf,
     ) + newNumber
   }
@@ -255,10 +257,21 @@ private class DocumentCalculator(val current: Registers, val next: Registers) {
           left + right,
           operator
             .isEqualTo(2f.rf)
-            .select(left - right, operator.isEqualTo(3f.rf).select(left * right, left / right)),
+            .select(
+              left - right,
+              operator
+                .isEqualTo(3f.rf)
+                .select(left * right, right.isEqualTo(0f.rf).select(OUT_OF_RANGE.rf, left / right)),
+            ),
         )
 
-    /** False for NaN and infinity too: a comparison with NaN is false. */
+    /**
+     * Never NaN: this player's range check lets NaN through, so the two operations that would make
+     * one, √ of a negative number and division by zero, give this instead.
+     */
+    private const val OUT_OF_RANGE = 1e30f
+
+    /** False for infinity too. NaN must not reach it: see [OUT_OF_RANGE]. */
     fun inRange(value: RemoteFloat): RemoteBoolean =
       abs(value).isLessThanOrEqualTo(DOCUMENT_LIMIT.rf)
 

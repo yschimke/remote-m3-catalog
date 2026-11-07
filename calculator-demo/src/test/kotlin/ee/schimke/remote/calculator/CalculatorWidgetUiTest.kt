@@ -205,6 +205,18 @@ class CalculatorWidgetUiTest {
     press("+4=")
     shows("15")
 
+    // An error from a unary key forgets the repeat too: `2 + 3 = ± √` is an error, and `4 =` after
+    // it is 4, not 4 + 3.
+    swipeDisplay()
+    press("2+3=")
+    tapDp(Offset(LargeWidgetHost.PADDING_DP + 17f, displayRowY))
+    press("+")
+    tapDp(Offset(LargeWidgetHost.PADDING_DP + 17f, displayRowY))
+    press("*")
+    shows("Error")
+    press("4=")
+    shows("4")
+
     // Every place a typed number can reach is shown.
     swipeDisplay()
     press(".0000001")
