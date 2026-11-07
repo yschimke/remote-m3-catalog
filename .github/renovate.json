@@ -61,7 +61,9 @@
     {
       "description": "LAST-GROUP CARVE-OUT, like contracts / server / rc-players, for the line published from yschimke/compose-preview-daemon: `preview-annotations`, `data-preview-overrides-runtime` and `data-remotecompose-connector` moved there from compose-ai-tools in compose-ai-tools#5336 and release from its 3.0.0 on a version line of their own, which `composePreviewDaemon` in gradle/libs.versions.toml pins. They must not share the compose-ai-tools group: one group means one shared version ref, and a ref that spans two release lines is a version lie whichever way it points (#199, #347). This rule used to be the carve-out for compose-ai-tools' own DATA line and excluded 2.2.1 by name (that release's data POMs pinned a `daemon-core` that was never uploaded); the data line and the exclusion went with the move. Named by exact artifactId: `data-render-core`, `data-theme-core`, `data-layoutinspector-core` and `data-preview-overrides-core` are compose-preview-CONTRACTS coordinates and belong to the rule below. Automerged like its neighbours; CI is the check.",
       "matchPackageNames": [
-        "ee.schimke.composeai:data-remotecompose-connector"
+        "ee.schimke.composeai:data-remotecompose-connector",
+        "ee.schimke.composeai:data-remotecompose-core",
+        "ee.schimke.composeai:daemon-core"
       ],
       "groupName": "compose-preview-daemon",
       "schedule": [
