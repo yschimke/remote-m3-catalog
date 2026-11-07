@@ -152,7 +152,7 @@ class RealRemoteTextAdapter(record: ComponentRecord) :
           "textAlign" to from(textAlign),
           "maxLines" to from(maxLines, omitWhen = JsonPrimitive(0)),
         ),
-      )
+      ),
     )
     exportRefuses(
       text,
@@ -225,7 +225,7 @@ class RealRemoteBoxAdapter(record: ComponentRecord) :
         record,
         mapOf("contentAlignment" to from(contentAlignment)),
         slots = mapOf("children" to "content"),
-      )
+      ),
     )
   }
 

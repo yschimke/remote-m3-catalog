@@ -70,6 +70,6 @@ val generateTypedPilot by
     val root = catalogRoot.asFile.absolutePath
     val output = pilotOutput
     argumentProviders.add(
-      CommandLineArgumentProvider { listOf(root, output.get().asFile.absolutePath) }
+      CommandLineArgumentProvider { listOf(root, output.get().asFile.absolutePath) },
     )
   }

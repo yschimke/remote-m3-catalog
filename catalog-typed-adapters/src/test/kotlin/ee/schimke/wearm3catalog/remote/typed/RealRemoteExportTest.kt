@@ -178,7 +178,7 @@ class RealRemoteExportTest {
     assertEquals(
       listOf(MODIFIER_REFUSAL.format("RemoteBox")),
       assertIs<ScreenExportGate.Outcome.Refused>(
-          export(probe(modifiers = """[{ "type": "fillMaxSize" }]"""))
+          export(probe(modifiers = """[{ "type": "fillMaxSize" }]""")),
         )
         .reasons,
     )
@@ -209,7 +209,7 @@ class RealRemoteExportTest {
             "modifiers": [], "slots": { "children": [] } }
         }
       }
-      """
+      """,
     )
 
   private companion object {

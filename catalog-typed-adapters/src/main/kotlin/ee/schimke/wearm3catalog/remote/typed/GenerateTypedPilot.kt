@@ -49,7 +49,7 @@ fun generateTypedPilot(
           discovered,
           UiBuilderCatalogs.CoverSheet(TYPED_REMOTE_CATALOG_ID, "Remote M3 — production baseline"),
           base.newBuilder().apply { catalogId = TYPED_REMOTE_CATALOG_ID }.build(),
-        )
+        ),
       )
       .diagnostics
       .map { it.code to it.subject }
@@ -126,7 +126,7 @@ fun writeTypedPilot(root: Path, output: Path) {
     println(
       "$TYPED_REMOTE_CATALOG_ID: ${discovered.components.size} discovered records, " +
         "${pair.record.components.size - discovered.components.size} export targets, " +
-        "${pair.policy.templates.size} templates"
+        "${pair.policy.templates.size} templates",
     )
   } finally {
     staging.toFile().deleteRecursively()
