@@ -69,12 +69,21 @@ android {
 // The vendored port answers for the published Remote coordinates, exactly as in
 // `:remote-catalog`, so the two sheets record with the same writer. `remote-material3` is
 // deliberately absent from this list: nothing here may ask for it.
+val composePreviewDaemonVersion = libs.versions.composePreviewDaemon.get()
+
 configurations.configureEach {
-  resolutionStrategy.dependencySubstitution {
-    substitute(module("androidx.compose.remote:remote-creation-compose"))
-      .using(project(":vendor:remote-creation-compose"))
-    substitute(module("androidx.compose.remote:foundation"))
-      .using(project(":vendor:remote-foundation"))
+  resolutionStrategy {
+    force(
+      "ee.schimke.composeai:data-remotecompose-connector:$composePreviewDaemonVersion",
+      "ee.schimke.composeai:data-remotecompose-core:$composePreviewDaemonVersion",
+      "ee.schimke.composeai:daemon-core:$composePreviewDaemonVersion",
+    )
+    dependencySubstitution {
+      substitute(module("androidx.compose.remote:remote-creation-compose"))
+        .using(project(":vendor:remote-creation-compose"))
+      substitute(module("androidx.compose.remote:foundation"))
+        .using(project(":vendor:remote-foundation"))
+    }
   }
   exclude(group = "org.jetbrains.skiko")
 }
