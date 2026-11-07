@@ -133,7 +133,7 @@ private fun breakpointIndex(ordered: List<DpSize>): RemoteFloat {
 
 private fun smallestFirst(sizes: Collection<DpSize>): List<DpSize> =
   sizes.sortedWith(
-    compareBy({ it.width.value * it.height.value }, { it.width.value }, { it.height.value })
+    compareBy({ it.width.value * it.height.value }, { it.width.value }, { it.height.value }),
   )
 
 private fun distanceSquared(a: DpSize, b: DpSize): Float {

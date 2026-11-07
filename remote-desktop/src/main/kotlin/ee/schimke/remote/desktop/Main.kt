@@ -18,7 +18,7 @@ internal suspend fun createDesktopSample(): ByteArray =
         height = 192,
         densityDpi = 160,
         densityBehavior = RemoteDensityBehavior.Dp,
-      )
+      ),
   ) {
     RemoteColumn { RemoteText("Remote Compose on Desktop".rs) }
   }

@@ -51,7 +51,7 @@ class WidgetSizeTest {
     val frame =
       Regex(
         """name = "(\d+x\d+)",\s*showBackground = false,\s*""" +
-          """device = "spec:width=(\d+)dp,height=(\d+)dp,dpi=(\d+)""""
+          """device = "spec:width=(\d+)dp,height=(\d+)dp,dpi=(\d+)"""",
       )
     val frames = frame.findAll(source).map { it.destructured }.toList()
     assertThat(frames).isNotEmpty()
@@ -87,7 +87,7 @@ class WidgetSizeTest {
         }
     assertThat(sizes)
       .containsExactlyElementsIn(
-        WidgetSize.entries.map { Triple(it.label, it.widthDp, it.heightDp) }
+        WidgetSize.entries.map { Triple(it.label, it.widthDp, it.heightDp) },
       )
       .inOrder()
   }
@@ -105,7 +105,7 @@ class WidgetSizeTest {
       .containsExactlyElementsIn(
         WidgetSize.entries.map {
           it.label to "spec:width=${it.widthDp}dp,height=${it.heightDp}dp,dpi=${WidgetSize.DPI}"
-        }
+        },
       )
       .inOrder()
   }

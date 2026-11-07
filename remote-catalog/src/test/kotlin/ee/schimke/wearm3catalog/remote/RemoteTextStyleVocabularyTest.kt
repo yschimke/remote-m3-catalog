@@ -89,7 +89,7 @@ class RemoteTextStyleVocabularyTest {
     // and a renamed return type is exactly the change that would do it.
     assertWithMessage(
         "no RemoteTextStyle roles found on RemoteTypography — the reflection filter " +
-          "is matching nothing, so this test proves nothing"
+          "is matching nothing, so this test proves nothing",
       )
       .that(library)
       .isNotEmpty()
@@ -97,13 +97,13 @@ class RemoteTextStyleVocabularyTest {
     val published = publishedRoles()
     assertWithMessage(
         "ui-builder.policy.json offers a type-scale role RemoteTypography does not have; a design " +
-          "picking it would export a call that does not compile"
+          "picking it would export a call that does not compile",
       )
       .that(published - library)
       .isEmpty()
     assertWithMessage(
         "RemoteTypography has a type-scale role ui-builder.policy.json does not offer; the shelf " +
-          "is withholding type a design could be set in"
+          "is withholding type a design could be set in",
       )
       .that(library - published)
       .isEmpty()

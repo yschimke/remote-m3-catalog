@@ -22,7 +22,7 @@ dependencyResolutionManagement {
     // namespace nothing else in this build or on Maven Central uses, so this repository can never
     // satisfy a request for an `androidx.*` or `ee.schimke.composeai` artifact even by accident.
     maven(
-      "https://raw.githubusercontent.com/yschimke/wear-m3-catalog-out/wear-compose-cmp-maven/"
+      "https://raw.githubusercontent.com/yschimke/wear-m3-catalog-out/wear-compose-cmp-maven/",
     ) {
       name = "wearComposeCmpPort"
       content { includeGroup("ee.schimke.wearcmp") }
@@ -35,7 +35,7 @@ dependencyResolutionManagement {
     // coordinate is pinned in libs.versions.toml and embedded in the renderer manifest; this
     // repository is fenced to its own namespace so it cannot answer any AndroidX dependency.
     maven(
-      "https://raw.githubusercontent.com/yschimke/remote-m3-catalog-out/remote-compose-cmp-maven/"
+      "https://raw.githubusercontent.com/yschimke/remote-m3-catalog-out/remote-compose-cmp-maven/",
     ) {
       name = "remoteComposeCmpPort"
       content { includeGroup("ee.schimke.remotecompose") }

@@ -110,12 +110,12 @@ class CmpAndroidPlayerTrialTest {
     val report = File("build/reports/cmp-android-player-trial.tsv")
     report.parentFile.mkdirs()
     report.writeText(
-      "differing_fraction\tcapture\n" + rows.sortedDescending().joinToString("\n") + "\n"
+      "differing_fraction\tcapture\n" + rows.sortedDescending().joinToString("\n") + "\n",
     )
     println(
       "CMP Android trial: ${captures.size} captures, ${failures.size} failed, " +
         "${rows.count { it.substringBefore('\t').toDouble() <= 0.01 }} within 1% of the baked PNG; " +
-        "report at ${report.absolutePath}"
+        "report at ${report.absolutePath}",
     )
     assertTrue(
       "the CMP player threw on these documents:\n" + failures.joinToString("\n"),

@@ -91,7 +91,7 @@ private const val ScrollRailMaxSizeFraction = 0.7f
 private val ScrollRailSweepAngle =
   2f *
     Math.toDegrees(
-        asin((ScrollRailHeight / 2f) / (KitDisplayRadius - 2f - ScrollRailStroke / 2f)).toDouble()
+        asin((ScrollRailHeight / 2f) / (KitDisplayRadius - 2f - ScrollRailStroke / 2f)).toDouble(),
       )
       .toFloat()
 

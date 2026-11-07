@@ -75,7 +75,7 @@ private fun ThemeSpecimen(name: String) =
             modifier =
               RemoteModifier.size(28.rdp)
                 .background(
-                  RemoteBrush.solidColor(RemoteMaterialTheme.colorScheme.surfaceContainer)
+                  RemoteBrush.solidColor(RemoteMaterialTheme.colorScheme.surfaceContainer),
                 ),
             content = {},
           )
