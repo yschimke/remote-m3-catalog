@@ -150,21 +150,32 @@ if (remoteSnapshotBuild != null) {
 // dependency of the vendored Material module; this consumer is Android, so replace it with the real
 // AndroidX AARs just as :catalog does for its Android configurations.
 val wearComposeVersion = libs.versions.wear.compose.asProvider().get()
+val composePreviewDaemonVersion = libs.versions.composePreviewDaemon.get()
 
 configurations.configureEach {
-  resolutionStrategy.dependencySubstitution {
-    substitute(module("androidx.compose.remote:remote-creation-compose"))
-      .using(project(":vendor:remote-creation-compose"))
-    substitute(module("androidx.compose.remote:foundation"))
-      .using(project(":vendor:remote-foundation"))
-    substitute(module("androidx.wear.compose.remote:remote-material3"))
-      .using(project(":vendor:remote-material3"))
-    substitute(module("ee.schimke.wearcmp:wear-compose-material3"))
-      .using(module("androidx.wear.compose:compose-material3:$wearComposeVersion"))
-    substitute(module("ee.schimke.wearcmp:wear-compose-foundation"))
-      .using(module("androidx.wear.compose:compose-foundation:$wearComposeVersion"))
-    substitute(module("ee.schimke.wearcmp:wear-compose-material-core"))
-      .using(module("androidx.wear.compose:compose-material-core:$wearComposeVersion"))
+  resolutionStrategy {
+    // Keep the connector on `composePreviewDaemon` even when a test-only dependency (such as
+    // `compose-preview-ui-builder-export`) imports a newer `compose-preview-daemon-bom`
+    // transitively; `composePreviewDaemon` and `rcPlayers` must move together.
+    force(
+      "ee.schimke.composeai:data-remotecompose-connector:$composePreviewDaemonVersion",
+      "ee.schimke.composeai:data-remotecompose-core:$composePreviewDaemonVersion",
+      "ee.schimke.composeai:daemon-core:$composePreviewDaemonVersion",
+    )
+    dependencySubstitution {
+      substitute(module("androidx.compose.remote:remote-creation-compose"))
+        .using(project(":vendor:remote-creation-compose"))
+      substitute(module("androidx.compose.remote:foundation"))
+        .using(project(":vendor:remote-foundation"))
+      substitute(module("androidx.wear.compose.remote:remote-material3"))
+        .using(project(":vendor:remote-material3"))
+      substitute(module("ee.schimke.wearcmp:wear-compose-material3"))
+        .using(module("androidx.wear.compose:compose-material3:$wearComposeVersion"))
+      substitute(module("ee.schimke.wearcmp:wear-compose-foundation"))
+        .using(module("androidx.wear.compose:compose-foundation:$wearComposeVersion"))
+      substitute(module("ee.schimke.wearcmp:wear-compose-material-core"))
+        .using(module("androidx.wear.compose:compose-material-core:$wearComposeVersion"))
+    }
   }
   exclude(group = "org.jetbrains.skiko")
 }
