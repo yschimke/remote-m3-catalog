@@ -33,6 +33,7 @@ class WidgetContainerIrCaptureTest {
       // carries the encoded document, and nothing about the round footprint exempts it.
       "WidgetContainerRoundSmallRemote",
       "WidgetContainerRoundLargeRemote",
+      "WidgetContainerTileRemote",
     )
 
   @Test
@@ -70,6 +71,7 @@ class WidgetContainerIrCaptureTest {
         "WidgetContainerGradientRemote" to listOf("Gradient"),
         "WidgetContainerRoundSmallRemote" to listOf("Next: Standup 10:30"),
         "WidgetContainerRoundLargeRemote" to listOf("Morning run", "28 min"),
+        "WidgetContainerTileRemote" to listOf("Morning run", "28 min"),
       )
     for ((stem, strings) in expected) {
       val bytes = renderFile(rendersDir, stem, ext = "rc").readBytes().toString(Charsets.UTF_8)
