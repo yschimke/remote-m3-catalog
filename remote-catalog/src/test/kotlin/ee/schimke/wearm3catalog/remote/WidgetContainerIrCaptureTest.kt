@@ -26,14 +26,14 @@ class WidgetContainerIrCaptureTest {
 
   private val widgetStickers =
     listOf(
-      "WidgetContainerSmallRemote",
-      "WidgetContainerLargeRemote",
-      "WidgetContainerGradientRemote",
+      "WidgetContainerSmallRemote_width_216dp_height_76dp_dpi_320",
+      "WidgetContainerLargeRemote_width_216dp_height_124dp_dpi_320",
+      "WidgetContainerGradientRemote_width_216dp_height_76dp_dpi_320",
       // The round (Samsung) hosts — same gate as the squircle ones: the capture wrapper is what
       // carries the encoded document, and nothing about the round footprint exempts it.
-      "WidgetContainerRoundSmallRemote",
-      "WidgetContainerRoundLargeRemote",
-      // A `device =` frame (it pins dpi=320), so the frame is part of the render's stem.
+      "WidgetContainerRoundSmallRemote_width_230dp_height_76dp_dpi_320",
+      "WidgetContainerRoundLargeRemote_width_230dp_height_168dp_dpi_320",
+      // Every frame is a `device =` spec (it pins dpi=320), so the frame is part of each stem.
       "WidgetContainerTileRemote_width_240dp_height_240dp_dpi_320",
     )
 
@@ -67,11 +67,15 @@ class WidgetContainerIrCaptureTest {
   fun `each widget container document carries its text content`() {
     val expected =
       mapOf(
-        "WidgetContainerSmallRemote" to listOf("Next: Standup 10:30"),
-        "WidgetContainerLargeRemote" to listOf("Morning run", "28 min"),
-        "WidgetContainerGradientRemote" to listOf("Gradient"),
-        "WidgetContainerRoundSmallRemote" to listOf("Next: Standup 10:30"),
-        "WidgetContainerRoundLargeRemote" to listOf("Morning run", "28 min"),
+        "WidgetContainerSmallRemote_width_216dp_height_76dp_dpi_320" to
+          listOf("Next: Standup 10:30"),
+        "WidgetContainerLargeRemote_width_216dp_height_124dp_dpi_320" to
+          listOf("Morning run", "28 min"),
+        "WidgetContainerGradientRemote_width_216dp_height_76dp_dpi_320" to listOf("Gradient"),
+        "WidgetContainerRoundSmallRemote_width_230dp_height_76dp_dpi_320" to
+          listOf("Next: Standup 10:30"),
+        "WidgetContainerRoundLargeRemote_width_230dp_height_168dp_dpi_320" to
+          listOf("Morning run", "28 min"),
         "WidgetContainerTileRemote_width_240dp_height_240dp_dpi_320" to
           listOf("Morning run", "28 min"),
       )

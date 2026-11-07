@@ -14,7 +14,7 @@ class RemoteTypographyIrCaptureTest {
     val stickers =
       listOf(
         "RemoteTextSticker_width_227dp_height_100dp_dpi_320",
-        "WidgetContainerLargeRemote",
+        "WidgetContainerLargeRemote_width_216dp_height_124dp_dpi_320",
       )
 
     for (stem in stickers) {

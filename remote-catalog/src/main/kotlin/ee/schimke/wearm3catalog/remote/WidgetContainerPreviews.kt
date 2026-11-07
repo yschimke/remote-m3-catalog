@@ -75,13 +75,15 @@ import ee.schimke.composeai.wear.preview.CapturingWearWidgetPreview
 
 /**
  * Canvas for the Small-container stickers: 200×60dp content + 8dp padding on every edge → 216×76.
- * Same solid-background single-mode contract as [CatalogRemoteModes].
+ * Same solid-background single-mode contract as [CatalogRemoteModes], and the same `dpi=320`
+ * (density 2.0) pin every frame here carries: without it a bare `widthDp`/`heightDp` frame renders
+ * at the preview default, a phone's 2.625.
  */
-@Preview(showBackground = false, widthDp = 216, heightDp = 76)
+@Preview(showBackground = false, device = "spec:width=216dp,height=76dp,dpi=320")
 annotation class CatalogRemoteWidgetSmall
 
 /** Canvas for the Large-container stickers: 200×108dp content + 8dp padding → 216×124. */
-@Preview(showBackground = false, widthDp = 216, heightDp = 124)
+@Preview(showBackground = false, device = "spec:width=216dp,height=124dp,dpi=320")
 annotation class CatalogRemoteWidgetLarge
 
 /**
@@ -90,14 +92,14 @@ annotation class CatalogRemoteWidgetLarge
  * radius: `RoundSmallWidgetPreviewParams`'s widest entry is 200×60dp content at 15dp horizontal /
  * 8dp vertical padding → 230×76.
  */
-@Preview(showBackground = false, widthDp = 230, heightDp = 76)
+@Preview(showBackground = false, device = "spec:width=230dp,height=76dp,dpi=320")
 annotation class CatalogRemoteWidgetRoundSmall
 
 /**
  * Canvas for the **round** Large-container stickers: `RoundLargeWidgetPreviewParams`'s widest entry
  * is 160×136dp content at 35dp horizontal / 16dp vertical padding → 230×168.
  */
-@Preview(showBackground = false, widthDp = 230, heightDp = 168)
+@Preview(showBackground = false, device = "spec:width=230dp,height=168dp,dpi=320")
 annotation class CatalogRemoteWidgetRoundLarge
 
 /**
