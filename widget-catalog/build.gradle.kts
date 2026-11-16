@@ -97,6 +97,10 @@ dependencies {
   // `RemoteOverridablePreview` — the sticker frame, which lands each document in the render's
   // `.rc` sidecar (see `WidgetSticker`).
   implementation(libs.composeai.remotecompose.connector)
+  // The coroutines the connector is built against. `:remote-catalog` gets them from its Wear and
+  // ktor dependencies; this sheet got them from the vendored creation port, and without it would
+  // resolve AndroidX's 1.9.0 floor (see `kotlinx-coroutines` in libs.versions.toml).
+  implementation(libs.kotlinx.coroutines.android)
   // The embedded player the connector replays through; see `remote-catalog/build.gradle.kts` for
   // why it is the vendored coordinate and why a missing one fails silently. Versioned by the
   // rc-players BOM.

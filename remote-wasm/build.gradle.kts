@@ -20,7 +20,7 @@ kotlin {
       implementation(libs.composeai.rc.creation.compose)
       implementation(libs.composeai.rc.creation.wear.material3)
       @Suppress("DEPRECATION") implementation(compose.runtime)
-      implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+      implementation(libs.kotlinx.coroutines.core)
     }
   }
 }

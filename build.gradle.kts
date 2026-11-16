@@ -8,7 +8,25 @@ plugins {
   alias(libs.plugins.ktfmt)
 }
 
+// One coroutines for every module, transitive edges included: the catalog's `kotlinx-coroutines`.
+// The preview connector and rc-players are built against it, and a module whose other
+// dependencies only ask for AndroidX's older floor would otherwise resolve that and fail at run
+// time (`NoSuchMethodError` on `runBlocking`), as `:widget-catalog` did without the vendored port.
+val coroutinesVersion = libs.versions.kotlinx.coroutines.get()
+
 allprojects {
+  configurations.configureEach {
+    resolutionStrategy.eachDependency {
+      if (
+        requested.group == "org.jetbrains.kotlinx" &&
+          requested.name.startsWith("kotlinx-coroutines-")
+      ) {
+        useVersion(coroutinesVersion)
+        because("one coroutines across the build (libs.versions.toml kotlinx-coroutines)")
+      }
+    }
+  }
+
   apply(plugin = "com.ncorti.ktfmt.gradle")
   ktfmt { googleStyle() }
 

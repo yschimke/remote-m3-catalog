@@ -13,7 +13,7 @@ dependencies {
   implementation(platform(libs.composeai.rc.players.bom))
   implementation(libs.composeai.rc.creation.compose)
   implementation(libs.composeai.rc.creation.writer)
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+  implementation(libs.kotlinx.coroutines.core)
   testImplementation(kotlin("test"))
   testImplementation(libs.junit)
 }
