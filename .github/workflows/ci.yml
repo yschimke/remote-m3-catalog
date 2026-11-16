@@ -114,10 +114,6 @@ jobs:
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
 
-      - name: Published Remote Compose changes bump the version
-        if: needs.changes.outputs.inert != 'true' && github.event_name == 'pull_request'
-        run: .github/scripts/check-remote-compose-port-revision.sh HEAD^1
-
       - name: Assemble
         if: needs.changes.outputs.inert != 'true'
         run: ./gradlew :remote-catalog:assembleDebug --stacktrace

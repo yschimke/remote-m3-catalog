@@ -1,13 +1,13 @@
 package ee.schimke.wearm3catalog.remoteuibuilder
 
-import androidx.compose.remote.creation.compose.modifier.RemoteEnterTransition
-import androidx.compose.remote.creation.compose.modifier.RemoteExitTransition
-import androidx.compose.remote.creation.compose.modifier.RemoteModifier
-import androidx.compose.remote.creation.compose.modifier.animationSpec
-import androidx.compose.remote.creation.compose.modifier.sharedElement
-import androidx.compose.remote.creation.compose.state.RemoteEasing
-import androidx.compose.remote.creation.compose.state.RemoteTweenSpec
-import androidx.compose.remote.creation.compose.state.remoteTween
+import ee.schimke.composeai.rccreation.compose.modifier.RemoteEnterTransition
+import ee.schimke.composeai.rccreation.compose.modifier.RemoteExitTransition
+import ee.schimke.composeai.rccreation.compose.modifier.RemoteModifier
+import ee.schimke.composeai.rccreation.compose.modifier.animationSpec
+import ee.schimke.composeai.rccreation.compose.modifier.sharedElement
+import ee.schimke.composeai.rccreation.compose.state.RemoteEasing
+import ee.schimke.composeai.rccreation.compose.state.RemoteTweenSpec
+import ee.schimke.composeai.rccreation.compose.state.remoteTween
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull

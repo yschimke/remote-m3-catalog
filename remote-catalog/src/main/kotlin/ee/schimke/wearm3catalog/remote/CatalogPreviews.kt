@@ -5,7 +5,6 @@ package ee.schimke.wearm3catalog.remote
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.remote.creation.compose.action.Action
 import androidx.compose.remote.creation.compose.action.hostAction
 import androidx.compose.remote.creation.compose.action.valueChange
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
@@ -68,8 +67,6 @@ import androidx.wear.compose.remote.material3.RemoteOutlinedCard
 import androidx.wear.compose.remote.material3.RemoteText
 import androidx.wear.compose.remote.material3.RemoteTextButton
 import androidx.wear.compose.remote.material3.RemoteTextButtonDefaults
-import androidx.wear.compose.remote.material3.buttonSizeModifier
-import ee.schimke.composeai.daemon.rememberOverridableRemoteColor
 import ee.schimke.composeai.daemon.rememberOverridableRemoteFloat
 import ee.schimke.composeai.daemon.rememberOverridableRemoteString
 import ee.schimke.composeai.overrides.previewOverrideBoolean
@@ -112,8 +109,8 @@ import ee.schimke.composeai.preview.OverrideVariant
  * A click counter that lives **inside the RemoteDocument** — Remote Compose's answer to `remember {
  * mutableStateOf(0) }`.
  *
- * Returns the label to draw and the [Action] to hand a component's `onClick`. The action is a
- * [valueChange] that writes `clicks + 1` back into a [rememberMutableRemoteInt], so the player
+ * Returns the label to draw and the [CatalogAction] to hand a component's `onClick`. The action is
+ * a [valueChange] that writes `clicks + 1` back into a [rememberMutableRemoteInt], so the player
  * re-evaluates the label expression and repaints on its own — no host round-trip, which is exactly
  * what `hostAction` could not do.
  *
@@ -122,7 +119,7 @@ import ee.schimke.composeai.preview.OverrideVariant
  * bare label it always has** — the counter is only reachable once a player dispatches a real touch.
  */
 @Composable
-internal fun countedRemote(base: String): Pair<RemoteString, Action> = countedRemote(base.rs)
+internal fun countedRemote(base: String): Pair<RemoteString, CatalogAction> = countedRemote(base.rs)
 
 /**
  * [countedRemote] over a label that is itself a remote value — an overridable named string, say —
@@ -131,7 +128,7 @@ internal fun countedRemote(base: String): Pair<RemoteString, Action> = countedRe
  * it demonstrates stays fully visible.
  */
 @Composable
-internal fun countedRemote(base: RemoteString): Pair<RemoteString, Action> {
+internal fun countedRemote(base: RemoteString): Pair<RemoteString, CatalogAction> {
   val clicks = rememberMutableRemoteInt(0)
   val label = selectIfGt(clicks, 0.ri, base + " (" + clicks.toRemoteString() + ")", base)
   return label to valueChange(clicks, (clicks + 1).createReference())
@@ -139,7 +136,8 @@ internal fun countedRemote(base: RemoteString): Pair<RemoteString, Action> {
 
 /**
  * The size-preserving affordance, for a sticker whose label has no room to grow. Returns a 0→1
- * [RemoteFloat] and the [Action] that flips it, so the caller can [tween] a colour across it.
+ * [RemoteFloat] and the [CatalogAction] that flips it, so the caller can [tween] a colour across
+ * it.
  *
  * Two kinds of sticker need it. The icon button has no label at all to count into. The **round**
  * text buttons have one that is already the width of their circle: the kit sizes that container
@@ -153,7 +151,7 @@ internal fun countedRemote(base: RemoteString): Pair<RemoteString, Action> {
  * colours and only a live tap moves it.
  */
 @Composable
-internal fun toggledRemote(): Pair<RemoteFloat, Action> {
+internal fun toggledRemote(): Pair<RemoteFloat, CatalogAction> {
   val on = rememberMutableRemoteFloat(0f)
   return animateRemoteFloat(on, duration = 0.45f) to valueChange(on, (1f.rf - on).createReference())
 }
@@ -305,11 +303,11 @@ internal fun RemoteKitButton(colors: RemoteButtonColors, outlined: Boolean = fal
   val borderColor =
     if (outlined) kitOutlinedBorderColor(enabled) else RemoteColor(Color.Transparent)
   if (!previewOverrideBoolean("icon", false)) {
-    // The kit's `Icon=No` column, and the base render. `buttonSizeModifier()` is what makes a
+    // The kit's `Icon=No` column, and the base render. `kitButtonSize()` is what makes a
     // label-only button measure like the kit's one-line cell.
     RemoteButton(
       onClick = onClick,
-      modifier = RemoteModifier.buttonSizeModifier().width(KitRowWidth),
+      modifier = RemoteModifier.kitButtonSize().width(KitRowWidth),
       enabled = enabled,
       colors = colors,
       border = border,
@@ -331,7 +329,7 @@ internal fun RemoteKitButton(colors: RemoteButtonColors, outlined: Boolean = fal
     // Every `Icon=Yes` cell in the `Button` set draws `Primary label` over `Secondary label` —
     // the icon is what gives the row the height for a second line — so there is no single-line
     // icon cell to map an icon-without-subtitle render onto (#116, and the same finding as the
-    // selection rows in #112). No `buttonSizeModifier()` here: a two-line button sizes itself
+    // selection rows in #112). No `kitButtonSize()` here: a two-line button sizes itself
     // from its slots, and pinning it to the one-line height clips the second row off.
     RemoteButton(
       onClick = onClick,
@@ -429,7 +427,7 @@ fun CustomShapeRemoteButton() = RemoteSticker {
   val (label, onClick) = countedRemote(KitCopy.PRIMARY_LABEL)
   RemoteButton(
     onClick = onClick,
-    modifier = RemoteModifier.buttonSizeModifier(),
+    modifier = RemoteModifier.kitButtonSize(),
     shape = RemoteRoundedCornerShape(4.rdp),
     content = { RemoteText(label) },
   )
@@ -468,7 +466,7 @@ fun NamedLabelRemoteButton() = RemoteSticker {
     countedRemote(rememberOverridableRemoteString("label", KitCopy.PRIMARY_LABEL))
   RemoteButton(
     onClick = onClick,
-    modifier = RemoteModifier.buttonSizeModifier(),
+    modifier = RemoteModifier.kitButtonSize(),
     content = { RemoteText(label) },
   )
 }
@@ -2908,7 +2906,7 @@ fun ColorSchemeRemote() = RemoteSticker {
 @CatalogRemoteCanvas
 @Composable
 fun ShaderGradientSticker() = RemoteSticker {
-  val shaderColor = rememberOverridableRemoteColor("shaderColor", Color(0xFF7DE2FF))
+  val shaderColor = catalogOverridableRemoteColor("shaderColor", Color(0xFF7DE2FF))
   val brush =
     RemoteBrush.linearGradient(
       listOf(RemoteColor(Color(0xFF101820)), shaderColor, RemoteColor(Color(0xFFFFB86C))),

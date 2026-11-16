@@ -138,22 +138,6 @@ class RemoteM3ThreeSurfaceContractTest {
     assertThat(device).contains("string(\"verticalArrangement\")")
   }
 
-  @Test
-  fun `published CMP writer pin matches immutable port identity`() {
-    val versions = File(root, "gradle/libs.versions.toml").readText()
-    val published =
-      Regex("""remote-compose-cmp\s*=\s*"([^"]+)"""").find(versions)?.groupValues?.get(1)
-    val port =
-      Json.parseToJsonElement(File(root, "vendor/remote-compose-upstream.json").readText())
-        .jsonObject
-    val expected =
-      "${port.getValue("change").jsonPrimitive.content}-" +
-        "ps${port.getValue("patchSet").jsonPrimitive.content}-" +
-        "cmp${port.getValue("portRevision").jsonPrimitive.content.padStart(2, '0')}"
-
-    assertThat(published).isEqualTo(expected)
-  }
-
   /**
    * The connector links the embedded player's `RcPlayer` entry point reflectively and falls back to
    * the View player, silently, when the shape it was built against is missing. rc-players 2.x

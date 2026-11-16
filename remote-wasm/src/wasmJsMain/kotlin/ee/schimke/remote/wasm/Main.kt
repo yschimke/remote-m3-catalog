@@ -1,12 +1,12 @@
 package ee.schimke.remote.wasm
 
-import androidx.compose.remote.creation.compose.action.combinedAction
-import androidx.compose.remote.creation.compose.capture.RemoteCreationDisplayInfo
-import androidx.compose.remote.creation.compose.capture.captureCommonRemoteDocument
-import androidx.compose.remote.creation.compose.state.rs
-import androidx.wear.compose.remote.material3.RemoteButton
-import androidx.wear.compose.remote.material3.RemoteMaterialTheme
-import androidx.wear.compose.remote.material3.RemoteText
+import ee.schimke.composeai.rccreation.compose.action.combinedAction
+import ee.schimke.composeai.rccreation.compose.capture.RemoteCreationDisplayInfo
+import ee.schimke.composeai.rccreation.compose.capture.captureCommonRemoteDocument
+import ee.schimke.composeai.rccreation.compose.state.rs
+import ee.schimke.composeai.rccreation.wear.material3.RemoteButton
+import ee.schimke.composeai.rccreation.wear.material3.RemoteMaterialTheme
+import ee.schimke.composeai.rccreation.wear.material3.RemoteText
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine

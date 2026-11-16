@@ -8,10 +8,11 @@ package ee.schimke.wearm3catalog.remote
 
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialShapes
+import androidx.compose.remote.creation.RemotePath
 import androidx.compose.remote.creation.compose.layout.RemoteCanvas
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.size
-import androidx.compose.remote.creation.compose.state.StandardRemotePaint
+import androidx.compose.remote.creation.compose.state.RemotePaint
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.runtime.Composable
 import androidx.graphics.shapes.RoundedPolygon
@@ -28,14 +29,14 @@ import ee.schimke.composeai.preview.OverrideVariant
 // RECORDED and `remote-creation-compose` publishes only the corner-based family
 // (`RemoteRoundedCornerShape`), so there is no shape object to hand `RemoteModifier.clip` for a
 // 12-sided cookie. What it publishes instead is the polygon itself as a DRAW op —
-// `RemoteDrawScope.drawRoundedPolygon`, which serialises the polygon's cubics into the document as
+// a path drawn from the polygon's cubics (`toRemotePath()` below), serialised into the document as
 // path data — so the silhouette is painted rather than clipped out of a filled box. The picture is
 // the same; the opcode is not, which is the whole point of the third column.
 //
 // THE POLYGON IS NORMALISED, AND THE CANVAS SCALE IS WHAT SIZES IT
 //
 // Every `MaterialShapes` constant is `.normalized()`: its bounds are exactly (0,0)-(1,1), so its
-// cubics are a unit silhouette rather than anything in pixels. `drawRoundedPolygon` emits those
+// cubics are a unit silhouette rather than anything in pixels. `toRemotePath()` emits those
 // cubics verbatim — it does no fitting of its own — so drawing one straight onto the canvas puts a
 // one-pixel shape in the corner. Scaling the canvas by the drawing area is therefore not a
 // convenience, it is the sizing step, and it is the same arithmetic `toShape()` does one column
@@ -177,9 +178,33 @@ fun MaterialShapesRemote() = RemoteSticker {
   // Read outside the canvas: the colour is a theme lookup, and the drawing lambda records opcodes.
   val fill = RemoteMaterialTheme.colorScheme.primaryDim
   RemoteCanvas(modifier = RemoteModifier.size(SHAPE_SIZE)) {
-    val paint = StandardRemotePaint().apply { color = fill }
+    val paint = RemotePaint { color = fill }
     // The unit polygon, scaled to the drawing area. See the note at the top of the file for why
     // this is the sizing step rather than a flourish.
-    scale(size.width, size.height) { drawRoundedPolygon(polygon, paint) }
+    scale(size.width, size.height) { drawPath(polygon.toRemotePath(), paint) }
   }
 }
+
+/**
+ * The polygon's cubics as path data: a move to the first anchor, one cubic per segment, and a
+ * close, verbatim and unscaled. Neither released Remote Compose line publishes a polygon draw (the
+ * vendored port this repository used to build on added `drawRoundedPolygon`), so the path is built
+ * here.
+ */
+private fun RoundedPolygon.toRemotePath(): RemotePath =
+  RemotePath().apply {
+    val segments = cubics
+    if (segments.isEmpty()) return@apply
+    moveTo(segments.first().anchor0X, segments.first().anchor0Y)
+    for (cubic in segments) {
+      cubicTo(
+        cubic.control0X,
+        cubic.control0Y,
+        cubic.control1X,
+        cubic.control1Y,
+        cubic.anchor1X,
+        cubic.anchor1Y,
+      )
+    }
+    close()
+  }

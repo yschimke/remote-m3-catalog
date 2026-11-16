@@ -13,34 +13,12 @@ val runtimeIdentity =
     .map { "remote-m3-p3-${it.take(12)}" }
     .orElse("remote-m3-p3-development")
 
-val remoteComposePort =
-  groovy.json.JsonSlurper().parse(rootProject.file("vendor/remote-compose-upstream.json"))
-    as Map<String, Any>
-val remoteComposeWriterVersion =
-  "${remoteComposePort.getValue("change")}-ps${remoteComposePort.getValue("patchSet")}-cmp" +
-    "%02d".format((remoteComposePort.getValue("portRevision") as Number).toInt())
-
-check(libs.versions.remote.compose.cmp.get() == remoteComposeWriterVersion) {
-  "remote-m3 Browser Preview must consume the published port $remoteComposeWriterVersion; " +
-    "found ${libs.versions.remote.compose.cmp.get()}"
-}
-
 val rcPlayerVersion = libs.versions.rcPlayers.get()
 
-// What records the document: the port's Remote M3 layer over rc-players' creation fork (see the
-// exclusions above), so the runtime contract names both.
-val runtimeWriterVersion = "$remoteComposeWriterVersion+rc-players-$rcPlayerVersion"
-
-// The renderer draws Remote Compose through rc-players' creation fork (`rc-player-embedded` brings
-// it, with `RcHostBridge`), which the device preview and the editor's surface play. The fork is
-// AndroidX's creation and foundation modules in their own package, so the published port's copies
-// of those layers must not come along with `remote-material3`: a second copy of every class.
-// `remote-material3` stays the port's and links against the fork.
-configurations.configureEach {
-  exclude(group = "ee.schimke.remotecompose", module = "remote-write-core")
-  exclude(group = "ee.schimke.remotecompose", module = "remote-creation-compose")
-  exclude(group = "ee.schimke.remotecompose", module = "remote-foundation")
-}
+// What records the document: rc-players' creation fork, Wear Remote Material 3 included
+// (`rc-creation-wear-material3`), at the rc-players release the player is from. The runtime
+// manifest names it so a published renderer says which writer drew its documents.
+val runtimeWriterVersion = "rc-creation-$rcPlayerVersion"
 
 kotlin {
   jvm()
@@ -61,14 +39,15 @@ kotlin {
     commonMain.dependencies {
       implementation(libs.composeai.ui.builder.renderer.sdk.source)
       implementation(libs.composeai.rc.player.embedded)
-      implementation(libs.remotecompose.material3)
       implementation(project(":ui-builder-wear-adapters"))
       implementation(project.dependencies.platform(libs.composeai.rc.players.bom))
       implementation(libs.composeai.rc.player.compose)
+      // Wear Remote Material 3 over the same creation fork `rc-player-embedded` brings.
+      implementation(libs.composeai.rc.creation.wear.material3)
       implementation(libs.wearcmp.compose.material3)
       @Suppress("DEPRECATION") implementation(compose.runtime)
       @Suppress("DEPRECATION") implementation(compose.ui)
-      implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+      implementation(libs.kotlinx.coroutines.core)
     }
     jvmTest.dependencies {
       implementation(kotlin("test"))
@@ -79,12 +58,7 @@ kotlin {
   }
 }
 
-// The published Remote Compose port's JVM variants are Java 21 bytecode (class file 65): its KMP
-// `jvm()` targets set no `jvmTarget`, so they inherit the JDK 21 the publish job runs on, and their
-// Gradle metadata declares no `org.gradle.jvm.version` to stop a Java 17 consumer at resolution.
-// Run on a Java 17 test JVM, the first recording threw UnsupportedClassVersionError, every preview
-// landed as "Failed" and the player never drew. The
-// tests run on the JDK this repository's CI is pinned to (.github/actions/setup) instead of
+// The tests run on the JDK this repository's CI is pinned to (.github/actions/setup) instead of
 // whichever JDK happens to launch Gradle.
 tasks.withType<Test>().configureEach {
   javaLauncher.set(javaToolchains.launcherFor { languageVersion.set(JavaLanguageVersion.of(21)) })

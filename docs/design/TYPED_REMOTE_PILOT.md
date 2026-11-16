@@ -238,8 +238,9 @@ not in the default build:
 
 - `RealRemoteRecords` reads `RemoteText`, `RemoteButton` (the content overload), `RemoteBox` (the
   content overload) and `RemoteColumn` with `TypedAdapterDiscovery.discoverLibrary`. It reads
-  them from the vendored CMP port's metadata on the JVM classpath. The same
-  `androidx.compose.remote` / `androidx.wear.compose.remote` API is what the Android export calls.
+  them from the class metadata of AndroidX's published `remote-creation-compose` and Wear
+  `remote-material3` AARs, unpacked onto the JVM classpath. That `androidx.compose.remote` /
+  `androidx.wear.compose.remote` API is what the Android export calls.
   `RealRemoteRecordsTest` pins the Remote types the gaps are about.
 - `RealRemoteAdapters` holds the four definitions. Each property is either written or
   `exportRefuses`d by name. `RealRemoteAdaptersTest` holds the layouts to an empty

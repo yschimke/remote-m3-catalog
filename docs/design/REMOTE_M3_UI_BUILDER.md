@@ -44,9 +44,10 @@ surface it scrolls. Not reported: `selected` follows the design's initial state,
 
 Writer and player move as an explicit compatibility pair:
 
-- writer: the vendored Remote Compose port identified by `vendor/remote-compose-upstream.json`
-  (`4307936-ps17-cmp01` at the time this contract was added) for Remote M3, over rc-players'
-  creation fork (`third-party-remote-creation-*`) for creation and foundation, declared together as `<port>+rc-players-<version>`;
+- writer: rc-players' Compose Multiplatform creation fork (`rc-creation-compose`,
+  `rc-creation-foundation` and `rc-creation-wear-material3` for Remote M3), declared as
+  `rc-creation-<version>`. Until rc-players 3.7.0 the Remote M3 layer was this repository's vendored
+  port of AndroidX's (`ee.schimke.remotecompose:*`, declared as `<port>+rc-players-<version>`);
 - player: the `rc-players` release in `gradle/libs.versions.toml` (`1.69.0` at the same point).
 
 Both values are pinned by the renderer's dependency graph and declared by the versioned runtime
@@ -92,7 +93,7 @@ the generated Kotlin carries a comment above the call naming the missing operati
 "Show by state" needs a build with Remote Compose authoring enabled (`-PuiBuilderRemoteCompose=true`).
 
 `sharedElement` exports as `animationSpec(key, true)`. That overload exists in both the released
-alpha19 (the native lane) and the vendored port the Browser Preview records with, and it produces the
+alpha19 (the native lane) and rc-players' creation fork the Browser Preview records with, and it produces the
 same `AnimationSpec` operation as `sharedElement(key)`.
 
 ![Browser Preview, squircle host](../evidence/remote-m3-fit-box-state/browser-preview-squircle.png)

@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /**
- * What [RealRemoteRecords] reads from the vendored Remote Compose port: the real composables and
+ * What [RealRemoteRecords] reads from AndroidX's published Remote Compose: the real composables and
  * the Remote value types their parameters take. Those types are the pilot's central finding — none
  * is a type a projection codec writes — so a library change that moves one fails here first.
  */
@@ -45,7 +45,7 @@ class RealRemoteRecordsTest {
   @Test
   fun `a button's click is a Remote Action, not a callback`() {
     assertEquals(
-      "androidx.compose.remote.creation.compose.action.Action",
+      "androidx.compose.remote.creation.compose.action.RemoteAction",
       type("RemoteButton", "onClick"),
     )
     // The content overload of three; the other two add a container painter.
@@ -74,9 +74,16 @@ class RealRemoteRecordsTest {
   @Test
   fun `the Remote value wrappers are companion invokes`() {
     val factories = RealRemoteRecords.factories().associateBy { it.callableFqn }
-    // `Color(…).rc` and `"…".rs` are these calls; `RemoteString`'s is `@RestrictTo(LIBRARY_GROUP)`.
-    val color = factories.getValue("${RealRemoteRecords.STATE}.RemoteColor.Companion.invoke")
-    assertEquals("androidx.compose.ui.graphics.Color", color.parameters.single().typeFqn)
+    // `"…".rs` is `RemoteString`'s, which is `@RestrictTo(LIBRARY_GROUP)`. `RemoteColor`'s
+    // one-argument wrapper takes a `@ColorInt` ARGB `Int`, not Compose's `Color` (`Color(…).rc` is
+    // an extension in `RemoteColorCompose.kt`); its other overloads take four channels, as `Float`s
+    // or `RemoteFloat`s.
+    val color =
+      RealRemoteRecords.factories().single {
+        it.callableFqn == "${RealRemoteRecords.STATE}.RemoteColor.Companion.invoke" &&
+          it.parameters.size == 1
+      }
+    assertEquals("kotlin.Int", color.parameters.single().typeFqn)
     val string = factories.getValue("${RealRemoteRecords.STATE}.RemoteString.Companion.invoke")
     assertEquals("kotlin.String", string.parameters.single().typeFqn)
   }

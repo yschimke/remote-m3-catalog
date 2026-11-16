@@ -1,7 +1,7 @@
 package ee.schimke.wearm3catalog.remoteuibuilder
 
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.ContentScale
+import ee.schimke.composeai.rccreation.compose.layout.RemoteContentScale
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
 import ee.schimke.composeai.uibuilder.export.UiBuilderNode
 import kotlin.io.encoding.Base64
@@ -40,10 +40,10 @@ internal fun UiBuilderNode.assetKey(): String = propertyText("assetKey")
 internal fun UiBuilderNode.propertyText(name: String): String =
   ((properties[name] as? JsonObject)?.get("value") as? JsonPrimitive)?.contentOrNull.orEmpty()
 
-internal fun UiBuilderNode.assetContentScale(): ContentScale =
+internal fun UiBuilderNode.assetContentScale(): RemoteContentScale =
   when (propertyText("contentScale")) {
-    "fit" -> ContentScale.Fit
-    "fillBounds" -> ContentScale.FillBounds
-    "inside" -> ContentScale.Inside
-    else -> ContentScale.Crop
+    "fit" -> RemoteContentScale.Fit
+    "fillBounds" -> RemoteContentScale.FillBounds
+    "inside" -> RemoteContentScale.Inside
+    else -> RemoteContentScale.Crop
   }

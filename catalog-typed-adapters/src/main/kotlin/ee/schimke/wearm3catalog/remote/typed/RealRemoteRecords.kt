@@ -8,9 +8,9 @@ import ee.schimke.composeai.discovery.TypedAdapterDiscovery.LibraryCallable
 
 /**
  * The real Remote Compose composables the pilot's definitions export to, read from the library
- * metadata on this module's runtime classpath: the vendored CMP port under `vendor/`, which
- * publishes the same `androidx.compose.remote` / `androidx.wear.compose.remote` API the Android
- * export calls. Nothing is loaded or run.
+ * metadata on this module's runtime classpath: the classes of AndroidX's published
+ * `remote-creation-compose` and Wear `remote-material3`, the `androidx.compose.remote` /
+ * `androidx.wear.compose.remote` API the Android export calls. Nothing is loaded or run.
  */
 object RealRemoteRecords {
   const val MODULE: String = "remote-m3"

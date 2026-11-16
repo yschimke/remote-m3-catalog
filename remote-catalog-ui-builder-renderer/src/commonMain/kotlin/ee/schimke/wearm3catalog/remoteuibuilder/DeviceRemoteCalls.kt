@@ -1,19 +1,19 @@
 package ee.schimke.wearm3catalog.remoteuibuilder
 
-import androidx.compose.remote.creation.compose.modifier.RemoteModifier
-import androidx.compose.remote.creation.compose.modifier.basicMarquee
-import androidx.compose.remote.creation.compose.modifier.clearAndSetSemantics
-import androidx.compose.remote.creation.compose.modifier.contentDescription
-import androidx.compose.remote.creation.compose.modifier.defaultMinSize
-import androidx.compose.remote.creation.compose.modifier.enabled
-import androidx.compose.remote.creation.compose.modifier.graphicsLayer
-import androidx.compose.remote.creation.compose.modifier.role
-import androidx.compose.remote.creation.compose.modifier.semantics
-import androidx.compose.remote.creation.compose.modifier.stateDescription
-import androidx.compose.remote.creation.compose.modifier.visibility
-import androidx.compose.remote.creation.compose.state.asRemoteDp
-import androidx.compose.remote.creation.compose.state.rf
-import androidx.compose.ui.semantics.Role
+import ee.schimke.composeai.rccreation.compose.modifier.RemoteModifier
+import ee.schimke.composeai.rccreation.compose.modifier.RemoteRole
+import ee.schimke.composeai.rccreation.compose.modifier.basicMarquee
+import ee.schimke.composeai.rccreation.compose.modifier.clearAndSetSemantics
+import ee.schimke.composeai.rccreation.compose.modifier.contentDescription
+import ee.schimke.composeai.rccreation.compose.modifier.defaultMinSize
+import ee.schimke.composeai.rccreation.compose.modifier.enabled
+import ee.schimke.composeai.rccreation.compose.modifier.graphicsLayer
+import ee.schimke.composeai.rccreation.compose.modifier.role
+import ee.schimke.composeai.rccreation.compose.modifier.semantics
+import ee.schimke.composeai.rccreation.compose.modifier.stateDescription
+import ee.schimke.composeai.rccreation.compose.modifier.visibility
+import ee.schimke.composeai.rccreation.compose.state.asRemoteDp
+import ee.schimke.composeai.rccreation.compose.state.rf
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
@@ -56,18 +56,19 @@ internal fun RemoteModifier.remoteCall(
       val state = values.string(args["stateDescription"])
       val chosen =
         when (literal("role")?.contentOrNull) {
-          "Button" -> Role.Button
-          "Checkbox" -> Role.Checkbox
-          "Switch" -> Role.Switch
-          "RadioButton" -> Role.RadioButton
-          "Tab" -> Role.Tab
-          "Image" -> Role.Image
-          "DropdownList" -> Role.DropdownList
+          "Button" -> RemoteRole.Button
+          "Checkbox" -> RemoteRole.Checkbox
+          "Switch" -> RemoteRole.Switch
+          "RadioButton" -> RemoteRole.RadioButton
+          "Tab" -> RemoteRole.Tab
+          "Image" -> RemoteRole.Image
+          "DropdownList" -> RemoteRole.DropdownList
           else -> null
         }
       val isEnabled = literal("enabled")?.booleanOrNull
       val apply:
-        androidx.compose.remote.creation.compose.modifier.SemanticsPropertyReceiver.() -> Unit =
+        ee.schimke.composeai.rccreation.compose.modifier.RemoteSemanticsPropertyReceiver.(
+        ) -> Unit =
         {
           description?.let { contentDescription = it }
           state?.let { stateDescription = it }

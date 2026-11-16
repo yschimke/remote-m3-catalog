@@ -1,34 +1,34 @@
 package ee.schimke.wearm3catalog.remoteuibuilder
 
-import androidx.compose.remote.creation.compose.layout.RemoteCanvas
-import androidx.compose.remote.creation.compose.layout.RemoteComposable
-import androidx.compose.remote.creation.compose.layout.RemoteDrawScope
-import androidx.compose.remote.creation.compose.layout.RemoteOffset
-import androidx.compose.remote.creation.compose.layout.RemoteSize
-import androidx.compose.remote.creation.compose.modifier.RemoteModifier
-import androidx.compose.remote.creation.compose.path.RemotePath
-import androidx.compose.remote.creation.compose.shaders.RemoteBrush
-import androidx.compose.remote.creation.compose.shaders.horizontalGradient
-import androidx.compose.remote.creation.compose.shaders.radialGradient
-import androidx.compose.remote.creation.compose.shaders.sweepGradient
-import androidx.compose.remote.creation.compose.shaders.verticalGradient
-import androidx.compose.remote.creation.compose.state.RemoteColor
-import androidx.compose.remote.creation.compose.state.RemoteFloat
-import androidx.compose.remote.creation.compose.state.RemotePaint
-import androidx.compose.remote.creation.compose.state.asRemoteDp
-import androidx.compose.remote.creation.compose.state.clamp
-import androidx.compose.remote.creation.compose.state.min
-import androidx.compose.remote.creation.compose.state.rc
-import androidx.compose.remote.creation.compose.state.rdp
-import androidx.compose.remote.creation.compose.state.rf
-import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.ClipOp
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.PathSegment
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.PathParser
+import ee.schimke.composeai.rccreation.compose.layout.RemoteCanvas
+import ee.schimke.composeai.rccreation.compose.layout.RemoteComposable
+import ee.schimke.composeai.rccreation.compose.layout.RemoteDrawScope
+import ee.schimke.composeai.rccreation.compose.layout.RemoteOffset
+import ee.schimke.composeai.rccreation.compose.layout.RemoteSize
+import ee.schimke.composeai.rccreation.compose.modifier.RemoteModifier
+import ee.schimke.composeai.rccreation.compose.path.RemotePath
+import ee.schimke.composeai.rccreation.compose.shaders.RemoteBrush
+import ee.schimke.composeai.rccreation.compose.shaders.horizontalGradient
+import ee.schimke.composeai.rccreation.compose.shaders.radialGradient
+import ee.schimke.composeai.rccreation.compose.shaders.sweepGradient
+import ee.schimke.composeai.rccreation.compose.shaders.verticalGradient
+import ee.schimke.composeai.rccreation.compose.state.RemoteColor
+import ee.schimke.composeai.rccreation.compose.state.RemoteFloat
+import ee.schimke.composeai.rccreation.compose.state.RemotePaint
+import ee.schimke.composeai.rccreation.compose.state.RemotePaintingStyle
+import ee.schimke.composeai.rccreation.compose.state.RemoteStrokeCap
+import ee.schimke.composeai.rccreation.compose.state.asRemoteDp
+import ee.schimke.composeai.rccreation.compose.state.clamp
+import ee.schimke.composeai.rccreation.compose.state.min
+import ee.schimke.composeai.rccreation.compose.state.rc
+import ee.schimke.composeai.rccreation.compose.state.rdp
+import ee.schimke.composeai.rccreation.compose.state.rf
+import ee.schimke.composeai.rccreation.compose.state.rs
+import ee.schimke.composeai.rcplayer.embedded.RcEmbeddedPlayerProfile
 import ee.schimke.composeai.uibuilder.export.UiBuilderNode
 import ee.schimke.composeai.uibuilder.export.UiDrawing
 import ee.schimke.composeai.uibuilder.renderer.sdk.CanvasRenderNode
@@ -57,17 +57,35 @@ internal fun DeviceDrawCanvas(
 ) {
   val operations = collect(entry.slot(UiDrawing.OPS_SLOT), values, resolveColor)
   val stated = entry.node.statedSizeDp()
+  val textOnCircle = playerWritesTextOnCircle
   RemoteCanvas(modifier = modifier) {
     val extent =
       Extent(
         stated.first?.let { it.rdp.toPx() } ?: width,
         stated.second?.let { it.rdp.toPx() } ?: height,
+        textOnCircle,
       )
     operations.forEach { it.draw(this, extent, values) }
   }
 }
 
-private class Extent(val width: RemoteFloat, val height: RemoteFloat) {
+/**
+ * `DrawTextOnCircle`'s opcode. AndroidX's operation sets list it under no API level or profile
+ * (only the Wear widget allow-list names it), so the profile `RcEmbeddedPlayer` captures under
+ * refuses it, and the capture fails with "Operation 57 is not supported for this version".
+ */
+private const val DRAW_TEXT_ON_CIRCLE = 57
+
+/** Whether the profile the device preview's player (`RcEmbeddedPlayer`) writes under has it. */
+internal val playerWritesTextOnCircle: Boolean =
+  DRAW_TEXT_ON_CIRCLE in RcEmbeddedPlayerProfile.supportedOperations
+
+private class Extent(
+  val width: RemoteFloat,
+  val height: RemoteFloat,
+  /** Whether the capture's profile writes text on a circle; see [DRAW_TEXT_ON_CIRCLE]. */
+  val textOnCircle: Boolean,
+) {
   val centerX: RemoteFloat
     get() = width / 2f.rf
 
@@ -120,7 +138,13 @@ private class Operation(
           return
         }
         UiDrawing.CLIP -> {
-          val clipOp = if (node.flag("exclude")) ClipOp.Difference else ClipOp.Intersect
+          // rc-players' creation fork clips by intersection only (androidx-main's canvas takes no
+          // clip op), so an `exclude` clip cannot be drawn here: its children draw unclipped,
+          // rather than clipped to the very region the design asked to cut away.
+          if (node.flag("exclude")) {
+            drawChildren(extent, values)
+            return
+          }
           val outline = node.text("pathData")?.let(::remotePath)
           if (outline != null) {
             // As the export writes it: into the viewport, clip, and back out.
@@ -128,7 +152,7 @@ private class Operation(
             val sy = extent.height / (node.number("viewportHeight")?.takeIf { it > 0f } ?: 24f).rf
             withTransform({
               scale(sx, sy)
-              clipPath(outline, clipOp)
+              clipPath(outline)
               scale(1f.rf / sx, 1f.rf / sy)
             }) {
               drawChildren(extent, values)
@@ -141,7 +165,6 @@ private class Operation(
               y,
               px("widthDp")?.let { x + it } ?: extent.width,
               px("heightDp")?.let { y + it } ?: extent.height,
-              clipOp,
             ) {
               drawChildren(extent, values)
             }
@@ -167,12 +190,12 @@ private class Operation(
       val paint = RemotePaint {
         color = fill
         if (stroked) {
-          style = PaintingStyle.Stroke
+          style = RemotePaintingStyle.Stroke
           this.strokeWidth = strokeWidth
         }
         when (node.text("strokeCap")) {
-          "round" -> strokeCap = StrokeCap.Round
-          "square" -> strokeCap = StrokeCap.Square
+          "round" -> strokeCap = RemoteStrokeCap.Round
+          "square" -> strokeCap = RemoteStrokeCap.Square
         }
         when (node.componentId) {
           "draw/text",
@@ -243,7 +266,7 @@ private class Operation(
               scale(
                 extent.width / viewportWidth.rf,
                 extent.height / viewportHeight.rf,
-                RemoteOffset(0f, 0f),
+                RemoteOffset(0f.rf, 0f.rf),
               )
             }) {
               drawPath(path, paint)
@@ -258,7 +281,7 @@ private class Operation(
             scale(
               extent.width / viewportWidth.rf,
               extent.height / viewportHeight.rf,
-              RemoteOffset(0f, 0f),
+              RemoteOffset(0f.rf, 0f.rf),
             )
           }) {
             drawTweenPath(
@@ -269,21 +292,25 @@ private class Operation(
             )
           }
         }
+        // Not drawn where the profile refuses it, rather than failing the whole preview. The export
+        // writes it for a Wear widget, whose allow-list has it.
         UiDrawing.TEXT_CIRCLE ->
-          drawTextOnCircle(
-            values.string(node.properties["text"]) ?: "".rs,
-            px("centerXDp") ?: extent.centerX,
-            px("centerYDp") ?: extent.centerY,
-            px("radiusDp")
-              ?: (min(extent.width, extent.height) / 2f.rf - (px("textSizeSp") ?: 14f.rdp.toPx())),
-            float("angle") ?: 270f.rf,
-            0f.rf,
-            paint,
-          )
+          if (extent.textOnCircle)
+            drawTextOnCircle(
+              values.string(node.properties["text"]) ?: "".rs,
+              px("centerXDp") ?: extent.centerX,
+              px("centerYDp") ?: extent.centerY,
+              px("radiusDp")
+                ?: (min(extent.width, extent.height) / 2f.rf -
+                  (px("textSizeSp") ?: 14f.rdp.toPx())),
+              float("angle") ?: 270f.rf,
+              0f.rf,
+              paint,
+            )
         UiDrawing.TEXT_PATH -> {
           val path = node.text("pathData")?.let(::remotePath) ?: return
           val density = 1f.rdp.toPx()
-          withTransform({ scale(density, density, RemoteOffset(0f, 0f)) }) {
+          withTransform({ scale(density, density, RemoteOffset(0f.rf, 0f.rf)) }) {
             drawTextOnPath(
               values.string(node.properties["text"]) ?: "".rs,
               path,
@@ -346,7 +373,10 @@ private fun kotlinx.serialization.json.JsonElement?.isComputedColour(): Boolean 
   (this as? JsonObject)?.get("type")?.let { (it as? JsonPrimitive)?.contentOrNull } in
     setOf("expr", "system", "state", "binding")
 
-/** SVG path data as the port's `RemotePath`: arcs and smooth curves become cubics on the way. */
+/**
+ * SVG path data as the creation fork's `RemotePath`: arcs and smooth curves become cubics on the
+ * way.
+ */
 private fun remotePath(data: String): RemotePath? {
   val parsed =
     runCatching { PathParser().parsePathString(data).toPath() }.getOrNull() ?: return null

@@ -14,11 +14,13 @@ kotlin {
 
   sourceSets {
     commonMain.dependencies {
-      implementation(project(":vendor:remote-write-core"))
-      implementation(project(":vendor:remote-creation-compose"))
-      implementation(project(":vendor:remote-material3"))
+      // rc-players' Compose Multiplatform creation fork and its Wear Remote Material 3, which
+      // encode a document entirely in Wasm.
+      implementation(project.dependencies.platform(libs.composeai.rc.players.bom))
+      implementation(libs.composeai.rc.creation.compose)
+      implementation(libs.composeai.rc.creation.wear.material3)
       @Suppress("DEPRECATION") implementation(compose.runtime)
-      implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+      implementation(libs.kotlinx.coroutines.core)
     }
   }
 }

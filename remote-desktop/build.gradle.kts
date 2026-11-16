@@ -7,9 +7,13 @@ plugins {
 application { mainClass.set("ee.schimke.remote.desktop.MainKt") }
 
 dependencies {
-  implementation(project(":vendor:remote-creation-compose"))
-  implementation(project(":vendor:remote-write-core"))
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+  // rc-players' Compose Multiplatform creation fork: AndroidX's creation DSL in rc-players'
+  // package,
+  // over its own common writer, so a desktop JVM captures a document with no Android on the path.
+  implementation(platform(libs.composeai.rc.players.bom))
+  implementation(libs.composeai.rc.creation.compose)
+  implementation(libs.composeai.rc.creation.writer)
+  implementation(libs.kotlinx.coroutines.core)
   testImplementation(kotlin("test"))
   testImplementation(libs.junit)
 }
@@ -19,14 +23,4 @@ kotlin { compilerOptions { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarg
 java {
   sourceCompatibility = JavaVersion.VERSION_17
   targetCompatibility = JavaVersion.VERSION_17
-}
-
-configurations.configureEach {
-  resolutionStrategy.dependencySubstitution {
-    substitute(module("androidx.compose.remote:remote-core")).using(project(":vendor:remote-core"))
-    substitute(module("androidx.compose.remote:remote-creation-core"))
-      .using(project(":vendor:remote-core"))
-    substitute(module("androidx.compose.remote:remote-creation"))
-      .using(project(":vendor:remote-core"))
-  }
 }

@@ -1,3 +1,5 @@
+import java.util.zip.ZipFile
+
 plugins { id("org.jetbrains.kotlin.jvm") }
 
 // The typed-export pilot: Kotlin adapter definitions on the REAL Remote Compose composables, each
@@ -28,6 +30,46 @@ sourceSets.named("main") {
   kotlin.srcDir(rootProject.layout.projectDirectory.dir("catalog-typed-policy/src/main/kotlin"))
 }
 
+// AndroidX's Remote Compose creation DSL and Wear Remote Material 3, as they are published: Android
+// AARs. Discovery scans class files and never loads them, so a JVM classpath only needs each AAR's
+// `classes.jar`, which the transform below unpacks. Not rc-players' Compose Multiplatform fork: the
+// pilot exports Kotlin for `:remote-catalog`, which calls AndroidX's packages, and the records'
+// type names are what that export imports.
+val artifactType = Attribute.of("artifactType", String::class.java)
+
+abstract class AarClasses : TransformAction<TransformParameters.None> {
+  @get:InputArtifact abstract val aar: Provider<FileSystemLocation>
+
+  override fun transform(outputs: TransformOutputs) {
+    val input = aar.get().asFile
+    ZipFile(input).use { zip ->
+      val entry = zip.getEntry("classes.jar") ?: return
+      val output = outputs.file("${input.nameWithoutExtension}-classes.jar")
+      zip.getInputStream(entry).use { from -> output.outputStream().use { from.copyTo(it) } }
+    }
+  }
+}
+
+val androidxRemoteAars by configurations.creating {
+  isCanBeConsumed = false
+  isTransitive = false
+}
+
+dependencies {
+  registerTransform(AarClasses::class) {
+    from.attribute(artifactType, "aar")
+    to.attribute(artifactType, "jar")
+  }
+  for (library in
+    listOf(libs.compose.remote.creation.compose, libs.wear.compose.remote.material3)) {
+    val coordinate = library.get()
+    androidxRemoteAars("${coordinate.module}:${coordinate.versionConstraint.requiredVersion}@aar")
+  }
+}
+
+val androidxRemoteClasses =
+  androidxRemoteAars.incoming.artifactView { attributes { attribute(artifactType, "jar") } }.files
+
 dependencies {
   // The typed adapter API (`TypedComponentAdapter`, `ExportProjection`, `ScreenGenerator`) and the
   // library-metadata discovery the real records are read with, at the compose-ai-tools release
@@ -39,11 +81,10 @@ dependencies {
   implementation("ee.schimke.composeai:ui-builder-protocol")
   implementation("ee.schimke.composeai:component-catalog-protocol")
   implementation(libs.kotlinx.serialization.json)
-  // The real composables, read from their metadata on this classpath — never loaded or run. The
-  // vendored CMP port publishes the same `androidx.compose.remote` / `androidx.wear.compose.remote`
-  // API the Android export calls.
-  runtimeOnly(project(":vendor:remote-material3"))
-  runtimeOnly(project(":vendor:remote-creation-compose"))
+  // The real composables, read from their metadata on this classpath — never loaded or run: the
+  // classes of AndroidX's published Android artifacts, the exact API the Android export calls (see
+  // `androidxRemoteClasses` below).
+  runtimeOnly(files(androidxRemoteClasses))
 
   testImplementation(kotlin("test"))
   // The builder's own export, so the pilot pair's projections are exported end to end the way the

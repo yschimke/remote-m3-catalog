@@ -28,19 +28,6 @@ dependencyResolutionManagement {
       content { includeGroup("ee.schimke.wearcmp") }
     }
 
-    // The published CMP Remote Compose writer used by the remote-m3 UI Builder Browser Preview —
-    // this repository's own `vendor/` port, published by `publish-remote-compose.yml` to the
-    // `remote-compose-cmp-maven` branch of the output repository `yschimke/remote-m3-catalog-out`.
-    // Kept separate from the Wear port above because the two release independently. The exact
-    // coordinate is pinned in libs.versions.toml and embedded in the renderer manifest; this
-    // repository is fenced to its own namespace so it cannot answer any AndroidX dependency.
-    maven(
-      "https://raw.githubusercontent.com/yschimke/remote-m3-catalog-out/remote-compose-cmp-maven/",
-    ) {
-      name = "remoteComposeCmpPort"
-      content { includeGroup("ee.schimke.remotecompose") }
-    }
-
     // ── The androidx.dev snapshot lane, PINNED IN-TREE and GROUP-FENCED ───────────────────────
     // Selected by `.github/ci/remote-snapshot-pin` — one line, an androidx.dev build id or
     // `latest` — with `-PremoteSnapshot=<id>` as a per-invocation override and an empty or absent
@@ -139,9 +126,9 @@ providers.gradleProperty("rcPlayersDir").orNull?.let { path ->
         .using(project(":third-party-rc-embedded-player"))
       substitute(module("ee.schimke.composeai:rc-creation-bridge"))
         .using(project(":rc-creation-bridge"))
-      listOf("writer", "compose").forEach { name ->
-        substitute(module("ee.schimke.composeai:third-party-remote-creation-$name"))
-          .using(project(":third-party-remote-creation-$name"))
+      listOf("writer", "expression", "compose", "foundation", "wear-material3").forEach { name ->
+        substitute(module("ee.schimke.composeai:rc-creation-$name"))
+          .using(project(":rc-creation-$name"))
       }
     }
   }
@@ -178,34 +165,12 @@ include(":remote-catalog")
 
 // Mobile Launcher Widgets in Remote Compose — the `remote-widgets` system. A second design system,
 // not a mode of `remote-m3`: no `remote-material3`, no Glance Wear, and frames sized in launcher
-// grid cells. It shares the vendored Remote Compose port below. See
-// widget-catalog/build.gradle.kts.
+// grid cells. See widget-catalog/build.gradle.kts.
 include(":widget-catalog")
-
-// Source vendoring of the three Remote Compose layers being moved to CMP JVM by AndroidX CL
-// 4307936. The upstream sources stay byte-for-byte under vendor/; only their standalone Gradle
-// wiring lives here. Phase 3 also merges the JVM write path from `remote-core`,
-// `remote-creation-core`, and `remote-creation` into one local module.
-include(":vendor:remote-creation-compose")
-
-include(":vendor:remote-foundation")
-
-include(":vendor:remote-material3")
-
-include(":vendor:remote-core")
-
-include(":vendor:remote-write-core")
 
 include(":remote-wasm")
 
 include(":remote-desktop")
-
-// Research behind the live preview engine: building an RcDocument straight from a remote
-// composition (prototypes/embedded-document/README.md). Its findings now live in rc-players'
-// RcEmbeddedPlayer, so ordinary builds leave it out: -PembeddedDocumentPrototype=true.
-if (providers.gradleProperty("embeddedDocumentPrototype").orNull == "true") {
-  include(":prototypes:embedded-document")
-}
 
 // The shadow catalog: Remote stickers whose body is a UI builder document
 // (`uid-stickers/README.md`).
