@@ -2,7 +2,6 @@
 
 package ee.schimke.wearm3catalog.remote
 
-import androidx.compose.remote.creation.compose.action.Action
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.runtime.Composable
@@ -44,7 +43,7 @@ annotation class RemoteCardBackgroundImageCells
 @Composable
 @RemoteComposable
 internal fun KitTitleCard(
-  onClick: Action,
+  onClick: CatalogAction,
   style: String,
   modifier: RemoteModifier,
   title: @Composable @RemoteComposable () -> Unit,
@@ -69,7 +68,7 @@ internal fun KitTitleCard(
 @Composable
 @RemoteComposable
 internal fun KitAppCard(
-  onClick: Action,
+  onClick: CatalogAction,
   outlined: Boolean,
   modifier: RemoteModifier,
   appName: @Composable @RemoteComposable () -> Unit,

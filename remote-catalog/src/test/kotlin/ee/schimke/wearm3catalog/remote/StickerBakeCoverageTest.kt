@@ -89,10 +89,38 @@ class StickerBakeCoverageTest {
    * catches a library that starts drawing — it could not have caught this, because the library was
    * never the one at fault.
    */
-  private val knownBlank: Map<String, String> = emptyMap()
+  private val knownBlank: Map<String, String> by lazy {
+    if (onSnapshotLane) SNAPSHOT_BITMAP_CONTAINERS_BLANK_IN_EMBEDDED_PLAYER else emptyMap()
+  }
 
   /**
-   * `<stem>_VARIANT_<cell>`, the identity a [knownBlank] entry names, or null for a base render.
+   * The SNAPSHOT lane's bitmap containers, which the embedded player bakes to nothing at all — not
+   * the image, not the label. The cause is the player, established the way the KDoc above asks: the
+   * same `.rc` sidecars, drawn by the CMP player in `CmpAndroidPlayerTrialTest`, differ from these
+   * blank PNGs in 37 to 75 percent of their pixels, so the documents carry a picture and the
+   * embedded player is what draws none of it. The documents are the snapshot writer's own (the
+   * bitmap inline), which this lane recorded through the vendored port's writer until the port was
+   * dropped; the released lane draws the same stickers. Delete these when rc-players' embedded
+   * player plays the snapshot's bitmaps.
+   */
+  private val SNAPSHOT_BITMAP_CONTAINERS_BLANK_IN_EMBEDDED_PLAYER: Map<String, String> =
+    listOf(
+        "ImageBackgroundRemoteButton",
+        "ImageBackgroundRemoteButton_VARIANT_disabled",
+        "ImageBackgroundRemoteButton_VARIANT_secondary-label",
+        "ImageBackgroundRemoteButton_VARIANT_secondary-label-disabled",
+        "TitleCardRemote_VARIANT_background-image",
+        "TitleCardRemote_VARIANT_with-subtitle-background-image",
+        "TitleCardRemote_VARIANT_title-and-subtitle-background-image",
+      )
+      .associateWith {
+        "the embedded player draws nothing of the snapshot's containerPainter / background-image " +
+          "document, which the CMP player draws from the same bytes"
+      }
+
+  /**
+   * `<stem>_VARIANT_<cell>`, the identity a [knownBlank] entry names, or `<stem>` for a base
+   * render.
    *
    * **The name can arrive TRUNCATED**, which is why [matches] compares by prefix rather than by
    * equality. The renderer caps a capture's filename, so `…_VARIANT_filled_variant_large_disabled`
@@ -100,11 +128,32 @@ class StickerBakeCoverageTest {
    * `filled-variant-large-d` in the source, which reads as a typo and breaks the moment the cap
    * moves; keying it on the cell's real name and matching forwards keeps the map readable.
    */
-  private fun blankKey(file: File): String? {
+  private fun blankKey(file: File): String {
     val stem = file.name.substringBefore("_width").substringBefore("_VARIANT_")
     val cell = file.name.substringAfter("_VARIANT_", "").substringBeforeLast("-")
-    return if (cell.isEmpty()) null else "${stem}_VARIANT_${cell.replace('_', '-')}"
+    return if (cell.isEmpty()) stem else "${stem}_VARIANT_${cell.replace('_', '-')}"
   }
+
+  /**
+   * The renderer's filename cap: the longest digest-less name on disk. A name that long may have
+   * been cut short, and only such a name is matched to a [knownBlank] key by prefix — otherwise a
+   * drawn `with-subtitle` cell would answer for `with-subtitle-background-image`.
+   */
+  private val nameCap: Int by lazy {
+    rendersDir
+      .listFiles { f -> f.name.endsWith(".png") }
+      .orEmpty()
+      .maxOfOrNull { it.name.substringBeforeLast("-").length } ?: 0
+  }
+
+  /** Whether [key] names [file], whose identity may arrive truncated. */
+  private fun matches(file: File, key: String): Boolean {
+    val fileKey = blankKey(file)
+    val truncated = file.name.substringBeforeLast("-").length == nameCap
+    return key == fileKey || (truncated && "_VARIANT_" in fileKey && key.startsWith(fileKey))
+  }
+
+  private fun isKnownBlank(file: File): Boolean = knownBlank.keys.any { matches(file, it) }
 
   private fun File.hasDrawnPixel(): Boolean {
     val image = ImageIO.read(this)
@@ -121,7 +170,7 @@ class StickerBakeCoverageTest {
         .orEmpty()
         .sorted()
         .filterNot { it.hasDrawnPixel() }
-        .filter { blankKey(it) !in knownBlank }
+        .filterNot { isKnownBlank(it) }
         .map { it.name }
     assertWithMessage(
         "these stickers baked to a fully transparent PNG — nothing was drawn. If the LIBRARY " +
@@ -141,14 +190,14 @@ class StickerBakeCoverageTest {
   @Test
   fun `every known-blank sticker is still blank`() {
     val pngs = rendersDir.listFiles { f -> f.name.endsWith(".png") }.orEmpty()
-    val byKey = pngs.mapNotNull { png -> blankKey(png)?.let { it to png } }.toMap()
+    val byKey = knownBlank.keys.associateWith { key -> pngs.filter { matches(it, key) } }
 
-    val stale = knownBlank.keys.filterNot { it in byKey }
+    val stale = knownBlank.keys.filter { byKey.getValue(it).isEmpty() }
     assertWithMessage("these `knownBlank` entries name no render — a stale exemption hides a blank")
       .that(stale)
       .isEmpty()
 
-    val fixed = knownBlank.keys.filter { byKey.getValue(it).hasDrawnPixel() }
+    val fixed = knownBlank.keys.filter { key -> byKey.getValue(key).any { it.hasDrawnPixel() } }
     assertWithMessage(
         "these captures are no longer blank — the library gap they record has been FIXED. Drop " +
           "the entry from `knownBlank` and let the cell stand as an ordinary comparison: " +

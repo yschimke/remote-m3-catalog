@@ -32,7 +32,6 @@ import androidx.wear.compose.remote.material3.RemoteText
 import androidx.wear.compose.remote.material3.RemoteTextButton
 import androidx.wear.compose.remote.material3.RemoteTimeText
 import androidx.wear.compose.remote.material3.RemoteVerticalPageIndicator
-import androidx.wear.compose.remote.material3.buttonSizeModifier
 import androidx.wear.compose.remote.material3.rememberRemotePageIndicatorState
 import ee.schimke.composeai.overrides.previewOverrideBoolean
 import ee.schimke.composeai.overrides.previewOverrideChoice
@@ -208,7 +207,7 @@ fun ImageBackgroundRemoteButton() = RemoteSticker {
   val container = RemoteButtonDefaults.containerPainter(CatalogRemoteImage.bitmap())
   RemoteButton(
     onClick = onClick,
-    modifier = RemoteModifier.buttonSizeModifier().width(KitRowWidth),
+    modifier = RemoteModifier.kitButtonSize().width(KitRowWidth),
     enabled = previewOverrideBoolean("enabled", true).rb,
     containerPainter = container,
     // The library's own dimming of the same painter, not a second image: the kit's `Disabled=Yes`

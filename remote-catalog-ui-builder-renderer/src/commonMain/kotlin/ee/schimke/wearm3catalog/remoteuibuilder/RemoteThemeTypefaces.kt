@@ -1,8 +1,8 @@
 package ee.schimke.wearm3catalog.remoteuibuilder
 
-import androidx.compose.remote.creation.compose.text.RemoteFontFamily
 import androidx.compose.ui.text.font.FontFamily
-import androidx.wear.compose.remote.material3.RemoteTypography
+import ee.schimke.composeai.rccreation.compose.text.RemoteFontFamily
+import ee.schimke.composeai.rccreation.wear.material3.RemoteTypography
 import ee.schimke.composeai.rcplayer.compose.RcFontVariations
 import ee.schimke.composeai.rcplayer.compose.RcTypefaceLoader
 import ee.schimke.composeai.uibuilder.UiBuilderFontRegistry

@@ -16,7 +16,6 @@ on:
       - 'scripts/validate-typed-remote-pilot.sh'
       - 'settings.gradle.kts'
       - 'remote-catalog/ui-builder/designs/**'
-      - 'vendor/**'
       - '.github/workflows/typed-catalog.yml'
 
 permissions:

@@ -1,17 +1,17 @@
 package ee.schimke.remote.desktop
 
-import androidx.compose.remote.creation.compose.capture.RemoteCreationDisplayInfo
-import androidx.compose.remote.creation.compose.capture.RemoteDensityBehavior
-import androidx.compose.remote.creation.compose.capture.captureSingleRemoteDocument
-import androidx.compose.remote.creation.compose.layout.RemoteColumn
-import androidx.compose.remote.creation.compose.layout.RemoteText
-import androidx.compose.remote.creation.compose.state.rs
+import ee.schimke.composeai.rccreation.compose.capture.RemoteCreationDisplayInfo
+import ee.schimke.composeai.rccreation.compose.capture.RemoteDensityBehavior
+import ee.schimke.composeai.rccreation.compose.capture.captureCommonRemoteDocument
+import ee.schimke.composeai.rccreation.compose.layout.RemoteColumn
+import ee.schimke.composeai.rccreation.compose.layout.RemoteText
+import ee.schimke.composeai.rccreation.compose.state.rs
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlinx.coroutines.runBlocking
 
 internal suspend fun createDesktopSample(): ByteArray =
-  captureSingleRemoteDocument(
+  captureCommonRemoteDocument(
     creationDisplayInfo =
       RemoteCreationDisplayInfo(
         width = 192,

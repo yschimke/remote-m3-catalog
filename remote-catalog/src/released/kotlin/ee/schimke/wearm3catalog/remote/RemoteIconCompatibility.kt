@@ -4,5 +4,5 @@ import androidx.compose.remote.creation.compose.capture.RemoteImageVector
 import androidx.compose.remote.creation.compose.capture.toRemoteImageVector
 import androidx.compose.ui.graphics.vector.ImageVector
 
-/** The vendored Remote Material surface requires Remote Compose's captured vector representation. */
+/** The released Remote Material surface requires Remote Compose's captured vector representation. */
 internal fun ImageVector.asCatalogRemoteIcon(): RemoteImageVector = toRemoteImageVector()

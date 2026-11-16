@@ -1,11 +1,9 @@
 package ee.schimke.remote.desktop
 
-import androidx.compose.remote.core.CoreDocument
-import androidx.compose.remote.creation.RemoteComposeWriter
-import androidx.compose.remote.creation.common.RemoteDocumentWriter
+import ee.schimke.composeai.rccreation.common.CoreDocument
+import ee.schimke.composeai.rccreation.compose.capture.RemoteCreationDisplayInfo
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
-import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 import kotlinx.coroutines.runBlocking
@@ -20,29 +18,32 @@ class DesktopCaptureTest {
     assertContentEquals(first, second)
   }
 
+  /**
+   * The capture and the writer are rc-players' fork, in its own package, over its own common write
+   * core: none of AndroidX's Java modules (`remote-core`, `remote-creation`) or its JSON importer
+   * comes along.
+   */
   @Test
-  fun usesSingleWriteCoreWithoutJsonImporter() {
-    assertEquals(
-      CoreDocument::class.java.protectionDomain.codeSource.location,
-      RemoteComposeWriter::class.java.protectionDomain.codeSource.location,
+  fun capturesThroughTheForkAlone() {
+    assertTrue(
+      CoreDocument::class.java.protectionDomain.codeSource.location.path.contains("rc-creation-"),
     )
-    assertFailsWith<ClassNotFoundException> {
-      Class.forName("androidx.compose.remote.creation.json.RemoteComposeJsonParser")
+    assertTrue(
+      RemoteCreationDisplayInfo::class
+        .java
+        .protectionDomain
+        .codeSource
+        .location
+        .path
+        .contains("rc-creation-compose"),
+    )
+    for (absent in
+      listOf(
+        "androidx.compose.remote.core.CoreDocument",
+        "androidx.compose.remote.creation.RemoteComposeWriter",
+        "androidx.compose.remote.creation.json.RemoteComposeJsonParser",
+      )) {
+      assertFailsWith<ClassNotFoundException>(absent) { Class.forName(absent) }
     }
-  }
-
-  @Test
-  fun commonWriterMatchesComposeCapture() = runBlocking {
-    val common =
-      RemoteDocumentWriter(width = 192, height = 192).run {
-        root {
-          column(componentId = -1_000_000) {
-            text("Remote Compose on Desktop", componentId = -1_000_001)
-          }
-        }
-        encodeToByteArray()
-      }
-
-    assertContentEquals(createDesktopSample(), common)
   }
 }

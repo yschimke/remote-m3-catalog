@@ -226,7 +226,7 @@ fun LoadingRemoteButton() = RemoteSticker {
     // The kit draws this button across its content column, and the Wear sibling pins the same
     // 172dp with `Modifier.kitRowWidth()` — handed different widths the two columns would be
     // compared at two scales, because design-parity rasterises the reference to the candidate's
-    // width. No `buttonSizeModifier()` with it: that pins the one-LINE height, and this cell has
+    // width. No `kitButtonSize()` with it: that pins the one-LINE height, and this cell has
     // two lines plus an icon, so it sizes from its slots (the same branch `RemoteKitButton` takes
     // for the `Button` set's `Icon=Yes` column).
     modifier = RemoteModifier.width(KitRowWidth),

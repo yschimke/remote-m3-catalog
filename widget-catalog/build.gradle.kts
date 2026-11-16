@@ -1,8 +1,9 @@
 // `:widget-catalog` — the `remote-widgets` system: Mobile Launcher Widgets in Remote Compose.
 //
 // A design system of its own, not a mode of `:remote-catalog`'s `remote-m3`. Both record real
-// `RemoteDocument`s through the same vendored Remote Compose port and rasterise them with the same
-// player, and that is everything they share. What separates them:
+// `RemoteDocument`s through AndroidX's published Remote Compose creation DSL and rasterise them
+// with
+// the same player, and that is everything they share. What separates them:
 //
 // - **No `remote-material3`.** `remote-m3` is the Wear OS kit drawn with Wear's Remote Material 3.
 //   A phone launcher widget has no Material component library on the Remote side, so this sheet
@@ -17,8 +18,8 @@
 // - **No kit.** There is no Figma kit for launcher widgets, so this sheet is outside design-parity
 //   and the kit-coverage records; every component states `noReference`.
 //
-// It rides `:remote-catalog`'s snapshot lane only in the sense that both depend on the vendored
-// port; this module adds no lane of its own and stays on the released alpha line.
+// It does not ride `:remote-catalog`'s snapshot lane: this module adds no lane of its own and stays
+// on the released alpha line.
 @file:Suppress("RestrictedApiAndroidX")
 
 plugins {
@@ -66,9 +67,8 @@ android {
   testOptions { unitTests { isIncludeAndroidResources = true } }
 }
 
-// The vendored port answers for the published Remote coordinates, exactly as in
-// `:remote-catalog`, so the two sheets record with the same writer. `remote-material3` is
-// deliberately absent from this list: nothing here may ask for it.
+// Both sheets record with AndroidX's published writer. `remote-material3` is deliberately absent
+// from the dependencies below: nothing here may ask for it.
 val remoteComposeConnector = libs.composeai.remotecompose.connector.get()
 
 configurations.configureEach {
@@ -77,12 +77,6 @@ configurations.configureEach {
       remoteComposeConnector,
       "${remoteComposeConnector.group}:data-remotecompose-core:${remoteComposeConnector.version}",
     )
-    dependencySubstitution {
-      substitute(module("androidx.compose.remote:remote-creation-compose"))
-        .using(project(":vendor:remote-creation-compose"))
-      substitute(module("androidx.compose.remote:foundation"))
-        .using(project(":vendor:remote-foundation"))
-    }
   }
   exclude(group = "org.jetbrains.skiko")
 }
@@ -95,8 +89,8 @@ dependencies {
   implementation(libs.compose.remote.tooling.preview)
   implementation(libs.compose.remote.creation)
   // The whole component vocabulary of this sheet: the creation DSL and the foundation.
-  implementation(project(":vendor:remote-creation-compose"))
-  implementation(project(":vendor:remote-foundation"))
+  implementation(libs.compose.remote.creation.compose)
+  implementation(libs.compose.remote.foundation)
 
   implementation(libs.activity.compose)
   implementation(libs.composeai.preview.annotations)

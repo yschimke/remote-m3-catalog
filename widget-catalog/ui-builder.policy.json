@@ -8,7 +8,7 @@
     "native": {
       "fidelity": "authoritative",
       "backend": "android",
-      "reason": "The generated RemoteComposeWidget Kotlin, compiled against this module's own classpath (remote-creation-compose + remote-foundation, the vendored port) and rasterised by the real player under the WIDGETS_V6 profile a launcher widget records with."
+      "reason": "The generated RemoteComposeWidget Kotlin, compiled against this module's own classpath (AndroidX's published remote-creation-compose + remote-foundation) and rasterised by the real player under the WIDGETS_V6 profile a launcher widget records with."
     }
   },
   "$comment_previewSurfaces": "No `wasm` surface yet. remote-m3's Visual Editor and Browser Preview both play the design live in a catalog-owned runtime (:remote-catalog-ui-builder-renderer); a launcher-widget runtime would reuse that renderer's CMP writer/player pair but not its Wear widget frame, and is the next step rather than part of this initial system.",

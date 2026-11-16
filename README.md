@@ -64,8 +64,7 @@ downloadable-font axes, the Glance Wear widget host frame — so its component c
 | [`remote-catalog/`](remote-catalog) | the `remote-m3` sheet: stickers, cover-sheet spec, UI-builder policy and templates |
 | [`widget-catalog/`](widget-catalog) | the `remote-widgets` sheet: **Mobile Launcher Widgets** in Remote Compose, a second design system drawn with `remote-creation-compose` + `remote-foundation` only and sized in launcher grid cells (see [docs/design/REMOTE_WIDGETS_UI_BUILDER.md](docs/design/REMOTE_WIDGETS_UI_BUILDER.md)) |
 | [`remote-catalog-ui-builder-renderer/`](remote-catalog-ui-builder-renderer) | the UI builder's Wasm runtime for `remote-m3` (see [docs/design/REMOTE_M3_UI_BUILDER.md](docs/design/REMOTE_M3_UI_BUILDER.md)) |
-| [`vendor/`](vendor) | the vendored AndroidX Remote Compose CMP port, published as `ee.schimke.remotecompose:*` ([vendor/README.md](vendor/README.md)) |
-| [`remote-desktop/`](remote-desktop), [`remote-wasm/`](remote-wasm) | JVM and Wasm clients of that port |
+| [`remote-desktop/`](remote-desktop), [`remote-wasm/`](remote-wasm) | JVM and Wasm clients of rc-players' Compose Multiplatform creation fork (`rc-creation-*`, from the `rc-players-bom`) |
 | `ui-builder-{foundation,material,wear}-adapters/` | the UI builder's component adapters; the foundation and wear ones are copies of yschimke/wear-m3-catalog's |
 
 The Kotlin package is still `ee.schimke.wearm3catalog.remote`, deliberately: preview ids, the
@@ -235,7 +234,6 @@ access to the output repository) and `FIGMA_TOKEN`.
 | [`design-parity-import.yml`](.github/workflows/design-parity-import.yml) | owns the Figma traffic: refreshes the reference cache on `design-parity/reference` daily |
 | [`parity-issues.yml`](.github/workflows/parity-issues.yml) | publishes the sheet's open parity issues, read from this repository and from yschimke/wear-m3-catalog (pre-split issues stayed there) |
 | [`component-map.yml`](.github/workflows/component-map.yml) | regenerates `docs/COMPONENT_MAP.md` weekly and after Design Artifacts |
-| [`publish-remote-compose.yml`](.github/workflows/publish-remote-compose.yml) | publishes the vendored Remote Compose port to GitHub Packages and the `remote-compose-cmp-maven` branch |
 | [`remote-snapshot-probe.yml`](.github/workflows/remote-snapshot-probe.yml) | weekly: builds against the newest androidx.dev snapshot and reports when the picture moves |
 | [`figma-pages.yml`](.github/workflows/figma-pages.yml) | imports the kit's page SVGs and commits the cache under `design/pages` |
 | [`figma-refs.yml`](.github/workflows/figma-refs.yml) | read-only: proposes a kit node per component and rebuilds the kit index |
@@ -246,13 +244,11 @@ design-parity runs **hourly** and weekly, deliberately not per-push: a run is lo
 often, so a per-push trigger could never drain. The cache check makes a quiet hour a short no-op. See
 the comment at the top of [`design-parity.yml`](.github/workflows/design-parity.yml).
 
-**Bootstrapping an empty output repository** is ordered: dispatch `publish-remote-compose.yml` first
-(the renderer resolves the port from that branch), then `design-parity-import.yml` until the
-reference cache is complete (parity requires it), then `design-artifacts.yml`.
+**Bootstrapping an empty output repository** is ordered: dispatch `design-parity-import.yml` until
+the reference cache is complete (parity requires it), then `design-artifacts.yml`.
 
 Dependencies update themselves via Renovate ([`renovate.json`](.github/renovate.json)).
 
 ## Licence
 
-Apache 2.0 — see [LICENSE](LICENSE). The vendored Remote Compose sources under `vendor/` are Apache
-2.0 as well and keep their Android Open Source Project headers.
+Apache 2.0 — see [LICENSE](LICENSE).

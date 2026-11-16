@@ -4,7 +4,6 @@ package ee.schimke.wearm3catalog.remoteuibuilder
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.remote.creation.compose.capture.RemoteCreationDisplayInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -27,6 +26,7 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
 import androidx.wear.compose.material3.Text
 import ee.schimke.composeai.rccreation.bridge.RcComponentIds
+import ee.schimke.composeai.rccreation.compose.capture.RemoteCreationDisplayInfo
 import ee.schimke.composeai.rcplayer.compose.LocalRcComponentCoordinates
 import ee.schimke.composeai.rcplayer.compose.RcComponentCoordinatesListener
 import ee.schimke.composeai.rcplayer.compose.RcTypefaceLoader

@@ -50,9 +50,9 @@ on, labelled `3x2` and so on, ahead of any device. That is compose-ui-builder's
 
 **Shared:**
 
-- **The vendored Remote Compose port.** Both modules substitute `:vendor:remote-creation-compose`
-  and `:vendor:remote-foundation` for the published coordinates. They record with the same writer,
-  and a port bump moves both sheets.
+- **AndroidX's published Remote Compose.** Both modules record with `remote-creation-compose` and
+  `androidx.compose.remote.foundation:foundation` at the released alphas, so they record with the
+  same writer and a Remote Compose bump moves both sheets.
 - **The exporter's body vocabulary.** compose-ui-builder's `RemoteContentEmitter` writes both
   catalogs' layouts, modifiers, state, actions and record-driven component calls. Only text
   differs: `RemoteTextVocabulary.CREATION` writes `remote-creation-compose`'s `RemoteText`, with

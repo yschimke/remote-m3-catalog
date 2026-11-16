@@ -17,8 +17,10 @@ kit rendition in Wear Compose Material 3 (`:catalog`, system `wear-m3-catalog`) 
 `git log` and `git blame` reach back across the split.
 
 What lives here: `remote-catalog/` (the sheet), `remote-catalog-ui-builder-renderer/`,
-`remote-desktop/`, `remote-wasm/`, the vendored AndroidX Remote Compose CMP port under `vendor/`, and
-the three `ui-builder-*-adapters/` modules. The foundation and wear adapters are **copies** — the
+`remote-desktop/`, `remote-wasm/` and the three `ui-builder-*-adapters/` modules. The Android sheets
+build on AndroidX's published Remote Compose; the JVM and Wasm modules (`remote-desktop`,
+`remote-wasm`, the renderer) on rc-players' Compose Multiplatform creation fork (`rc-creation-*`,
+package `ee.schimke.composeai.rccreation`), versioned by the `rc-players-bom`. The foundation and wear adapters are **copies** — the
 Wear sheet keeps its own for its renderer — while the material adapters moved here outright, since
 only the Remote renderer used them. A change to a copied adapter that the Wear renderer needs too is
 two PRs, one per repository.
@@ -51,7 +53,7 @@ two PRs, one per repository.
   unwritten. CI checks the relink reaches the whole map (`--require-full-join`).
 - **Generated output goes to [yschimke/remote-m3-catalog-out](https://github.com/yschimke/remote-m3-catalog-out)**:
   `design-artifacts/remote-m3`, `design-parity/remote-m3`, `design-parity/reference`,
-  `compose-preview/*`, `snapshot-probe/remote-m3` and `remote-compose-cmp-maven`. No generated branch
+  `compose-preview/*` and `snapshot-probe/remote-m3`. No generated branch
   belongs in this repository. The one thing still read from `yschimke/wear-m3-catalog-out` is the
   Wear Compose CMP port (`ee.schimke.wearcmp`, branch `wear-compose-cmp-maven`), which only the
   adapters and the renderer link.
@@ -581,14 +583,7 @@ Wrapping changes none of the verification rules below; run the same tasks throug
   `ee.schimke.composeai:wear-preview-runtime`, whose `CapturingWearWidgetPreview` is a pre-compiled call
   to the old signature, so the widget-container stickers die at RENDER time with `NoSuchMethodError`
   while the build stays green. Compiling is not the check; rendering is.
-- **Published vendored Remote Compose versions are immutable.** The five `vendor/remote-*`
-  artifacts publish as `ee.schimke.remotecompose:*` to GitHub Packages
-  (`maven.pkg.github.com/yschimke/remote-m3-catalog`) and to the `remote-compose-cmp-maven` branch of
-  `yschimke/remote-m3-catalog-out`. Their version comes from `vendor/remote-compose-upstream.json`;
-  any non-test source or module build change must increase `portRevision`. CI enforces this before
-  the publish workflow skips an already-used version. See [vendor/README.md](vendor/README.md).
 - **Bootstrapping the output repository is ordered.** On an empty `remote-m3-catalog-out`, dispatch
-  `publish-remote-compose.yml` first (the renderer resolves the port from that branch), then
   `design-parity-import.yml` until the reference cache is complete (parity requires it), then
   `design-artifacts.yml`. The workflows need two secrets: `ARTIFACTS_TOKEN` (write access to
   `remote-m3-catalog-out`) and `FIGMA_TOKEN`.

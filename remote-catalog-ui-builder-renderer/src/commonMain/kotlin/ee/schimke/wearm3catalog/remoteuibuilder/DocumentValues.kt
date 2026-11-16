@@ -1,48 +1,45 @@
 package ee.schimke.wearm3catalog.remoteuibuilder
 
-import androidx.compose.remote.creation.common.RemoteContext
-import androidx.compose.remote.creation.compose.action.Action
-import androidx.compose.remote.creation.compose.action.combinedAction
-import androidx.compose.remote.creation.compose.action.valueChange
-import androidx.compose.remote.creation.compose.layout.RemoteTime
-import androidx.compose.remote.creation.compose.state.MutableRemoteBoolean
-import androidx.compose.remote.creation.compose.state.MutableRemoteFloat
-import androidx.compose.remote.creation.compose.state.MutableRemoteInt
-import androidx.compose.remote.creation.compose.state.MutableRemoteString
-import androidx.compose.remote.creation.compose.state.RemoteBoolean
-import androidx.compose.remote.creation.compose.state.RemoteColor
-import androidx.compose.remote.creation.compose.state.RemoteEasing
-import androidx.compose.remote.creation.compose.state.RemoteFloat
-import androidx.compose.remote.creation.compose.state.RemoteInt
-import androidx.compose.remote.creation.compose.state.RemoteString
-import androidx.compose.remote.creation.compose.state.abs
-import androidx.compose.remote.creation.compose.state.animateRemoteFloatAsState
-import androidx.compose.remote.creation.compose.state.ceil
-import androidx.compose.remote.creation.compose.state.clamp
-import androidx.compose.remote.creation.compose.state.cos
-import androidx.compose.remote.creation.compose.state.floor
-import androidx.compose.remote.creation.compose.state.lerp
-import androidx.compose.remote.creation.compose.state.max
-import androidx.compose.remote.creation.compose.state.min
-import androidx.compose.remote.creation.compose.state.pow
-import androidx.compose.remote.creation.compose.state.rb
-import androidx.compose.remote.creation.compose.state.rc
-import androidx.compose.remote.creation.compose.state.rememberMutableRemoteBoolean
-import androidx.compose.remote.creation.compose.state.rememberMutableRemoteFloat
-import androidx.compose.remote.creation.compose.state.rememberMutableRemoteInt
-import androidx.compose.remote.creation.compose.state.rememberMutableRemoteString
-import androidx.compose.remote.creation.compose.state.remoteSpring
-import androidx.compose.remote.creation.compose.state.remoteTween
-import androidx.compose.remote.creation.compose.state.rf
-import androidx.compose.remote.creation.compose.state.ri
-import androidx.compose.remote.creation.compose.state.round
-import androidx.compose.remote.creation.compose.state.rs
-import androidx.compose.remote.creation.compose.state.sin
-import androidx.compose.remote.creation.compose.state.sqrt
-import androidx.compose.remote.creation.compose.state.tan
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import ee.schimke.composeai.rccreation.common.RemoteContext
+import ee.schimke.composeai.rccreation.compose.action.RemoteAction
+import ee.schimke.composeai.rccreation.compose.action.combinedAction
+import ee.schimke.composeai.rccreation.compose.action.valueChangeAction
+import ee.schimke.composeai.rccreation.compose.layout.RemoteTime
+import ee.schimke.composeai.rccreation.compose.state.MutableRemoteBoolean
+import ee.schimke.composeai.rccreation.compose.state.MutableRemoteFloat
+import ee.schimke.composeai.rccreation.compose.state.MutableRemoteInt
+import ee.schimke.composeai.rccreation.compose.state.MutableRemoteString
+import ee.schimke.composeai.rccreation.compose.state.RemoteBoolean
+import ee.schimke.composeai.rccreation.compose.state.RemoteColor
+import ee.schimke.composeai.rccreation.compose.state.RemoteEasing
+import ee.schimke.composeai.rccreation.compose.state.RemoteFloat
+import ee.schimke.composeai.rccreation.compose.state.RemoteInt
+import ee.schimke.composeai.rccreation.compose.state.RemoteString
+import ee.schimke.composeai.rccreation.compose.state.abs
+import ee.schimke.composeai.rccreation.compose.state.animateRemoteFloatAsState
+import ee.schimke.composeai.rccreation.compose.state.ceil
+import ee.schimke.composeai.rccreation.compose.state.clamp
+import ee.schimke.composeai.rccreation.compose.state.cos
+import ee.schimke.composeai.rccreation.compose.state.floor
+import ee.schimke.composeai.rccreation.compose.state.lerp
+import ee.schimke.composeai.rccreation.compose.state.max
+import ee.schimke.composeai.rccreation.compose.state.min
+import ee.schimke.composeai.rccreation.compose.state.pow
+import ee.schimke.composeai.rccreation.compose.state.rb
+import ee.schimke.composeai.rccreation.compose.state.rc
+import ee.schimke.composeai.rccreation.compose.state.remoteSpring
+import ee.schimke.composeai.rccreation.compose.state.remoteTween
+import ee.schimke.composeai.rccreation.compose.state.rf
+import ee.schimke.composeai.rccreation.compose.state.ri
+import ee.schimke.composeai.rccreation.compose.state.round
+import ee.schimke.composeai.rccreation.compose.state.rs
+import ee.schimke.composeai.rccreation.compose.state.sin
+import ee.schimke.composeai.rccreation.compose.state.sqrt
+import ee.schimke.composeai.rccreation.compose.state.tan
 import ee.schimke.composeai.uibuilder.export.UiBuilderDocument
 import ee.schimke.composeai.uibuilder.export.UiBuilderNode
 import ee.schimke.composeai.uibuilder.export.UiExpressions
@@ -63,8 +60,8 @@ import kotlinx.serialization.json.intOrNull
  * bound action a `valueChange` — so the device preview *plays* the document the way the widget
  * will, rather than drawing the value it has at the preview state.
  *
- * Mirrors `RemoteContentEmitter`'s lowering call for call, against the vendored port, with the
- * shared [UiExpressions] typing in front of both so the two cannot disagree about what a tree
+ * Mirrors `RemoteContentEmitter`'s lowering call for call, against rc-players' creation fork, with
+ * the shared [UiExpressions] typing in front of both so the two cannot disagree about what a tree
  * means.
  */
 internal class DocumentValues(
@@ -275,8 +272,8 @@ internal class DocumentValues(
    * `RemoteContentEmitter` exports it — so a bound `RemoteCheckboxButton` ticks with nothing
    * authored on its change.
    */
-  fun action(node: UiBuilderNode, event: String): Action {
-    val writeBack = writeBack(node, event)?.let { valueChange(it, !it) }
+  fun action(node: UiBuilderNode, event: String): RemoteAction {
+    val writeBack = writeBack(node, event)?.let { valueChangeAction(it, !it) }
     val actions =
       listOfNotNull(writeBack) +
         (node.eventBindings[event] as? JsonArray).orEmpty().mapNotNull { element ->
@@ -285,18 +282,18 @@ internal class DocumentValues(
             (action["variable"] as? JsonPrimitive)?.contentOrNull ?: return@mapNotNull null
           val value = action["value"] as? JsonPrimitive
           when ((action["type"] as? JsonPrimitive)?.contentOrNull) {
-            "toggle" -> bools[variable]?.let { valueChange(it, !it) }
-            // Summed in the player, as the export writes it: `valueChange(count, count + 1)`.
+            "toggle" -> bools[variable]?.let { valueChangeAction(it, !it) }
+            // Summed in the player, as the export writes it: `valueChangeAction(count, count + 1)`.
             "increment" -> {
               val amount = (action["amount"] as? JsonPrimitive)?.takeUnless { it.isString }
               ints[variable]?.let { target ->
                 (amount?.intOrNull ?: if (amount == null) 1 else null)?.let {
-                  valueChange(target, target + it)
+                  valueChangeAction(target, target + it)
                 }
               }
                 ?: floats[variable]?.let { target ->
                   (amount?.floatOrNull ?: if (amount == null) 1f else null)?.let {
-                    valueChange(target, target + it)
+                    valueChangeAction(target, target + it)
                   }
                 }
             }
@@ -304,22 +301,22 @@ internal class DocumentValues(
             "select",
             "setText" ->
               ints[variable]?.let { target ->
-                value?.doubleOrNull?.let { valueChange(target, it.toInt().ri) }
+                value?.doubleOrNull?.let { valueChangeAction(target, it.toInt().ri) }
               }
                 ?: floats[variable]?.let { target ->
-                  value?.doubleOrNull?.let { valueChange(target, it.toFloat().rf) }
+                  value?.doubleOrNull?.let { valueChangeAction(target, it.toFloat().rf) }
                 }
                 ?: bools[variable]?.let { target ->
-                  value?.booleanOrNull?.let { valueChange(target, it.rb) }
+                  value?.booleanOrNull?.let { valueChangeAction(target, it.rb) }
                 }
                 ?: strings[variable]?.let { target ->
-                  value?.contentOrNull?.let { valueChange(target, it.rs) }
+                  value?.contentOrNull?.let { valueChangeAction(target, it.rs) }
                 }
             else -> null
           }
         }
     return when (actions.size) {
-      0 -> Action.Empty
+      0 -> RemoteAction.None
       1 -> actions.single()
       else -> combinedAction(*actions.toTypedArray())
     }
@@ -375,14 +372,18 @@ internal fun rememberDocumentValues(document: UiBuilderDocument): DocumentValues
         ((document.stateVariables[name] as? JsonObject)?.get("initialValue") as? JsonPrimitive)
       key(name) {
         when (kind) {
-          UiValueKind.INT ->
-            ints[name] = rememberMutableRemoteInt(initial?.doubleOrNull?.toInt() ?: 0)
-          UiValueKind.FLOAT ->
-            floats[name] = rememberMutableRemoteFloat(initial?.doubleOrNull?.toFloat() ?: 0f)
-          UiValueKind.BOOL ->
-            bools[name] = rememberMutableRemoteBoolean(initial?.booleanOrNull ?: false)
-          UiValueKind.STRING ->
-            strings[name] = rememberMutableRemoteString(initial?.contentOrNull.orEmpty())
+          UiValueKind.INT -> ints[name] = remember {
+              MutableRemoteInt(initial?.doubleOrNull?.toInt() ?: 0)
+            }
+          UiValueKind.FLOAT -> floats[name] = remember {
+              MutableRemoteFloat(initial?.doubleOrNull?.toFloat() ?: 0f)
+            }
+          UiValueKind.BOOL -> bools[name] = remember {
+              MutableRemoteBoolean(initial?.booleanOrNull ?: false)
+            }
+          UiValueKind.STRING -> strings[name] = remember {
+              MutableRemoteString(initial?.contentOrNull.orEmpty())
+            }
           UiValueKind.COLOR -> Unit
         }
       }

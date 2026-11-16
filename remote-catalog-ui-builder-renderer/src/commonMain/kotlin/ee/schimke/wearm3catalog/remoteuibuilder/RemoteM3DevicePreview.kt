@@ -2,67 +2,6 @@ package ee.schimke.wearm3catalog.remoteuibuilder
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.remote.creation.compose.capture.toRemoteImageVector
-import androidx.compose.remote.creation.compose.layout.RemoteAlignment
-import androidx.compose.remote.creation.compose.layout.RemoteArrangement
-import androidx.compose.remote.creation.compose.layout.RemoteBox
-import androidx.compose.remote.creation.compose.layout.RemoteCollapsibleColumn
-import androidx.compose.remote.creation.compose.layout.RemoteCollapsibleColumnScope
-import androidx.compose.remote.creation.compose.layout.RemoteCollapsibleRow
-import androidx.compose.remote.creation.compose.layout.RemoteCollapsibleRowScope
-import androidx.compose.remote.creation.compose.layout.RemoteColumn
-import androidx.compose.remote.creation.compose.layout.RemoteColumnScope
-import androidx.compose.remote.creation.compose.layout.RemoteComposable
-import androidx.compose.remote.creation.compose.layout.RemoteFitBox
-import androidx.compose.remote.creation.compose.layout.RemoteFlowRow
-import androidx.compose.remote.creation.compose.layout.RemoteImage
-import androidx.compose.remote.creation.compose.layout.RemoteRow
-import androidx.compose.remote.creation.compose.layout.RemoteRowScope
-import androidx.compose.remote.creation.compose.layout.RemoteStateLayout
-import androidx.compose.remote.creation.compose.modifier.RemoteModifier
-import androidx.compose.remote.creation.compose.modifier.alpha
-import androidx.compose.remote.creation.compose.modifier.background
-import androidx.compose.remote.creation.compose.modifier.border
-import androidx.compose.remote.creation.compose.modifier.clickable
-import androidx.compose.remote.creation.compose.modifier.clip
-import androidx.compose.remote.creation.compose.modifier.combinedClickable
-import androidx.compose.remote.creation.compose.modifier.fillMaxHeight
-import androidx.compose.remote.creation.compose.modifier.fillMaxSize
-import androidx.compose.remote.creation.compose.modifier.fillMaxWidth
-import androidx.compose.remote.creation.compose.modifier.height
-import androidx.compose.remote.creation.compose.modifier.heightIn
-import androidx.compose.remote.creation.compose.modifier.horizontalScroll
-import androidx.compose.remote.creation.compose.modifier.offset
-import androidx.compose.remote.creation.compose.modifier.padding
-import androidx.compose.remote.creation.compose.modifier.rememberRemoteScrollState
-import androidx.compose.remote.creation.compose.modifier.rotate
-import androidx.compose.remote.creation.compose.modifier.scale
-import androidx.compose.remote.creation.compose.modifier.verticalScroll
-import androidx.compose.remote.creation.compose.modifier.width
-import androidx.compose.remote.creation.compose.modifier.widthIn
-import androidx.compose.remote.creation.compose.modifier.wrapContentSize
-import androidx.compose.remote.creation.compose.modifier.zIndex
-import androidx.compose.remote.creation.compose.painter.RemotePainter
-import androidx.compose.remote.creation.compose.painter.painterRemoteImageBitmap
-import androidx.compose.remote.creation.compose.shaders.RemoteBrush
-import androidx.compose.remote.creation.compose.shaders.horizontalGradient
-import androidx.compose.remote.creation.compose.shaders.verticalGradient
-import androidx.compose.remote.creation.compose.shapes.RemoteRoundedCornerShape
-import androidx.compose.remote.creation.compose.state.RemoteBoolean
-import androidx.compose.remote.creation.compose.state.RemoteColor
-import androidx.compose.remote.creation.compose.state.RemoteConfiguration
-import androidx.compose.remote.creation.compose.state.RemoteDp
-import androidx.compose.remote.creation.compose.state.RemoteInt
-import androidx.compose.remote.creation.compose.state.asRemoteTextUnit
-import androidx.compose.remote.creation.compose.state.rb
-import androidx.compose.remote.creation.compose.state.rc
-import androidx.compose.remote.creation.compose.state.rdp
-import androidx.compose.remote.creation.compose.state.rememberMutableRemoteInt
-import androidx.compose.remote.creation.compose.state.rf
-import androidx.compose.remote.creation.compose.state.ri
-import androidx.compose.remote.creation.compose.state.rs
-import androidx.compose.remote.creation.compose.text.RemoteFontFamily
-import androidx.compose.remote.creation.compose.text.RemoteTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -80,37 +19,101 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
-import androidx.wear.compose.remote.material3.LocalRemoteContentColor
-import androidx.wear.compose.remote.material3.RemoteAppCard
-import androidx.wear.compose.remote.material3.RemoteButton
-import androidx.wear.compose.remote.material3.RemoteButtonGroup
-import androidx.wear.compose.remote.material3.RemoteCard
-import androidx.wear.compose.remote.material3.RemoteCheckboxButton
-import androidx.wear.compose.remote.material3.RemoteCircularProgressIndicator
-import androidx.wear.compose.remote.material3.RemoteCompactButton
-import androidx.wear.compose.remote.material3.RemoteCurvedProgressIndicator
-import androidx.wear.compose.remote.material3.RemoteEdgeButton
-import androidx.wear.compose.remote.material3.RemoteHorizontalPageIndicator
-import androidx.wear.compose.remote.material3.RemoteIcon
-import androidx.wear.compose.remote.material3.RemoteIconButton
-import androidx.wear.compose.remote.material3.RemoteLinearProgressIndicator
-import androidx.wear.compose.remote.material3.RemoteMaterialTheme
-import androidx.wear.compose.remote.material3.RemoteOutlinedCard
-import androidx.wear.compose.remote.material3.RemoteProgressIndicatorDefaults
-import androidx.wear.compose.remote.material3.RemoteRadioButton
-import androidx.wear.compose.remote.material3.RemoteSlider
-import androidx.wear.compose.remote.material3.RemoteSliderDefaults
-import androidx.wear.compose.remote.material3.RemoteSplitCheckboxButton
-import androidx.wear.compose.remote.material3.RemoteSplitRadioButton
-import androidx.wear.compose.remote.material3.RemoteSplitSwitchButton
-import androidx.wear.compose.remote.material3.RemoteStepper
-import androidx.wear.compose.remote.material3.RemoteSwitchButton
-import androidx.wear.compose.remote.material3.RemoteText
-import androidx.wear.compose.remote.material3.RemoteTextButton
-import androidx.wear.compose.remote.material3.RemoteTimeText
-import androidx.wear.compose.remote.material3.RemoteTitleCard
-import androidx.wear.compose.remote.material3.RemoteVerticalPageIndicator
-import androidx.wear.compose.remote.material3.rememberRemotePageIndicatorState
+import ee.schimke.composeai.rccreation.compose.capture.toRemoteImageVector
+import ee.schimke.composeai.rccreation.compose.layout.RemoteAlignment
+import ee.schimke.composeai.rccreation.compose.layout.RemoteArrangement
+import ee.schimke.composeai.rccreation.compose.layout.RemoteBox
+import ee.schimke.composeai.rccreation.compose.layout.RemoteCollapsibleColumn
+import ee.schimke.composeai.rccreation.compose.layout.RemoteCollapsibleColumnScope
+import ee.schimke.composeai.rccreation.compose.layout.RemoteCollapsibleRow
+import ee.schimke.composeai.rccreation.compose.layout.RemoteCollapsibleRowScope
+import ee.schimke.composeai.rccreation.compose.layout.RemoteColumn
+import ee.schimke.composeai.rccreation.compose.layout.RemoteColumnScope
+import ee.schimke.composeai.rccreation.compose.layout.RemoteComposable
+import ee.schimke.composeai.rccreation.compose.layout.RemoteFitBox
+import ee.schimke.composeai.rccreation.compose.layout.RemoteFlowRow
+import ee.schimke.composeai.rccreation.compose.layout.RemoteImage
+import ee.schimke.composeai.rccreation.compose.layout.RemoteRow
+import ee.schimke.composeai.rccreation.compose.layout.RemoteRowScope
+import ee.schimke.composeai.rccreation.compose.layout.RemoteStateLayout
+import ee.schimke.composeai.rccreation.compose.modifier.RemoteModifier
+import ee.schimke.composeai.rccreation.compose.modifier.alpha
+import ee.schimke.composeai.rccreation.compose.modifier.background
+import ee.schimke.composeai.rccreation.compose.modifier.border
+import ee.schimke.composeai.rccreation.compose.modifier.clickable
+import ee.schimke.composeai.rccreation.compose.modifier.clip
+import ee.schimke.composeai.rccreation.compose.modifier.combinedClickable
+import ee.schimke.composeai.rccreation.compose.modifier.fillMaxHeight
+import ee.schimke.composeai.rccreation.compose.modifier.fillMaxSize
+import ee.schimke.composeai.rccreation.compose.modifier.fillMaxWidth
+import ee.schimke.composeai.rccreation.compose.modifier.height
+import ee.schimke.composeai.rccreation.compose.modifier.heightIn
+import ee.schimke.composeai.rccreation.compose.modifier.horizontalScroll
+import ee.schimke.composeai.rccreation.compose.modifier.offset
+import ee.schimke.composeai.rccreation.compose.modifier.padding
+import ee.schimke.composeai.rccreation.compose.modifier.rememberRemoteScrollState
+import ee.schimke.composeai.rccreation.compose.modifier.rotate
+import ee.schimke.composeai.rccreation.compose.modifier.scale
+import ee.schimke.composeai.rccreation.compose.modifier.verticalScroll
+import ee.schimke.composeai.rccreation.compose.modifier.width
+import ee.schimke.composeai.rccreation.compose.modifier.widthIn
+import ee.schimke.composeai.rccreation.compose.modifier.wrapContentSize
+import ee.schimke.composeai.rccreation.compose.modifier.zIndex
+import ee.schimke.composeai.rccreation.compose.painter.RemotePainter
+import ee.schimke.composeai.rccreation.compose.painter.painterRemoteImageBitmap
+import ee.schimke.composeai.rccreation.compose.shaders.RemoteBrush
+import ee.schimke.composeai.rccreation.compose.shaders.horizontalGradient
+import ee.schimke.composeai.rccreation.compose.shaders.verticalGradient
+import ee.schimke.composeai.rccreation.compose.shapes.RemoteRoundedCornerShape
+import ee.schimke.composeai.rccreation.compose.state.MutableRemoteInt
+import ee.schimke.composeai.rccreation.compose.state.RemoteBoolean
+import ee.schimke.composeai.rccreation.compose.state.RemoteColor
+import ee.schimke.composeai.rccreation.compose.state.RemoteConfiguration
+import ee.schimke.composeai.rccreation.compose.state.RemoteDp
+import ee.schimke.composeai.rccreation.compose.state.RemoteInt
+import ee.schimke.composeai.rccreation.compose.state.asRemoteTextUnit
+import ee.schimke.composeai.rccreation.compose.state.rb
+import ee.schimke.composeai.rccreation.compose.state.rc
+import ee.schimke.composeai.rccreation.compose.state.rdp
+import ee.schimke.composeai.rccreation.compose.state.rf
+import ee.schimke.composeai.rccreation.compose.state.ri
+import ee.schimke.composeai.rccreation.compose.state.rs
+import ee.schimke.composeai.rccreation.compose.text.RemoteFontFamily
+import ee.schimke.composeai.rccreation.compose.text.RemoteTextStyle
+import ee.schimke.composeai.rccreation.wear.material3.LocalRemoteContentColor
+import ee.schimke.composeai.rccreation.wear.material3.RemoteAppCard
+import ee.schimke.composeai.rccreation.wear.material3.RemoteButton
+import ee.schimke.composeai.rccreation.wear.material3.RemoteButtonGroup
+import ee.schimke.composeai.rccreation.wear.material3.RemoteButtonGroupScope
+import ee.schimke.composeai.rccreation.wear.material3.RemoteCard
+import ee.schimke.composeai.rccreation.wear.material3.RemoteCheckboxButton
+import ee.schimke.composeai.rccreation.wear.material3.RemoteCircularProgressIndicator
+import ee.schimke.composeai.rccreation.wear.material3.RemoteCompactButton
+import ee.schimke.composeai.rccreation.wear.material3.RemoteCurvedProgressIndicator
+import ee.schimke.composeai.rccreation.wear.material3.RemoteEdgeButton
+import ee.schimke.composeai.rccreation.wear.material3.RemoteHorizontalPageIndicator
+import ee.schimke.composeai.rccreation.wear.material3.RemoteIcon
+import ee.schimke.composeai.rccreation.wear.material3.RemoteIconButton
+import ee.schimke.composeai.rccreation.wear.material3.RemoteIconButtonDefaults
+import ee.schimke.composeai.rccreation.wear.material3.RemoteLinearProgressIndicator
+import ee.schimke.composeai.rccreation.wear.material3.RemoteMaterialTheme
+import ee.schimke.composeai.rccreation.wear.material3.RemoteOutlinedCard
+import ee.schimke.composeai.rccreation.wear.material3.RemoteProgressIndicatorDefaults
+import ee.schimke.composeai.rccreation.wear.material3.RemoteRadioButton
+import ee.schimke.composeai.rccreation.wear.material3.RemoteSlider
+import ee.schimke.composeai.rccreation.wear.material3.RemoteSliderDefaults
+import ee.schimke.composeai.rccreation.wear.material3.RemoteSplitCheckboxButton
+import ee.schimke.composeai.rccreation.wear.material3.RemoteSplitRadioButton
+import ee.schimke.composeai.rccreation.wear.material3.RemoteSplitSwitchButton
+import ee.schimke.composeai.rccreation.wear.material3.RemoteStepper
+import ee.schimke.composeai.rccreation.wear.material3.RemoteSwitchButton
+import ee.schimke.composeai.rccreation.wear.material3.RemoteText
+import ee.schimke.composeai.rccreation.wear.material3.RemoteTextButton
+import ee.schimke.composeai.rccreation.wear.material3.RemoteTextButtonDefaults
+import ee.schimke.composeai.rccreation.wear.material3.RemoteTimeText
+import ee.schimke.composeai.rccreation.wear.material3.RemoteTitleCard
+import ee.schimke.composeai.rccreation.wear.material3.RemoteVerticalPageIndicator
+import ee.schimke.composeai.rccreation.wear.material3.rememberRemotePageIndicatorState
 import ee.schimke.composeai.rcplayer.compose.RcPlayerTheme
 import ee.schimke.composeai.uibuilder.export.FontSettings
 import ee.schimke.composeai.uibuilder.export.REMOTE_LABEL_BUTTON_ID
@@ -259,7 +262,7 @@ internal class RemoteDocumentTree(
       selection?.selectedNode(document.initialState(), document.stateVariables)?.let {
         branches.indexOf(it)
       }
-    val initial = rememberMutableRemoteInt(selected?.takeIf { it >= 0 } ?: branches.lastIndex)
+    val initial = remember { MutableRemoteInt(selected?.takeIf { it >= 0 } ?: branches.lastIndex) }
     // Follow the variable itself, so a click or toggle that sets it switches the branch.
     val current = selection?.let(::liveBranch) ?: initial
     RemoteBox(modifier = modifier, contentAlignment = node.boxAlignment()) {
@@ -373,6 +376,7 @@ internal class RemoteDocumentTree(
     column: RemoteColumnScope? = null,
     collapsibleColumn: RemoteCollapsibleColumnScope? = null,
     collapsibleRow: RemoteCollapsibleRowScope? = null,
+    buttonGroup: RemoteButtonGroupScope? = null,
     fillFrame: Boolean = false,
   ) {
     val node = entry.node
@@ -384,6 +388,7 @@ internal class RemoteDocumentTree(
           column,
           collapsibleColumn,
           collapsibleRow,
+          buttonGroup,
           unrolled = authoring != null,
         )
         .let { authoring?.ids?.component(it, entry.path) ?: it }
@@ -660,7 +665,7 @@ internal class RemoteDocumentTree(
           onClick = values.action(node, "click"),
           modifier = modifier,
           enabled = node.enabled(),
-          shape = PLAYABLE_CIRCLE,
+          shapes = RemoteIconButtonDefaults.shapes(PLAYABLE_CIRCLE),
         ) {
           entry.slot("content").forEach { RenderNode(it) }
         }
@@ -669,7 +674,7 @@ internal class RemoteDocumentTree(
           onClick = values.action(node, "click"),
           modifier = modifier,
           enabled = node.enabled(),
-          shape = PLAYABLE_CIRCLE,
+          shapes = RemoteTextButtonDefaults.shapes(PLAYABLE_CIRCLE),
         ) {
           entry.slot("content").forEach { RenderNode(it) }
         }
@@ -705,7 +710,7 @@ internal class RemoteDocumentTree(
         }
       "remote-m3/remote-button-group" ->
         RemoteButtonGroup(modifier = modifier) {
-          entry.slot("content").forEach { RenderNode(it, row = this) }
+          entry.slot("content").forEach { RenderNode(it, buttonGroup = this) }
         }
       "remote-m3/remote-checkbox-button" ->
         RemoteCheckboxButton(
@@ -799,7 +804,9 @@ internal class RemoteDocumentTree(
           icon = entry.slotContent("icon"),
           enabled = node.enabled(),
           containerPainter = containerImagePainter(node),
-          borderColor = node.remoteColor("borderColor"),
+          // No `border`: the creation fork's button takes one `RemoteBorderStroke`, width and
+          // colour together, and a design's `borderColor` names no width. The vendored port took
+          // the colour alone and, with no width, drew no border either.
           label = entry.rowSlotContent("label") ?: {},
         )
       // The overridden roles over the enclosing scheme, as the export's `colorScheme.copy(…)`.
@@ -843,15 +850,20 @@ internal class RemoteDocumentTree(
           entry.slot(UiRemoteTheme.SLOT).forEach { RenderNode(it) }
         }
       }
+      // rc-players' `RemoteTimeText` curves its text with `drawTextOnCircle`, which the player's
+      // own capture profile refuses ([playerWritesTextOnCircle]), failing the whole preview. Until
+      // the two agree the time text holds its place empty rather than taking the design down.
       UiTimeText.ID ->
-        RemoteTimeText(
-          modifier = modifier,
-          fontSize = node.number("textSizeSp")?.sp?.asRemoteTextUnit(),
-          leadingText = values.string(node.properties["leadingText"]),
-          trailingText = values.string(node.properties["trailingText"]),
-          separator = values.string(node.properties["separator"]) ?: "·".rs,
-          color = values.color(node.properties["color"]) ?: node.remoteColor("color"),
-        )
+        if (!playerWritesTextOnCircle) RemoteBox(modifier = modifier) {}
+        else
+          RemoteTimeText(
+            modifier = modifier,
+            fontSize = node.number("textSizeSp")?.sp?.asRemoteTextUnit(),
+            leadingText = values.string(node.properties["leadingText"]),
+            trailingText = values.string(node.properties["trailingText"]),
+            separator = values.string(node.properties["separator"]) ?: "·".rs,
+            color = values.color(node.properties["color"]) ?: node.remoteColor("color"),
+          )
       "remote-m3/remote-stepper" ->
         RemoteStepper(
           value = values.float(node.properties["value"]) ?: 0f.rf,
@@ -871,7 +883,7 @@ internal class RemoteDocumentTree(
         if (bitmap == null) RemoteBox(modifier = modifier.background(Color(0x33808080).rc))
         else
           RemoteImage(
-            remoteBitmap = bitmap.rb,
+            bitmap = bitmap.rb,
             contentDescription = node.string("contentDescription").ifEmpty { null }?.rs,
             modifier = modifier,
             contentScale = node.assetContentScale(),
@@ -989,6 +1001,7 @@ private fun UiBuilderNode.remoteModifier(
   column: RemoteColumnScope? = null,
   collapsibleColumn: RemoteCollapsibleColumnScope? = null,
   collapsibleRow: RemoteCollapsibleRowScope? = null,
+  buttonGroup: RemoteButtonGroupScope? = null,
   unrolled: Boolean = false,
 ): RemoteModifier {
   var result: RemoteModifier = RemoteModifier
@@ -1038,6 +1051,7 @@ private fun UiBuilderNode.remoteModifier(
             ?: column?.run { result.weight(weight.rf) }
             ?: collapsibleColumn?.run { result.weight(weight.rf) }
             ?: collapsibleRow?.run { result.weight(weight.rf) }
+            ?: buttonGroup?.run { result.weight(weight.rf) }
             ?: result
         }
         // Members of the collapsible scopes, like `weight`; meaningless anywhere else.
@@ -1048,7 +1062,8 @@ private fun UiBuilderNode.remoteModifier(
             ?: result
         }
         // The export writes `animationSpec(Int, Boolean)` because the native lane's
-        // alpha19 predates `sharedElement`; the port this preview records with has both, and they
+        // alpha19 predates `sharedElement`; the creation fork this preview records with has both,
+        // and they
         // lower to the same AnimationSpec operation with the same default motion.
         "sharedElement" -> result.sharedElementFrom(modifier)
         "animateEnterExit" -> result.animateEnterExitFrom(modifier)
@@ -1399,7 +1414,7 @@ internal fun UiBuilderNode.remoteIconKey(): String =
   string("imageVector").ifEmpty { REMOTE_ICON_DEFAULT_KEY }
 
 /** A theme role named as a token, read off [this] scheme; null for a name it does not have. */
-private fun androidx.wear.compose.remote.material3.RemoteColorScheme.role(
+private fun ee.schimke.composeai.rccreation.wear.material3.RemoteColorScheme.role(
   name: String
 ): RemoteColor? =
   when (name) {

@@ -167,12 +167,14 @@ internal fun kitOutlinedBorderColor(enabled: RemoteBoolean): RemoteColor =
  * The outlined card's border as Wear draws it: `outline`, 1dp (`OutlinedCardTokens`).
  *
  * `RemoteCardDefaults.outlinedCardBorder()` takes its colour from `outlinedCardColors()`'s content
- * colour, `onSurfaceVariant`, so the default stroke is a shade lighter than the kit's.
+ * colour, `onSurfaceVariant`, so the default stroke is a shade lighter than the kit's. The colour
+ * is passed by position: the released line names the parameter `outlineColor`, the snapshot
+ * `borderColor`.
  */
 @Composable
 @RemoteComposable
 internal fun kitOutlinedCardBorder(): RemoteBorderStroke =
-  RemoteCardDefaults.outlinedCardBorder(borderColor = RemoteMaterialTheme.colorScheme.outline)
+  RemoteCardDefaults.outlinedCardBorder(RemoteMaterialTheme.colorScheme.outline)
 
 /**
  * The page indicator's dot colours as the kit draws them, which are Wear Compose's
