@@ -169,19 +169,6 @@ class RemoteRenderTest {
           "(1.4) draws complete (1.0), at the default and the small stroke"
     }
 
-  /**
-   * The snapshot lane's bitmap containers bake blank in the embedded player (see
-   * [StickerBakeCoverageTest]'s `SNAPSHOT_BITMAP_CONTAINERS_BLANK_IN_EMBEDDED_PLAYER`), so every
-   * `ImageBackgroundRemoteButton` cell is the same empty picture, and `TitleCardRemote`'s three
-   * background-image cells add two pairs to its six ([expectedCollapses]).
-   */
-  private val SNAPSHOT_BITMAP_CONTAINERS_BLANK: Map<String, String> =
-    mapOf(
-      "ImageBackgroundRemoteButton" to
-        "the embedded player draws nothing of the snapshot's containerPainter document, which " +
-          "the CMP player draws from the same bytes, so every cell is the same blank",
-    )
-
   private val CONTAINED_ICON_BUTTONS_COLLAPSE_WHEN_DISABLED: Map<String, String> =
     mapOf(
       "FilledRemoteIconButton" to
@@ -267,8 +254,7 @@ class RemoteRenderTest {
           "from Title Card 2 only by its missing body — and an image or gallery cell has no body " +
           "to miss. Exactly six pairs, held by expectedCollapses",
     ) +
-      if (onSnapshotLane)
-        EDGE_BUTTON_FILLED_STYLES_COLLAPSE_WHEN_DISABLED + SNAPSHOT_BITMAP_CONTAINERS_BLANK
+      if (onSnapshotLane) EDGE_BUTTON_FILLED_STYLES_COLLAPSE_WHEN_DISABLED
       else CONTAINED_ICON_BUTTONS_COLLAPSE_WHEN_DISABLED + CIRCULAR_PROGRESS_OVERFLOW_COERCED
 
   /**
@@ -303,7 +289,7 @@ class RemoteRenderTest {
    */
   private val expectedCollapses: Map<String, Int> =
     mapOf("TitleCardRemote" to 6) +
-      (if (onSnapshotLane) mapOf("ValueStepperRemote" to 2, "TitleCardRemote" to 8)
+      (if (onSnapshotLane) mapOf("ValueStepperRemote" to 2)
       else CIRCULAR_PROGRESS_OVERFLOW_COERCED.mapValues { 2 })
 
   /**

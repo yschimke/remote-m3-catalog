@@ -10,13 +10,11 @@ import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.fillMaxSize
 import androidx.compose.remote.creation.compose.modifier.size
 import androidx.compose.remote.creation.compose.modifier.width
-import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.rb
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.remote.material3.RemoteButton
 import androidx.wear.compose.remote.material3.RemoteButtonDefaults
 import androidx.wear.compose.remote.material3.RemoteCircularProgressIndicator
@@ -240,9 +238,7 @@ fun LoadingRemoteButton() = RemoteSticker {
     // As on every other outlined cell of this sheet: the outline is a `border`, not a colour
     // (`RemoteButtonColors` has no stroke field), and without it the outlined cell is the child
     // cell's picture under another name. [KitOutlinedBorderWidth] is the 1dp Wear resolves.
-    border = if (style == "outlined") KitOutlinedBorderWidth else 0.rdp,
-    borderColor =
-      if (style == "outlined") kitOutlinedBorderColor(enabled) else RemoteColor(Color.Transparent),
+    border = kitOutlinedBorder(style == "outlined", enabled),
     // THE ICON SLOT IS A STACK, because the kit's is — see the file note for all three numbers.
     icon = {
       RemoteBox(modifier = RemoteModifier.size(slot), contentAlignment = RemoteAlignment.Center) {

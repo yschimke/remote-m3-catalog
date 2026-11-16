@@ -14,6 +14,7 @@ import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.text.RemoteFontFamily
 import androidx.compose.remote.creation.profile.RcPlatformProfiles
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.wear.compose.remote.material3.RemoteBorderStroke
 import androidx.wear.compose.remote.material3.RemoteCardDefaults
@@ -164,12 +165,27 @@ internal fun kitOutlinedBorderColor(enabled: RemoteBoolean): RemoteColor =
   )
 
 /**
+ * A button's outline as one [RemoteBorderStroke]: [KitOutlinedBorderWidth] in
+ * [kitOutlinedBorderColor] when [outlined], otherwise a zero-width transparent stroke, which draws
+ * nothing and is what the filled, tonal and child styles pass.
+ *
+ * Both lanes take the stroke now. Snapshot 16639771 took a `border` width and a `borderColor`
+ * instead, and the released lane carried overloads to bridge the pair; the zero-width stroke is
+ * exactly what those overloads built, so the released documents do not move.
+ */
+@Composable
+@RemoteComposable
+internal fun kitOutlinedBorder(outlined: Boolean, enabled: RemoteBoolean): RemoteBorderStroke =
+  if (outlined) RemoteBorderStroke(KitOutlinedBorderWidth, kitOutlinedBorderColor(enabled))
+  else RemoteBorderStroke(0.rdp, RemoteColor(Color.Transparent))
+
+/**
  * The outlined card's border as Wear draws it: `outline`, 1dp (`OutlinedCardTokens`).
  *
  * `RemoteCardDefaults.outlinedCardBorder()` takes its colour from `outlinedCardColors()`'s content
  * colour, `onSurfaceVariant`, so the default stroke is a shade lighter than the kit's. The colour
- * is passed by position: the released line names the parameter `outlineColor`, the snapshot
- * `borderColor`.
+ * is passed by position: the released line and snapshot 16942710 name the parameter `outlineColor`,
+ * where snapshot 16639771 named it `borderColor`.
  */
 @Composable
 @RemoteComposable

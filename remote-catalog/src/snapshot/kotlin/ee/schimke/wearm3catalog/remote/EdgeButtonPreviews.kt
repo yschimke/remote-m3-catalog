@@ -57,9 +57,9 @@ import ee.schimke.composeai.preview.OverrideVariant
 // THE OUTLINED STYLE IS THE ONE PLACE THIS CALL SITE ADDS ANYTHING, and it is the same treatment
 // `RemoteKitButton` gives `Button/Outlined`: `RemoteEdgeButtonDefaults.outlinedButtonColors()`
 // resolves the transparent container and the `onSurface` content, but the border is a separate
-// `border`/`borderColor` pair on the component rather than part of its colours, so it is passed
-// here at the theme's `outline` token. The three filled styles pass a zero-width border, which is
-// a no-op whatever colour rides with it.
+// `border` stroke on the component rather than part of its colours, so it is passed here at the
+// theme's `outline` token ([kitOutlinedBorder]). The three filled styles pass a zero-width border,
+// which is a no-op whatever colour rides with it.
 
 // BUILD 16399547 FIXED the former `RemoteEdgeButton` label spill: text now clips to the arc, so the
 // long [KitCopy.EDGE_BUTTON_LABEL] truncates within the component as the kit does. This call site
@@ -543,9 +543,7 @@ fun EdgeButtonRemote() = RemoteSticker {
     enabled = enabled,
     colors = colors,
     // Zero on the three filled styles, and a no-op there whatever colour rides with it.
-    border = if (style == "outlined") KitOutlinedBorderWidth else 0.rdp,
-    borderColor =
-      if (style == "outlined") kitOutlinedBorderColor(enabled) else RemoteColor(Color.Transparent),
+    border = kitOutlinedBorder(style == "outlined", enabled),
   ) {
     // The kit's `Type` axis. The glyph is the Wear sibling's — a check, the confirm action this
     // component exists for — and it is now literally the same `ImageVector` the Wear sibling

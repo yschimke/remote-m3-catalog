@@ -5,12 +5,14 @@ package ee.schimke.wearm3catalog.remote
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.remote.creation.compose.action.*
+import androidx.compose.remote.creation.compose.action.RemoteAction
 import androidx.compose.remote.creation.compose.action.hostAction
-import androidx.compose.remote.creation.compose.action.valueChange
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
 import androidx.compose.remote.creation.compose.layout.RemoteArrangement
 import androidx.compose.remote.creation.compose.layout.RemoteBox
 import androidx.compose.remote.creation.compose.layout.RemoteColumn
+import androidx.compose.remote.creation.compose.layout.RemoteContentScale
 import androidx.compose.remote.creation.compose.layout.RemoteImage
 import androidx.compose.remote.creation.compose.layout.RemoteRow
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
@@ -26,6 +28,9 @@ import androidx.compose.remote.creation.compose.shaders.linearGradient
 import androidx.compose.remote.creation.compose.shaders.solidColor
 import androidx.compose.remote.creation.compose.shapes.RemoteCircleShape
 import androidx.compose.remote.creation.compose.shapes.RemoteRoundedCornerShape
+import androidx.compose.remote.creation.compose.state.*
+import androidx.compose.remote.creation.compose.state.MutableRemoteFloat
+import androidx.compose.remote.creation.compose.state.MutableRemoteInt
 import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.RemoteFloat
 import androidx.compose.remote.creation.compose.state.RemoteString
@@ -33,22 +38,19 @@ import androidx.compose.remote.creation.compose.state.animateRemoteFloat
 import androidx.compose.remote.creation.compose.state.asRdp
 import androidx.compose.remote.creation.compose.state.rb
 import androidx.compose.remote.creation.compose.state.rdp
-import androidx.compose.remote.creation.compose.state.rememberMutableRemoteFloat
-import androidx.compose.remote.creation.compose.state.rememberMutableRemoteInt
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.ri
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.remote.creation.compose.state.rsp
 import androidx.compose.remote.creation.compose.state.selectIfGt
-import androidx.compose.remote.creation.compose.state.tween
+import androidx.compose.remote.creation.compose.text.*
 import androidx.compose.remote.creation.compose.text.RemoteFontFamily
+import androidx.compose.remote.creation.compose.text.RemoteFontWeight
+import androidx.compose.remote.creation.compose.text.RemoteTextAlign
+import androidx.compose.remote.creation.compose.text.RemoteTextOverflow
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontVariation
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.wear.compose.material3.CircularProgressIndicatorDefaults
 import androidx.wear.compose.remote.material3.RemoteButton
 import androidx.wear.compose.remote.material3.RemoteButtonColors
@@ -109,17 +111,17 @@ import ee.schimke.composeai.preview.OverrideVariant
  * A click counter that lives **inside the RemoteDocument** — Remote Compose's answer to `remember {
  * mutableStateOf(0) }`.
  *
- * Returns the label to draw and the [CatalogAction] to hand a component's `onClick`. The action is
- * a [valueChange] that writes `clicks + 1` back into a [rememberMutableRemoteInt], so the player
- * re-evaluates the label expression and repaints on its own — no host round-trip, which is exactly
- * what `hostAction` could not do.
+ * Returns the label to draw and the [RemoteAction] to hand a component's `onClick`. The action is a
+ * [valueChangeAction] that writes `clicks + 1` back into a remembered [MutableRemoteInt], so the
+ * player re-evaluates the label expression and repaints on its own — no host round-trip, which is
+ * exactly what `hostAction` could not do.
  *
  * The label is a document-level conditional: `clicks > 0` picks `"<base> (n)"`, otherwise plain
  * [base]. A freshly-built document has `clicks == 0`, so the **baked catalog capture renders the
  * bare label it always has** — the counter is only reachable once a player dispatches a real touch.
  */
 @Composable
-internal fun countedRemote(base: String): Pair<RemoteString, CatalogAction> = countedRemote(base.rs)
+internal fun countedRemote(base: String): Pair<RemoteString, RemoteAction> = countedRemote(base.rs)
 
 /**
  * [countedRemote] over a label that is itself a remote value — an overridable named string, say —
@@ -128,16 +130,15 @@ internal fun countedRemote(base: String): Pair<RemoteString, CatalogAction> = co
  * it demonstrates stays fully visible.
  */
 @Composable
-internal fun countedRemote(base: RemoteString): Pair<RemoteString, CatalogAction> {
-  val clicks = rememberMutableRemoteInt(0)
+internal fun countedRemote(base: RemoteString): Pair<RemoteString, RemoteAction> {
+  val clicks = remember { MutableRemoteInt(0) }
   val label = selectIfGt(clicks, 0.ri, base + " (" + clicks.toRemoteString() + ")", base)
-  return label to valueChange(clicks, (clicks + 1).createReference())
+  return label to valueChangeAction(clicks, (clicks + 1).createReference())
 }
 
 /**
  * The size-preserving affordance, for a sticker whose label has no room to grow. Returns a 0→1
- * [RemoteFloat] and the [CatalogAction] that flips it, so the caller can [tween] a colour across
- * it.
+ * [RemoteFloat] and the [RemoteAction] that flips it, so the caller can [lerp] a colour across it.
  *
  * Two kinds of sticker need it. The icon button has no label at all to count into. The **round**
  * text buttons have one that is already the width of their circle: the kit sizes that container
@@ -147,13 +148,14 @@ internal fun countedRemote(base: RemoteString): Pair<RemoteString, CatalogAction
  *
  * Everything with a pill or a card to grow into takes the default [countedRemote] tally.
  *
- * At rest the float is `0f`, and `tween(a, b, 0f)` is `a` — so the baked capture keeps the stock
+ * At rest the float is `0f`, and `lerp(a, b, 0f)` is `a` — so the baked capture keeps the stock
  * colours and only a live tap moves it.
  */
 @Composable
-internal fun toggledRemote(): Pair<RemoteFloat, CatalogAction> {
-  val on = rememberMutableRemoteFloat(0f)
-  return animateRemoteFloat(on, duration = 0.45f) to valueChange(on, (1f.rf - on).createReference())
+internal fun toggledRemote(): Pair<RemoteFloat, RemoteAction> {
+  val on = remember { MutableRemoteFloat(0f) }
+  return animateRemoteFloat(on, duration = 0.45f) to
+    valueChangeAction(on, (1f.rf - on).createReference())
 }
 
 // THE ICON SLOTS DRAW `Icons.*` DIRECTLY, from `material-icons-core` / `-extended`.
@@ -285,11 +287,11 @@ fun FilledRemoteButton() = RemoteSticker { RemoteKitButton(remoteFilledButtonCol
  * `Button/Tonal` published their base cell and nothing else. Ten of the set's fifty nodes were
  * undrawn on that account alone ([#160](https://github.com/yschimke/wear-m3-catalog/issues/160)).
  *
- * `border` and `borderColor` are passed rather than defaulted because `remote-material3` publishes
- * one `buttonColors()` and no outline treatment: the outlined style is this catalog holding a
+ * `border` is passed rather than defaulted because `remote-material3` publishes one
+ * `buttonColors()` and no outline treatment: the outlined style is this catalog holding a
  * transparent container against a border, the way Wear's own `OutlinedButton` is built underneath.
  * A zero-width border is a no-op whatever colour rides with it, which is what the filled and tonal
- * callers pass.
+ * callers pass ([kitOutlinedBorder]).
  *
  * `internal` rather than `private` because `Button/Tonal` lives in ComponentVariantPreviews.kt — it
  * stays a top-level component so the compare page's `Button/Tonal` card faces something, since the
@@ -299,9 +301,7 @@ fun FilledRemoteButton() = RemoteSticker { RemoteKitButton(remoteFilledButtonCol
 internal fun RemoteKitButton(colors: RemoteButtonColors, outlined: Boolean = false) {
   val (label, onClick) = countedRemote(KitCopy.PRIMARY_LABEL)
   val enabled = previewOverrideBoolean("enabled", true).rb
-  val border = if (outlined) KitOutlinedBorderWidth else 0.rdp
-  val borderColor =
-    if (outlined) kitOutlinedBorderColor(enabled) else RemoteColor(Color.Transparent)
+  val border = kitOutlinedBorder(outlined, enabled)
   if (!previewOverrideBoolean("icon", false)) {
     // The kit's `Icon=No` column, and the base render. `kitButtonSize()` is what makes a
     // label-only button measure like the kit's one-line cell.
@@ -311,14 +311,17 @@ internal fun RemoteKitButton(colors: RemoteButtonColors, outlined: Boolean = fal
       enabled = enabled,
       colors = colors,
       border = border,
-      borderColor = borderColor,
       // The kit's `Alignment` axis, which is not a parameter on either platform: it is what the
       // label does with the width it is given. `Center` is the base cell and what a label-only
       // button does on its own; `Left` fills the row and starts the text. The Wear column spells
       // it the same way, under the same cell name.
       content = {
         if (previewOverrideChoice("alignment", "center", listOf("center", "left")) == "left") {
-          RemoteText(label, modifier = RemoteModifier.fillMaxWidth(), textAlign = TextAlign.Start)
+          RemoteText(
+            label,
+            modifier = RemoteModifier.fillMaxWidth(),
+            textAlign = RemoteTextAlign.Start,
+          )
         } else {
           RemoteText(label)
         }
@@ -336,7 +339,6 @@ internal fun RemoteKitButton(colors: RemoteButtonColors, outlined: Boolean = fal
       enabled = enabled,
       colors = colors,
       border = border,
-      borderColor = borderColor,
       icon = {
         RemoteIcon(
           Icons.Filled.Add.asCatalogRemoteIcon(),
@@ -733,12 +735,12 @@ fun TextRemoteButton() = RemoteSticker {
   // The content travels with the container on the two container-less styles: `primary` is a LIGHT
   // fill in the dark-first scheme, so leaving the label at the stock near-white `onSurface` would
   // land light text on a light container at the end of the tween. At rest `on` is 0f and
-  // `tween(a, b, 0f)` is `a`, so every baked capture keeps its stock colours.
+  // `lerp(a, b, 0f)` is `a`, so every baked capture keeps its stock colours.
   val colors =
     if (style == "filled") {
       RemoteTextButtonDefaults.textButtonColors(
         containerColor =
-          tween(
+          lerp(
             RemoteMaterialTheme.colorScheme.primary,
             RemoteMaterialTheme.colorScheme.primaryDim,
             on,
@@ -758,13 +760,13 @@ fun TextRemoteButton() = RemoteSticker {
         if (style == "tonal") RemoteMaterialTheme.colorScheme.onSurface
         else RemoteMaterialTheme.colorScheme.onPrimaryContainer
       RemoteTextButtonDefaults.textButtonColors(
-        containerColor = tween(container, RemoteMaterialTheme.colorScheme.primaryDim, on),
+        containerColor = lerp(container, RemoteMaterialTheme.colorScheme.primaryDim, on),
         contentColor = onContainer,
       )
     } else {
       RemoteTextButtonDefaults.textButtonColors(
-        containerColor = tween(stock.containerColor, RemoteMaterialTheme.colorScheme.primary, on),
-        contentColor = tween(stock.contentColor, RemoteMaterialTheme.colorScheme.onPrimary, on),
+        containerColor = lerp(stock.containerColor, RemoteMaterialTheme.colorScheme.primary, on),
+        contentColor = lerp(stock.contentColor, RemoteMaterialTheme.colorScheme.onPrimary, on),
       )
     }
   // The two size cells take the same filled container the base does — the kit draws its size cells
@@ -783,8 +785,7 @@ fun TextRemoteButton() = RemoteSticker {
     colors = colors,
     // The border is its OWN parameter, not part of `colors`: an outlined text button built from
     // the container-less colours alone draws no outline and is pixel-identical to the child cell.
-    border = if (style == "outlined") KitOutlinedBorderWidth else null,
-    borderColor = if (style == "outlined") kitOutlinedBorderColor(enabled) else null,
+    border = if (style == "outlined") kitOutlinedBorder(outlined = true, enabled) else null,
     content = {
       RemoteText(
         KitCopy.GLYPHS.rs,
@@ -963,8 +964,7 @@ internal fun RemoteKitIconButton(colors: RemoteIconButtonColors, outlined: Boole
     enabled = enabled,
     modifier = RemoteModifier.size(size),
     colors = colors,
-    border = if (outlined) KitOutlinedBorderWidth else 0.rdp,
-    borderColor = if (outlined) kitOutlinedBorderColor(enabled) else RemoteColor(Color.Transparent),
+    border = kitOutlinedBorder(outlined, enabled),
     content = {
       RemoteIcon(
         Icons.Filled.Add.asCatalogRemoteIcon(),
@@ -992,7 +992,7 @@ internal fun RemoteKitIconButton(colors: RemoteIconButtonColors, outlined: Boole
 fun IconRemoteButton() = RemoteSticker {
   // No label to count into, so this one reads as a favourite toggle instead: the container colour
   // tweens to the theme's primary across the in-document flag. At rest the flag is 0f and
-  // `tween(a, b, 0f)` is `a`, so the baked sticker keeps the stock icon-button colours.
+  // `lerp(a, b, 0f)` is `a`, so the baked sticker keeps the stock icon-button colours.
   val (on, onClick) = toggledRemote()
   val stock = RemoteIconButtonDefaults.iconButtonColors()
   // `DefaultButtonSize` at the default, and NOT an unpinned `RemoteModifier`. #125 left the base
@@ -1019,7 +1019,7 @@ fun IconRemoteButton() = RemoteSticker {
     modifier = RemoteModifier.size(size),
     colors =
       RemoteIconButtonDefaults.iconButtonColors(
-        containerColor = tween(stock.containerColor, RemoteMaterialTheme.colorScheme.primary, on),
+        containerColor = lerp(stock.containerColor, RemoteMaterialTheme.colorScheme.primary, on),
         // Wear's standard `IconButton` glyph is `primary` (`IconButtonTokens`); the library's
         // default `iconButtonColors()` is `onSurface`
         // ([#673](https://github.com/yschimke/wear-m3-catalog/issues/673)).
@@ -1289,7 +1289,7 @@ fun CompactRemoteButton() = RemoteSticker {
     )
   val (label, onClick) = countedRemote(KitCopy.PRIMARY_LABEL)
   // The icon-only cell has no label to count into, so it reads as a toggle instead — the same
-  // bargain `IconButton/Standard` strikes. At rest `on` is 0f and `tween(a, b, 0f)` is `a`, so the
+  // bargain `IconButton/Standard` strikes. At rest `on` is 0f and `lerp(a, b, 0f)` is `a`, so the
   // baked capture is whichever style's own container.
   val (on, toggle) = toggledRemote()
   // The emphasis comes from the shared palette, which is the library's own named factory on the
@@ -1308,17 +1308,15 @@ fun CompactRemoteButton() = RemoteSticker {
   RemoteCompactButton(
     onClick = if (content == "icon") toggle else onClick,
     enabled = enabled,
-    border = if (style == "outlined") KitOutlinedBorderWidth else 0.rdp,
-    borderColor =
-      if (style == "outlined") kitOutlinedBorderColor(enabled) else RemoteColor(Color.Transparent),
+    border = kitOutlinedBorder(style == "outlined", enabled),
     // `copy` rather than a fresh `buttonColors(...)`: the toggle tween moves the CONTAINER and
     // nothing else, so copying keeps every other colour the emphasis resolved. At rest `on` is 0f
-    // and `tween(a, b, 0f)` is `a`, so the baked capture is the palette's own container.
+    // and `lerp(a, b, 0f)` is `a`, so the baked capture is the palette's own container.
     colors =
       if (content == "icon")
         colors.copy(
           containerColor =
-            tween(colors.containerColor, RemoteMaterialTheme.colorScheme.tertiaryContainer, on),
+            lerp(colors.containerColor, RemoteMaterialTheme.colorScheme.tertiaryContainer, on),
         )
       else colors,
     icon =
@@ -1482,7 +1480,7 @@ private fun imageFrame(width: Int, height: Int, corner: Int) {
     // as a square: the 148dp image slot came out 64x64 and the gallery's 86dp
     // lead frame came out 64 too, with the letterboxing read as a 15dp gap.
     // Stretching a solid colour distorts nothing.
-    contentScale = ContentScale.FillBounds,
+    contentScale = RemoteContentScale.FillBounds,
   )
 }
 
@@ -2000,7 +1998,7 @@ fun AppCardRemote() = RemoteSticker {
               CatalogRemoteImage.artwork(),
               null,
               modifier = RemoteModifier.size(16.rdp).clip(RemoteRoundedCornerShape(4.rdp)),
-              contentScale = ContentScale.FillBounds,
+              contentScale = RemoteContentScale.FillBounds,
             )
           })
       },
@@ -2510,8 +2508,8 @@ fun RemoteTextSticker() = RemoteSticker {
   // RemoteDocument as state; an unseeded render is the base cell, unchanged.
   val align =
     if (previewOverrideChoice("align", "centre", listOf("centre", "left")) == "left")
-      TextAlign.Start
-    else TextAlign.Center
+      RemoteTextAlign.Start
+    else RemoteTextAlign.Center
   // `bodyMedium` EXPLICITLY, because the sibling names it explicitly: `wear-m3-catalog`'s
   // `BodyText` passes `style = MaterialTheme.typography.bodyMedium` for this same string in this
   // same 160dp box. Left to `RemoteText`'s own default the two columns drew one string at two type
@@ -2567,8 +2565,8 @@ fun RemoteCaptionSticker() = RemoteSticker {
   val text = rememberOverridableRemoteString("text", KitCopy.CAPTION)
   val align =
     if (previewOverrideChoice("align", "centre", listOf("centre", "left")) == "left")
-      TextAlign.Start
-    else TextAlign.Center
+      RemoteTextAlign.Start
+    else RemoteTextAlign.Center
   RemoteText(
     text,
     modifier = RemoteModifier.width(160.rdp),
@@ -2610,7 +2608,7 @@ fun TruncatedTextRemote() = RemoteSticker {
     KitCopy.CARD_CONTENT.rs,
     modifier = RemoteModifier.width(150.rdp),
     maxLines = 2,
-    overflow = TextOverflow.Ellipsis,
+    overflow = RemoteTextOverflow.Ellipsis,
   )
 }
 
@@ -2694,7 +2692,7 @@ fun TypefaceSpecimenRemote() = RemoteSticker {
   // the render died on `FontFallbackException` the moment a typography started being installed on
   // every capture (#174). A specimen whose job is to prove four named families RESOLVE must not
   // inherit a weight that decides whether they can.
-  val specimenWeight = FontWeight.Normal
+  val specimenWeight = RemoteFontWeight.Normal
   RemoteColumn {
     RemoteText(
       "Orbitron".rs,
@@ -2754,7 +2752,7 @@ fun VariableWeightRemote() = RemoteSticker {
         "wght $weight".rs,
         fontSize = 20.rsp,
         fontFamily = RemoteFontFamily.Named("google:Roboto Flex"),
-        fontVariationSettings = FontVariation.Settings(FontVariation.weight(weight)),
+        fontVariationSettings = RemoteFontVariation.Settings(RemoteFontVariation.weight(weight.rf)),
       )
     }
   }
@@ -2790,7 +2788,7 @@ fun VariableWidthRemote() = RemoteSticker {
         "Hamburg · wdth ${width.toInt()}".rs,
         fontSize = 22.rsp,
         fontFamily = RemoteFontFamily.Named("google:Roboto Flex"),
-        fontVariationSettings = FontVariation.Settings(FontVariation.width(width)),
+        fontVariationSettings = RemoteFontVariation.Settings(RemoteFontVariation.width(width.rf)),
       )
     }
   }

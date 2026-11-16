@@ -2,7 +2,7 @@
 
 package ee.schimke.wearm3catalog.remote
 
-import androidx.compose.remote.creation.compose.action.valueChange
+import androidx.compose.remote.creation.compose.action.*
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
 import androidx.compose.remote.creation.compose.layout.RemoteBox
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
@@ -11,6 +11,7 @@ import androidx.compose.remote.creation.compose.modifier.fillMaxSize
 import androidx.compose.remote.creation.compose.modifier.graphicsLayer
 import androidx.compose.remote.creation.compose.modifier.size
 import androidx.compose.remote.creation.compose.modifier.width
+import androidx.compose.remote.creation.compose.state.MutableRemoteInt
 import androidx.compose.remote.creation.compose.state.RemoteFloat
 import androidx.compose.remote.creation.compose.state.RemoteInt
 import androidx.compose.remote.creation.compose.state.RemoteTimeVariables
@@ -18,11 +19,11 @@ import androidx.compose.remote.creation.compose.state.animateRemoteFloat
 import androidx.compose.remote.creation.compose.state.min
 import androidx.compose.remote.creation.compose.state.rb
 import androidx.compose.remote.creation.compose.state.rdp
-import androidx.compose.remote.creation.compose.state.rememberMutableRemoteInt
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.ri
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.wear.compose.remote.material3.RemoteButton
 import androidx.wear.compose.remote.material3.RemoteButtonDefaults
 import androidx.wear.compose.remote.material3.RemoteCircularProgressIndicator
@@ -620,7 +621,7 @@ fun VerticalPageIndicatorRemote() = RemoteSticker {
 @CatalogRemoteDisplay
 @Composable
 fun InteractivePageIndicatorRemote() = RemoteSticker {
-  val selected = rememberMutableRemoteInt(0)
+  val selected = remember { MutableRemoteInt(0) }
   val animatedPage = animateRemoteFloat(selected.toRemoteFloat(), duration = 0.6f)
   val state =
     object : RemotePageIndicatorState {
@@ -634,7 +635,7 @@ fun InteractivePageIndicatorRemote() = RemoteSticker {
   ) {
     RemoteHorizontalPageIndicator(state = state)
     RemoteTextButton(
-      onClick = valueChange(selected, (1.ri - selected).createReference()),
+      onClick = valueChangeAction(selected, (1.ri - selected).createReference()),
       content = { RemoteText("Next".rs) },
     )
   }

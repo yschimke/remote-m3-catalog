@@ -52,7 +52,7 @@ internal fun remoteFilledTonalIconButtonColors(): RemoteIconButtonColors =
 
 /**
  * The kit's `Outlined` emphasis — no container, and the border is drawn by the call site rather
- * than by the colours (see [RemoteKitIconButton]'s `border` / `borderColor`).
+ * than by the colours (see [RemoteKitIconButton]'s `border`).
  */
 @Composable
 internal fun remoteOutlinedIconButtonColors(): RemoteIconButtonColors =

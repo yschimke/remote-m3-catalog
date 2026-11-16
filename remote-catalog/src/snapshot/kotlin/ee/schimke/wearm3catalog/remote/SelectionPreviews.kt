@@ -3,13 +3,14 @@
 package ee.schimke.wearm3catalog.remote
 
 import androidx.compose.remote.creation.compose.action.lambdaAction
-import androidx.compose.remote.creation.compose.action.valueChange
+import androidx.compose.remote.creation.compose.action.valueChangeAction
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.width
 import androidx.compose.remote.creation.compose.state.rb
-import androidx.compose.remote.creation.compose.state.rememberMutableRemoteBoolean
+import androidx.compose.remote.creation.compose.state.MutableRemoteBoolean
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.wear.compose.remote.material3.RemoteCheckboxButton
 import androidx.wear.compose.remote.material3.RemoteRadioButton
 import androidx.wear.compose.remote.material3.RemoteSplitCheckboxButton
@@ -149,9 +150,10 @@ fun CheckboxRowRemote() = RemoteSticker {
   // RECORDED with — that is what makes `unselected` a cell — and `valueChange` binds the tap so the
   // recorded document still toggles when a player replays it, with no host round-trip
   // (`InteractiveActionCaptureTest` is why that distinction matters on this sheet).
-  val checked = rememberMutableRemoteBoolean(previewOverrideBoolean("checked", true))
+  val checkedInitial = previewOverrideBoolean("checked", true)
+  val checked = remember { MutableRemoteBoolean(checkedInitial) }
   val enabled = previewOverrideBoolean("enabled", true).rb
-  val toggle = valueChange(checked, !checked)
+  val toggle = valueChangeAction(checked, !checked)
   if (previewOverrideBoolean("split", false)) {
     RemoteSplitCheckboxButton(
       checked = checked,
@@ -207,9 +209,10 @@ fun SwitchRowRemote() = RemoteSticker {
   // carries a `motionPreview` on its `SwitchButton` for the thumb's travel; there is no Remote
   // equivalent to point at, and a motion reference naming a preview this module does not publish
   // would be a dangling id rather than a captured spring.
-  val checked = rememberMutableRemoteBoolean(previewOverrideBoolean("checked", true))
+  val checkedInitial = previewOverrideBoolean("checked", true)
+  val checked = remember { MutableRemoteBoolean(checkedInitial) }
   val enabled = previewOverrideBoolean("enabled", true).rb
-  val toggle = valueChange(checked, !checked)
+  val toggle = valueChangeAction(checked, !checked)
   if (previewOverrideBoolean("split", false)) {
     RemoteSplitSwitchButton(
       checked = checked,
@@ -247,12 +250,13 @@ fun SwitchRowRemote() = RemoteSticker {
 fun RadioRowRemote() = RemoteSticker {
   // The one place the three types are NOT the same call. A radio row selects rather than toggles —
   // its `onSelect` is one-way, and the Wear sibling spells that `onSelectedChange(true)`. The
-  // Remote spelling is `valueChange(selected, true.rb)`: a recorded document whose tap sets the
+  // Remote spelling is `valueChangeAction(selected, true.rb)`: a recorded document whose tap sets the
   // value rather than flipping it, which is what a set where exactly one may be chosen does.
   // The `checked` override keeps its name so the cell spellings stay identical across the three.
-  val selected = rememberMutableRemoteBoolean(previewOverrideBoolean("checked", true))
+  val selectedInitial = previewOverrideBoolean("checked", true)
+  val selected = remember { MutableRemoteBoolean(selectedInitial) }
   val enabled = previewOverrideBoolean("enabled", true).rb
-  val select = valueChange(selected, true.rb)
+  val select = valueChangeAction(selected, true.rb)
   if (previewOverrideBoolean("split", false)) {
     RemoteSplitRadioButton(
       selected = selected,
