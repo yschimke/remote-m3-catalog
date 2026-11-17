@@ -44,7 +44,7 @@ jobs:
           key: guidelines-remote-widgets-pr-check-restore-only
           restore-keys: |
             guidelines-remote-widgets-
-      - uses: yschimke/compose-ai-tools/.github/actions/apply@4141406aeac251d96659d61780ef62c4925cd655 # v2.95.2
+      - uses: yschimke/compose-ai-tools/.github/actions/apply@88291386c5b9f60e9d5f19e62a751f5dc3707cf0 # v2.95.3
         with:
           phase: publish
           pr-number: ${{ steps.pr.outputs.number }}
