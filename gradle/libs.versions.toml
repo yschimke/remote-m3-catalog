@@ -174,10 +174,10 @@ materialkolor = "5.0.1"
 # Compose beta line; this one deliberately is not, which is why the two were always separate
 # modules rather than two source sets and could split into two repositories (see
 # remote-catalog/build.gradle.kts).
-compose-remote = "1.0.0-alpha23"
-wear-compose-remote = "1.0.0-alpha15"
-glance-wear = "1.0.0-alpha22"
-compose-remote-foundation = "1.0.0-alpha06"
+compose-remote = "1.0.0-alpha24"
+wear-compose-remote = "1.0.0-alpha16"
+glance-wear = "1.0.0-alpha23"
+compose-remote-foundation = "1.0.0-alpha07"
 
 # Pre-release compose-ui for `:remote-catalog`. The alpha remote artifacts align with the Compose
 # 1.11+ line (1.11.0 is the first release shipping `PreviewWrapper`), so that module pins explicit
@@ -257,7 +257,7 @@ compose-remote-creation = { module = "androidx.compose.remote:remote-creation", 
 compose-remote-creation-compose = { module = "androidx.compose.remote:remote-creation-compose", version.ref = "compose-remote" }
 wear-compose-remote-material3 = { module = "androidx.wear.compose.remote:remote-material3", version.ref = "wear-compose-remote" }
 # `RemoteBasicText`, `RemoteSpacer` & co. A group of its own, on a version line of its own; the
-# release `remote-material3` alpha15 depends on, and the one built on `compose-remote` alpha23.
+# release `remote-material3` alpha16 depends on, and the one built on `compose-remote` alpha24.
 compose-remote-foundation = { module = "androidx.compose.remote.foundation:foundation", version.ref = "compose-remote-foundation" }
 glance-wear = { module = "androidx.glance.wear:wear", version.ref = "glance-wear" }
 glance-wear-core = { module = "androidx.glance.wear:wear-core", version.ref = "glance-wear" }

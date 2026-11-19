@@ -7,6 +7,7 @@ import androidx.compose.remote.creation.compose.layout.RemoteBox
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.layout.RemoteText
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
+import androidx.compose.remote.creation.compose.modifier.RemoteRole
 import androidx.compose.remote.creation.compose.modifier.background
 import androidx.compose.remote.creation.compose.modifier.clip
 import androidx.compose.remote.creation.compose.modifier.contentDescription
@@ -22,11 +23,10 @@ import androidx.compose.remote.creation.compose.state.rc
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.remote.creation.compose.state.rsp
+import androidx.compose.remote.creation.compose.text.RemoteFontWeight
 import androidx.compose.remote.creation.compose.widgets.onClick
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
 
 // ---------------------------------------------------------------------------------------------
 // The Mobile Launcher Widgets component set.
@@ -91,7 +91,7 @@ fun WidgetTitle(
     modifier = modifier,
     color = RemoteColor(color),
     fontSize = 20.rsp,
-    fontWeight = FontWeight.Medium,
+    fontWeight = RemoteFontWeight.Medium,
     maxLines = 1,
   )
 }
@@ -135,7 +135,7 @@ fun WidgetButton(
       .background(containerColor.rc)
       .semantics(mergeDescendants = true) {
         this.contentDescription = contentDescription.rs
-        role = Role.Button
+        role = RemoteRole.Button
       }
       .padding(start = 16.rdp, top = 8.rdp, end = 16.rdp, bottom = 8.rdp)
   RemoteBox(

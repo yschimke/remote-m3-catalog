@@ -15,12 +15,13 @@ import androidx.compose.remote.creation.compose.modifier.fillMaxSize
 import androidx.compose.remote.creation.compose.modifier.size
 import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.rdp
+import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.remote.creation.compose.state.rsp
+import androidx.compose.remote.creation.compose.text.RemoteTextAlign
 import androidx.compose.remote.creation.compose.widgets.RemoteComposeWidget
 import androidx.compose.remote.foundation.layout.RemoteSpacer
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.style.TextAlign
 
 /**
  * The worked sample: AndroidX's `MyWidget` demo (`compose/remote/integration-tests/
@@ -116,10 +117,10 @@ fun CounterContent(
           }
           RemoteText(
             "$count".rs,
-            modifier = RemoteModifier.weight(1f),
+            modifier = RemoteModifier.weight(1f.rf),
             color = RemoteColor(WidgetColors.OnSurface),
             fontSize = (if (narrow) 32 else 48).rsp,
-            textAlign = TextAlign.Center,
+            textAlign = RemoteTextAlign.Center,
             maxLines = 1,
           )
           RemoteSpacer(RemoteModifier.size(8.rdp))
