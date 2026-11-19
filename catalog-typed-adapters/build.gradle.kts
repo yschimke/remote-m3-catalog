@@ -91,7 +91,9 @@ dependencies {
   // classes of AndroidX's published Android artifacts, the exact API the Android export calls (see
   // `androidxRemoteClasses` below).
   runtimeOnly(files(androidxRemoteClasses))
-  runtimeOnly("androidx.compose.remote:remote-creation-expression:${libs.versions.compose.remote.get()}")
+  runtimeOnly(
+    "androidx.compose.remote:remote-creation-expression:${libs.versions.compose.remote.get()}"
+  )
 
   testImplementation(kotlin("test"))
   // The builder's own export, so the pilot pair's projections are exported end to end the way the
