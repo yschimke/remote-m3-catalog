@@ -143,6 +143,18 @@ jobs:
           ./gradlew :widget-catalog:assembleDebug :widget-catalog:composePreviewDiscover
           :widget-catalog:verifyNoRemoteMaterial3 --stacktrace
 
+      - name: Remote samples — assemble, discover, verify
+        if: needs.changes.outputs.inert != 'true'
+        run: >
+          ./gradlew :samples-catalog:assembleDebug :samples-catalog:composePreviewDiscover
+          -PremoteSnapshot= --stacktrace
+
+      - name: Vendored samples match upstream pin and spec is current
+        if: needs.changes.outputs.inert != 'true'
+        run: |
+          node scripts/import-samples.mjs --check
+          node scripts/samples-spec.mjs --check
+
       # design-map.json is an OUTPUT — projected from the annotations that were just discovered —
       # and it is committed, so it can go stale the moment a component is added or a reference is
       # repointed. A stale map is silent in the worst way: parity keeps comparing yesterday's

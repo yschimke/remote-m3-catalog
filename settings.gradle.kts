@@ -163,6 +163,10 @@ if (providers.gradleProperty("typedRemoteCatalog").orNull == "true") {
 // remote-catalog/build.gradle.kts for why it is on the alpha line with no Compose BOM.
 include(":remote-catalog")
 
+// Vendored AndroidX Wear Remote Compose Material 3 samples — the `remote-m3-samples` system.
+// See samples/import.json and samples-catalog/build.gradle.kts.
+include(":samples-catalog")
+
 // Mobile Launcher Widgets in Remote Compose — the `remote-widgets` system. A second design system,
 // not a mode of `remote-m3`: no `remote-material3`, no Glance Wear, and frames sized in launcher
 // grid cells. See widget-catalog/build.gradle.kts.
