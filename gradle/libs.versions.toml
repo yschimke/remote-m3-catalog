@@ -174,10 +174,10 @@ materialkolor = "5.0.1"
 # Compose beta line; this one deliberately is not, which is why the two were always separate
 # modules rather than two source sets and could split into two repositories (see
 # remote-catalog/build.gradle.kts).
-compose-remote = "1.0.0-alpha23"
-wear-compose-remote = "1.0.0-alpha15"
-glance-wear = "1.0.0-alpha22"
-compose-remote-foundation = "1.0.0-alpha06"
+compose-remote = "1.0.0-alpha24"
+wear-compose-remote = "1.0.0-alpha16"
+glance-wear = "1.0.0-alpha23"
+compose-remote-foundation = "1.0.0-alpha07"
 
 # Pre-release compose-ui for `:remote-catalog`. The alpha remote artifacts align with the Compose
 # 1.11+ line (1.11.0 is the first release shipping `PreviewWrapper`), so that module pins explicit
