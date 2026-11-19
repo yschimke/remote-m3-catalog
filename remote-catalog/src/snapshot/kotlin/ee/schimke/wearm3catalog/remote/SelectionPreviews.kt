@@ -150,7 +150,8 @@ fun CheckboxRowRemote() = RemoteSticker {
   // RECORDED with — that is what makes `unselected` a cell — and `valueChange` binds the tap so the
   // recorded document still toggles when a player replays it, with no host round-trip
   // (`InteractiveActionCaptureTest` is why that distinction matters on this sheet).
-  val checked = remember { MutableRemoteBoolean(previewOverrideBoolean("checked", true)) }
+  val initialChecked = previewOverrideBoolean("checked", true)
+  val checked = remember(initialChecked) { MutableRemoteBoolean(initialChecked) }
   val enabled = previewOverrideBoolean("enabled", true).rb
   val toggle = valueChangeAction(checked, !checked)
   if (previewOverrideBoolean("split", false)) {
@@ -208,7 +209,8 @@ fun SwitchRowRemote() = RemoteSticker {
   // carries a `motionPreview` on its `SwitchButton` for the thumb's travel; there is no Remote
   // equivalent to point at, and a motion reference naming a preview this module does not publish
   // would be a dangling id rather than a captured spring.
-  val checked = remember { MutableRemoteBoolean(previewOverrideBoolean("checked", true)) }
+  val initialChecked = previewOverrideBoolean("checked", true)
+  val checked = remember(initialChecked) { MutableRemoteBoolean(initialChecked) }
   val enabled = previewOverrideBoolean("enabled", true).rb
   val toggle = valueChangeAction(checked, !checked)
   if (previewOverrideBoolean("split", false)) {
@@ -251,7 +253,8 @@ fun RadioRowRemote() = RemoteSticker {
   // Remote spelling is `valueChange(selected, true.rb)`: a recorded document whose tap sets the
   // value rather than flipping it, which is what a set where exactly one may be chosen does.
   // The `checked` override keeps its name so the cell spellings stay identical across the three.
-  val selected = remember { MutableRemoteBoolean(previewOverrideBoolean("checked", true)) }
+  val initialSelected = previewOverrideBoolean("checked", true)
+  val selected = remember(initialSelected) { MutableRemoteBoolean(initialSelected) }
   val enabled = previewOverrideBoolean("enabled", true).rb
   val select = valueChangeAction(selected, true.rb)
   if (previewOverrideBoolean("split", false)) {

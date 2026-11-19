@@ -2,20 +2,21 @@
 
 package ee.schimke.wearm3catalog.remote
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.width
 import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.rb
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rs
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
+import androidx.wear.compose.remote.material3.RemoteBorderStroke
 import androidx.wear.compose.remote.material3.RemoteEdgeButton
 import androidx.wear.compose.remote.material3.RemoteEdgeButtonDefaults
 import androidx.wear.compose.remote.material3.RemoteEdgeButtonSize
@@ -542,10 +543,12 @@ fun EdgeButtonRemote() = RemoteSticker {
     buttonSize = size,
     enabled = enabled,
     colors = colors,
-    // Zero on the three filled styles, and a no-op there whatever colour rides with it.
-    border = if (style == "outlined") KitOutlinedBorderWidth else 0.rdp,
-    borderColor =
-      if (style == "outlined") kitOutlinedBorderColor(enabled) else RemoteColor(Color.Transparent),
+    border =
+      if (style == "outlined") {
+        RemoteBorderStroke(KitOutlinedBorderWidth, kitOutlinedBorderColor(enabled))
+      } else {
+        null
+      },
   ) {
     // The kit's `Type` axis. The glyph is the Wear sibling's — a check, the confirm action this
     // component exists for — and it is now literally the same `ImageVector` the Wear sibling

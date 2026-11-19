@@ -324,7 +324,8 @@ fun ValueSliderRemote() = RemoteSticker {
   // component. `previewOverrideFloat` picks the value the document is RECORDED with — that is what
   // makes `four-increments-full` a cell — and the two actions below bind the buttons so the
   // recorded document still steps when a player replays it, with no host round-trip.
-  val value = remember { MutableRemoteFloat(previewOverrideFloat("value", 2f)) }
+  val initialValue = previewOverrideFloat("value", 2f)
+  val value = remember(initialValue) { MutableRemoteFloat(initialValue) }
   RemoteSlider(
     value = value,
     steps = steps,
