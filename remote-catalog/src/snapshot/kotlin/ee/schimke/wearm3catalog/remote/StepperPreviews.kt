@@ -6,16 +6,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.remote.creation.compose.action.valueChange
+import androidx.compose.remote.creation.compose.action.valueChangeAction
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.fillMaxSize
+import androidx.compose.remote.creation.compose.state.MutableRemoteFloat
 import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.rb
 import androidx.compose.remote.creation.compose.state.rdp
-import androidx.compose.remote.creation.compose.state.rememberMutableRemoteFloat
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.remote.material3.RemoteCurvedProgressIndicator
 import androidx.wear.compose.remote.material3.RemoteIcon
@@ -173,7 +174,7 @@ fun ValueStepperRemote() = RemoteSticker {
   // The stepper OWNS its value, as the Wear sibling's does, and the two actions bind the buttons so
   // the recorded document still steps when a player replays it with no host round-trip. A step is
   // 1/6 of the range: `steps = 5` cuts `0f..1f` into six.
-  val value = rememberMutableRemoteFloat(0.5f)
+  val value = remember { MutableRemoteFloat(0.5f) }
   val step = (1f / 6f).rf
   val enabled = previewOverrideBoolean("enabled", true).rb
   val buttonFill = previewOverrideBoolean("buttonFill", true)
@@ -213,8 +214,8 @@ fun ValueStepperRemote() = RemoteSticker {
     increaseIcon = {
       RemoteIcon(Icons.Filled.KeyboardArrowUp.asCatalogRemoteIcon(), contentDescription = "More".rs)
     },
-    decreaseAction = valueChange(value, value - step),
-    increaseAction = valueChange(value, value + step),
+    decreaseAction = valueChangeAction(value, value - step),
+    increaseAction = valueChangeAction(value, value + step),
     enabled = enabled,
     // See the file note: stated rather than defaulted, because the library's default range for a
     // stepper is not the Wear card's.

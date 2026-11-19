@@ -63,7 +63,13 @@ dependencies {
   for (library in
     listOf(libs.compose.remote.creation.compose, libs.wear.compose.remote.material3)) {
     val coordinate = library.get()
-    androidxRemoteAars("${coordinate.module}:${coordinate.versionConstraint.requiredVersion}@aar")
+    val module =
+      if (coordinate.module.toString() == "androidx.compose.remote:remote-creation-compose") {
+        "androidx.compose.remote:remote-creation-compose-android"
+      } else {
+        coordinate.module.toString()
+      }
+    androidxRemoteAars("$module:${coordinate.versionConstraint.requiredVersion}@aar")
   }
 }
 
