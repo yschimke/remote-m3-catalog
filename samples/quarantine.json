@@ -1,0 +1,10 @@
+{
+  "$comment": "AndroidX Wear Remote Compose samples this catalog cannot compile or render, each with the reason and evidence. Empty is the target state.",
+  "samples": [
+    {
+      "file": "RemoteTimeTextSample.kt",
+      "reason": "Throws `RuntimeException: Operation 57 is not supported for this version` inside `RemoteComponentPreviewWrapper.Wrap` when rasterising under Robolectric (same library limitation documented in `CatalogPreviews.kt` for `RemoteTimeText`)."
+    }
+  ],
+  "previews": []
+}
