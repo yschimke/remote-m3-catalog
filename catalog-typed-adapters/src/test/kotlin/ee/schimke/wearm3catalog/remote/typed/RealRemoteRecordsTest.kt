@@ -72,19 +72,19 @@ class RealRemoteRecordsTest {
   }
 
   @Test
-  fun `the Remote value wrappers are companion invokes`() {
-    val factories = RealRemoteRecords.factories().associateBy { it.callableFqn }
-    // `"…".rs` is `RemoteString`'s, which is `@RestrictTo(LIBRARY_GROUP)`. `RemoteColor`'s
-    // one-argument wrapper takes a `@ColorInt` ARGB `Int`, not Compose's `Color` (`Color(…).rc` is
-    // an extension in `RemoteColorCompose.kt`); its other overloads take four channels, as `Float`s
-    // or `RemoteFloat`s.
-    val color =
-      RealRemoteRecords.factories().single {
-        it.callableFqn == "${RealRemoteRecords.STATE}.RemoteColor.Companion.invoke" &&
-          it.parameters.size == 1
-      }
-    assertEquals("kotlin.Int", color.parameters.single().typeFqn)
-    val string = factories.getValue("${RealRemoteRecords.STATE}.RemoteString.Companion.invoke")
-    assertEquals("kotlin.String", string.parameters.single().typeFqn)
+  fun `the Remote value wrappers are top-level factories`() {
+    // `"…".rs` is `RemoteString`'s, which is `@RestrictTo(LIBRARY_GROUP)`. In alpha24+,
+    // `RemoteColor(Int)` and `RemoteString(String)` moved from `Companion.invoke` to top-level
+    // functions in `remote-creation-expression`. `RemoteColor`'s one-argument wrapper takes a
+    // `@ColorInt` ARGB `Int`, not Compose's `Color` (`Color(…).rc` is an extension in
+    // `RemoteColorCompose.kt`).
+    val colorFactory =
+      Class.forName("${RealRemoteRecords.STATE}.RemoteColorKt")
+        .getMethod("RemoteColor", Int::class.javaPrimitiveType)
+    assertEquals("${RealRemoteRecords.STATE}.RemoteColor", colorFactory.returnType.name)
+    val stringFactory =
+      Class.forName("${RealRemoteRecords.STATE}.RemoteStringKt")
+        .getMethod("RemoteString", String::class.java)
+    assertEquals("${RealRemoteRecords.STATE}.RemoteString", stringFactory.returnType.name)
   }
 }

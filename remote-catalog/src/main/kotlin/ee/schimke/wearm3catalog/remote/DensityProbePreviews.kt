@@ -70,6 +70,6 @@ fun DensityProbeNamedDp() = RemoteSticker {
 @CatalogRemoteModes
 @Composable
 fun DensityProbeRawNamedDp() = RemoteSticker {
-  val size = rememberNamedRemoteDp("rawProbeSize") { 48.rdp }
+  val size = rememberNamedRemoteDp("rawProbeSize", 48.rdp)
   RemoteIcon(Icons.Filled.Add.asCatalogRemoteIcon(), "Add".rs, modifier = RemoteModifier.size(size))
 }

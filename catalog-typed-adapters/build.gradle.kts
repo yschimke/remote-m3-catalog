@@ -12,7 +12,7 @@ plugins { id("org.jetbrains.kotlin.jvm") }
 // (compose-ai-tools v2.52.0 = 9310fba0, compose-ui-builder v3.109.0 = 34701265). Deliberately NOT
 // the catalog's Renovate-owned `composePreviewPlugin` / `composePreviewServer`: the projections are
 // written against these APIs, and a pilot moving with production would stop measuring anything.
-val pilotTools = "2.101.0"
+val pilotTools = "2.101.1"
 val pilotBuilder = "3.137.0"
 
 kotlin {
@@ -63,7 +63,13 @@ dependencies {
   for (library in
     listOf(libs.compose.remote.creation.compose, libs.wear.compose.remote.material3)) {
     val coordinate = library.get()
-    androidxRemoteAars("${coordinate.module}:${coordinate.versionConstraint.requiredVersion}@aar")
+    val module =
+      if (coordinate.module.toString() == "androidx.compose.remote:remote-creation-compose") {
+        "androidx.compose.remote:remote-creation-compose-android"
+      } else {
+        coordinate.module.toString()
+      }
+    androidxRemoteAars("$module:${coordinate.versionConstraint.requiredVersion}@aar")
   }
 }
 
@@ -85,6 +91,8 @@ dependencies {
   // classes of AndroidX's published Android artifacts, the exact API the Android export calls (see
   // `androidxRemoteClasses` below).
   runtimeOnly(files(androidxRemoteClasses))
+  val remoteVersion = libs.compose.remote.creation.compose.get().versionConstraint.requiredVersion
+  runtimeOnly("androidx.compose.remote:remote-creation-expression:$remoteVersion")
 
   testImplementation(kotlin("test"))
   // The builder's own export, so the pilot pair's projections are exported end to end the way the

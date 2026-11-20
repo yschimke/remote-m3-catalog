@@ -2,14 +2,15 @@
 
 package ee.schimke.wearm3catalog.remote
 
-import androidx.compose.remote.creation.compose.action.valueChange
+import androidx.compose.remote.creation.compose.action.valueChangeAction
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.width
+import androidx.compose.remote.creation.compose.state.MutableRemoteFloat
 import androidx.compose.remote.creation.compose.state.rb
 import androidx.compose.remote.creation.compose.state.rdp
-import androidx.compose.remote.creation.compose.state.rememberMutableRemoteFloat
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.wear.compose.remote.material3.RemoteSlider
 import androidx.wear.compose.remote.material3.RemoteSliderDefaults
 import ee.schimke.composeai.overrides.previewOverrideBoolean
@@ -323,7 +324,8 @@ fun ValueSliderRemote() = RemoteSticker {
   // component. `previewOverrideFloat` picks the value the document is RECORDED with — that is what
   // makes `four-increments-full` a cell — and the two actions below bind the buttons so the
   // recorded document still steps when a player replays it, with no host round-trip.
-  val value = rememberMutableRemoteFloat(previewOverrideFloat("value", 2f))
+  val initialValue = previewOverrideFloat("value", 2f)
+  val value = remember(initialValue) { MutableRemoteFloat(initialValue) }
   RemoteSlider(
     value = value,
     steps = steps,
@@ -335,8 +337,8 @@ fun ValueSliderRemote() = RemoteSticker {
     // Wear one. Each button writes the stepped value straight into the document's state; the
     // library clamps to `valueRange`, so stepping past either end is the library's decision to
     // report rather than this call site's to pre-empt.
-    decreaseAction = valueChange(value, value - 1f.rf),
-    increaseAction = valueChange(value, value + 1f.rf),
+    decreaseAction = valueChangeAction(value, value - 1f.rf),
+    increaseAction = valueChangeAction(value, value + 1f.rf),
     enabled = previewOverrideBoolean("enabled", true).rb,
     // The library's own default is conditional — segmented up to `MaxSegmentSteps` and not beyond —
     // so the knob's default computes it rather than pinning `true`, and a step count past the

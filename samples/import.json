@@ -1,0 +1,15 @@
+{
+  "$comment": "The AndroidX Wear Remote Compose Material 3 samples pin for :samples-catalog. `ref` is a COMMIT SHA and never a branch, so a render is reproducible and an upstream bump is a reviewable diff. Bumping `wear-compose-remote` in gradle/libs.versions.toml means re-resolving this ref in the same PR. `paths` includes both the `@Sampled` sources and `previews/utils` (which supplies `RemoteComponentPreviewWrapper`, `ImageUtils`, `TestImageVectors`, and `ProfilePreviewParameterProvider`). `resourcePaths` carries the drawables the samples resolve `R.drawable.*` against.",
+  "repo": "https://github.com/androidx/androidx",
+  "ref": "83ccd20a85eb17e5e0a163ebcd4cbdac94d4383d",
+  "refDescription": "androidx-main as of 2026-11-19, matching androidx.wear.compose.remote:remote-material3 1.0.0-alpha16 (published 2026-11-19).",
+  "paths": [
+    "wear/compose/remote/remote-material3/samples/src/main/java/androidx/wear/compose/remote/material3/samples",
+    "wear/compose/remote/remote-material3/samples/src/main/java/androidx/wear/compose/remote/material3/previews/utils"
+  ],
+  "artifactVersion": "1.0.0-alpha16",
+  "artifactCoordinates": "androidx.wear.compose.remote:remote-material3",
+  "resourcePaths": [
+    "wear/compose/remote/remote-material3/samples/src/main/res"
+  ]
+}

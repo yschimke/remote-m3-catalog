@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Preview-only module: no launcher activity, same as :remote-catalog.
+
+     `uses-feature android.hardware.type.watch` is how `composePreviewDiscover` decides the module
+     is Wear at all (it substring-matches the merged manifest), gating the Wear sticker retarget. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-feature android:name="android.hardware.type.watch" />
+    <application android:label="Remote Wear M3 Samples Catalog" />
+</manifest>
