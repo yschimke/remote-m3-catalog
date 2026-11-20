@@ -109,7 +109,7 @@ compose-material3 = "1.5.0-rc01"
 # does not exist. The release's own `verify-maven-readiness` job checks that the CLI shipped at a
 # tag asks Gradle for a plugin version that IS on Central, which is why the action at v2.2.1 is
 # correct beside a plugin at 2.2.0.
-composePreviewContracts = "3.43.0"
+composePreviewContracts = "3.44.0"
 # The release BOM advances even when the plugin is unchanged. Never share these refs:
 # BOM 2.67.0 names compose-preview-plugin 2.66.0; a marker at 2.67.0 does not exist.
 composeAiTools = "2.101.0"
@@ -157,7 +157,7 @@ uiBuilderSource = "3.69.0"
 # docs/MIGRATING_CREATION.md there) and reshaped `RcPlayer`, which connector 3.28.0 links against
 # (`composePreviewDaemon` above). 3.7.0 is the first with `rc-creation-wear-material3`, the Wear
 # Remote Material 3 the JVM and Wasm modules record with now that `vendor/` is gone.
-rcPlayers = "3.8.0"
+rcPlayers = "3.9.0"
 
 # materialkolor — the dynamic-colour engine Confetti Wear builds its conference palettes with. The
 # declared themes in `CatalogThemes.kt` reproduce them by running the same seed through the same

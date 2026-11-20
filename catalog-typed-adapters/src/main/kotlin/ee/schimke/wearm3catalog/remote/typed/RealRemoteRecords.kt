@@ -40,14 +40,13 @@ object RealRemoteRecords {
       LibraryCallable("$LAYOUT.RemoteColumnKt", "RemoteColumn"),
     )
 
-  /** The factories a projection calls: the column's `spacedBy`, and the colour wrapper. */
+  /**
+   * The object/companion factories a projection calls: the column's `spacedBy`. `RemoteColor(Int)`
+   * and `RemoteString(String)` moved to top-level functions in `remote-creation-expression`
+   * (alpha24+), which `discoverFactories` does not yet read from file-facade metadata.
+   */
   val factoryCallables: List<TypedAdapterDiscovery.Callable> =
-    listOf(
-      TypedAdapterDiscovery.Callable("$LAYOUT.RemoteArrangement", "spacedBy"),
-      // Top-level factory functions in remote-creation-expression (alpha24+).
-      TypedAdapterDiscovery.Callable("$STATE.RemoteColorKt", "RemoteColor"),
-      TypedAdapterDiscovery.Callable("$STATE.RemoteStringKt", "RemoteString"),
-    )
+    listOf(TypedAdapterDiscovery.Callable("$LAYOUT.RemoteArrangement", "spacedBy"))
 
   fun discover(): ComponentRecordFile =
     TypedAdapterDiscovery.discoverLibrary(MODULE, "release", callables)
