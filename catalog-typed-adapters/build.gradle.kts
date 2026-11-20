@@ -13,7 +13,7 @@ plugins { id("org.jetbrains.kotlin.jvm") }
 // the catalog's Renovate-owned `composePreviewPlugin` / `composePreviewServer`: the projections are
 // written against these APIs, and a pilot moving with production would stop measuring anything.
 val pilotTools = "2.101.1"
-val pilotBuilder = "3.130.0"
+val pilotBuilder = "3.137.0"
 
 kotlin {
   jvmToolchain(21)

@@ -16,9 +16,9 @@ import androidx.compose.remote.creation.compose.state.rc
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.remote.creation.compose.state.rsp
+import androidx.compose.remote.creation.compose.text.RemoteTextAlign
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.glance.wear.GlanceWearWidget
 import androidx.glance.wear.WearWidgetBrush
@@ -45,14 +45,14 @@ fun WeatherWidgetContent() {
                 modifier = RemoteModifier.fillMaxWidth(),
                 color = Color(0xFFFFFFFF).rc,
                 fontSize = 14.rsp,
-                textAlign = TextAlign.Center,
+                textAlign = RemoteTextAlign.Center,
             )
             RemoteText(
                 text = "75° ☀️".rs,
                 modifier = RemoteModifier.fillMaxWidth(),
                 color = Color(0xFFFFFFFF).rc,
                 fontSize = 36.rsp,
-                textAlign = TextAlign.Center,
+                textAlign = RemoteTextAlign.Center,
             )
         }
     }
