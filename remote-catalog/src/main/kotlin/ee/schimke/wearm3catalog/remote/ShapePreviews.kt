@@ -10,6 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialShapes
 import androidx.compose.remote.creation.RemotePath
 import androidx.compose.remote.creation.compose.layout.RemoteCanvas
+import androidx.compose.remote.creation.compose.layout.RemoteOffset
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.size
 import androidx.compose.remote.creation.compose.state.RemotePaint
@@ -181,7 +182,9 @@ fun MaterialShapesRemote() = RemoteSticker {
     val paint = RemotePaint { color = fill }
     // The unit polygon, scaled to the drawing area. See the note at the top of the file for why
     // this is the sizing step rather than a flourish.
-    scale(size.width, size.height) { drawPath(polygon.toRemotePath(), paint) }
+    scale(size.width, size.height, pivot = RemoteOffset.Zero) {
+      drawPath(polygon.toRemotePath(), paint)
+    }
   }
 }
 

@@ -156,31 +156,16 @@ class RemoteRenderTest {
     )
 
   /**
-   * Released `remote-material3` (alpha15) coerces `RemoteCircularProgressIndicator`'s progress into
-   * 0..1, so the kit's `Progress=Overflow` cell (`progress = 1.4`) draws the complete ring, at both
-   * strokes. The snapshot draws the overflow segment; this sheet compiled against the vendored
-   * port's copy of that until the port was dropped. Two pairs per display size, held by
-   * [expectedCollapses].
+   * `remote-material3` (alpha16 and snapshot 16942710) coerces `RemoteCircularProgressIndicator`'s
+   * progress into 0..1, so the kit's `Progress=Overflow` cell (`progress = 1.4`) draws the complete
+   * ring, at both strokes. Two pairs per display size, held by [expectedCollapses].
    */
   private val CIRCULAR_PROGRESS_OVERFLOW_COERCED: Map<String, String> =
     listOf(192, 204, 216, 225, 240).associate { size ->
       "CircularProgressRemote_${size}dp" to
-        "alpha15's RemoteCircularProgressIndicator coerces progress into 0..1, so overflow " +
+        "alpha16's RemoteCircularProgressIndicator coerces progress into 0..1, so overflow " +
           "(1.4) draws complete (1.0), at the default and the small stroke"
     }
-
-  /**
-   * The snapshot lane's bitmap containers bake blank in the embedded player (see
-   * [StickerBakeCoverageTest]'s `SNAPSHOT_BITMAP_CONTAINERS_BLANK_IN_EMBEDDED_PLAYER`), so every
-   * `ImageBackgroundRemoteButton` cell is the same empty picture, and `TitleCardRemote`'s three
-   * background-image cells add two pairs to its six ([expectedCollapses]).
-   */
-  private val SNAPSHOT_BITMAP_CONTAINERS_BLANK: Map<String, String> =
-    mapOf(
-      "ImageBackgroundRemoteButton" to
-        "the embedded player draws nothing of the snapshot's containerPainter document, which " +
-          "the CMP player draws from the same bytes, so every cell is the same blank",
-    )
 
   private val CONTAINED_ICON_BUTTONS_COLLAPSE_WHEN_DISABLED: Map<String, String> =
     mapOf(
@@ -267,9 +252,9 @@ class RemoteRenderTest {
           "from Title Card 2 only by its missing body — and an image or gallery cell has no body " +
           "to miss. Exactly six pairs, held by expectedCollapses",
     ) +
-      if (onSnapshotLane)
-        EDGE_BUTTON_FILLED_STYLES_COLLAPSE_WHEN_DISABLED + SNAPSHOT_BITMAP_CONTAINERS_BLANK
-      else CONTAINED_ICON_BUTTONS_COLLAPSE_WHEN_DISABLED + CIRCULAR_PROGRESS_OVERFLOW_COERCED
+      CIRCULAR_PROGRESS_OVERFLOW_COERCED +
+      if (onSnapshotLane) EDGE_BUTTON_FILLED_STYLES_COLLAPSE_WHEN_DISABLED
+      else CONTAINED_ICON_BUTTONS_COLLAPSE_WHEN_DISABLED
 
   /**
    * How many pairs a [knownDuplicate] component is allowed to collapse into.
@@ -303,8 +288,8 @@ class RemoteRenderTest {
    */
   private val expectedCollapses: Map<String, Int> =
     mapOf("TitleCardRemote" to 6) +
-      (if (onSnapshotLane) mapOf("ValueStepperRemote" to 2, "TitleCardRemote" to 8)
-      else CIRCULAR_PROGRESS_OVERFLOW_COERCED.mapValues { 2 })
+      CIRCULAR_PROGRESS_OVERFLOW_COERCED.mapValues { 2 } +
+      if (onSnapshotLane) mapOf("ValueStepperRemote" to 2) else emptyMap()
 
   /**
    * Deliberately compares only renders of the SAME component. Two different components may
