@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
+@file:Suppress("RestrictedApiAndroidX")
+
 package androidx.wear.compose.remote.material3.samples
 
 import androidx.annotation.Sampled
-import androidx.compose.remote.creation.compose.action.hostAction
+import androidx.compose.remote.creation.compose.action.RemoteAction
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.padding
-import androidx.compose.remote.creation.compose.state.createNamedRemoteImageBitmap
+import androidx.compose.remote.creation.compose.state.RemoteImageBitmap.Companion.createNamedRemoteImageBitmap
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.runtime.Composable
@@ -40,7 +42,7 @@ import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 @WearPreviewDevices
 @PreviewWrapper(RemoteComponentPreviewWrapper::class)
 fun RemoteCardSample() {
-    RemoteCard(onClick = hostAction("open_card".rs), modifier = RemoteModifier.padding(16.rdp)) {
+    RemoteCard(onClick = RemoteAction.Empty, modifier = RemoteModifier.padding(16.rdp)) {
         RemoteText("This is a basic card".rs)
     }
 }
@@ -57,7 +59,7 @@ fun RemoteCardWithImageSample() {
     }
     val containerPainter = RemoteCardDefaults.containerPainter(backgroundImage)
     RemoteCard(
-        onClick = hostAction("open_card".rs),
+        onClick = RemoteAction.Empty,
         containerPainter = containerPainter,
         modifier = RemoteModifier.padding(16.rdp),
     ) {
@@ -70,10 +72,7 @@ fun RemoteCardWithImageSample() {
 @WearPreviewDevices
 @PreviewWrapper(RemoteComponentPreviewWrapper::class)
 fun RemoteOutlinedCardSample() {
-    RemoteOutlinedCard(
-        onClick = hostAction("open_card".rs),
-        modifier = RemoteModifier.padding(16.rdp),
-    ) {
+    RemoteOutlinedCard(onClick = RemoteAction.Empty, modifier = RemoteModifier.padding(16.rdp)) {
         RemoteText("This is an outlined card".rs)
     }
 }

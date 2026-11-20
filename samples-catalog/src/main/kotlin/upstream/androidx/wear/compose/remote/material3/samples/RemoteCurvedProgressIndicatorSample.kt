@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+@file:Suppress("RestrictedApiAndroidX")
+
 package androidx.wear.compose.remote.material3.samples
 
 import androidx.annotation.Sampled
-import androidx.compose.remote.creation.compose.action.valueChangeAction
+import androidx.compose.remote.creation.compose.action.valueChange
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.clickable
@@ -31,7 +33,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.PreviewWrapper
 import androidx.wear.compose.remote.material3.RemoteCurvedProgressIndicator
-import androidx.wear.compose.remote.material3.RemoteIntroOutroCurvedProgressIndicator
 import androidx.wear.compose.remote.material3.previews.utils.RemoteComponentPreviewWrapper
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 
@@ -59,38 +60,17 @@ public fun RemoteCurvedProgressIndicatorSample(
 public fun RemoteCurvedProgressIndicatorAnimatedSample(
     modifier: RemoteModifier = RemoteModifier.size(150.rdp)
 ) {
-    val progress = remember { MutableRemoteFloat(0.25f) }
+    val progress = remember { MutableRemoteFloat { 0.25f.rf } }
     val animatedProgress =
         animateRemoteFloatAsState(
             targetValue = progress,
             animationSpec = remoteTween(durationMillis = 250),
         )
-    val toggleAction = valueChangeAction(progress, (progress + 0.25f.rf) % 1f.rf)
+    val toggleAction = valueChange(progress, ((progress + 0.25f) % 1f).createReference())
 
     RemoteCurvedProgressIndicator(
         progress = animatedProgress,
         modifier = modifier.clickable(toggleAction),
-        startAngle = 135f.rf,
-        sweepAngle = 90f.rf,
-    )
-}
-
-@Sampled
-@RemoteComposable
-@Composable
-@WearPreviewDevices
-@PreviewWrapper(RemoteComponentPreviewWrapper::class)
-public fun RemoteIntroOutroCurvedProgressIndicatorSample(
-    modifier: RemoteModifier = RemoteModifier.size(150.rdp)
-) {
-    val progress = remember { MutableRemoteFloat(0.5f) }
-    val nextProgress =
-        progress.isGreaterThanOrEqualTo(1f.rf).select(ifTrue = 0f.rf, ifFalse = progress + 0.5f.rf)
-    val stepAction = valueChangeAction(progress, nextProgress)
-
-    RemoteIntroOutroCurvedProgressIndicator(
-        progress = progress,
-        modifier = modifier.clickable(stepAction),
         startAngle = 135f.rf,
         sweepAngle = 90f.rf,
     )

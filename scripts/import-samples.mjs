@@ -304,8 +304,11 @@ function main(argv) {
   const skip = quarantined();
   const out = check ? mkdtempSync(join(tmpdir(), "samples-import-")) : committed;
   const result = vendor(cache, manifest, out, skip);
-  const resourcesOut = args.get("res") ?? "samples-catalog/src/main/res";
-  const resources = check ? 0 : vendorResources(cache, manifest, resourcesOut);
+  const resourcesCommitted = args.get("res") ?? "samples-catalog/src/main/res";
+  const hasResources = (manifest.resourcePaths ?? []).length > 0;
+  const resourcesOut =
+    check && hasResources ? mkdtempSync(join(tmpdir(), "samples-res-")) : resourcesCommitted;
+  const resources = hasResources ? vendorResources(cache, manifest, resourcesOut) : 0;
   let patches;
   try {
     patches = applyPatches(out);
@@ -313,7 +316,10 @@ function main(argv) {
     // The message already says which patch and what to do about it; a stack trace on top only
     // buries it, and this is a failure a human has to read and act on.
     console.error(`\n${error.message}`);
-    if (check) rmSync(out, { recursive: true, force: true });
+    if (check) {
+      rmSync(out, { recursive: true, force: true });
+      if (hasResources) rmSync(resourcesOut, { recursive: true, force: true });
+    }
     process.exit(1);
   }
   writeProvenance(out, manifest, result, patches);
@@ -326,22 +332,26 @@ function main(argv) {
   for (const name of result.skipped) console.log(`    quarantined: ${name} — ${skip.get(name)}`);
 
   if (check) {
-    const diff = (() => {
+    const diffDir = (a, b) => {
       try {
-        run("diff", ["-ru", committed, out]);
+        run("diff", ["-ru", a, b]);
         return "";
       } catch (error) {
         return error.stdout?.toString() ?? "differs";
       }
-    })();
+    };
+    const diff = diffDir(committed, out);
+    const resDiff = hasResources ? diffDir(resourcesCommitted, resourcesOut) : "";
     rmSync(out, { recursive: true, force: true });
-    if (diff) {
-      console.error("\nThe committed sources differ from a fresh import at the pinned ref:\n");
-      console.error(diff.slice(0, 4000));
+    if (hasResources) rmSync(resourcesOut, { recursive: true, force: true });
+    if (diff || resDiff) {
+      console.error("\nThe committed sources or resources differ from a fresh import at the pinned ref:\n");
+      if (diff) console.error(diff.slice(0, 4000));
+      if (resDiff) console.error(resDiff.slice(0, 4000));
       console.error("Re-run `node scripts/import-samples.mjs` and commit the result.");
       process.exit(1);
     }
-    console.log("The vendored sources match a fresh import at the pinned ref.");
+    console.log("The vendored sources and resources match a fresh import at the pinned ref.");
   }
 }
 

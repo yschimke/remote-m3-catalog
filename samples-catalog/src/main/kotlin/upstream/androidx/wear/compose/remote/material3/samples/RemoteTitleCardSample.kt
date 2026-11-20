@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
+@file:Suppress("RestrictedApiAndroidX")
+
 package androidx.wear.compose.remote.material3.samples
 
 import androidx.annotation.Sampled
-import androidx.compose.remote.creation.compose.action.hostAction
+import androidx.compose.remote.creation.compose.action.RemoteAction
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.padding
-import androidx.compose.remote.creation.compose.state.createNamedRemoteImageBitmap
+import androidx.compose.remote.creation.compose.state.RemoteImageBitmap.Companion.createNamedRemoteImageBitmap
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.runtime.Composable
@@ -40,7 +42,7 @@ import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 @PreviewWrapper(RemoteComponentPreviewWrapper::class)
 fun RemoteTitleCardSample() {
     RemoteTitleCard(
-        onClick = hostAction("open_card".rs),
+        onClick = RemoteAction.Empty,
         title = { RemoteText("Title Card Title".rs) },
         time = { RemoteText("now".rs) },
         modifier = RemoteModifier.padding(16.rdp),
@@ -62,7 +64,7 @@ fun RemoteTitleCardWithImageSample() {
     }
     val containerPainter = RemoteCardDefaults.containerPainter(backgroundImage)
     RemoteTitleCard(
-        onClick = hostAction("open_card".rs),
+        onClick = RemoteAction.Empty,
         containerPainter = containerPainter,
         title = { RemoteText("Title Card".rs) },
         time = { RemoteText("now".rs) },
