@@ -1,0 +1,62 @@
+name: Design Artifacts (remote-m3-samples)
+
+# Render `:samples-catalog` — the `remote-m3-samples` system, vendored AndroidX Wear Remote
+# Compose Material 3 samples — and publish its importable bundle to the
+# `design-artifacts/remote-m3-samples` branch of `yschimke/remote-m3-catalog-out`.
+
+on:
+  schedule:
+    - cron: '45 6 * * 1' # Mondays 06:45 UTC
+  push:
+    branches: [main]
+    paths:
+      - 'samples/**'
+      - 'samples-catalog/**'
+      - 'scripts/import-samples.mjs'
+      - 'scripts/samples-spec.mjs'
+      - 'gradle/libs.versions.toml'
+      - 'gradle/wrapper/gradle-wrapper.properties'
+      - 'settings.gradle.kts'
+      - 'build.gradle.kts'
+      - '.github/workflows/design-artifacts-samples.yml'
+  workflow_dispatch:
+    inputs:
+      allow_incomplete:
+        description: 'Publish even if some previews fail to render or lack semantics.'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  samples:
+    name: remote-m3-samples
+    if: ${{ github.repository == 'yschimke/remote-m3-catalog' }}
+    permissions:
+      contents: write
+    concurrency:
+      group: design-artifacts-${{ github.ref }}-remote-m3-samples
+      cancel-in-progress: false
+    uses: yschimke/compose-ai-tools/.github/workflows/design-artifacts-reusable.yml@main
+    with:
+      system: remote-m3-samples
+      artifact-repository: yschimke/remote-m3-catalog-out
+      spec: samples-catalog/catalog.spec.json
+      module: ':samples-catalog'
+      cli-version: catalog
+      catalog-key: composePreviewPlugin
+      desktop-render: false
+      publish-live-bundle: true
+      split-per-preview: false
+      rc-document-json: true
+      commit-user-name: Yuri Schimke
+      commit-user-email: yuri@schimke.ee
+      timeout-minutes: 60
+      render-timeout: 1200
+      render-shards: 1
+      allow-incomplete: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_incomplete }}
+    secrets:
+      artifacts_token: ${{ secrets.ARTIFACTS_TOKEN }}
+      openrouter_key: ${{ secrets.OPENROUTER_API_KEY }}
+      figma_token: ${{ secrets.FIGMA_TOKEN }}
