@@ -114,7 +114,7 @@ composePreviewContracts = "3.43.0"
 composeAiTools = "2.101.0"
 composePreviewPlugin = "2.101.0"
 composePreviewCore = "2.98.0"
-composePreviewDaemon = "3.28.0"
+composePreviewDaemon = "3.28.1"
 # compose-preview-daemon's release guard publishes each module only when it changed, so ITS OWN
 # artifacts move on independent lines too: 3.9.x shipped `data-remotecompose-connector` (and the
 # `daemon-core` it pins) at 3.9.2 while holding `preview-annotations` and
@@ -122,7 +122,7 @@ composePreviewDaemon = "3.28.0"
 # ref over all three made Renovate propose 3.9.2 for the pair that was never uploaded, and #637
 # failed resolution ("Could not find ee.schimke.composeai:preview-annotations:3.9.2"). Same cure as
 # above: a ref per line, and a Renovate group per ref.
-composePreviewDaemonAnnotations = "3.28.0"
+composePreviewDaemonAnnotations = "3.28.1"
 
 # The UI-builder exporter, from yschimke/compose-preview-server, on its own release line — a
 # different repository from the compose-ai-tools artifacts above and versioned by it. Test-only:
