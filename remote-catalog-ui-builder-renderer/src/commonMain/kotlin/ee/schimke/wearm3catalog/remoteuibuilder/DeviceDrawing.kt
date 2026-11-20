@@ -150,12 +150,12 @@ private class Operation(
             // As the export writes it: into the viewport, clip, and back out.
             val sx = extent.width / (node.number("viewportWidth")?.takeIf { it > 0f } ?: 24f).rf
             val sy = extent.height / (node.number("viewportHeight")?.takeIf { it > 0f } ?: 24f).rf
-            withTransform({
-              scale(sx, sy)
-              clipPath(outline)
-              scale(1f.rf / sx, 1f.rf / sy)
-            }) {
-              drawChildren(extent, values)
+            scale(sx, sy, RemoteOffset(0f.rf, 0f.rf)) {
+              clipPath(outline) {
+                scale(1f.rf / sx, 1f.rf / sy, RemoteOffset(0f.rf, 0f.rf)) {
+                  drawChildren(extent, values)
+                }
+              }
             }
           } else {
             val x = px("xDp") ?: 0f.rf

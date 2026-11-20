@@ -89,34 +89,7 @@ class StickerBakeCoverageTest {
    * catches a library that starts drawing — it could not have caught this, because the library was
    * never the one at fault.
    */
-  private val knownBlank: Map<String, String> by lazy {
-    if (onSnapshotLane) SNAPSHOT_BITMAP_CONTAINERS_BLANK_IN_EMBEDDED_PLAYER else emptyMap()
-  }
-
-  /**
-   * The SNAPSHOT lane's bitmap containers, which the embedded player bakes to nothing at all — not
-   * the image, not the label. The cause is the player, established the way the KDoc above asks: the
-   * same `.rc` sidecars, drawn by the CMP player in `CmpAndroidPlayerTrialTest`, differ from these
-   * blank PNGs in 37 to 75 percent of their pixels, so the documents carry a picture and the
-   * embedded player is what draws none of it. The documents are the snapshot writer's own (the
-   * bitmap inline), which this lane recorded through the vendored port's writer until the port was
-   * dropped; the released lane draws the same stickers. Delete these when rc-players' embedded
-   * player plays the snapshot's bitmaps.
-   */
-  private val SNAPSHOT_BITMAP_CONTAINERS_BLANK_IN_EMBEDDED_PLAYER: Map<String, String> =
-    listOf(
-        "ImageBackgroundRemoteButton",
-        "ImageBackgroundRemoteButton_VARIANT_disabled",
-        "ImageBackgroundRemoteButton_VARIANT_secondary-label",
-        "ImageBackgroundRemoteButton_VARIANT_secondary-label-disabled",
-        "TitleCardRemote_VARIANT_background-image",
-        "TitleCardRemote_VARIANT_with-subtitle-background-image",
-        "TitleCardRemote_VARIANT_title-and-subtitle-background-image",
-      )
-      .associateWith {
-        "the embedded player draws nothing of the snapshot's containerPainter / background-image " +
-          "document, which the CMP player draws from the same bytes"
-      }
+  private val knownBlank: Map<String, String> = emptyMap()
 
   /**
    * `<stem>_VARIANT_<cell>`, the identity a [knownBlank] entry names, or `<stem>` for a base

@@ -68,7 +68,7 @@ private val STYLE =
   )
 
 private val TEXT_ALIGN =
-  "androidx.compose.ui.text.style.TextAlign"
+  "androidx.compose.remote.creation.compose.text.RemoteTextAlign"
     .let { type ->
       exported(
         ExportProjection.Codec.Enum(

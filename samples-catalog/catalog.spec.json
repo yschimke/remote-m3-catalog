@@ -26,7 +26,7 @@
           "preview": "RemoteAppCardSample",
           "caption": "RemoteAppCardSample — upstream AndroidX sample for `RemoteAppCard`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteAppCardSample.kt",
-          "bodyLine": 36
+          "bodyLine": 34
         }
       ]
     },
@@ -38,7 +38,14 @@
           "preview": "RemoteButtonGroupThreeButtonSample",
           "caption": "RemoteButtonGroupThreeButtonSample — upstream AndroidX sample for `RemoteButtonGroup`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteButtonGroupSample.kt",
-          "bodyLine": 52
+          "bodyLine": 46
+        },
+        {
+          "componentId": "RemoteButtonGroup/RemoteButtonGroupAnimatedSample",
+          "preview": "RemoteButtonGroupAnimatedSample",
+          "caption": "RemoteButtonGroupAnimatedSample — upstream AndroidX sample for `RemoteButtonGroup`.",
+          "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteButtonGroupSample.kt",
+          "bodyLine": 67
         }
       ]
     },
@@ -50,7 +57,21 @@
           "preview": "RemoteButtonSimpleSample",
           "caption": "RemoteButtonSimpleSample — upstream AndroidX sample for `RemoteButton`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteButtonSample.kt",
-          "bodyLine": 38
+          "bodyLine": 50
+        },
+        {
+          "componentId": "RemoteButton/RemoteButtonWithIconAndSecondaryLabelSample",
+          "preview": "RemoteButtonWithIconAndSecondaryLabelSample",
+          "caption": "RemoteButtonWithIconAndSecondaryLabelSample — upstream AndroidX sample for `RemoteButton`.",
+          "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteButtonSample.kt",
+          "bodyLine": 63
+        },
+        {
+          "componentId": "RemoteButton/RemoteButtonWithContainerPainterSample",
+          "preview": "RemoteButtonWithContainerPainterSample",
+          "caption": "RemoteButtonWithContainerPainterSample — upstream AndroidX sample for `RemoteButton`.",
+          "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteButtonSample.kt",
+          "bodyLine": 83
         }
       ]
     },
@@ -62,21 +83,21 @@
           "preview": "RemoteCardSample",
           "caption": "RemoteCardSample — upstream AndroidX sample for `RemoteCard`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteCardSample.kt",
-          "bodyLine": 44
+          "bodyLine": 46
         },
         {
           "componentId": "RemoteCard/RemoteCardWithImageSample",
           "preview": "RemoteCardWithImageSample",
           "caption": "RemoteCardWithImageSample — upstream AndroidX sample for `RemoteCard`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteCardSample.kt",
-          "bodyLine": 54
+          "bodyLine": 56
         },
         {
           "componentId": "RemoteCard/RemoteOutlinedCardSample",
           "preview": "RemoteOutlinedCardSample",
           "caption": "RemoteOutlinedCardSample — upstream AndroidX sample for `RemoteCard`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteCardSample.kt",
-          "bodyLine": 74
+          "bodyLine": 84
         }
       ]
     },
@@ -100,21 +121,21 @@
           "preview": "RemoteCircularProgressIndicatorSample",
           "caption": "RemoteCircularProgressIndicatorSample — upstream AndroidX sample for `RemoteCircularProgressIndicator`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteCircularProgressIndicatorSample.kt",
-          "bodyLine": 42
+          "bodyLine": 40
         },
         {
           "componentId": "RemoteCircularProgressIndicator/RemoteIndeterminateCircularProgressIndicatorSample",
           "preview": "RemoteIndeterminateCircularProgressIndicatorSample",
           "caption": "RemoteIndeterminateCircularProgressIndicatorSample — upstream AndroidX sample for `RemoteCircularProgressIndicator`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteCircularProgressIndicatorSample.kt",
-          "bodyLine": 51
+          "bodyLine": 49
         },
         {
           "componentId": "RemoteCircularProgressIndicator/RemoteCircularProgressIndicatorAnimatedSample",
           "preview": "RemoteCircularProgressIndicatorAnimatedSample",
           "caption": "RemoteCircularProgressIndicatorAnimatedSample — upstream AndroidX sample for `RemoteCircularProgressIndicator`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteCircularProgressIndicatorSample.kt",
-          "bodyLine": 62
+          "bodyLine": 60
         }
       ]
     },
@@ -126,7 +147,7 @@
           "preview": "RemoteCompactButtonSimpleSample",
           "caption": "RemoteCompactButtonSimpleSample — upstream AndroidX sample for `RemoteCompactButton`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteCompactButtonSample.kt",
-          "bodyLine": 38
+          "bodyLine": 36
         }
       ]
     },
@@ -138,14 +159,21 @@
           "preview": "RemoteCurvedProgressIndicatorSample",
           "caption": "RemoteCurvedProgressIndicatorSample — upstream AndroidX sample for `RemoteCurvedProgressIndicator`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteCurvedProgressIndicatorSample.kt",
-          "bodyLine": 44
+          "bodyLine": 43
         },
         {
           "componentId": "RemoteCurvedProgressIndicator/RemoteCurvedProgressIndicatorAnimatedSample",
           "preview": "RemoteCurvedProgressIndicatorAnimatedSample",
           "caption": "RemoteCurvedProgressIndicatorAnimatedSample — upstream AndroidX sample for `RemoteCurvedProgressIndicator`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteCurvedProgressIndicatorSample.kt",
-          "bodyLine": 60
+          "bodyLine": 59
+        },
+        {
+          "componentId": "RemoteCurvedProgressIndicator/RemoteIntroOutroCurvedProgressIndicatorSample",
+          "preview": "RemoteIntroOutroCurvedProgressIndicatorSample",
+          "caption": "RemoteIntroOutroCurvedProgressIndicatorSample — upstream AndroidX sample for `RemoteCurvedProgressIndicator`.",
+          "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteCurvedProgressIndicatorSample.kt",
+          "bodyLine": 83
         }
       ]
     },
@@ -157,28 +185,28 @@
           "preview": "RemoteEdgeButtonSample",
           "caption": "RemoteEdgeButtonSample — upstream AndroidX sample for `RemoteEdgeButton`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteEdgeButtonSample.kt",
-          "bodyLine": 43
+          "bodyLine": 41
         },
         {
           "componentId": "RemoteEdgeButton/RemoteEdgeButtonIconSample",
           "preview": "RemoteEdgeButtonIconSample",
           "caption": "RemoteEdgeButtonIconSample — upstream AndroidX sample for `RemoteEdgeButton`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteEdgeButtonSample.kt",
-          "bodyLine": 60
+          "bodyLine": 58
         },
         {
           "componentId": "RemoteEdgeButton/RemoteEdgeButtonFilledTonalSample",
           "preview": "RemoteEdgeButtonFilledTonalSample",
           "caption": "RemoteEdgeButtonFilledTonalSample — upstream AndroidX sample for `RemoteEdgeButton`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteEdgeButtonSample.kt",
-          "bodyLine": 83
+          "bodyLine": 81
         },
         {
           "componentId": "RemoteEdgeButton/RemoteEdgeButtonMultiLineSample",
           "preview": "RemoteEdgeButtonMultiLineSample",
           "caption": "RemoteEdgeButtonMultiLineSample — upstream AndroidX sample for `RemoteEdgeButton`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteEdgeButtonSample.kt",
-          "bodyLine": 100
+          "bodyLine": 98
         }
       ]
     },
@@ -190,7 +218,14 @@
           "preview": "RemoteIconButtonSimpleSample",
           "caption": "RemoteIconButtonSimpleSample — upstream AndroidX sample for `RemoteIconButton`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteIconButtonSample.kt",
-          "bodyLine": 40
+          "bodyLine": 38
+        },
+        {
+          "componentId": "RemoteIconButton/RemoteIconButtonWithCornerAnimationSample",
+          "preview": "RemoteIconButtonWithCornerAnimationSample",
+          "caption": "RemoteIconButtonWithCornerAnimationSample — upstream AndroidX sample for `RemoteIconButton`.",
+          "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteIconButtonSample.kt",
+          "bodyLine": 57
         }
       ]
     },
@@ -202,7 +237,7 @@
           "preview": "RemoteIconSimpleSample",
           "caption": "RemoteIconSimpleSample — upstream AndroidX sample for `RemoteIcon`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteIconSample.kt",
-          "bodyLine": 35
+          "bodyLine": 33
         }
       ]
     },
@@ -240,14 +275,26 @@
           "preview": "RemoteLinearProgressIndicatorSample",
           "caption": "RemoteLinearProgressIndicatorSample — upstream AndroidX sample for `RemoteLinearProgressIndicator`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteLinearProgressIndicatorSample.kt",
-          "bodyLine": 42
+          "bodyLine": 40
         },
         {
           "componentId": "RemoteLinearProgressIndicator/RemoteLinearProgressIndicatorAnimatedSample",
           "preview": "RemoteLinearProgressIndicatorAnimatedSample",
           "caption": "RemoteLinearProgressIndicatorAnimatedSample — upstream AndroidX sample for `RemoteLinearProgressIndicator`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteLinearProgressIndicatorSample.kt",
-          "bodyLine": 51
+          "bodyLine": 49
+        }
+      ]
+    },
+    {
+      "name": "RemoteMaterialTheme",
+      "components": [
+        {
+          "componentId": "RemoteMaterialTheme/RemoteMaterialThemeSample",
+          "preview": "RemoteMaterialThemeSample",
+          "caption": "RemoteMaterialThemeSample — upstream AndroidX sample for `RemoteMaterialTheme`.",
+          "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteMaterialThemeSample.kt",
+          "bodyLine": 37
         }
       ]
     },
@@ -290,21 +337,21 @@
           "preview": "RemoteSegmentedCircularProgressIndicatorSample",
           "caption": "RemoteSegmentedCircularProgressIndicatorSample — upstream AndroidX sample for `RemoteSegmentedCircularProgressIndicator`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteSegmentedCircularProgressIndicatorSample.kt",
-          "bodyLine": 44
+          "bodyLine": 42
         },
         {
           "componentId": "RemoteSegmentedCircularProgressIndicator/RemoteSegmentedCircularProgressIndicatorBinarySample",
           "preview": "RemoteSegmentedCircularProgressIndicatorBinarySample",
           "caption": "RemoteSegmentedCircularProgressIndicatorBinarySample — upstream AndroidX sample for `RemoteSegmentedCircularProgressIndicator`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteSegmentedCircularProgressIndicatorSample.kt",
-          "bodyLine": 59
+          "bodyLine": 57
         },
         {
           "componentId": "RemoteSegmentedCircularProgressIndicator/RemoteSegmentedCircularProgressIndicatorAnimatedSample",
           "preview": "RemoteSegmentedCircularProgressIndicatorAnimatedSample",
           "caption": "RemoteSegmentedCircularProgressIndicatorAnimatedSample — upstream AndroidX sample for `RemoteSegmentedCircularProgressIndicator`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteSegmentedCircularProgressIndicatorSample.kt",
-          "bodyLine": 74
+          "bodyLine": 72
         }
       ]
     },
@@ -403,6 +450,32 @@
           "caption": "RemoteTextButtonSimpleSample — upstream AndroidX sample for `RemoteTextButton`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteTextButtonSample.kt",
           "bodyLine": 41
+        },
+        {
+          "componentId": "RemoteTextButton/RemoteFilledTonalTextButtonSample",
+          "preview": "RemoteFilledTonalTextButtonSample",
+          "caption": "RemoteFilledTonalTextButtonSample — upstream AndroidX sample for `RemoteTextButton`.",
+          "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteTextButtonSample.kt",
+          "bodyLine": 65
+        },
+        {
+          "componentId": "RemoteTextButton/RemoteTextButtonWithCornerAnimationSample",
+          "preview": "RemoteTextButtonWithCornerAnimationSample",
+          "caption": "RemoteTextButtonWithCornerAnimationSample — upstream AndroidX sample for `RemoteTextButton`.",
+          "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteTextButtonSample.kt",
+          "bodyLine": 83
+        }
+      ]
+    },
+    {
+      "name": "RemoteText",
+      "components": [
+        {
+          "componentId": "RemoteText/RemoteTextSample",
+          "preview": "RemoteTextSample",
+          "caption": "RemoteTextSample — upstream AndroidX sample for `RemoteText`.",
+          "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteTextSample.kt",
+          "bodyLine": 35
         }
       ]
     },
@@ -440,14 +513,14 @@
           "preview": "RemoteTitleCardSample",
           "caption": "RemoteTitleCardSample — upstream AndroidX sample for `RemoteTitleCard`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteTitleCardSample.kt",
-          "bodyLine": 43
+          "bodyLine": 45
         },
         {
           "componentId": "RemoteTitleCard/RemoteTitleCardWithImageSample",
           "preview": "RemoteTitleCardWithImageSample",
           "caption": "RemoteTitleCardWithImageSample — upstream AndroidX sample for `RemoteTitleCard`.",
           "sourceFile": "src/main/kotlin/upstream/androidx/wear/compose/remote/material3/samples/RemoteTitleCardSample.kt",
-          "bodyLine": 59
+          "bodyLine": 61
         }
       ]
     }

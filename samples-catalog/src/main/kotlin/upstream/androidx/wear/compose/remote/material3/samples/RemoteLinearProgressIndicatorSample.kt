@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RestrictedApiAndroidX")
-
 package androidx.wear.compose.remote.material3.samples
 
 import androidx.annotation.Sampled
-import androidx.compose.remote.creation.compose.action.valueChange
+import androidx.compose.remote.creation.compose.action.valueChangeAction
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.clickable
@@ -51,8 +49,8 @@ public fun RemoteLinearProgressIndicatorSample(modifier: RemoteModifier = Remote
 public fun RemoteLinearProgressIndicatorAnimatedSample(
     modifier: RemoteModifier = RemoteModifier.width(140.rdp)
 ) {
-    val progress = remember { MutableRemoteFloat { 0.25f.rf } }
-    val toggleAction = valueChange(progress, (progress + 0.25f) % 1f)
+    val progress = remember { MutableRemoteFloat(0.25f) }
+    val toggleAction = valueChangeAction(progress, (progress + 0.25f.rf) % 1f.rf)
     // The indicator animates the progress changes.
     RemoteLinearProgressIndicator(modifier = modifier.clickable(toggleAction), progress = progress)
 }

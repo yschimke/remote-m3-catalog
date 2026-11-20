@@ -12,10 +12,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.WindowInfo
-import androidx.compose.ui.text.font.FontVariation
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
@@ -79,6 +75,10 @@ import ee.schimke.composeai.rccreation.compose.state.rf
 import ee.schimke.composeai.rccreation.compose.state.ri
 import ee.schimke.composeai.rccreation.compose.state.rs
 import ee.schimke.composeai.rccreation.compose.text.RemoteFontFamily
+import ee.schimke.composeai.rccreation.compose.text.RemoteFontVariation
+import ee.schimke.composeai.rccreation.compose.text.RemoteFontWeight
+import ee.schimke.composeai.rccreation.compose.text.RemoteTextAlign
+import ee.schimke.composeai.rccreation.compose.text.RemoteTextOverflow
 import ee.schimke.composeai.rccreation.compose.text.RemoteTextStyle
 import ee.schimke.composeai.rccreation.wear.material3.LocalRemoteContentColor
 import ee.schimke.composeai.rccreation.wear.material3.RemoteAppCard
@@ -1202,12 +1202,12 @@ private fun String.parseColor(): Color? = takeIf {
   }
   ?.let(::Color)
 
-private fun UiBuilderNode.textAlign(): TextAlign? =
+private fun UiBuilderNode.textAlign(): RemoteTextAlign? =
   when (string("textAlign").ifEmpty { string("alignment") }) {
-    "center" -> TextAlign.Center
-    "end" -> TextAlign.End
-    "justify" -> TextAlign.Justify
-    "start" -> TextAlign.Start
+    "center" -> RemoteTextAlign.Center
+    "end" -> RemoteTextAlign.End
+    "justify" -> RemoteTextAlign.Justify
+    "start" -> RemoteTextAlign.Start
     else -> null
   }
 
@@ -1276,11 +1276,11 @@ private fun String.boxAlignment(): RemoteAlignment =
  * (`RemoteText(fontVariationSettings = …)`): the document carries the axes and the player applies
  * them to the face it resolves ([RegistryTypefaceLoader]).
  */
-private fun UiBuilderNode.fontVariationSettings(): FontVariation.Settings? =
+private fun UiBuilderNode.fontVariationSettings(): RemoteFontVariation.Settings? =
   FontSettings.parseVariations(string(FontSettings.VARIATION_PROPERTY))
     .takeIf { it.isNotEmpty() }
     ?.let { axes ->
-      FontVariation.Settings(*axes.map { FontVariation.Setting(it.tag, it.value) }.toTypedArray())
+      RemoteFontVariation.Settings(axes.map { RemoteFontVariation.Setting(it.tag, it.value.rf) })
     }
 
 /**
@@ -1328,23 +1328,23 @@ private fun UiBuilderNode.remoteFontFamily(): RemoteFontFamily? =
     else -> RemoteFontFamily.Named(name)
   }
 
-private fun UiBuilderNode.fontWeight(): FontWeight? =
+private fun UiBuilderNode.fontWeight(): RemoteFontWeight? =
   when (string("fontWeight")) {
-    "thin" -> FontWeight.Thin
-    "light" -> FontWeight.Light
-    "normal" -> FontWeight.Normal
-    "medium" -> FontWeight.Medium
-    "semiBold" -> FontWeight.SemiBold
-    "bold" -> FontWeight.Bold
-    "black" -> FontWeight.Black
-    else -> string("fontWeight").removePrefix("w").toIntOrNull()?.let { FontWeight(it) }
+    "thin" -> RemoteFontWeight.Thin
+    "light" -> RemoteFontWeight.Light
+    "normal" -> RemoteFontWeight.Normal
+    "medium" -> RemoteFontWeight.Medium
+    "semiBold" -> RemoteFontWeight.SemiBold
+    "bold" -> RemoteFontWeight.Bold
+    "black" -> RemoteFontWeight.Black
+    else -> string("fontWeight").removePrefix("w").toIntOrNull()?.let { RemoteFontWeight(it) }
   }
 
-private fun UiBuilderNode.textOverflow(): TextOverflow =
+private fun UiBuilderNode.textOverflow(): RemoteTextOverflow =
   when (string("overflow")) {
-    "ellipsis" -> TextOverflow.Ellipsis
-    "visible" -> TextOverflow.Visible
-    else -> TextOverflow.Clip
+    "ellipsis" -> RemoteTextOverflow.Ellipsis
+    "visible" -> RemoteTextOverflow.Visible
+    else -> RemoteTextOverflow.Clip
   }
 
 private fun UiBuilderNode.horizontalAlignment(): RemoteAlignment.Horizontal =
