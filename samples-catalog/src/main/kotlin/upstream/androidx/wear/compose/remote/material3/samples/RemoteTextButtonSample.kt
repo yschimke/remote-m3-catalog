@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-@file:Suppress("RestrictedApiAndroidX")
-
 package androidx.wear.compose.remote.material3.samples
 
 import androidx.annotation.Sampled
-import androidx.compose.remote.creation.compose.action.valueChange
+import androidx.compose.remote.creation.compose.action.hostAction
+import androidx.compose.remote.creation.compose.action.valueChangeAction
+import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.state.MutableRemoteInt
 import androidx.compose.remote.creation.compose.state.rf
@@ -43,20 +43,57 @@ fun RemoteTextButtonSimpleSample(modifier: RemoteModifier = RemoteModifier) {
     val text = "+".rs + tapCount.toRemoteString()
 
     RemoteTextButton(
-        valueChange(tapCount, tapCount + 1),
+        onClick = valueChangeAction(tapCount, tapCount + 1),
         modifier = modifier,
-        colors = filledTonalColor(),
+        colors =
+            RemoteTextButtonDefaults.textButtonColors(
+                containerColor = RemoteMaterialTheme.colorScheme.primary,
+                contentColor = RemoteMaterialTheme.colorScheme.onPrimary,
+                disabledContainerColor =
+                    RemoteMaterialTheme.colorScheme.primary.copy(alpha = 0.12f.rf),
+                disabledContentColor = RemoteMaterialTheme.colorScheme.primary.copy(0.38f.rf),
+            ),
     ) {
         RemoteText(text = text)
     }
 }
 
+@Sampled
 @Composable
-private fun filledTonalColor() =
-    RemoteTextButtonDefaults.textButtonColors()
-        .copy(
-            containerColor = RemoteMaterialTheme.colorScheme.primary,
-            contentColor = RemoteMaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = RemoteMaterialTheme.colorScheme.primary.copy(alpha = 0.12f.rf),
-            disabledContentColor = RemoteMaterialTheme.colorScheme.primary.copy(0.38f.rf),
-        )
+@WearPreviewDevices
+@PreviewWrapper(RemoteComponentPreviewWrapper::class)
+fun RemoteFilledTonalTextButtonSample(modifier: RemoteModifier = RemoteModifier) {
+    val tapCount = remember { MutableRemoteInt(0) }
+    val text = "+".rs + tapCount.toRemoteString()
+
+    RemoteTextButton(
+        onClick = valueChangeAction(tapCount, tapCount + 1),
+        modifier = modifier,
+        colors = RemoteTextButtonDefaults.filledTonalTextButtonColors(),
+    ) {
+        RemoteText(text = text)
+    }
+}
+
+@Sampled
+@RemoteComposable
+@Composable
+@WearPreviewDevices
+@PreviewWrapper(RemoteComponentPreviewWrapper::class)
+fun RemoteTextButtonWithCornerAnimationSample(modifier: RemoteModifier = RemoteModifier) {
+    RemoteTextButton(
+        onClick = hostAction("button_click".rs),
+        modifier = modifier,
+        shapes = RemoteTextButtonDefaults.animatedShapes(),
+        colors =
+            RemoteTextButtonDefaults.textButtonColors(
+                containerColor = RemoteMaterialTheme.colorScheme.primary,
+                contentColor = RemoteMaterialTheme.colorScheme.onPrimary,
+                disabledContainerColor =
+                    RemoteMaterialTheme.colorScheme.primary.copy(alpha = 0.12f.rf),
+                disabledContentColor = RemoteMaterialTheme.colorScheme.primary.copy(0.38f.rf),
+            ),
+    ) {
+        RemoteText(text = "ABC".rs)
+    }
+}

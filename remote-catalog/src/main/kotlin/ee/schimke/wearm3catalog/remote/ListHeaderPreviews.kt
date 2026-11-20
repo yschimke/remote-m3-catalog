@@ -15,8 +15,8 @@ import androidx.compose.remote.creation.compose.modifier.size
 import androidx.compose.remote.creation.compose.modifier.width
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rs
+import androidx.compose.remote.creation.compose.text.RemoteTextAlign
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.style.TextAlign
 import androidx.wear.compose.remote.material3.RemoteIcon
 import androidx.wear.compose.remote.material3.RemoteMaterialTheme
 import androidx.wear.compose.remote.material3.RemoteText
@@ -196,6 +196,7 @@ fun ListSubHeaderRemote() = RemoteSticker {
  * they name as well as by their own.
  */
 @Composable
-private fun kitTextAlign(default: String = "centre"): TextAlign =
-  if (previewOverrideChoice("align", default, listOf("centre", "left")) == "left") TextAlign.Start
-  else TextAlign.Center
+private fun kitTextAlign(default: String = "centre"): RemoteTextAlign =
+  if (previewOverrideChoice("align", default, listOf("centre", "left")) == "left")
+    RemoteTextAlign.Start
+  else RemoteTextAlign.Center

@@ -44,9 +44,9 @@ object RealRemoteRecords {
   val factoryCallables: List<TypedAdapterDiscovery.Callable> =
     listOf(
       TypedAdapterDiscovery.Callable("$LAYOUT.RemoteArrangement", "spacedBy"),
-      // Companion `invoke`s are discovered on the companion's JVM class.
-      TypedAdapterDiscovery.Callable("$STATE.RemoteColor\$Companion", "invoke"),
-      TypedAdapterDiscovery.Callable("$STATE.RemoteString\$Companion", "invoke"),
+      // Top-level factory functions in remote-creation-expression (alpha24+).
+      TypedAdapterDiscovery.Callable("$STATE.RemoteColorKt", "RemoteColor"),
+      TypedAdapterDiscovery.Callable("$STATE.RemoteStringKt", "RemoteString"),
     )
 
   fun discover(): ComponentRecordFile =

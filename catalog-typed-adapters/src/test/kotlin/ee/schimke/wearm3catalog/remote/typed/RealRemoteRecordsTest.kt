@@ -80,11 +80,10 @@ class RealRemoteRecordsTest {
     // or `RemoteFloat`s.
     val color =
       RealRemoteRecords.factories().single {
-        it.callableFqn == "${RealRemoteRecords.STATE}.RemoteColor.Companion.invoke" &&
-          it.parameters.size == 1
+        it.callableFqn == "${RealRemoteRecords.STATE}.RemoteColor" && it.parameters.size == 1
       }
     assertEquals("kotlin.Int", color.parameters.single().typeFqn)
-    val string = factories.getValue("${RealRemoteRecords.STATE}.RemoteString.Companion.invoke")
+    val string = factories.getValue("${RealRemoteRecords.STATE}.RemoteString")
     assertEquals("kotlin.String", string.parameters.single().typeFqn)
   }
 }
