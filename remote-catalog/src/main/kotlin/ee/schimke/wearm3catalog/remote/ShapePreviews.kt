@@ -10,6 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialShapes
 import androidx.compose.remote.creation.RemotePath
 import androidx.compose.remote.creation.compose.layout.RemoteCanvas
+import androidx.compose.remote.creation.compose.layout.RemoteOffset
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.size
 import androidx.compose.remote.creation.compose.state.RemotePaint
@@ -180,8 +181,10 @@ fun MaterialShapesRemote() = RemoteSticker {
   RemoteCanvas(modifier = RemoteModifier.size(SHAPE_SIZE)) {
     val paint = RemotePaint { color = fill }
     // The unit polygon, scaled to the drawing area. See the note at the top of the file for why
-    // this is the sizing step rather than a flourish.
-    scale(size.width, size.height) { drawPath(polygon.toRemotePath(), paint) }
+    // this is the sizing step rather than a flourish. The pivot is the ORIGIN, stated: alpha24
+    // moved the default pivot to the canvas centre, which scales the (0,0)-(1,1) silhouette about
+    // the middle and draws it entirely off the canvas, so every cell baked blank.
+    scale(size.width, size.height, RemoteOffset.Zero) { drawPath(polygon.toRemotePath(), paint) }
   }
 }
 
