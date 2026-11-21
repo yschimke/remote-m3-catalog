@@ -42,7 +42,7 @@ composePreview {
 android {
   namespace = "ee.schimke.remotewidgets"
   // The Remote Compose alpha AARs declare minCompileSdk 37.
-  compileSdk = 37
+  compileSdk { version = release(37) { minorApiLevel = 1 } }
 
   defaultConfig {
     applicationId = "ee.schimke.remotewidgets"

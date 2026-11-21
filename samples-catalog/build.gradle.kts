@@ -24,7 +24,7 @@ android {
   // Upstream's own package so unqualified `R.drawable.*` in vendored samples resolves without
   // patching every file.
   namespace = "androidx.wear.compose.remote.material3.samples"
-  compileSdk = 37
+  compileSdk { version = release(37) { minorApiLevel = 1 } }
 
   defaultConfig {
     applicationId = "ee.schimke.remotem3catalog.samples"
