@@ -112,7 +112,7 @@ compose-material3 = "1.5.0-rc01"
 composePreviewContracts = "3.44.0"
 # The release BOM advances even when the plugin is unchanged. Never share these refs:
 # BOM 2.67.0 names compose-preview-plugin 2.66.0; a marker at 2.67.0 does not exist.
-composeAiTools = "2.101.1"
+composeAiTools = "2.103.0"
 composePreviewPlugin = "2.101.0"
 composePreviewCore = "2.98.0"
 composePreviewDaemon = "3.28.1"
