@@ -6,7 +6,7 @@ agp = "9.5.3"
 
 # Wear Compose Material 3 — the library the sibling `:catalog` (yschimke/wear-m3-catalog) reproduces
 # the kit against. Here only the Robolectric preview harness and the UI-builder Wear frame read it.
-wear-compose = "1.7.1"
+wear-compose = "1.7.2"
 wear-tooling-preview = "1.0.0"
 # `LocalOnBackPressedDispatcherOwner`, which the one-handed-gesture samples read. Declared by
 # upstream's own samples build.gradle; this module needs it for the same reason.
@@ -19,7 +19,7 @@ androidx-annotation = "1.11.0"
 # The mobile Compose BOM supplies `androidx.compose.ui`, the preview tooling and — see
 # `catalog/build.gradle.kts` — `androidx.compose.material3.MaterialShapes`, which is where the 35
 # shapes on the kit's Shapes page actually live. Wear Compose has no shape library of its own.
-compose-bom = "2026.09.00"
+compose-bom = "2026.11.01"
 
 # The CMP Wear port — Wear Compose Material 3 / Foundation recompiled for Compose Multiplatform,
 # published to the `wear-compose-cmp-maven` branch of yschimke/wear-m3-catalog-out (see `settings.gradle.kts` for
@@ -47,7 +47,7 @@ compose-multiplatform-material3 = "1.12.0-alpha03"
 # the only published home of the 35 shapes the kit's Shapes page draws. The alpha's AAR metadata
 # declares minCompileSdk 37, which is what `catalog/build.gradle.kts` already compiles at for
 # wear-compose 1.7.0-beta. Drop the pin once 1.5.0 is stable in the BOM.
-compose-material3 = "1.5.0-rc01"
+compose-material3 = "1.5.0"
 
 # THE DATA LINE MOVED OUT OF compose-ai-tools. `preview-annotations`, `data-preview-overrides-runtime`
 # and `data-remotecompose-connector` publish from yschimke/compose-preview-daemon since its 3.0.0
@@ -183,7 +183,7 @@ compose-remote-foundation = "1.0.0-alpha07"
 # Pre-release compose-ui for `:remote-catalog`. The alpha remote artifacts align with the Compose
 # 1.11+ line (1.11.0 is the first release shipping `PreviewWrapper`), so that module pins explicit
 # versions instead of taking the 2026.08.00 BOM the rest of the repo uses.
-compose-ui-prerelease = "1.12.1"
+compose-ui-prerelease = "1.13.0"
 
 # `Icons.*` — the icon artifacts BOTH catalogs draw their icon slots from. Pinned as a version here
 # rather than left to the BOM because `:remote-catalog` takes no BOM, and the two modules must draw

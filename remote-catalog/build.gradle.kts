@@ -59,7 +59,7 @@ android {
   // compose-remote alpha08+ / wear-compose-remote alpha02+ raise the AAR minCompileSdk to 37.
   // `:catalog` is already at 37 for wear-compose 1.7.0-beta, so the two agree here by coincidence
   // rather than by coupling.
-  compileSdk = 37
+  compileSdk { version = release(37) { minorApiLevel = 1 } }
 
   defaultConfig {
     applicationId = "ee.schimke.wearm3catalog.remote"
